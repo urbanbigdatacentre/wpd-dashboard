@@ -1,0 +1,24 @@
+/*Layout*/
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: var(--typeface);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/*Aesthetics*/
+
+.bluePunctuation {
+  color: var(--primaryBlue);
+}
+
