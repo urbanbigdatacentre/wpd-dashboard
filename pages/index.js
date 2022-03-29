@@ -7,6 +7,11 @@ import Link from 'next/link'
 // Local Imports
 import styles from '../styles/modules/Home.module.css'
 import Footer from "../components/modules/footer";
+import Navbar from "../components/modules/navbar";
+import MyNavbar from "../components/modules/navbar";
+
+// Style Imports
+import {Typography} from "@mui/material";
 
 export default function Home() {
   return (
@@ -17,10 +22,11 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-            <h1 className={styles.title}>
+          <MyNavbar />
+            <Typography variant={'title1'}>
               Waterproofing Data
-                <span className={"bluePunctuation"}>.</span>
-            </h1>
+                <span className={'bluePunctuation'}>.</span>
+            </Typography>
 
           <Footer/>
 
