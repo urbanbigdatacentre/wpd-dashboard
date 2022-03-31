@@ -1,12 +1,17 @@
+// Top Level Application Wrapper
+
+// Package Imports
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import Head from 'next/head';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { CacheProvider } from '@emotion/react';
+
+// Local Imports
 import theme from '../src/theme';
 import createEmotionCache from '../src/createEmotionCache';
-
+import {wrapper} from "../store/store";
 
 // CSS Imports
 import styles from '../styles/globals.css'
@@ -16,7 +21,7 @@ import styles from '../styles/globals.css'
 
 const clientSideEmotionCache = createEmotionCache();
 
-export default function MyApp(props) {
+function MyApp(props) {
     const { Component, emotionCache =
         clientSideEmotionCache, pageProps } = props;
 
@@ -40,3 +45,5 @@ MyApp.propTypes = {
     emotionCache: PropTypes.object,
     pageProps: PropTypes.object.isRequired,
 };
+
+export default wrapper.withRedux(MyApp);

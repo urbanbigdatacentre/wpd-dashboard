@@ -1,0 +1,26 @@
+{
+  "global": {
+    "projectTitle": {
+      "en": "Waterproofing Data",
+      "br": "Dados de impermeabilização"
+    },
+    "navButtonText": {
+      "en": "Join the Project",
+      "br": "Junte-se ao projeto"
+    },
+    "navRightLink": {
+      "en": "National Overview",
+      "br": "Visão geral nacional"
+    }
+  },
+  "landingPage": {
+    "heroDescription": {
+      "en": "Connecting Brazillian Flood Data From Communities & Official Sources",
+      "br": "Conectando dados brasileiros de enchentes de comunidades e fontes oficiais"
+    }
+
+  },
+  "locationPage": {
+
+  }
+}
