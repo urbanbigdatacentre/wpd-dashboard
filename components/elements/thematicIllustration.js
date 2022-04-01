@@ -16,7 +16,7 @@ export default function ThematicIllustration(props) {
             }}
             >
                 <Image src={'/images/thematic-rain-illustration.png'} width={660} height={372}/>
-                <Image src={'/images/thematic-rain-illustration.png'} width={660} height={372} style={{ '-webkit-transform': 'scaleX(-1)', transform: 'scaleX(-1)' }}/>
+                <Image src={'/images/thematic-rain-illustration.png'} width={660} height={372} style={{ WebkitTransform: 'scaleX(-1)', transform: 'scaleX(-1)' }}/>
             </div>
     );
 }

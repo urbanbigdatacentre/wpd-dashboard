@@ -1,22 +1,22 @@
 // WPD Language Toggle Component
 
 // Package Imports
-import * as React from 'react';
+import React, {useEffect} from 'react';
 import {Container, Box, Toolbar, ToggleButtonGroup, ToggleButton, styled} from "@mui/material";
+import { connect } from 'react-redux';
+import {bindActionCreators} from "redux";
 
 // Local Imports
+import {changeLanguage} from "../../store/actions";
 
-
-export default function LanguageToggle() {
-
-    // Set Initial State - Language 'English'
-    const [language, setLanguage] = React.useState('English');
+const LanguageToggle = ({ language, changeLanguage }) => {
 
     // Handle Toggle Change
     const handleChange = (e, languageSelection) => {
         if (languageSelection !== null) {
-            setLanguage(languageSelection);
-        };
+            changeLanguage(languageSelection);
+            console.log(language)
+        }
     }
 
         return (
@@ -33,24 +33,16 @@ export default function LanguageToggle() {
                     <Container sx={{
                         background: 'linear-gradient(270deg, rgba(255, 255, 255, 0.5) 7.57%, #FFFFFF 57.64%, rgba(255, 255, 255, 0.5) 100%)'
                     }}>
-                        {'LANGUAGE'}
-
+                        {'LANGUAGE IS ...'} {language}
                         <StyledToggleButtonGroup
                         value={language}
                         exclusive
                         aria-label={'language selection'}
                         onChange={handleChange}
                         >
-                            <ToggleButton value={'English'}>
-                                EN
-                            </ToggleButton>
-                            
-                            <ToggleButton value={'Brazilian Portuguese'}>
-                                BR
-                            </ToggleButton>
-
+                            <ToggleButton value={'English'}>EN</ToggleButton>
+                            <ToggleButton value={'Brazilian Portuguese'}>BR</ToggleButton>
                         </StyledToggleButtonGroup>
-
                     </Container>
                 </Toolbar>
             </Box>
@@ -83,3 +75,18 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
     },
 
 }));
+
+const mapStateToProps = (state) => {
+    return {
+        language: state.toggleLanguage.language
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        changeLanguage: bindActionCreators(changeLanguage, dispatch),
+    }
+}
+
+// Export Component & Connect to Store
+export default connect(mapStateToProps, mapDispatchToProps)(LanguageToggle)

@@ -1,13 +1,14 @@
-
+// Package imports
 import * as React from 'react';
 import Document, { Html, Head, Main, NextScript } from 'next/document';
 import createEmotionServer from '@emotion/server/create-instance';
+import {wrapper} from "../store/store";
 
 // Local Imports
 import theme from '../src/theme';
 import createEmotionCache from '../src/createEmotionCache';
 
-export default class MyDocument extends Document {
+class MyDocument extends Document {
     render() {
         return (
             <Html lang="en">
@@ -74,3 +75,5 @@ MyDocument.getInitialProps = async (ctx) => {
         emotionStyleTags,
     };
 };
+
+export default MyDocument;
