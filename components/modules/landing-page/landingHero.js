@@ -9,19 +9,17 @@ import { connect } from 'react-redux'
 import styles from '../../../styles/modules/landing-page/LandingHero.module.css'
 import ThematicIllustration from "../../elements/thematicIllustration";
 import LanguageToggle from "../../elements/languageToggle";
-import {toggleLanguage} from "../../../store/reducers";
-import Clock from "../../elements/clock";
+import uiText from "../../../data/ui-text";
 
-const LandingHeroSection = ({ toggleLanguage, tick }) => {
+const LandingHeroSection = ({ toggleLanguage }) => {
     return (
         <>
             <LanguageToggle language={toggleLanguage.language}/>
             <ThematicIllustration />
             <Container className={styles.heroInnerContainer}>
-                <Typography variant={'title'}>Waterproofing Data<span className={'bluePunctuation'}>.</span></Typography>
-                <Typography>Connecting Brazilian Flood Data From Communities & Official Sources</Typography>
+                <Typography variant={'title'}>{uiText.global.labels.projectTitle[toggleLanguage.language]}<span className={'bluePunctuation'}>.</span></Typography>
+                <Typography>{uiText.landingPage.hero.subtitle[toggleLanguage.language]}</Typography>
             </Container>
-            <Clock lastUpdate={tick.lastUpdate} light={tick.light} />
         </>
     );
 }

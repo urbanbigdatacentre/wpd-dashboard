@@ -7,7 +7,7 @@ import * as actionTypes from './types';
 
 // - Toggle Language
 const languageInitialState = {
-    language: "English",
+    language: "en",
 }
 export const toggleLanguage = (state = languageInitialState, action) => {
     switch (action.type) {

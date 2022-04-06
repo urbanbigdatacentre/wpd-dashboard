@@ -8,6 +8,7 @@ import {bindActionCreators} from "redux";
 
 // Local Imports
 import {changeLanguage} from "../../store/actions";
+import uiText from "../../data/ui-text";
 
 const LanguageToggle = ({ language, changeLanguage }) => {
 
@@ -33,15 +34,15 @@ const LanguageToggle = ({ language, changeLanguage }) => {
                     <Container sx={{
                         background: 'linear-gradient(270deg, rgba(255, 255, 255, 0.5) 7.57%, #FFFFFF 57.64%, rgba(255, 255, 255, 0.5) 100%)'
                     }}>
-                        {'LANGUAGE IS ...'} {language}
+                        {uiText.global.labels.language[language].toUpperCase()}
                         <StyledToggleButtonGroup
                         value={language}
                         exclusive
                         aria-label={'language selection'}
                         onChange={handleChange}
                         >
-                            <ToggleButton value={'English'}>EN</ToggleButton>
-                            <ToggleButton value={'Brazilian Portuguese'}>BR</ToggleButton>
+                            <ToggleButton value={'en'}>EN</ToggleButton>
+                            <ToggleButton value={'br'}>BR</ToggleButton>
                         </StyledToggleButtonGroup>
                     </Container>
                 </Toolbar>
