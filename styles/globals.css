@@ -20,3 +20,9 @@ a {
   color: #2196F3;
 }
 
+/*CSS Overrides*/
+
+.mapboxgl-ctrl-attrib {
+  display: none;
+}
+

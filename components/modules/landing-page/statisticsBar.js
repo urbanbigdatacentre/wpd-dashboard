@@ -22,6 +22,7 @@ const StatisticsBar = ({ toggleLanguage }) => {
     return (
         <Container className={styles.statisticsBarSectionContainer}>
             <Box className={styles.statisticsBarRowContainer}>
+                {/* Use Map Function to Map Stats in State to StatCard Components */}
                 <StatCard number={183} text={uiText.landingPage.statisticsBar.pluviometers[toggleLanguage.language]}/>
                 <StatCard number={6542} text={uiText.landingPage.statisticsBar.rowsOfData[toggleLanguage.language]}/>
                 <StatCard number={183} text={uiText.landingPage.statisticsBar.citizenReporters[toggleLanguage.language]}/>

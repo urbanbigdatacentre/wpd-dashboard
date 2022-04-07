@@ -12,6 +12,7 @@ import Footer from "../components/modules/footer";
 import MyNavbar from "../components/modules/navbar";
 import LandingHeroSection from "../components/modules/landing-page/landingHero";
 import StatisticsBar from "../components/modules/landing-page/statisticsBar";
+import NationalOverview from "../components/modules/landing-page/nationalActivity";
 
 // State MGMT Imports
 import { wrapper } from '../store/store';
@@ -20,18 +21,10 @@ import { serverRenderClock, startClock } from "../store/tick/action";
 
 // Style Imports
 import styles from '../styles/modules/Home.module.css'
+import NationalActivity from "../components/modules/landing-page/nationalActivity";
 
 // Landing Page Component
 const Home = (props) => {
-
-    useEffect(() => {
-        const timer = props.startClock()
-
-        return () => {
-            clearInterval(timer)
-        }
-    }, [props])
-
 
     return (
     <div className={styles.container}>
@@ -44,6 +37,7 @@ const Home = (props) => {
           <MyNavbar />
           <LandingHeroSection />
           <StatisticsBar/>
+          <NationalActivity mapBoxToken={props.env.MAPBOX_TOKEN}/>
 
           {/*<Footer/>*/}
 
@@ -53,12 +47,15 @@ const Home = (props) => {
     )
 }
 
-// ** MUST INCLUDE EITHER OF THE BELOW
-// Function to retrieve server side props
-// Function to retrieve static props
-
 export const getStaticProps = wrapper.getStaticProps((store) => () => {
-    store.dispatch(serverRenderClock(true))
+
+    return {
+        props: {
+            env: {
+                MAPBOX_TOKEN: process.env.MAPBOX_TOKEN
+            }
+        }
+    }
 })
 
 

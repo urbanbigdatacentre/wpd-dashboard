@@ -1,0 +1,12 @@
+.nationalActivitySectionContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.nationalActivityTextBoxWrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}

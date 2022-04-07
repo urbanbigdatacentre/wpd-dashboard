@@ -32,13 +32,25 @@ const theme = createTheme({
             heavy: 700,
             regular: 300
         },
-        title: {
+        pageTitle: {
             fontSize: 60,
             fontWeight: 700
+        },
+        title: {
+            fontSize: 45,
+            fontWeight: 700
+        },
+        topBlue: {
+            fontSize: 30,
+            fontWeight: 700,
+            color: '#2196F3'
         },
         button: {
             fontWeight: 700
         }
+    },
+    shape: {
+        borderRadius: '5px'
     }
 });
 

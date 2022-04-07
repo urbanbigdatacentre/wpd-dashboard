@@ -252,7 +252,7 @@ export default {
         "br": ""
       },
       "description": {
-        "en": "Select a region to explore more.",
+        "en": "Select a region to explore more",
         "br": ""
       }
     },

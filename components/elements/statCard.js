@@ -1,9 +1,7 @@
 // Statistic Card Component
 
 // Package Imports
-import {Card} from "@mui/material";
-import {styled} from "@mui/material";
-import {Typography} from "@mui/material";
+import {Card, styled, Typography} from "@mui/material";
 
 // Local Imports
 
