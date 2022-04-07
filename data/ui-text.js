@@ -22,7 +22,7 @@ export default {
         "br": ""
       },
       "days": {
-        "en": "Days",git
+        "en": "Days",
         "br": ""
       },
       "months": {
