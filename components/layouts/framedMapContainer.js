@@ -7,12 +7,14 @@ import {Box, styled, Typography} from "@mui/material";
 // Local Imports
 import NationalOverviewMap from "../elements/nationalOverviewMap";
 import DateFilter from "../elements/dateFilter";
+import OverviewMapLegendComponent from "../elements/overviewMapLegend";
 
 // Framed Map Container Component
 const FramedMapContainer = ({ mapBoxToken }) => {
     return (
         <MapOuterWrapper>
             <DateFilter/>
+            <OverviewMapLegendComponent/>
             <MapInnerWrapper>
                 <NationalOverviewMap mapBoxToken={mapBoxToken}/>
             </MapInnerWrapper>
@@ -22,7 +24,6 @@ const FramedMapContainer = ({ mapBoxToken }) => {
 
 const MapOuterWrapper = styled(Box)(({theme}) => ({
     position: `relative`,
-
 }))
 
 const MapInnerWrapper = styled(Box)(({theme}) => ({
