@@ -1,4 +1,4 @@
 // REDUX ACTION TYPES
 
 export const SWITCHLANGUAGE = "SWITCHLANGUAGE";
-export const TICK = "TICK"
+export const SWITCHDATE = "SWITCHDATE";

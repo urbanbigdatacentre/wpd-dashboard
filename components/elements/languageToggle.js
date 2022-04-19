@@ -15,8 +15,8 @@ const LanguageToggle = ({ language, changeLanguage }) => {
     // Handle Toggle Change
     const handleChange = (e, languageSelection) => {
         if (languageSelection !== null) {
+            // Change Redux Language State
             changeLanguage(languageSelection);
-            console.log(language)
         }
     }
 

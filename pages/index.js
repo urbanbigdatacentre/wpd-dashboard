@@ -5,7 +5,6 @@ import Head from 'next/head'
 import Link from 'next/link'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import {useEffect} from "react";
 
 // Component Imports
 import Footer from "../components/modules/footer";
@@ -16,8 +15,7 @@ import NationalOverview from "../components/modules/landing-page/nationalActivit
 
 // State MGMT Imports
 import { wrapper } from '../store/store';
-import {changeLanguage} from "../store/actions";
-import { serverRenderClock, startClock } from "../store/tick/action";
+import {changeLanguage, changeDate} from "../store/actions";
 
 // Style Imports
 import styles from '../styles/modules/Home.module.css'
@@ -62,7 +60,7 @@ export const getStaticProps = wrapper.getStaticProps((store) => () => {
 const mapDispatchToProps = (dispatch) => {
     return {
         changeLanguage: bindActionCreators(changeLanguage, dispatch),
-        startClock: bindActionCreators(startClock, dispatch)
+        changeDate: bindActionCreators(changeDate, dispatch),
     }
 }
 

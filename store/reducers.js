@@ -2,13 +2,13 @@
 
 // Local Imports
 import * as actionTypes from './types';
+import dates from '../data/dates';
 
-// Reducer Functidons
-
-// - Toggle Language
+// - TOGGLE LANGUAGE
 const languageInitialState = {
     language: "en",
 }
+
 export const toggleLanguage = (state = languageInitialState, action) => {
     switch (action.type) {
         case actionTypes.SWITCHLANGUAGE:
@@ -20,21 +20,22 @@ export const toggleLanguage = (state = languageInitialState, action) => {
     }
 }
 
-const tickInitialState = {
-    lastUpdate: 0,
-    light: false,
+// - TOGGLE DATE
+
+const dateInitialState = {
+    startDate: dates['24Hours'],
+    endDate: dates.now
 }
 
-export const tickReducer = (state = tickInitialState, action) => {
+export const toggleDate = (state= dateInitialState, action) => {
     switch (action.type) {
-        case actionTypes.TICK:
+        case actionTypes.SWITCHDATE:
             return Object.assign({}, state, {
-                lastUpdate: action.ts,
-                light: !!action.light,
+                startDate: action.startDate,
+                endDate: action.endDate
             })
         default:
             return state
     }
 }
-
 

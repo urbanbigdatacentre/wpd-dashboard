@@ -4,8 +4,7 @@ import {applyMiddleware, combineReducers, createStore} from 'redux'
 import {composeWithDevTools} from 'redux-devtools-extension'
 import {createWrapper, HYDRATE} from "next-redux-wrapper";
 import thunkMiddleware from 'redux-thunk'
-import {toggleLanguage, tickReducer } from "./reducers";
-import tick from './tick/reducer'
+import {toggleLanguage, toggleDate} from "./reducers";
 
 
 const bindMiddleware = (middleware) => {
@@ -19,7 +18,7 @@ const bindMiddleware = (middleware) => {
 // Combine Reducers Together
 const combinedReducer = combineReducers({
     toggleLanguage,
-    tick,
+    toggleDate
 })
 
 // Create Root Reducer
@@ -31,11 +30,13 @@ const reducer = (state, action) => {
         }
         // Return the new payload
         // ** NB ** Possibility of Preserving State Values on Client Side here
-        if (state.toggleLanguage.language) nextState.toggleLanguage.language = state.toggleLanguage.language // preserve language value on client side navigation
+        if (state.toggleDate.date) nextState.toggleDate.date = state.toggleDate.date;
+        if (state.toggleLanguage.language) nextState.toggleLanguage.language = state.toggleLanguage.language;
         return nextState;
     } else {
         return combinedReducer(state, action)
     }
+
 }
 
 // Initialize the store with a createStore instance

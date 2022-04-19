@@ -2,8 +2,7 @@
 
 import * as types from './types';
 
-// Change Language
-
+// CHANGE LANGUAGE
 export const changeLanguage = (languageSelected) => (dispatch) => {
     return dispatch({
         type: types.SWITCHLANGUAGE,
@@ -11,19 +10,12 @@ export const changeLanguage = (languageSelected) => (dispatch) => {
     })
 }
 
-// Clock
-
-export const serverRenderClock = (isServer) => (dispatch) => {
+// CHANGE DATE
+export const changeDate = (dateSelected) => (dispatch) => {
     return dispatch({
-        type: types.TICK,
-        light: !isServer,
-        ts: Date.now(),
+        type: types.SWITCHDATE,
+        startDate: dateSelected.startDate,
+        endDate: dateSelected.endDate
     })
 }
 
-export const startClock = () => (dispatch) => {
-    return setInterval(
-        () => dispatch({ type: types.TICK, light: true, ts: Date.now() }),
-        1000
-    )
-}

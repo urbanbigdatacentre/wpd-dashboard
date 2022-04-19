@@ -1,3 +1,6 @@
+// File contains all UI Text used across WPD web application
+
+
 export default {
   "global": {
     "labels": {
