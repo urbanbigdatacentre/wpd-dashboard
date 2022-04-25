@@ -22,7 +22,18 @@ a {
 
 /*CSS Overrides*/
 
+/*MAP ELEMENTS*/
+
 .mapboxgl-ctrl-attrib {
   display: none;
 }
+
+/*SWIPER SLIDER */
+
+
+.swiper-slide {
+  display: flex;
+  justify-content: center;
+}
+
 

@@ -7,7 +7,7 @@ import {connect} from "react-redux";
 // Local Imports
 import StreetMap from "../elements/streetMap";
 import uiText from "../../data/ui-text";
-import styles from "../../styles/modules/landing-page/About.module.css";
+import CitizenCarousel from "../elements/citizenCarousel";
 
 // Inline Map Container Component
 const InlineMapContainer = ({ toggleLanguage, mapBoxToken }) => {
@@ -19,6 +19,7 @@ const InlineMapContainer = ({ toggleLanguage, mapBoxToken }) => {
                     <Typography sx={{width: `40%`}} variant={'title'}>{uiText.landingPage.carouselMap.title[toggleLanguage.language]}</Typography>
                     <Typography variant={'description'} sx={{width: `40%`, marginTop: (theme) => (theme.spacing(1))}} >{uiText.landingPage.carouselMap.description[toggleLanguage.language]}</Typography>
                 </MapDescriptionTextBox>
+                <CitizenCarousel/>
             </MapTextCarouselWrapper>
             <MapInnerWrapper>
                 <MapBackgroundBox />
@@ -41,8 +42,6 @@ const MapInnerWrapper = styled(Box)(({theme}) => ({
     height: `800px`,
     width: `100%`,
     position: `relative`,
-    borderRadius: theme.shape.borderRadius,
-    outline: `2px solid #E5E5E5`,
     zIndex: `100`,
 }))
 
@@ -51,6 +50,9 @@ const MapTextCarouselWrapper = styled(Container)(({theme}) => ({
     height: `100%`,
     position: `absolute`,
     display: `flex`,
+    flexDirection: `column`,
+    justifyContent: `center`,
+    alignItems: `start`,
     zIndex: 600,
     top: theme.spacing(6),
 }))
