@@ -5,11 +5,21 @@ import {connect} from "react-redux";
 import {styled, Box, Typography, Slider} from "@mui/material";
 
 // Local Imports
-
+import {bindActionCreators} from "redux";
+import {changeRadius} from "../../store/actions";
 
 // Overview Map Legend Component
 
-const OverviewMapLegendComponent = ({ props }) => {
+const OverviewMapLegendComponent = ({ changeRadius, hexRadius}) => {
+
+    // Handle Date Change
+    const handleChange = (e) => {
+        if (e.target.value !== null && Number.isInteger(e.target.value) && !Number.isNaN(e.target.value)) {
+            // Change Redux Hex Radius value
+            changeRadius(Number(e.target.value));
+        }
+    }
+
     return(
         <LegendWrapperBox>
             <Typography sx={{fontWeight: (theme) => (theme.typography.fontWeightBold)}}>NO. CITIZEN REPORTS</Typography>
@@ -30,7 +40,7 @@ const OverviewMapLegendComponent = ({ props }) => {
             </Box>
             <Box sx={{display: `flex`, width: `100%`, justifyContent: `space-between`}}>
                 <Typography sx={{fontWeight: (theme) => (theme.typography.fontWeightBold), fontSize: `12px`}} >HEXAGON RADIUS</Typography>
-                <Slider defaultValue={30}/>
+                <Slider min={2000} max={40000} value={hexRadius} onChange={handleChange}/>
             </Box>
         </LegendWrapperBox>
     );
@@ -60,4 +70,21 @@ const LegendWrapperBox = styled(Box)(({theme}) => ({
     filter: `drop-shadow(0px 0px 15px rgba(33, 150, 243, 0.25))`
 }))
 
-export default connect((state) => state)(OverviewMapLegendComponent)
+// REDUX CONNECTIONS
+// Map State + Dispatch to Props
+
+const mapStateToProps = (state) => {
+    return {
+        hexRadius: state.changeRadiusWithSlider.hexRadius
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        changeRadius: bindActionCreators(changeRadius, dispatch),
+    }
+}
+
+
+// Export Component & Connect to Store
+export default connect(mapStateToProps, mapDispatchToProps)(OverviewMapLegendComponent)

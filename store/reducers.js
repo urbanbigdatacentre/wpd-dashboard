@@ -39,3 +39,20 @@ export const toggleDate = (state= dateInitialState, action) => {
     }
 }
 
+// - SLIDE HEX RADIUS - NATIONAL OVERVIEW MAP
+
+const hexRadiusInitialState = {
+    hexRadius: 2500
+}
+
+export const changeRadiusWithSlider = (state= hexRadiusInitialState, action) => {
+    switch (action.type) {
+        case actionTypes.SLIDERADIUS:
+            return Object.assign({}, state, {
+                hexRadius: action.hexRadius
+            })
+        default:
+            return state
+    }
+}
+

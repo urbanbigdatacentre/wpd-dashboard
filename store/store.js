@@ -4,7 +4,7 @@ import {applyMiddleware, combineReducers, createStore} from 'redux'
 import {composeWithDevTools} from 'redux-devtools-extension'
 import {createWrapper, HYDRATE} from "next-redux-wrapper";
 import thunkMiddleware from 'redux-thunk'
-import {toggleLanguage, toggleDate} from "./reducers";
+import {toggleLanguage, toggleDate, changeRadiusWithSlider} from "./reducers";
 
 
 const bindMiddleware = (middleware) => {
@@ -18,7 +18,8 @@ const bindMiddleware = (middleware) => {
 // Combine Reducers Together
 const combinedReducer = combineReducers({
     toggleLanguage,
-    toggleDate
+    toggleDate,
+    changeRadiusWithSlider
 })
 
 // Create Root Reducer

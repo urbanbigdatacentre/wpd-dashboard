@@ -19,3 +19,12 @@ export const changeDate = (dateSelected) => (dispatch) => {
     })
 }
 
+// SLIDE RADIUS
+export const changeRadius = (newRadius) => (dispatch) => {
+
+    return dispatch({
+        type: types.SLIDERADIUS,
+        hexRadius: newRadius
+    })
+}
+
