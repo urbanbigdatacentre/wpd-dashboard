@@ -108,7 +108,7 @@ const NationalOverviewMap = ({ mapBoxToken, changeRadiusWithSlider }) => {
             colorRange,
             coverage,
             data: data,
-            elevationRange: [0, 2000],
+            elevationRange: [0, 3000],
             elevationScale: data && data.length ? 50 : 0,
             extruded: true,
             getPosition: d => d,

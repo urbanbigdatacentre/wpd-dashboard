@@ -1,0 +1,60 @@
+.aboutSectionContainer {
+    padding-top: 150px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.aboutTextBox {
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    width: 40%;
+}
+
+.aboutVideoBox {
+    display: flex;
+    flex-direction: column;
+    width: 45%;
+    height: auto;
+
+}
+
+.reactPlayerWrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+
+}
+
+.reactPlayerInnerWrapper {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.reactPlayerBackground {
+    position: absolute;
+    height: 300px;
+    left: -5px;
+    right: -5px;
+    z-index: -2;
+    border-radius: 10px;
+    box-shadow: inset 0px 0px 3px 0px #2196F3,
+                inset 0px 0px 3px 0px #00D1E1;
+    -webkit-transform: rotate(-2.5deg);
+    -ms-transform: rotate(-2.5deg);
+    transform: rotate(-2.5deg);
+
+}
+
+.reactPlayer {
+    position: absolute;
+    width: 100% !important;
+    height: 300px !important;
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    overflow: hidden;
+    z-index: 1;
+}

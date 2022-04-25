@@ -11,7 +11,10 @@ import Footer from "../components/modules/footer";
 import MyNavbar from "../components/modules/navbar";
 import LandingHeroSection from "../components/modules/landing-page/landingHero";
 import StatisticsBar from "../components/modules/landing-page/statisticsBar";
-import NationalOverview from "../components/modules/landing-page/nationalActivity";
+import NationalActivity from "../components/modules/landing-page/nationalActivity";
+import About from '../components/modules/landing-page/about';
+import ProjectPartners from "../components/modules/landing-page/projectPartners";
+import CitizenSection from "../components/modules/landing-page/citizenSection";
 
 // State MGMT Imports
 import { wrapper } from '../store/store';
@@ -19,7 +22,7 @@ import {changeLanguage, changeDate} from "../store/actions";
 
 // Style Imports
 import styles from '../styles/modules/Home.module.css'
-import NationalActivity from "../components/modules/landing-page/nationalActivity";
+
 
 // Landing Page Component
 const Home = (props) => {
@@ -36,6 +39,9 @@ const Home = (props) => {
           <LandingHeroSection />
           <StatisticsBar/>
           <NationalActivity mapBoxToken={props.env.MAPBOX_TOKEN}/>
+          <About/>
+          <ProjectPartners/>
+          <CitizenSection mapBoxToken={props.env.MAPBOX_TOKEN}/>
 
           {/*<Footer/>*/}
 

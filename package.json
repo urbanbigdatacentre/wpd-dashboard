@@ -24,6 +24,7 @@
     "react": "18.0.0",
     "react-dom": "18.0.0",
     "react-map-gl": "^7.0.10",
+    "react-player": "^2.10.0",
     "react-redux": "^7.2.6",
     "redux": "^4.1.2",
     "redux-devtools-extension": "^2.13.9",
