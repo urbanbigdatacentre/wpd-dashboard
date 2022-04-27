@@ -28,3 +28,14 @@ export const changeRadius = (newRadius) => (dispatch) => {
     })
 }
 
+// SET CAROUSEL COORDINATES
+export const updateCarouselCoordinates = (newCoordinates) => (dispatch) => {
+
+    return dispatch({
+        type: types.SETCAROUSELCOORDINATES,
+        latitude: parseFloat(newCoordinates.latitude),
+        longitude: parseFloat(newCoordinates.longitude),
+        citizenType: newCoordinates.citizenType,
+    })
+}
+

@@ -4,6 +4,14 @@
 export default {
   "global": {
     "labels": {
+      "footerLinkTop": {
+        "en": "Home",
+        "br": "Junte-se ao Projeto"
+      },
+      "footerLinkBottom": {
+        "en": "National Overview",
+        "br": "Visão geral nacional"
+      },
       "navButton": {
         "en": "Join the project",
         "br": "Junte-se ao Projeto"
@@ -309,7 +317,7 @@ export default {
         "br": ""
       },
       "descriptionPartTwo": {
-        "en": "Explore flood data related to ",
+        "en": " and compare it with other locations.",
         "br": ""
       }
     },

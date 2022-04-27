@@ -5,3 +5,6 @@ export const SWITCHDATE = "SWITCHDATE";
 
 // National Overview Map
 export const SLIDERADIUS = "SLIDERADIUS";
+
+// Carousel & Map
+export const SETCAROUSELCOORDINATES = "SETCAROUSELCOORDINATES";

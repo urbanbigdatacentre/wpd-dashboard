@@ -1,29 +1,53 @@
 // Layout Component for Faded Maps & Text Overlays
 
 // Package Imports
-import {Box, styled, Typography, Container} from "@mui/material";
+import {Box, styled, Typography, Container, Divider} from "@mui/material";
 import {connect} from "react-redux";
 
 // Local Imports
 import StreetMap from "../elements/streetMap";
 import uiText from "../../data/ui-text";
 import CitizenCarousel from "../elements/citizenCarousel";
+import LocationBox from "../elements/locationBox";
 
 // Inline Map Container Component
-const InlineMapContainer = ({ toggleLanguage, mapBoxToken }) => {
-    return (
-        <MapOuterWrapper>
+const InlineMapContainer = ({ toggleLanguage, mapBoxToken, mapStylePlain }) => {
+
+    const containerHeight = mapStylePlain ? `400px`: `800px`;
+
+    const renderPlainMap = () => {
+        return (
             <MapTextCarouselWrapper>
                 <MapDescriptionTextBox>
-                    <Typography sx={{width: `40%`}} variant={'topBlue'}>{uiText.landingPage.carouselMap.topBlue[toggleLanguage.language]}</Typography>
+                    <LocationBox locationName={"City"}/>
+                    <Typography sx={{width: `60%`}} variant={'title'}>{uiText.landingPage.carouselMap.title[toggleLanguage.language]}<span className={'bluePunctuation'}>.</span></Typography>
+                    <Divider sx={{width: `25%`, height: (theme) => (theme.spacing(1)), background: `linear-gradient(90deg, #2196F3 0%, #1565C0 100%)`, marginBottom: (theme) => (theme.spacing(2)), marginTop: (theme) => (theme.spacing(1))}}/>
+                    <Typography sx={{width: `60%`}} variant={'description'}>{uiText.locationPage.hero.descriptionPartOne[toggleLanguage.language] + uiText.locationPage.hero.descriptionPartTwo[toggleLanguage.language]}</Typography>
+                </MapDescriptionTextBox>
+            </MapTextCarouselWrapper>
+        )
+    }
+
+    const renderFullMapCarousel = () => {
+        return (
+            <MapTextCarouselWrapper>
+                <MapDescriptionTextBox>
                     <Typography sx={{width: `40%`}} variant={'title'}>{uiText.landingPage.carouselMap.title[toggleLanguage.language]}</Typography>
                     <Typography variant={'description'} sx={{width: `40%`, marginTop: (theme) => (theme.spacing(1))}} >{uiText.landingPage.carouselMap.description[toggleLanguage.language]}</Typography>
                 </MapDescriptionTextBox>
                 <CitizenCarousel/>
             </MapTextCarouselWrapper>
-            <MapInnerWrapper>
+        )
+    }
+
+    return (
+        <MapOuterWrapper>
+            { mapStylePlain ? renderPlainMap() : (
+                renderFullMapCarousel()
+            )}
+            <MapInnerWrapper sx={{height: containerHeight}}>
                 <MapBackgroundBox />
-                <StreetMap mapBoxToken={mapBoxToken}/>
+                <StreetMap mapBoxToken={mapBoxToken} mapStylePlain={mapStylePlain}/>
             </MapInnerWrapper>
         </MapOuterWrapper>
     );
@@ -38,7 +62,7 @@ const MapOuterWrapper = styled(Box)(({theme}) => ({
 }))
 
 const MapInnerWrapper = styled(Box)(({theme}) => ({
-    marginTop: theme.spacing(5),
+    marginTop: theme.spacing(8),
     height: `800px`,
     width: `100%`,
     position: `relative`,

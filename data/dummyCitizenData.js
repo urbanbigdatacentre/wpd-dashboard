@@ -15,7 +15,7 @@ export default {
         },
         {
             "timestamp": "2022-04-07T13:32:30.745Z",
-            "latitude": "-23.6821604",
+            "latitude": "-23.7821604",
             "longitude": "-46.8754915",
             "type": "Flood Event",
             "citizenType": "Teacher",
@@ -26,7 +26,7 @@ export default {
         },
         {
             "timestamp": "2022-04-07T13:32:30.745Z",
-            "latitude": "-23.6821604",
+            "latitude": "-23.8821604",
             "longitude": "-46.8754915",
             "type": "Flood Memory",
             "citizenType": "School",

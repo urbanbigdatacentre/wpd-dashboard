@@ -10,6 +10,7 @@ import styles from '../../../styles/modules/landing-page/LandingHero.module.css'
 import ThematicIllustration from "../../elements/thematicIllustration";
 import LanguageToggle from "../../elements/languageToggle";
 import uiText from "../../../data/ui-text";
+import Search from '../../elements/search';
 
 const LandingHeroSection = ({ toggleLanguage }) => {
     return (
@@ -19,7 +20,9 @@ const LandingHeroSection = ({ toggleLanguage }) => {
             <Container className={styles.heroInnerContainer}>
                 <Typography variant={'pageTitle'}>{uiText.global.labels.projectTitle[toggleLanguage.language]}<span className={'bluePunctuation'}>.</span></Typography>
                 <Typography>{uiText.landingPage.hero.subtitle[toggleLanguage.language]}</Typography>
+                <Search/>
             </Container>
+
         </>
     );
 }

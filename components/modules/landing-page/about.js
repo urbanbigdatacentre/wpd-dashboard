@@ -27,7 +27,7 @@ const About = ({ toggleLanguage }) => {
           <Box className={styles.aboutVideoBox}>
               <div className={styles.reactPlayerWrapper}>
                   <div className={styles.reactPlayerInnerWrapper}>
-                      <ReactPlayer className={styles.reactPlayer} url='https://www.youtube.com/watch?v=lQUulgzMA18'/>
+                      <ReactPlayer className={styles.reactPlayer} url='https://www.youtube.com/embed/lQUulgzMA18?showinfo=0&enablejsapi=1&origin=http://localhost:3000'/>
                       <div className={styles.reactPlayerBackground}></div>
                   </div>
               </div>

@@ -4,17 +4,15 @@
 // Package Imports
 import {Box, Container, styled, Typography} from "@mui/material";
 import Image from 'next/image';
+import {useEffect} from "react";
 
 // Local Imports
 import avatarPaths from '../../data/avatarPaths';
-import {useEffect} from "react";
+import LocationBox from "./locationBox";
 
 
 // Carousel Item Component
 export const CarouselItem = ({ languageToggle, data }) => {
-
-    useEffect(() => {
-    })
 
     if (data) {
         return (
@@ -29,12 +27,10 @@ export const CarouselItem = ({ languageToggle, data }) => {
                     </Box>
                     <Typography sx={{fontWeight: (theme) => (theme.typography.fontWeightBold)}}>{data.type.toUpperCase()}<span className={"bluePunctuation"}>.</span></Typography>
                 </CarouselFlex>
-                <Typography sx={{fontSize: `25px`, textAlign: `left`}} >{'"' + data.submissionText + '"'}</Typography>
+                <Typography sx={{fontSize: `25px`, textAlign: `left`, marginTop: (theme) => (theme.spacing(2)), marginBottom: (theme) => (theme.spacing(2))}} >{'"' + data.submissionText + '"'}</Typography>
                 <CarouselFlex>
                     <Typography sx={{color: `#888888`}} >{new Date(data.timestamp).toLocaleString().split(',')[0]}</Typography>
-                    <LocationBox>
-                        <Typography sx={{fontWeight: (theme) => (theme.typography.fontWeightBold)}} >{data.locationName}</Typography>
-                    </LocationBox>
+                    <LocationBox locationName={data.locationName}/>
                 </CarouselFlex>
             </CarouselBox>
         )
@@ -68,12 +64,3 @@ const TypeOrganisationBox = styled(Box)(({theme}) => ({
     marginLeft: theme.spacing(2),
 }))
 
-const LocationBox = styled(Box)(({theme}) => ({
-    display: `flex`,
-    alignItems: `center`,
-    justifyContent: `center`,
-    padding: theme.spacing(1),
-    backgroundColor: theme.palette.primary.main,
-    borderRadius: theme.shape.borderRadius,
-    color: theme.palette.primary.light,
-}))

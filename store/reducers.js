@@ -56,3 +56,25 @@ export const changeRadiusWithSlider = (state= hexRadiusInitialState, action) => 
     }
 }
 
+
+// - SETCAROUSELCOORDINATES - CITIZEN CAROUSEL MAP
+
+const carouselCoordinatesInitialState = {
+    latitude: -23.6821604,
+    longitude: -46.8754915,
+    citizenType: ""
+}
+
+export const updateCarouselCoordinates = (state= carouselCoordinatesInitialState, action) => {
+    switch (action.type) {
+        case actionTypes.SETCAROUSELCOORDINATES:
+            return Object.assign({}, state, {
+                latitude: action.latitude,
+                longitude: action.longitude,
+                citizenType: action.citizenType,
+            })
+        default:
+            return state
+    }
+}
+

@@ -42,8 +42,7 @@ const Home = (props) => {
           <About/>
           <ProjectPartners/>
           <CitizenSection mapBoxToken={props.env.MAPBOX_TOKEN}/>
-
-          {/*<Footer/>*/}
+          <Footer/>
 
       </main>
 
@@ -63,11 +62,5 @@ export const getStaticProps = wrapper.getStaticProps((store) => () => {
 })
 
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        changeLanguage: bindActionCreators(changeLanguage, dispatch),
-        changeDate: bindActionCreators(changeDate, dispatch),
-    }
-}
 
-export default connect(null, mapDispatchToProps)(Home)
+export default connect((state) => state)(Home)
