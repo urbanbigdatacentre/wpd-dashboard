@@ -15,16 +15,16 @@ import AccountBalanceRoundedIcon from '@mui/icons-material/AccountBalanceRounded
 const LocationBox = ({locationName}) => {
 
     const icons = {
-        "City": <LocationCityRoundedIcon sx={{marginRight: (theme) => (theme.spacing(1))}}/>,
-        "Town": <AccountBalanceRoundedIcon sx={{marginRight: (theme) => (theme.spacing(1))}}/>,
-        "Municipality": <HomeRoundedIcon sx={{marginRight: (theme) => (theme.spacing(1))}}/>,
-        "School": <SchoolRoundedIcon sx={{marginRight: (theme) => (theme.spacing(1))}}/>
+        "City": <LocationCityRoundedIcon fontSize={"small"} sx={{marginRight: (theme) => (theme.spacing(1))}}/>,
+        "Town": <AccountBalanceRoundedIcon fontSize={"small"} sx={{marginRight: (theme) => (theme.spacing(1))}}/>,
+        "Municipality": <HomeRoundedIcon fontSize={"small"} sx={{marginRight: (theme) => (theme.spacing(1))}}/>,
+        "School": <SchoolRoundedIcon fontSize={"small"} sx={{marginRight: (theme) => (theme.spacing(1))}}/>
     }
 
     return (
         <StyledLocationBox>
             { icons.hasOwnProperty(locationName) ? icons[locationName]: null}
-            <Typography sx={{fontWeight: (theme) => (theme.typography.fontWeightBold), fontSize: `14px`}} >{locationName.toUpperCase()}</Typography>
+            <Typography sx={{fontWeight: (theme) => (theme.typography.fontWeightBold), fontSize: `12px`}} >{locationName.toUpperCase()}</Typography>
         </StyledLocationBox>
     )
 }

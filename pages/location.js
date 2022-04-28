@@ -11,6 +11,7 @@ import Footer from "../components/modules/footer";
 import MyNavbar from "../components/modules/navbar";
 import LanguageToggle from "../components/elements/languageToggle";
 import CitizenSection from "../components/modules/landing-page/citizenSection";
+import ControlPanel from "../components/modules/location-page/controlPanel";
 import {NoSsr} from "@mui/material";
 
 // State MGMT Imports
@@ -37,6 +38,7 @@ const Location = (props) => {
                     <MyNavbar />
                     <LanguageToggle language={props.language}/>
                     <CitizenSection mapBoxToken={props.env.MAPBOX_TOKEN} mapStylePlain={true}/>
+                    <ControlPanel/>
                     <Footer/>
 
                 </main>

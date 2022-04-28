@@ -84,6 +84,10 @@ export default {
         "en": "Add Location",
         "br": ""
       },
+      "addNewLocation": {
+        "en": "Add a New Location",
+        "br": ""
+      },
       "changeLocation": {
         "en": "Change Location",
         "br": ""
@@ -207,7 +211,7 @@ export default {
         "br": ""
       },
       "friday": {
-        "en": "friday",
+        "en": "Friday",
         "br": ""
       },
       "saturday": {
@@ -324,6 +328,18 @@ export default {
     "controlPanel": {
       "controlPanel": {
         "en": "Control Panel",
+        "br": ""
+      },
+      "floodReports": {
+        "en": "Flood Reports",
+        "br": ""
+      },
+      "avgDailyRainfall": {
+        "en": "Avg Daily Rainfall",
+        "br": ""
+      },
+      "citizenReports": {
+        "en": "Citizen Reports",
         "br": ""
       }
     },

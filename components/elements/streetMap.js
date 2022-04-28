@@ -50,7 +50,7 @@ const StreetMap = ({ toggleLanguage, mapBoxToken, updateCarouselCoordinates, map
     const INITIAL_VIEW_STATE = {
         longitude: updateCarouselCoordinates.longitude - 0.07,
         latitude: updateCarouselCoordinates.latitude,
-        zoom: 12.0,
+        zoom: mapStylePlain ? 7.0 : 12.0,
         minZoom: 2,
         maxZoom: 16,
         pitch: 0,

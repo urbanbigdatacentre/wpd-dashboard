@@ -14,7 +14,7 @@ import OverviewMapLegendComponent from "../elements/overviewMapLegend";
 const FramedMapContainer = ({ mapBoxToken }) => {
     return (
         <MapOuterWrapper>
-            <DateFilter/>
+            <DateFilter positionAbsolute={true}/>
             <OverviewMapLegendComponent/>
             <MapInnerWrapper>
                 <NationalOverviewMap mapBoxToken={mapBoxToken}/>

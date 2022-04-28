@@ -15,7 +15,7 @@ import {useEffect, useState} from "react";
 
 // Date Filter Component
 
-const DateFilter = ({ language, startDate, endDate, changeDate }) => {
+const DateFilter = ({ language, startDate, endDate, changeDate, positionAbsolute }) => {
 
     // Handle Date Change
     const handleChange = (e, dateSelection) => {
@@ -26,8 +26,10 @@ const DateFilter = ({ language, startDate, endDate, changeDate }) => {
         }
     }
 
+    const positionMode = positionAbsolute ? `absolute` : `static`
+
     return(
-        <DateFilterButtonGroup exclusive value={startDate} onChange={handleChange}>
+        <DateFilterButtonGroup sx={{position: positionMode}} exclusive value={startDate} onChange={handleChange}>
             <DateFilterButton value={dates['24Hours']} >{"24 " + uiText.global.labels.hours[language]}</DateFilterButton>
             <DateFilterButton value={dates["2Days"]}  >{"2 " + uiText.global.labels.days[language]}</DateFilterButton>
             <DateFilterButton value={dates["7Days"]}  >{"7 " + uiText.global.labels.days[language]}</DateFilterButton>
@@ -41,7 +43,6 @@ const DateFilter = ({ language, startDate, endDate, changeDate }) => {
 
 // CSS Styled Components
 const DateFilterButtonGroup = styled(ToggleButtonGroup)(({theme}) => ({
-    position: `absolute`,
     zIndex: 600,
     top: theme.spacing(6),
     right: theme.spacing(1),
@@ -50,7 +51,9 @@ const DateFilterButtonGroup = styled(ToggleButtonGroup)(({theme}) => ({
 }))
 
 const DateFilterButton = styled(ToggleButton)(({theme}) => ({
+    padding: `5px 10px 5px 10px`,
     fontWeight: theme.typography.fontWeightRegular,
+    fontSize: `12px`,
     color: theme.palette.primary.black,
     backgroundColor: theme.palette.primary.light,
     margin: `0px 1px 0px 0px`,

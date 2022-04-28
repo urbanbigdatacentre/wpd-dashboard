@@ -25,7 +25,7 @@ const MyNavbar = ({ toggleLanguage }) => {
                         <Link href="/#national-activity" scroll={false}>
                             <Typography sx={{fontWeight: (theme) => (theme.typography.weights.heavy), padding: "0 5rem", cursor: `pointer`}}>{uiText.global.labels.navRightLink[toggleLanguage.language].toUpperCase()}<span className={'bluePunctuation'}>.</span></Typography>
                         </Link>
-                        <MyButton text={uiText.global.labels.navButton[toggleLanguage.language]}/>
+                        <MyButton text={uiText.global.labels.navButton[toggleLanguage.language]} variant={"contained"}/>
                     </Container>
                 </Box>
             </Toolbar>

@@ -5,9 +5,15 @@ import {styled} from "@mui/material";
 
 export default class MyButton extends React.Component {
 
+
+
     render() {
+
+        // Set Design Variables depending on type of Button
+        const boxShadow = this.props.variant === "outlined" ? `none` : `0px 0px 15px rgba(33, 150, 243, 0.5)`
+
         return (
-            <MyButtonStyled variant="contained">
+            <MyButtonStyled variant={this.props.variant} sx={{boxShadow: boxShadow}} onClick={this.props.onClick}>
                 {this.props.text}
             </MyButtonStyled>
         );
@@ -15,7 +21,6 @@ export default class MyButton extends React.Component {
 }
 
 const MyButtonStyled = styled(Button)(({theme}) => ({
-    width: `max-content`,
-    boxShadow: `0px 0px 15px rgba(33, 150, 243, 0.5)`
+    width: `max-content`
 }))
 

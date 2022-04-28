@@ -11,7 +11,6 @@ import axios from "axios";
 // Local Imports
 import uiText from "../../data/ui-text";
 import SearchDropdown from "./searchDropdown";
-import dummySearchData from "../../data/dummySearchData";
 import { makeSearch } from "../../api/makeSearch";
 
 // Search Component

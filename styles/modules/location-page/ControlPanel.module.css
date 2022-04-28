@@ -1,0 +1,20 @@
+.controlPanelSectionContainer {
+    padding-top: 100px;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+}
+
+.controlPanelInnerBox {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.locationControlBox {
+    padding: 20px 0 20px 0;
+    display: flex;
+
+    width: 50%;
+}

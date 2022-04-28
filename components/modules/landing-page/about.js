@@ -22,7 +22,7 @@ const About = ({ toggleLanguage }) => {
                 <Typography variant={'description'} sx={{marginTop: (theme) => (theme.spacing(1))}} >{uiText.landingPage.about.descriptionParOne[toggleLanguage.language]}</Typography>
                 <Typography variant={'description'} sx={{marginTop: (theme) => (theme.spacing(2))}} >{uiText.landingPage.about.descriptionParTwo[toggleLanguage.language]}</Typography>
                 <Typography variant={'description'} sx={{marginTop: (theme) => (theme.spacing(2)), marginBottom: (theme) => (theme.spacing(3))}} >{uiText.landingPage.about.descriptionParThree[toggleLanguage.language]}</Typography>
-                <MyButton text={uiText.global.labels.mobileAppButton[toggleLanguage.language]} />
+                <MyButton text={uiText.global.labels.mobileAppButton[toggleLanguage.language]} variant={"contained"}/>
           </Box>
           <Box className={styles.aboutVideoBox}>
               <div className={styles.reactPlayerWrapper}>
