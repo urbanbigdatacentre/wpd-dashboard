@@ -78,3 +78,21 @@ export const updateCarouselCoordinates = (state= carouselCoordinatesInitialState
     }
 }
 
+
+// - SETPRIMARYLOCATION - CITIZEN CAROUSEL MAP
+
+const primaryLocationInitialState = {
+    location: {},
+}
+
+export const updatePrimaryLocation = (state= primaryLocationInitialState, action) => {
+    switch (action.type) {
+        case actionTypes.SETPRIMARYLOCATION:
+            return Object.assign({}, state, {
+                location: action.location,
+            })
+        default:
+            return state
+    }
+}
+

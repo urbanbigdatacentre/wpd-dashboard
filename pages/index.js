@@ -38,6 +38,7 @@ const Home = (props) => {
           <MyNavbar />
           <LandingHeroSection />
           <StatisticsBar/>
+          <span id="national-activity" > </span>
           <NationalActivity mapBoxToken={props.env.MAPBOX_TOKEN}/>
           <About/>
           <ProjectPartners/>

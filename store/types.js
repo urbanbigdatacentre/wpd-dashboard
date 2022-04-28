@@ -8,3 +8,6 @@ export const SLIDERADIUS = "SLIDERADIUS";
 
 // Carousel & Map
 export const SETCAROUSELCOORDINATES = "SETCAROUSELCOORDINATES";
+
+// Set Primary Location
+export const SETPRIMARYLOCATION = "SETPRIMARYLOCATION"

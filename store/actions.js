@@ -39,3 +39,12 @@ export const updateCarouselCoordinates = (newCoordinates) => (dispatch) => {
     })
 }
 
+// SET PRIMARY LOCATION
+export const updatePrimaryLocation = (newLocation) => (dispatch) => {
+
+    return dispatch({
+        type: types.SETPRIMARYLOCATION,
+        location: newLocation,
+    })
+}
+

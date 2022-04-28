@@ -9,9 +9,10 @@ import StreetMap from "../elements/streetMap";
 import uiText from "../../data/ui-text";
 import CitizenCarousel from "../elements/citizenCarousel";
 import LocationBox from "../elements/locationBox";
+import locationPaths from "../../data/locationPaths";
 
 // Inline Map Container Component
-const InlineMapContainer = ({ toggleLanguage, mapBoxToken, mapStylePlain }) => {
+const InlineMapContainer = ({ toggleLanguage, mapBoxToken, mapStylePlain, updatePrimaryLocation }) => {
 
     const containerHeight = mapStylePlain ? `400px`: `800px`;
 
@@ -19,10 +20,10 @@ const InlineMapContainer = ({ toggleLanguage, mapBoxToken, mapStylePlain }) => {
         return (
             <MapTextCarouselWrapper>
                 <MapDescriptionTextBox>
-                    <LocationBox locationName={"City"}/>
-                    <Typography sx={{width: `60%`}} variant={'title'}>{uiText.landingPage.carouselMap.title[toggleLanguage.language]}<span className={'bluePunctuation'}>.</span></Typography>
+                    <LocationBox locationName={locationPaths[updatePrimaryLocation.location['placetype']].text}/>
+                    <Typography sx={{width: `60%`}} variant={'title'}>{updatePrimaryLocation.location['placename']}<span className={'bluePunctuation'}>.</span></Typography>
                     <Divider sx={{width: `25%`, height: (theme) => (theme.spacing(1)), background: `linear-gradient(90deg, #2196F3 0%, #1565C0 100%)`, marginBottom: (theme) => (theme.spacing(2)), marginTop: (theme) => (theme.spacing(1))}}/>
-                    <Typography sx={{width: `60%`}} variant={'description'}>{uiText.locationPage.hero.descriptionPartOne[toggleLanguage.language] + uiText.locationPage.hero.descriptionPartTwo[toggleLanguage.language]}</Typography>
+                    <Typography sx={{width: `50%`}} variant={'description'}>{uiText.locationPage.hero.descriptionPartOne[toggleLanguage.language] + updatePrimaryLocation.location['placename'] + uiText.locationPage.hero.descriptionPartTwo[toggleLanguage.language]}</Typography>
                 </MapDescriptionTextBox>
             </MapTextCarouselWrapper>
         )

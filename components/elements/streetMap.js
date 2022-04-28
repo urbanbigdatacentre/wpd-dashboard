@@ -25,7 +25,7 @@ const ICON_MAPPING = {
 
 
 // Street Map Component
-const StreetMap = ({ toggleLanguage, mapBoxToken, updateCarouselCoordinates, mapStylePlain }) => {
+const StreetMap = ({ toggleLanguage, mapBoxToken, updateCarouselCoordinates, mapStylePlain, updatePrimaryLocation }) => {
 
     const iconLayer = new IconLayer({
         id: "icon-layer",
@@ -44,6 +44,9 @@ const StreetMap = ({ toggleLanguage, mapBoxToken, updateCarouselCoordinates, map
 
     });
 
+    // const initialLongitude = mapStylePlain ? updatePrimaryLocation.location.geo.longitude - 0.07 : updateCarouselCoordinates.longitude - 0.07
+    // const initialLatitude = mapStylePlain ? updatePrimaryLocation.location.geo.latitude : updateCarouselCoordinates.latitude
+
     const INITIAL_VIEW_STATE = {
         longitude: updateCarouselCoordinates.longitude - 0.07,
         latitude: updateCarouselCoordinates.latitude,
@@ -55,9 +58,10 @@ const StreetMap = ({ toggleLanguage, mapBoxToken, updateCarouselCoordinates, map
     };
 
     const layers = mapStylePlain ? null : [iconLayer]
+    const controllerTrue = mapStylePlain ? Boolean(0) : Boolean(1)
 
     return (
-        <DeckGL layers={[layers]} controller={true} preventStyleDiffing={true} initialViewState={INITIAL_VIEW_STATE} height={'100%'} width={'100%'} ContextProvider={_MapContext.Provider} >
+        <DeckGL layers={[layers]} controller={controllerTrue} preventStyleDiffing={true} initialViewState={INITIAL_VIEW_STATE} height={'100%'} width={'100%'} ContextProvider={_MapContext.Provider} >
             <StaticMap
                 reuseMaps
                 mapStyle={mapStyleMapBox1}

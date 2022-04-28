@@ -11,6 +11,7 @@ import Footer from "../components/modules/footer";
 import MyNavbar from "../components/modules/navbar";
 import LanguageToggle from "../components/elements/languageToggle";
 import CitizenSection from "../components/modules/landing-page/citizenSection";
+import {NoSsr} from "@mui/material";
 
 // State MGMT Imports
 import { wrapper } from '../store/store';
@@ -24,26 +25,24 @@ import {useEffect} from "react";
 // Landing Page Component
 const Location = (props) => {
 
-    useEffect(() => {
-        console.log(props)
-    })
-
     return (
-        <div className={styles.container}>
-            <Head>
-                <title>Waterproofing Data</title>
-                <meta name="description" content="Connecting Brazilian Flood Data From Communities & Official Sources"/>
-            </Head>
+        <NoSsr>
+            <div className={styles.container}>
+                <Head>
+                    <title>Waterproofing Data</title>
+                    <meta name="description" content="Connecting Brazilian Flood Data From Communities & Official Sources"/>
+                </Head>
 
-            <main className={styles.main}>
-                <MyNavbar />
-                <LanguageToggle language={props.language}/>
-                <CitizenSection mapBoxToken={props.env.MAPBOX_TOKEN} mapStylePlain={true}/>
-                <Footer/>
+                <main className={styles.main}>
+                    <MyNavbar />
+                    <LanguageToggle language={props.language}/>
+                    <CitizenSection mapBoxToken={props.env.MAPBOX_TOKEN} mapStylePlain={true}/>
+                    <Footer/>
 
-            </main>
+                </main>
 
-        </div>
+            </div>
+        </NoSsr>
     )
 }
 
@@ -51,6 +50,7 @@ export const getStaticProps = wrapper.getStaticProps((store) => () => {
 
     return {
         props: {
+
             env: {
                 MAPBOX_TOKEN: process.env.MAPBOX_TOKEN
             }
@@ -60,7 +60,8 @@ export const getStaticProps = wrapper.getStaticProps((store) => () => {
 
 const mapStateToProps = (state) => {
     return {
-        language: state.toggleLanguage.language
+        language: state.toggleLanguage.language,
+
     }
 }
 
