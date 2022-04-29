@@ -84,12 +84,28 @@ export default {
         "en": "Add Location",
         "br": ""
       },
+      "noDataFound": {
+        "en": "No matching locations found",
+        "br": ""
+      },
       "addNewLocation": {
         "en": "Add a New Location",
         "br": ""
       },
+      "selectedLocations": {
+        "en": "Selected Locations",
+        "br": ""
+      },
       "changeLocation": {
         "en": "Change Location",
+        "br": ""
+      },
+      "tooManyLocationsTitle": {
+        "en": "Too Many Selected Locations",
+        "br": ""
+      },
+      "tooManyLocationsDescription": {
+        "en": "Delete a location from the list below to add another",
         "br": ""
       },
       "dataSources": {

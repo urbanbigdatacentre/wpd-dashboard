@@ -8,19 +8,21 @@ import Link from 'next/link';
 
 // Local Imports
 import LocationBox from "./locationBox";
-import {updatePrimaryLocation} from "../../store/actions";
+import {updatePrimaryLocation, updateAdditionalLocation} from "../../store/actions";
 import locationPaths from "../../data/locationPaths";
+import uiText from "../../data/ui-text";
 
 // Search Dropdown Component
 
-const SearchDropdown = ({ searchText, results, updatePrimaryLocation }) => {
+const SearchDropdown = ({ toggleLanguage, searchText, results, updatePrimaryLocation, updateAdditionalLocation, addingLocation, clickHandler }) => {
 
     const handleClick = (item) => {
-        updatePrimaryLocation(item)
+
+        addingLocation ? updateAdditionalLocation(item) : updatePrimaryLocation(item)
+        clickHandler(item);
     }
 
-    const displayMode = Boolean(searchText) ? `block`: `none`
-
+    const displayMode = Boolean(searchText) ? `block`: `none`;
 
 
         return (
@@ -32,7 +34,7 @@ const SearchDropdown = ({ searchText, results, updatePrimaryLocation }) => {
 
                         <div  key={index}>
                             <Divider/>
-                            <Link href="/location">
+                            <Link href="/location" scroll={false}>
                                 <ListItemButton onClick={() => handleClick(searchResult)}>
                                     <MyListItem disablePadding>
                                         <LocationName primary={searchResult['placename']} />
@@ -44,23 +46,16 @@ const SearchDropdown = ({ searchText, results, updatePrimaryLocation }) => {
 
                     )
 
-                }): <span></span>}
-
-                {/*{ results.map((item, index) => {*/}
-                {/*    return (*/}
-                {/*        <div  key={index}>*/}
-                {/*            <Divider/>*/}
-                {/*            <Link href="/location">*/}
-                {/*                <ListItemButton onClick={() => handleClick(item)}>*/}
-                {/*                    <MyListItem disablePadding>*/}
-                {/*                        <LocationName primary={item['placename']} />*/}
-                {/*                        /!*<LocationBox locationName={item.type} />*!/*/}
-                {/*                    </MyListItem>*/}
-                {/*                </ListItemButton>*/}
-                {/*            </Link>*/}
-                {/*        </div>*/}
-                {/*    );*/}
-                {/*})}*/}
+                }): (
+                    <div>
+                        <Divider/>
+                        <ListItemButton >
+                            <MyListItem disablePadding>
+                                <em>{uiText.global.labels.noDataFound[toggleLanguage.language]}</em>
+                            </MyListItem>
+                        </ListItemButton>
+                    </div>
+                    )}
             </MyList>
         );
 }
@@ -69,7 +64,8 @@ const MyList = styled(List)(({theme}) => ({
     backgroundColor: theme.palette.primary.light,
     borderRadius: theme.shape.borderRadius,
     maxHeight: `290px`,
-    overflow: `scroll`
+    overflow: `scroll`,
+    zIndex: `700`,
 
 }))
 
@@ -85,6 +81,7 @@ const LocationName = styled(ListItemText)(({theme}) => ({
 const mapDispatchToProps = (dispatch) => {
     return {
         updatePrimaryLocation: bindActionCreators(updatePrimaryLocation, dispatch),
+        updateAdditionalLocation: bindActionCreators(updateAdditionalLocation, dispatch),
     }
 }
 

@@ -21,8 +21,8 @@ const ControlDashboard = ({ toggleLanguage, locationData, color }) => {
 
     return (
         <ControlDashboardOuterBox >
-            <LocationBox locationName={locationPaths[locationData.location['placetype']].text} />
-            <Typography sx={{paddingTop: `10px`, fontWeight: (theme) => (theme.typography.fontWeightBold), color: color}}>{locationData.location['placename'].toUpperCase()}<span className={'bluePunctuation'}>.</span></Typography>
+            <LocationBox locationName={locationPaths[locationData['placetype']].text} color={color}/>
+            <Typography sx={{paddingTop: `10px`, fontWeight: (theme) => (theme.typography.fontWeightBold), color: color}}>{locationData['placename'].toUpperCase()}<span className={'bluePunctuation'}>.</span></Typography>
             <Divider sx={{width: `100%`}}/>
             <ControlDashboardInnerBox >
                 <ControlDashboardStatCardBox>

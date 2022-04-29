@@ -1,7 +1,7 @@
 // Layout Component for Faded Maps & Text Overlays
 
 // Package Imports
-import {Box, styled, Typography, Container, Divider} from "@mui/material";
+import {Box, styled, Typography, Container, Divider, IconButton} from "@mui/material";
 import {connect} from "react-redux";
 
 // Local Imports
@@ -10,6 +10,8 @@ import uiText from "../../data/ui-text";
 import CitizenCarousel from "../elements/citizenCarousel";
 import LocationBox from "../elements/locationBox";
 import locationPaths from "../../data/locationPaths";
+import SearchIcon from "@mui/icons-material/Search";
+import React from "react";
 
 // Inline Map Container Component
 const InlineMapContainer = ({ toggleLanguage, mapBoxToken, mapStylePlain, updatePrimaryLocation }) => {
@@ -18,14 +20,22 @@ const InlineMapContainer = ({ toggleLanguage, mapBoxToken, mapStylePlain, update
 
     const renderPlainMap = () => {
         return (
-            <MapTextCarouselWrapper>
-                <MapDescriptionTextBox>
-                    <LocationBox locationName={locationPaths[updatePrimaryLocation.location['placetype']].text}/>
-                    <Typography sx={{width: `60%`}} variant={'title'}>{updatePrimaryLocation.location['placename']}<span className={'bluePunctuation'}>.</span></Typography>
-                    <Divider sx={{width: `25%`, height: (theme) => (theme.spacing(1)), background: `linear-gradient(90deg, #2196F3 0%, #1565C0 100%)`, marginBottom: (theme) => (theme.spacing(2)), marginTop: (theme) => (theme.spacing(1))}}/>
-                    <Typography sx={{width: `50%`}} variant={'description'}>{uiText.locationPage.hero.descriptionPartOne[toggleLanguage.language] + updatePrimaryLocation.location['placename'] + uiText.locationPage.hero.descriptionPartTwo[toggleLanguage.language]}</Typography>
-                </MapDescriptionTextBox>
-            </MapTextCarouselWrapper>
+            <>
+                <ChangeLocationContainer>
+                    <Typography sx={{borderRadius: (theme) => (theme.shape.borderRadius), fontWeight: (theme) => (theme.typography.fontWeightBold), textAlign: 'right', marginRight: (theme) => (theme.spacing(1)), padding: (theme) => (theme.spacing(1)), backgroundColor: `rgba(255, 255, 255, 0.35);`}}>{uiText.global.labels.changeLocation[toggleLanguage.language].toUpperCase()}<span className={'bluePunctuation'}>.</span></Typography>
+                    <IconButton sx={{border: `1px solid #2196F3`, backgroundColor: (theme) => (theme.palette.primary.light), padding: (theme) => (theme.spacing(.75))}} type="submit" aria-label="search">
+                        <SearchIcon style={{ fill: `#2196F3` }} />
+                    </IconButton>
+                </ChangeLocationContainer>
+                <MapTextCarouselWrapper>
+                    <MapDescriptionTextBox>
+                        <LocationBox locationName={locationPaths[updatePrimaryLocation.location['placetype']].text}/>
+                        <Typography sx={{width: `60%`}} variant={'title'}>{updatePrimaryLocation.location['placename']}<span className={'bluePunctuation'}>.</span></Typography>
+                        <Divider sx={{width: `25%`, height: (theme) => (theme.spacing(1)), background: `linear-gradient(90deg, #2196F3 0%, #1565C0 100%)`, marginBottom: (theme) => (theme.spacing(2)), marginTop: (theme) => (theme.spacing(1))}}/>
+                        <Typography sx={{width: `50%`}} variant={'description'}>{uiText.locationPage.hero.descriptionPartOne[toggleLanguage.language] + updatePrimaryLocation.location['placename'] + uiText.locationPage.hero.descriptionPartTwo[toggleLanguage.language]}</Typography>
+                    </MapDescriptionTextBox>
+                </MapTextCarouselWrapper>
+            </>
         )
     }
 
@@ -80,6 +90,19 @@ const MapTextCarouselWrapper = styled(Container)(({theme}) => ({
     alignItems: `start`,
     zIndex: 600,
     top: theme.spacing(6),
+}))
+
+const ChangeLocationContainer = styled(Container)(({theme}) => ({
+    width: `100%`,
+    position: `absolute`,
+    display: `flex`,
+    justifyContent: `end`,
+    alignItems: `center`,
+    zIndex: 1000,
+    top: `80px`,
+    right: `0`,
+    left: `0`,
+    borderRadius: theme.shape.borderRadius,
 }))
 
 const MapDescriptionTextBox = styled(Container)(({theme}) => ({

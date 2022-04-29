@@ -59,7 +59,7 @@ const WeatherCarouselContainer = styled(Container)(({theme}) => ({
     justifyContent: `center`,
     alignItems: `center`,
     margin: `0`,
-    width: `60%`,
+    width: `55%`,
 }))
 
 export default connect((state) => state)(WeatherCarousel);

@@ -12,7 +12,7 @@ import AccountBalanceRoundedIcon from '@mui/icons-material/AccountBalanceRounded
 // LocationBox Component
 
 
-const LocationBox = ({locationName}) => {
+const LocationBox = ({locationName, color}) => {
 
     const icons = {
         "City": <LocationCityRoundedIcon fontSize={"small"} sx={{marginRight: (theme) => (theme.spacing(1))}}/>,
@@ -22,7 +22,7 @@ const LocationBox = ({locationName}) => {
     }
 
     return (
-        <StyledLocationBox>
+        <StyledLocationBox sx={{backgroundColor: color ? color : (theme) => (theme.palette.primary.main)}}>
             { icons.hasOwnProperty(locationName) ? icons[locationName]: null}
             <Typography sx={{fontWeight: (theme) => (theme.typography.fontWeightBold), fontSize: `12px`}} >{locationName.toUpperCase()}</Typography>
         </StyledLocationBox>
@@ -39,7 +39,6 @@ const StyledLocationBox = styled(Box)(({theme}) => ({
     paddingRight: theme.spacing(1),
     paddingTop: `2px`,
     paddingBottom: `2px`,
-    backgroundColor: theme.palette.primary.main,
     borderRadius: theme.shape.borderRadius,
     color: theme.palette.primary.light,
 }))

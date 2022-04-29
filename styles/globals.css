@@ -37,7 +37,17 @@ a {
   justify-content: center;
 }
 
+.swiper-button-next {
+  right: 0px !important;
+}
+
+.swiper-button-prev {
+  left: 0px !important;
+}
+
 .swiper-button-next:after, .swiper-button-prev:after {
   font-size: 34px !important;
+  left: 0;
+  right: 0;
 }
 

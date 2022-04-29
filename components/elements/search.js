@@ -21,11 +21,13 @@ class Search extends React.Component {
         this.state = {
             searchTerm: "",
             loading: false,
-            liveSearchResults: null
+            liveSearchResults: null,
+            placeholder: uiText.global.labels.searchPlaceholder[this.props.language],
         };
 
         this._handleChange = this._handleChange.bind(this);
         this.liveSearch = this.liveSearch.bind(this);
+        this._clickHandler = this._clickHandler.bind(this);
     }
 
     _handleKeyDown(e) {
@@ -46,27 +48,20 @@ class Search extends React.Component {
         // Update the state with the search term
         this.setState({searchTerm: searchTerm})
 
+
+    }
+
+    _clickHandler(item) {
+        this.setState({searchTerm: "", placeholder: item['placename']})
+        document.querySelector('#search-bar').value = ""
     }
 
     get renderSearchResults() {
-
-        let searchDropdown;
-
-        if (this.state.liveSearchResults?.data?.responseData?.array_to_json) {
-            // Set the search dropdown to display results
-            searchDropdown = <SearchDropdown searchText={this.state.searchTerm} results={this.state.liveSearchResults}/>
-        } else {
-            // Set the search dropdown to display an empty span
-            searchDropdown = <span></span>;
-        }
-
-        return searchDropdown;
+        return <SearchDropdown addingLocation={this.props.addingLocation} searchText={this.state.searchTerm} results={this.state.liveSearchResults} clickHandler={this._clickHandler}/>;;
     }
 
     async liveSearch(searchValue) {
 
-
-        // setResults(dummySearchData.filter(item => item['location'].includes(e.target.value)))
         const searchPromise = await makeSearch(
             `http://0.0.0.0:9090/dashboard/search?value=${searchValue}`
         );
@@ -82,7 +77,7 @@ class Search extends React.Component {
 
     render() {
         return (
-            <MyFormControl variant="standard" >
+            <MyFormControl sx={{width: this.props.addingLocation ? `80%` : `60%`}} variant="standard" >
                 <MyTextField autoComplete="off" InputProps={{
 
                     endAdornment: (
@@ -97,7 +92,7 @@ class Search extends React.Component {
                              variant={'outlined'}
                              onInput={(e) => this._handleChange(e.target.value)}
                              label={uiText.global.labels.searchPlaceholder[this.props.language]}
-                             placeholder={uiText.global.labels.searchPlaceholder[this.props.language]}
+                             placeholder={this.state.placeholder}
                              size="small"/>
 
                 {this.renderSearchResults}
@@ -178,10 +173,10 @@ const mapStateToProps = state => {
 
 const MyFormControl = styled(FormControl)(({theme}) => ({
     marginTop: theme.spacing(6),
-    width: `60%`,
     boxShadow: `0px 0px 15px rgba(33, 150, 243, 0.35)`,
     border: `1px solid #E5E5E5`,
     borderRadius: theme.shape.borderRadius,
+    backgroundColor: theme.palette.primary.light,
 }))
 
 const MyTextField = styled(TextField)(({theme}) => ({

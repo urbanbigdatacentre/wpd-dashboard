@@ -48,3 +48,22 @@ export const updatePrimaryLocation = (newLocation) => (dispatch) => {
     })
 }
 
+// SET ADDITIONAL LOCATION
+export const updateAdditionalLocation = (newLocation) => (dispatch) => {
+
+    return dispatch({
+        type: types.SETADDITIONALLOCATION,
+        location: newLocation,
+    })
+}
+
+// REMOVE ADDITIONAL LOCATION
+export const removeAdditionalLocation = (location) => (dispatch) => {
+
+    return dispatch({
+        type: types.REMOVEADDITIONALLOCATION,
+        location: location,
+    })
+}
+
+
