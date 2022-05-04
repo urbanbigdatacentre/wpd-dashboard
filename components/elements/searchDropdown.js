@@ -8,17 +8,19 @@ import Link from 'next/link';
 
 // Local Imports
 import LocationBox from "./locationBox";
-import {updatePrimaryLocation, updateAdditionalLocation} from "../../store/actions";
+import {updatePrimaryLocation, updateAdditionalLocation, changeLocationPreference} from "../../store/actions";
 import locationPaths from "../../data/locationPaths";
 import uiText from "../../data/ui-text";
+import {useEffect} from "react";
 
 // Search Dropdown Component
 
-const SearchDropdown = ({ toggleLanguage, searchText, results, updatePrimaryLocation, updateAdditionalLocation, addingLocation, clickHandler }) => {
+const SearchDropdown = ({ toggleLanguage, searchText, results, updatePrimaryLocation, updateAdditionalLocation, addingLocation, clickHandler, changeLocationPreference }) => {
 
     const handleClick = (item) => {
 
-        addingLocation ? updateAdditionalLocation(item) : updatePrimaryLocation(item)
+        addingLocation ? updateAdditionalLocation(item) : updatePrimaryLocation(item);
+        !addingLocation ? changeLocationPreference(item['placename']) : null;
         clickHandler(item);
     }
 
@@ -82,6 +84,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         updatePrimaryLocation: bindActionCreators(updatePrimaryLocation, dispatch),
         updateAdditionalLocation: bindActionCreators(updateAdditionalLocation, dispatch),
+        changeLocationPreference: bindActionCreators(changeLocationPreference, dispatch),
     }
 }
 

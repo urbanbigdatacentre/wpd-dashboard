@@ -52,7 +52,7 @@ const AddingLocationWindow = ({ toggleLanguage, updateAdditionalLocation, update
                 <MyCancelIconButton onClick={addingLocationStatusHandler}>
                     <CancelIcon color={"primary"}/>
                 </MyCancelIconButton>
-                <Box sx={{position: `absolute`, top: `5px`, left: `5px`, zIndex: `-1`, width: `50%`}}>
+                <Box sx={{position: `absolute`, top: `5px`, left: `5px`, zIndex: `-1`, width: `40%`}}>
                     <ThematicIllustration renderOne={true}/>
                 </Box>
                 <Typography variant={'h5'} sx={{fontWeight: (theme) => (theme.typography.fontWeightBold)}}>{uiText.global.labels.addNewLocation[toggleLanguage.language].toUpperCase()}<span className={'bluePunctuation'}>.</span></Typography>
@@ -110,6 +110,7 @@ const PopoverBox = styled(Box)(({theme}) => ({
     opacity: `1`,
     zIndex: `3001`,
     width: `55%`,
+    maxWidth: `1000px`,
     minHeight: `55%`,
     borderRadius: theme.shape.borderRadius,
     filter: `drop-shadow(0px 0px 15px rgba(33, 150, 243, 0.35))`,

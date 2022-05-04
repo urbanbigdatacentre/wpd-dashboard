@@ -1,0 +1,42 @@
+.visSectionContainer {
+    margin-top: 100px;
+}
+
+.textLegendWrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.textWrapper {
+    display: flex;
+    flex-direction: column;
+    width: 40%;
+}
+
+.legendWrapper {
+    display: flex;
+    align-items: flex-end;
+    flex-direction: column;
+    width: 40%;
+}
+
+.legendInlineBox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.colorScaleWrapper {
+    margin-top: 15px;
+    display: flex;
+    max-width: 350px;
+    justify-content: space-between;
+}
+
+.colorScaleCircle {
+    width: 25px;
+    height: 25px;
+    border-radius: 50px;
+}

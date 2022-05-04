@@ -11,7 +11,8 @@ import {
     updateCarouselCoordinates,
     updatePrimaryLocation,
     updateAdditionalLocation,
-    removeAdditionalLocation
+    toggleDataType,
+    toggleLocationPreference
 } from "./reducers";
 
 
@@ -30,7 +31,9 @@ const combinedReducer = combineReducers({
     changeRadiusWithSlider,
     updateCarouselCoordinates,
     updatePrimaryLocation,
-    updateAdditionalLocation
+    updateAdditionalLocation,
+    toggleDataType,
+    toggleLocationPreference
 })
 
 // Create Root Reducer
@@ -43,6 +46,8 @@ const reducer = (state, action) => {
         }
         // Return the new payload
         // ** NB ** Possibility of Preserving State Values on Client Side here
+        if (state.toggleLocationPreference.locationPreference) nextState.toggleLocationPreference.locationPreference = state.toggleLocationPreference.locationPreference;
+        if (state.toggleDataType.dataType) nextState.toggleDataType.dataType = state.toggleDataType.dataType;
         if (state.updateAdditionalLocation) nextState.updateAdditionalLocation = state.updateAdditionalLocation;
         if (state.updatePrimaryLocation) nextState.updatePrimaryLocation = state.updatePrimaryLocation;
         if (state.updateCarouselCoordinates) nextState.updateCarouselCoordinates = state.updateCarouselCoordinates;

@@ -17,7 +17,7 @@ const NationalActivity = ({ mapBoxToken, toggleLanguage }) => {
                 <Typography variant={'title'}>{uiText.landingPage.nationalActivityMap.title[toggleLanguage.language]}<span className={'bluePunctuation'}>.</span></Typography>
                 <Typography variant={'description'} sx={{marginTop: (theme) => (theme.spacing(1))}}>{uiText.landingPage.nationalActivityMap.description[toggleLanguage.language]}</Typography>
             </Box>
-            <FramedMapContainer mapBoxToken={mapBoxToken}/>
+            <FramedMapContainer mapBoxToken={mapBoxToken} mapType={"NationalOverview"}/>
         </Container>
     );
 }

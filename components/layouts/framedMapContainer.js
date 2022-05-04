@@ -8,16 +8,27 @@ import {Box, styled, Typography} from "@mui/material";
 import NationalOverviewMap from "../elements/nationalOverviewMap";
 import DateFilter from "../elements/dateFilter";
 import OverviewMapLegendComponent from "../elements/overviewMapLegend";
-
+import RainfallMap from "../elements/rainfallMap";
+import DataTypeFilter from "../elements/dataTypeFilter";
+import LocationButtonGroup from "../elements/locationButtonGroup";
 
 // Framed Map Container Component
-const FramedMapContainer = ({ mapBoxToken }) => {
+const FramedMapContainer = ({ mapBoxToken, mapType }) => {
+
+    const maps = {
+        NationalOverview: <NationalOverviewMap mapBoxToken={mapBoxToken}/>,
+        RainfallMap: <RainfallMap mapBoxToken={mapBoxToken}/>
+    }
+
     return (
         <MapOuterWrapper>
-            <DateFilter positionAbsolute={true}/>
-            <OverviewMapLegendComponent/>
+            {/*INSERT OVERLAPPING COMPONENTS LIKE CHART LEGENDS AND FILTERS HERE */}
+            { mapType === "NationalOverview" ? <DateFilter positionAbsolute={true}/> : null}
+            { mapType === "NationalOverview" ? <OverviewMapLegendComponent/> : null}
+            { mapType === "NationalOverview" ? null: <LocationButtonGroup/>}
+            { mapType === "RainfallMap" ? <DataTypeFilter/>: null}
             <MapInnerWrapper>
-                <NationalOverviewMap mapBoxToken={mapBoxToken}/>
+                {maps[mapType]}
             </MapInnerWrapper>
         </MapOuterWrapper>
     );

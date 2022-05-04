@@ -118,3 +118,35 @@ export const updateAdditionalLocation = (state= additionalLocationInitialState, 
     }
 }
 
+// - CHANGE DATA TYPE
+const dataTypeInitialState = {
+    dataType: "Combined",
+}
+
+export const toggleDataType = (state = dataTypeInitialState, action) => {
+    switch (action.type) {
+        case actionTypes.SETDATATYPE:
+            return Object.assign({}, state, {
+                dataType: action.dataType,
+            });
+        default:
+            return state
+    }
+}
+
+// - CHANGE LOCATION PREFERENCE
+const locationPreferenceInitialState = {
+    locationPreference: "",
+}
+
+export const toggleLocationPreference = (state = locationPreferenceInitialState, action) => {
+    switch (action.type) {
+        case actionTypes.SETLOCATIONPREFERENCE:
+            return Object.assign({}, state, {
+                locationPreference: action.locationPreference,
+            });
+        default:
+            return state
+    }
+}
+

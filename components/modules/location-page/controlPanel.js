@@ -5,6 +5,7 @@
 import {connect} from "react-redux";
 import {Box, Container, Typography} from "@mui/material";
 import {useEffect} from "react";
+import {useState} from "react";
 
 // Local Imports
 import DateFilter from "../../elements/dateFilter";
@@ -13,11 +14,11 @@ import MyButton from "../../elements/button";
 import LocationControlButton from "../../elements/locationControlButton";
 import ControlDashboard from "../../elements/controlDashboard";
 import {locationColorKeys} from "../../../data/colorMapping";
+import AddingLocationWindow from "../../elements/addingLocationWindow";
 
 // Style Imports
 import styles from '../../../styles/modules/location-page/ControlPanel.module.css';
-import {useState} from "react";
-import AddingLocationWindow from "../../elements/addingLocationWindow";
+
 
 // Control Panel Component
 const ControlPanel = ({ toggleLanguage, updatePrimaryLocation, updateAdditionalLocation }) => {

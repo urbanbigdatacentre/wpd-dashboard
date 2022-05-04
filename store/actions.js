@@ -66,4 +66,22 @@ export const removeAdditionalLocation = (location) => (dispatch) => {
     })
 }
 
+// SET DATA TYPE
+export const changeDataType = (newDataType) => (dispatch) => {
+
+    return dispatch({
+        type: types.SETDATATYPE,
+        dataType: newDataType,
+    })
+}
+
+// SET LOCATION PREFERENCE
+export const changeLocationPreference = (newLocationPreference) => (dispatch) => {
+
+    return dispatch({
+        type: types.SETLOCATIONPREFERENCE,
+        locationPreference: newLocationPreference,
+    })
+}
+
 

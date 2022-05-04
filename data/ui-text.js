@@ -397,6 +397,30 @@ export default {
       "legendCitizen": {
         "en": "Citizen Pluviometer",
         "br": ""
+      },
+      "citizenSubmittedRainEvent": {
+        "en": "Citizen Submitted Rain Event",
+        "br": ""
+      },
+      "higherScale": {
+        "en": "Higher",
+        "br": ""
+      },
+      "lowerScale": {
+        "en": "Lower",
+        "br": ""
+      },
+      "officialPluviometerTooltip": {
+        "en": "Official pluviometers represent rainfall gauges established by weather stations to measure rainfall at specific geographic points.",
+        "br": ""
+      },
+      "citizenPluviometerTooltip": {
+        "en": "Citizen pluviometers represent rainfall gauges created by members of the Waterproofing Data community to measure rainfall at specific geographic points.",
+        "br": ""
+      },
+      "citizenRainfallEventTooltip": {
+        "en": "Citizen Submitted Rainfall Events are submitted by members of the Waterproofing Data community to record rainfall activity in local areas.",
+        "br": ""
       }
     },
     "floodMap": {
