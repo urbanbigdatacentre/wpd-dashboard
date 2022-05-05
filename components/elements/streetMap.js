@@ -14,6 +14,7 @@ import mapIcons from '../../public/images/icons/location-icon-atlas.svg';
 
 // Map Configuration
 const mapStyleMapBox1 = 'mapbox://styles/mapbox/streets-v11';
+const mapStyleMapBoxStreets = "mapbox://styles/andyclarke/cl2su9yt2001t15mu6fasl9wp";
 const mapStyleMapBox2 = 'mapbox://styles/andyclarke/cl1z4iue1002w14qdnfkb3gjj'
 const mapStyleCarto = 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json';
 
@@ -64,7 +65,7 @@ const StreetMap = ({ toggleLanguage, mapBoxToken, updateCarouselCoordinates, map
         <DeckGL layers={[layers]} controller={controllerTrue} preventStyleDiffing={true} initialViewState={INITIAL_VIEW_STATE} height={'100%'} width={'100%'} ContextProvider={_MapContext.Provider} >
             <StaticMap
                 reuseMaps
-                mapStyle={mapStyleMapBox1}
+                mapStyle={mapStyleMapBoxStreets}
                 mapboxAccessToken={mapBoxToken}
             />
         </DeckGL>

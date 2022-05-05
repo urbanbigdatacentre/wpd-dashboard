@@ -2,8 +2,7 @@
 
 // Package Imports
 import {connect} from "react-redux";
-import {Box, Container, Divider, IconButton, Typography} from "@mui/material";
-import InfoIcon from '@mui/icons-material/Info';
+import {Box, Container, Divider, Typography} from "@mui/material";
 import Image from "next/image";
 import React, {useState} from "react";
 
@@ -18,7 +17,7 @@ import styles from '../../../styles/modules/location-page/VisSectionLayout.modul
 
 // Rainfall Map Component
 
-const RainfallMapSection = ({ toggleLanguage }) => {
+const RainfallMapSection = ({ toggleLanguage, mapBoxToken }) => {
 
     return (
         <Container className={styles.visSectionContainer}>
@@ -63,7 +62,7 @@ const RainfallMapSection = ({ toggleLanguage }) => {
             </Box>
             <Box>
                 {/*INSERT VIS LAYOUT HERE*/}
-                <FramedMapContainer mapType={"RainfallMap"}/>
+                <FramedMapContainer mapBoxToken={mapBoxToken} mapType={"RainfallMap"}/>
             </Box>
         </Container>
     );

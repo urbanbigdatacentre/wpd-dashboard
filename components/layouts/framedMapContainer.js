@@ -9,6 +9,7 @@ import NationalOverviewMap from "../elements/nationalOverviewMap";
 import DateFilter from "../elements/dateFilter";
 import OverviewMapLegendComponent from "../elements/overviewMapLegend";
 import RainfallMap from "../elements/rainfallMap";
+import FloodMap from "../elements/floodMap";
 import DataTypeFilter from "../elements/dataTypeFilter";
 import LocationButtonGroup from "../elements/locationButtonGroup";
 
@@ -17,7 +18,8 @@ const FramedMapContainer = ({ mapBoxToken, mapType }) => {
 
     const maps = {
         NationalOverview: <NationalOverviewMap mapBoxToken={mapBoxToken}/>,
-        RainfallMap: <RainfallMap mapBoxToken={mapBoxToken}/>
+        RainfallMap: <RainfallMap mapBoxToken={mapBoxToken}/>,
+        FloodMap: <FloodMap mapBoxToken={mapBoxToken}/>
     }
 
     return (
@@ -25,8 +27,9 @@ const FramedMapContainer = ({ mapBoxToken, mapType }) => {
             {/*INSERT OVERLAPPING COMPONENTS LIKE CHART LEGENDS AND FILTERS HERE */}
             { mapType === "NationalOverview" ? <DateFilter positionAbsolute={true}/> : null}
             { mapType === "NationalOverview" ? <OverviewMapLegendComponent/> : null}
-            { mapType === "NationalOverview" ? null: <LocationButtonGroup/>}
+            { mapType === "NationalOverview" ? null: <LocationButtonGroup positionMode={'absolute'}/>}
             { mapType === "RainfallMap" ? <DataTypeFilter/>: null}
+            { mapType === "FloodMap" ? <DataTypeFilter/>: null}
             <MapInnerWrapper>
                 {maps[mapType]}
             </MapInnerWrapper>

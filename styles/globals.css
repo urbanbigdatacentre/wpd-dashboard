@@ -31,6 +31,9 @@ a {
 
 /*SWIPER SLIDER */
 
+.swiper-wrapper {
+  align-items: center;
+}
 
 .swiper-slide {
   display: flex;

@@ -66,7 +66,6 @@ const MyList = styled(List)(({theme}) => ({
     backgroundColor: theme.palette.primary.light,
     borderRadius: theme.shape.borderRadius,
     maxHeight: `290px`,
-    overflow: `scroll`,
     zIndex: `700`,
 
 }))

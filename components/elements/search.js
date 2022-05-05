@@ -15,7 +15,7 @@ import { makeSearch } from "../../api/makeSearch";
 
 // Search Component
 
-class Search extends React.Component {
+class SearchBar extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -77,7 +77,7 @@ class Search extends React.Component {
 
     render() {
         return (
-            <MyFormControl sx={{width: this.props.addingLocation ? `80%` : `60%`}} variant="standard" >
+            <MyFormControl sx={{width: this.props.popover ? `80%` : `60%`}} variant="standard" >
                 <MyTextField autoComplete="off" InputProps={{
 
                     endAdornment: (
@@ -194,4 +194,4 @@ const MyTextField = styled(TextField)(({theme}) => ({
 
 
 
-export default connect(mapStateToProps)(Search)
+export default connect(mapStateToProps)(SearchBar)

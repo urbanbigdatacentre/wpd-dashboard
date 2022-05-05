@@ -341,6 +341,20 @@ export default {
         "br": ""
       }
     },
+    "noLocation": {
+      "topBlue": {
+        "en": "No Location Selected",
+        "br": ""
+      },
+      "title": {
+        "en": "Set a Location",
+        "br": ""
+      },
+      "description": {
+        "en": "Waterproofing Data collects flood data from Brazilian communities and connects it with official flood data. Search for a location to start exploring.",
+        "br": ""
+      }
+    },
     "controlPanel": {
       "controlPanel": {
         "en": "Control Panel",
@@ -425,7 +439,7 @@ export default {
     },
     "floodMap": {
       "title": {
-        "en": "Flood Events & Susceptibility Zones",
+        "en": "Flood Events & Risk Zones",
         "br": ""
       },
       "descriptionParOne": {
@@ -450,6 +464,14 @@ export default {
       },
       "officialDescription": {
         "en": "Data taken from a study highlighting areas more subject to flooding and landslides.",
+        "br": ""
+      },
+      "floodEventTitle": {
+        "en": "Citizen Submitted Flood Events",
+        "br": ""
+      },
+      "floodEventDescription": {
+        "en": "Flood events and memories submitted by members of the Waterproofing Data Community.",
         "br": ""
       }
     }

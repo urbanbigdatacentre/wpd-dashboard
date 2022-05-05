@@ -41,7 +41,7 @@ const theme = createTheme({
             fontWeight: 700
         },
         topBlue: {
-            fontSize: 30,
+            fontSize: 20,
             fontWeight: 700,
             color: '#2196F3'
         },

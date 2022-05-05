@@ -1,8 +1,9 @@
 // Layout Component for Faded Maps & Text Overlays
 
 // Package Imports
-import {Box, styled, Typography, Container, Divider, IconButton} from "@mui/material";
+import {Box, styled, Typography, Container, Divider, Button} from "@mui/material";
 import {connect} from "react-redux";
+import React, {useEffect, useState} from "react";
 
 // Local Imports
 import StreetMap from "../elements/streetMap";
@@ -11,21 +12,48 @@ import CitizenCarousel from "../elements/citizenCarousel";
 import LocationBox from "../elements/locationBox";
 import locationPaths from "../../data/locationPaths";
 import SearchIcon from "@mui/icons-material/Search";
-import React from "react";
+import LocationButtonGroup from "../elements/locationButtonGroup";
+import MyButton from "../elements/button";
+import AddingLocationWindow from "../elements/addingLocationWindow";
 
 // Inline Map Container Component
-const InlineMapContainer = ({ toggleLanguage, mapBoxToken, mapStylePlain, updatePrimaryLocation }) => {
+const InlineMapContainer = ({ toggleLanguage, mapBoxToken, mapStylePlain, updatePrimaryLocation, dashboardRender }) => {
 
-    const containerHeight = mapStylePlain ? `400px`: `800px`;
+    const [changingLocationStatus, setChangingLocationStatus] = useState(false);
+
+    useEffect(() => {
+        const window = document.querySelector('.window-overlay')
+        if (window) { window.addEventListener('click', function() {setChangingLocationStatus(false);})}
+    })
+
+    const handleClick = (e) => {
+        setChangingLocationStatus(true);
+    }
+
+    const handleClose = (e) => {
+        setChangingLocationStatus(false);
+    }
+
+    const containerHeight = mapStylePlain ? `400px`: `650px`;
 
     const renderPlainMap = () => {
         return (
             <>
+
+                {
+                    /*{ Section used for Adding Location Search Bar }*/
+                    changingLocationStatus ? <AddingLocationWindow addingLocationStatusHandler={handleClose} changingLocation={true}/> : <></>
+
+                }
+
                 <ChangeLocationContainer>
-                    <Typography sx={{borderRadius: (theme) => (theme.shape.borderRadius), fontWeight: (theme) => (theme.typography.fontWeightBold), textAlign: 'right', marginRight: (theme) => (theme.spacing(1)), padding: (theme) => (theme.spacing(1)), backgroundColor: `rgba(255, 255, 255, 0.35);`}}>{uiText.global.labels.changeLocation[toggleLanguage.language].toUpperCase()}<span className={'bluePunctuation'}>.</span></Typography>
-                    <IconButton sx={{border: `1px solid #2196F3`, backgroundColor: (theme) => (theme.palette.primary.light), padding: (theme) => (theme.spacing(.75))}} type="submit" aria-label="search">
+                    <Button onClick={handleClick} variant={'outlined'} sx={{border: `1px solid #2196F3`, background: `rgba(255, 255, 255, 0.75)`, padding: (theme) => (theme.spacing(.75)), '&:hover': {
+                            background: `rgba(255, 255, 255, 0.75)`,
+                            boxShadow: `0px 0px 15px rgba(33, 150, 243, .25)`,
+                        }}} type="submit" aria-label="search">
+                        <Typography sx={{fontSize: `15px`, color: `#161616`,borderRadius: (theme) => (theme.shape.borderRadius), fontWeight: (theme) => (theme.typography.fontWeightBold), textAlign: 'right', marginRight: (theme) => (theme.spacing(1))}}>{uiText.global.labels.changeLocation[toggleLanguage.language].toUpperCase()}</Typography>
                         <SearchIcon style={{ fill: `#2196F3` }} />
-                    </IconButton>
+                    </Button>
                 </ChangeLocationContainer>
                 <MapTextCarouselWrapper>
                     <MapDescriptionTextBox>
@@ -43,8 +71,13 @@ const InlineMapContainer = ({ toggleLanguage, mapBoxToken, mapStylePlain, update
         return (
             <MapTextCarouselWrapper>
                 <MapDescriptionTextBox>
-                    <Typography sx={{width: `40%`}} variant={'title'}>{uiText.landingPage.carouselMap.title[toggleLanguage.language]}</Typography>
-                    <Typography variant={'description'} sx={{width: `40%`, marginTop: (theme) => (theme.spacing(1))}} >{uiText.landingPage.carouselMap.description[toggleLanguage.language]}</Typography>
+                    <Typography sx={{width: `50%`}} variant={'topBlue'}>{uiText.landingPage.carouselMap.topBlue[toggleLanguage.language]}</Typography>
+                    <Typography sx={{width: `50%`}} variant={'title'}>{uiText.landingPage.carouselMap.title[toggleLanguage.language]}<span className={'bluePunctuation'}>.</span> </Typography>
+
+                    {
+                        /*INSERT LOGIC TO HIDE DESCRIPTION AND ADD LOCATION BUTTON GROUPS*/
+                        dashboardRender ? (<LocationButtonGroup positionMode={'relative'}/>) : (<Typography variant={'description'} sx={{width: `40%`, marginTop: (theme) => (theme.spacing(1))}} >{uiText.landingPage.carouselMap.description[toggleLanguage.language]}</Typography>)
+                    }
                 </MapDescriptionTextBox>
                 <CitizenCarousel/>
             </MapTextCarouselWrapper>
@@ -74,7 +107,6 @@ const MapOuterWrapper = styled(Box)(({theme}) => ({
 
 const MapInnerWrapper = styled(Box)(({theme}) => ({
     marginTop: theme.spacing(8),
-    height: `800px`,
     width: `100%`,
     position: `relative`,
     zIndex: `100`,
@@ -105,7 +137,7 @@ const ChangeLocationContainer = styled(Container)(({theme}) => ({
     borderRadius: theme.shape.borderRadius,
 }))
 
-const MapDescriptionTextBox = styled(Container)(({theme}) => ({
+const MapDescriptionTextBox = styled(Box)(({theme}) => ({
     width: `100%`,
     display: `flex`,
     flexDirection: `column`,

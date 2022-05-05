@@ -62,8 +62,9 @@ const CitizenCarouselContainer = styled(Container)(({theme}) => ({
     justifyContent: `center`,
     alignItems: `center`,
     margin: `0`,
-    paddingTop: theme.spacing(5),
+    paddingTop: theme.spacing(6),
     width: `60%`,
+    minHeight: `300px`
 
 }))
 

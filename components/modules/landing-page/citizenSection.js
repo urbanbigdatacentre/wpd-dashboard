@@ -9,11 +9,11 @@ import InlineMapContainer from "../../layouts/inlineMapContainer";
 // Citizen Section
 
 
-const CitizenSection = ({ toggleLanguage, mapBoxToken, mapStylePlain }) => {
+const CitizenSection = ({ toggleLanguage, mapBoxToken, mapStylePlain, dashboardRender }) => {
 
     return (
         <>
-            <InlineMapContainer mapBoxToken={mapBoxToken} mapStylePlain={mapStylePlain} />
+            <InlineMapContainer mapBoxToken={mapBoxToken} mapStylePlain={mapStylePlain} dashboardRender={dashboardRender}/>
         </>
     );
 }

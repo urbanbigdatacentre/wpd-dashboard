@@ -12,15 +12,16 @@ import {bindActionCreators} from "redux";
 
 // Location Button Group Component
 
-const LocationButtonGroup = ({toggleLanguage, updatePrimaryLocation, updateAdditionalLocation, changeLocationPreference, locationPreference}) => {
+const LocationButtonGroup = ({toggleLanguage, updatePrimaryLocation, updateAdditionalLocation, changeLocationPreference, locationPreference, positionMode}) => {
 
     const handleClick = (e) => {
         console.log(e.target.value)
         changeLocationPreference(e.target.value)
     }
 
+
     return (
-        <LocationButtonGroupBox>
+        <LocationButtonGroupBox sx={{position: positionMode, top: positionMode !== 'absolute' ? (theme) => (theme.spacing(3)) : (theme) => (theme.spacing(1)), left: positionMode !== 'absolute' ? (theme) => (theme.spacing(0)) : (theme) => (theme.spacing(1))}}>
             <MyButton value={updatePrimaryLocation.location['placename']} onClick={(e) => handleClick(e)} preferredLocation={locationPreference === updatePrimaryLocation.location['placename']} addMargin={true} text={updatePrimaryLocation.location['placename']} variant={'contained'}></MyButton>
             {updateAdditionalLocation.locations.length ? updateAdditionalLocation.locations.map((item, index) => {
                 return (
@@ -33,9 +34,6 @@ const LocationButtonGroup = ({toggleLanguage, updatePrimaryLocation, updateAddit
 
 const LocationButtonGroupBox = styled(Box)(({theme}) => ({
     zIndex: 600,
-    top: theme.spacing(1),
-    left: theme.spacing(1),
-    position: `absolute`,
     display: `flex`,
 }))
 

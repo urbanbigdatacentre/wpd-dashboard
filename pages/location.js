@@ -12,7 +12,9 @@ import MyNavbar from "../components/modules/navbar";
 import LanguageToggle from "../components/elements/languageToggle";
 import CitizenSection from "../components/modules/landing-page/citizenSection";
 import ControlPanel from "../components/modules/location-page/controlPanel";
-import RainfallMap from "../components/modules/location-page/rainfallMapSection";
+import RainfallMapSection from "../components/modules/location-page/rainfallMapSection";
+import FloodMapSection from "../components/modules/location-page/floodMapSection";
+import NoLocationSet from "../components/modules/location-page/noLocationSet";
 import {NoSsr} from "@mui/material";
 
 // State MGMT Imports
@@ -27,7 +29,12 @@ import {useEffect} from "react";
 // Landing Page Component
 const Location = (props) => {
 
+
+
     return (
+
+        // DASHBOARD LAYOUT
+
         <NoSsr>
             <div className={styles.container}>
                 <Head>
@@ -38,9 +45,24 @@ const Location = (props) => {
                 <main className={styles.main}>
                     <MyNavbar />
                     <LanguageToggle language={props.language}/>
-                    <CitizenSection mapBoxToken={props.env.MAPBOX_TOKEN} mapStylePlain={true}/>
-                    <ControlPanel/>
-                    <RainfallMap/>
+
+                    {
+                        /*CHECK IF PRIMARY LOCATION IS SET - TO RETURN DASHBOARD OR NO LOCATION LAYOUT*/
+                        props.updatePrimaryLocation.location.hasOwnProperty("placename") ? (
+                            <>
+                                <CitizenSection mapBoxToken={props.env.MAPBOX_TOKEN} mapStylePlain={true}/>
+                                <ControlPanel/>
+                                <RainfallMapSection mapBoxToken={props.env.MAPBOX_TOKEN} mapStylePlain={true}/>
+                                <CitizenSection mapBoxToken={props.env.MAPBOX_TOKEN} mapStylePlain={false} dashboardRender={true}/>
+                                <FloodMapSection mapBoxToken={props.env.MAPBOX_TOKEN} mapStylePlain={true}/>
+                            </>
+                        ) : (
+                            <>
+                                <NoLocationSet/>
+                            </>
+                        )
+                    }
+
                     <Footer/>
 
                 </main>
@@ -65,7 +87,7 @@ export const getStaticProps = wrapper.getStaticProps((store) => () => {
 const mapStateToProps = (state) => {
     return {
         language: state.toggleLanguage.language,
-
+        updatePrimaryLocation: state.updatePrimaryLocation,
     }
 }
 

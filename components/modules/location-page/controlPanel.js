@@ -24,11 +24,17 @@ import styles from '../../../styles/modules/location-page/ControlPanel.module.cs
 const ControlPanel = ({ toggleLanguage, updatePrimaryLocation, updateAdditionalLocation }) => {
 
     const [addingLocationStatus, setAddingLocationStatus] = useState(false);
+    const [sticky, setSticky] = useState(false);
 
     useEffect(() => {
-        const window = document.querySelector('.window-overlay')
-        if (window) { window.addEventListener('click', function() {setAddingLocationStatus(false);})}
-    })
+        const windowOverlay = document.querySelector('.window-overlay')
+        if (windowOverlay) { windowOverlay.addEventListener('click', function() {setAddingLocationStatus(false);})}
+
+        window.onscroll = function() {
+            setSticky(document.querySelector('#control-panel').getBoundingClientRect().top < 64)
+        }
+
+    }, [sticky])
 
     const handleClick = (e) => {
         setAddingLocationStatus(true);
@@ -48,8 +54,11 @@ const ControlPanel = ({ toggleLanguage, updatePrimaryLocation, updateAdditionalL
             }
 
             <Typography sx={{fontWeight: (theme) => (theme.typography.fontWeightBold)}}>{uiText.locationPage.controlPanel.controlPanel[toggleLanguage.language].toUpperCase()}<span className={'bluePunctuation'}>.</span></Typography>
-            <Box className={styles.controlPanelInnerBox}>
-                <Box className={styles.locationControlBox}>
+            {
+                // INSERT LOGIC TO APPEND CONTROL PANEL ON SCROLL
+
+            <Box id={'control-panel'} className={styles.controlPanelInnerBox}>
+                <Box className={sticky ? styles.locationControlBoxSticky : styles.locationControlBox}>
                     <MyButton text={uiText.global.labels.addLocation[toggleLanguage.language]} variant={"contained"} onClick={handleClick}/>
                     <Box sx={{marginLeft: `40px`, marginRight: `40px`}}>
                         <LocationControlButton primary={true} data={updatePrimaryLocation.location} contained={false} color={'#2196F3'}/>
@@ -66,6 +75,8 @@ const ControlPanel = ({ toggleLanguage, updatePrimaryLocation, updateAdditionalL
                 </Box>
                 <DateFilter positionAbsolute={false}/>
             </Box>
+
+            }
             <ControlDashboard color={'#2196F3'} locationData={updatePrimaryLocation.location}/>
             {/*SPACE HERE TO MAP OTHER CONTROL DASHBOARDS*/
                 updateAdditionalLocation.locations.length ? updateAdditionalLocation.locations.map((item, index) => {

@@ -9,13 +9,12 @@ import {useEffect, useState} from "react";
 
 // Local Imports
 import uiText from "../../data/ui-text";
-import Search from "./search";
+import SearchBar from "./search";
 import {locationColorKeys} from "../../data/colorMapping";
 import LocationControlButton from "./locationControlButton";
-import ThematicIllustration from "./thematicIllustration";
 
 // Adding Location Window Component
-const AddingLocationWindow = ({ toggleLanguage, updateAdditionalLocation, updatePrimaryLocation, addingLocationStatusHandler }) => {
+const AddingLocationWindow = ({ toggleLanguage, updateAdditionalLocation, updatePrimaryLocation, addingLocationStatusHandler, changingLocation }) => {
 
     const threshold = locationColorKeys.length;
 
@@ -38,7 +37,7 @@ const AddingLocationWindow = ({ toggleLanguage, updateAdditionalLocation, update
         } else {
             return (
                 <>
-                    <Search addingLocation={true}/>
+                    <SearchBar addingLocation={!changingLocation} popover={true}/>
                 </>
             )
         }
@@ -53,9 +52,9 @@ const AddingLocationWindow = ({ toggleLanguage, updateAdditionalLocation, update
                     <CancelIcon color={"primary"}/>
                 </MyCancelIconButton>
                 <Box sx={{position: `absolute`, top: `5px`, left: `5px`, zIndex: `-1`, width: `40%`}}>
-                    <ThematicIllustration renderOne={true}/>
+
                 </Box>
-                <Typography variant={'h5'} sx={{fontWeight: (theme) => (theme.typography.fontWeightBold)}}>{uiText.global.labels.addNewLocation[toggleLanguage.language].toUpperCase()}<span className={'bluePunctuation'}>.</span></Typography>
+                <Typography variant={'h5'} sx={{fontWeight: (theme) => (theme.typography.fontWeightBold)}}>{changingLocation ? uiText.global.labels.changeLocation[toggleLanguage.language].toUpperCase() : uiText.global.labels.addNewLocation[toggleLanguage.language].toUpperCase()}<span className={'bluePunctuation'}>.</span></Typography>
                 {returnPopoverLayout()}
                 <SelectedLocationsBox>
                     <Typography sx={{paddingBottom: `10px`, fontWeight: (theme) => (theme.typography.fontWeightBold)}}>{uiText.global.labels.selectedLocations[toggleLanguage.language].toUpperCase()}<span className={'bluePunctuation'}>.</span></Typography>
