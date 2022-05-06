@@ -12,20 +12,32 @@
     flex-wrap: wrap;
 }
 
+.controlPanelInnerBoxHolder {
+    display: flex;
+    opacity: 0;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.controlPanelInnerBoxSticky {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 64px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    background-color: white;
+    z-index: 1000;
+    padding-bottom: 10px;
+}
+
 .locationControlBox {
     padding: 20px 0 20px 0;
     display: flex;
     width: 50%;
     flex-wrap: wrap;
     gap: 25px 5px;
-}
-
-.locationControlBoxSticky {
-    padding: 20px 0 20px 0;
-    display: flex;
-    width: 50%;
-    flex-wrap: wrap;
-    gap: 25px 5px;
-    position: fixed;
-    top: 64px;
 }
