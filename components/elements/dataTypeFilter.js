@@ -11,7 +11,7 @@ import uiText from "../../data/ui-text";
 
 
 // Data Type Filter Component
-const DataTypeFilter = ({language, changeDataType, dataType}) => {
+const DataTypeFilter = ({language, changeDataType, dataType, positionMode}) => {
 
     const handleChange = (e) => {
         if (e.target.value !== null) {
@@ -21,7 +21,7 @@ const DataTypeFilter = ({language, changeDataType, dataType}) => {
     }
 
     return (
-        <DataFilterButtonGroup exclusive value={dataType} onChange={handleChange}>
+        <DataFilterButtonGroup exclusive value={dataType} onChange={handleChange} sx={{position: positionMode}}>
                 <DataFilterButton value={"Combined"}>{uiText.global.labels.combined[language]}</DataFilterButton>
                 <DataFilterButton value={"Official"}>{uiText.global.labels.officialData[language]}</DataFilterButton>
                 <DataFilterButton value={"Citizen"}>{uiText.global.labels.citizenReports[language]}</DataFilterButton>

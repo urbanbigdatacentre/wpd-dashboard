@@ -28,8 +28,8 @@ const FramedMapContainer = ({ mapBoxToken, mapType }) => {
             { mapType === "NationalOverview" ? <DateFilter positionAbsolute={true}/> : null}
             { mapType === "NationalOverview" ? <OverviewMapLegendComponent/> : null}
             { mapType === "NationalOverview" ? null: <LocationButtonGroup positionMode={'absolute'}/>}
-            { mapType === "RainfallMap" ? <DataTypeFilter/>: null}
-            { mapType === "FloodMap" ? <DataTypeFilter/>: null}
+            { mapType === "RainfallMap" ? <DataTypeFilter positionMode={'absolute'}/>: null}
+            { mapType === "FloodMap" ? <DataTypeFilter positionMode={`absolute`}/>: null}
             <MapInnerWrapper>
                 {maps[mapType]}
             </MapInnerWrapper>

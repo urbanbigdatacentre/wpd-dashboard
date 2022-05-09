@@ -24,11 +24,12 @@ const FloodMapSection = ({ toggleLanguage, mapBoxToken }) => {
             <Box className={styles.textLegendWrapper}>
                 <Box className={styles.textWrapper}>
                     {/*INSERT TEXT LAYOUT HERE*/}
+                    <Box>
+                        <MyTooltip title={uiText.locationPage.floodMap.title[toggleLanguage.language]} text={uiText.locationPage.floodMap.descriptionParOne[toggleLanguage.language] + "\n" + uiText.locationPage.floodMap.descriptionParTwo[toggleLanguage.language]}/>
+                        <Typography sx={{marginLeft: (theme) => (theme.spacing(2)), marginRight: (theme) => (theme.spacing(1)), fontWeight: (theme) => (theme.typography.fontWeightBold)}} variant={"description"}>{uiText.global.labels.howToRead[toggleLanguage.language]}</Typography>
+                    </Box>
                     <Typography variant={'title'}>{uiText.locationPage.floodMap.title[toggleLanguage.language]}<span className={'bluePunctuation'}>.</span></Typography>
                     <Divider sx={{width: `60%`, height: (theme) => (theme.spacing(1)), background: `linear-gradient(90deg, #2196F3 0%, #1565C0 100%)`, marginBottom: (theme) => (theme.spacing(2)), marginTop: (theme) => (theme.spacing(1))}}/>
-                    <Typography variant={'description'}>{uiText.locationPage.floodMap.descriptionParOne[toggleLanguage.language]}</Typography>
-                    <Typography sx={{marginTop: (theme) => (theme.spacing(1))}} variant={'description'}>{uiText.locationPage.floodMap.descriptionParTwo[toggleLanguage.language]}</Typography>
-
                 </Box>
                 <Box className={styles.legendWrapper}>
                     {/*INSERT TEXT LAYOUT HERE*/}
@@ -38,7 +39,7 @@ const FloodMapSection = ({ toggleLanguage, mapBoxToken }) => {
                         <MyTooltip title={uiText.locationPage.floodMap.citizenPerceptionTitle[toggleLanguage.language]} text={uiText.locationPage.floodMap.citizenPerceptionDescription[toggleLanguage.language]}/>
                     </Box>
                     <Box className={styles.legendInlineBox}>
-                        <span style={{backgroundColor: `#00D1E1`}} className={styles.colorScaleCircle}/>
+                        <span style={{backgroundColor: `#DA4167`}} className={styles.colorScaleCircle}/>
                         <Typography sx={{marginLeft: (theme) => (theme.spacing(2)), marginRight: (theme) => (theme.spacing(1)), fontWeight: (theme) => (theme.typography.fontWeightBold)}} variant={"description"}>{uiText.locationPage.floodMap.officialTitle[toggleLanguage.language]}</Typography>
                         <MyTooltip title={uiText.locationPage.floodMap.officialTitle[toggleLanguage.language]} text={uiText.locationPage.floodMap.officialDescription[toggleLanguage.language]}/>
                     </Box>

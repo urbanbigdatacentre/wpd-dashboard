@@ -13,6 +13,7 @@ import LanguageToggle from "../components/elements/languageToggle";
 import CitizenSection from "../components/modules/landing-page/citizenSection";
 import ControlPanel from "../components/modules/location-page/controlPanel";
 import RainfallMapSection from "../components/modules/location-page/rainfallMapSection";
+import RainfallChartSection from "../components/modules/location-page/rainfallChartSection";
 import FloodMapSection from "../components/modules/location-page/floodMapSection";
 import NoLocationSet from "../components/modules/location-page/noLocationSet";
 import {NoSsr} from "@mui/material";
@@ -52,6 +53,7 @@ const Location = (props) => {
                             <>
                                 <CitizenSection mapBoxToken={props.env.MAPBOX_TOKEN} mapStylePlain={true}/>
                                 <ControlPanel/>
+                                <RainfallChartSection/>
                                 <RainfallMapSection mapBoxToken={props.env.MAPBOX_TOKEN} mapStylePlain={true}/>
                                 <CitizenSection mapBoxToken={props.env.MAPBOX_TOKEN} mapStylePlain={false} dashboardRender={true}/>
                                 <FloodMapSection mapBoxToken={props.env.MAPBOX_TOKEN} mapStylePlain={true}/>

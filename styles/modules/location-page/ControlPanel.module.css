@@ -20,12 +20,18 @@
     flex-wrap: wrap;
 }
 
+.controlPanelContainerSticky {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .controlPanelInnerBoxSticky {
     position: fixed;
     left: 0;
     right: 0;
     top: 64px;
-    display: flex;
+    display: flex !important;
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;

@@ -1,0 +1,52 @@
+/*D3 Chart Styles*/
+
+.chartAxis line{
+    stroke: #E5E5E5;
+}
+
+.chartAxis path{
+    stroke: #888888;
+}
+
+.chartAxis text{
+    text-transform: uppercase;
+    font-family: 'Rubik', sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+.domain {
+    stroke: #E5E5E5;
+
+}
+
+.chartGrid line {
+    stroke: #E5E5E5;
+    shape-rendering: crispEdges;
+}
+
+.chartGrid line {
+    stroke: lightgrey;
+    stroke-opacity: 0.7;
+    shape-rendering: crispEdges;
+}
+
+.chartGrid path {
+    stroke-width: 0;
+}
+
+.chartAxis line {
+    stroke-opacity: 0;
+}
+
+.chartAxis .tick line {
+    stroke-opacity: 0.4;
+}
+
+.domain {
+    stroke: lightgrey;
+    stroke-opacity: 0.9;
+    shape-rendering: crispEdges;
+}
+

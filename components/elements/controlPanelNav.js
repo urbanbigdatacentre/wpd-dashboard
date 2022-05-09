@@ -21,11 +21,12 @@ const ControlPanelNav = ({toggleLanguage, updateAdditionalLocation, updatePrimar
     const [sticky, setSticky] = useState(false);
 
     useEffect(() => {
+
         const windowOverlay = document.querySelector('.window-overlay')
         if (windowOverlay) { windowOverlay.addEventListener('click', function() {setAddingLocationStatus(false);})}
 
         window.onscroll = function() {
-            setSticky(document.querySelector('#control-panel').getBoundingClientRect().top < 64)
+            window.location.href.includes('location') ? setSticky(document.querySelector('#control-panel').getBoundingClientRect().top < 64) : null
         }
 
     }, [sticky])
@@ -34,7 +35,7 @@ const ControlPanelNav = ({toggleLanguage, updateAdditionalLocation, updatePrimar
         <Box>
             <Box id={'control-panel'}>
                 <Box className={styles.controlPanelInnerBoxSticky} sx={{}}>
-                    <Container>
+                    <Container className={styles.controlPanelContainerSticky}>
                         <Box className={styles.locationControlBox}>
                             <MyButton text={uiText.global.labels.addLocation[toggleLanguage.language]} variant={"contained"} onClick={clickHandler}/>
                             <Box sx={{marginLeft: `40px`, marginRight: `40px`}}>

@@ -32,6 +32,10 @@ export default {
         "en": "Search for a location ...",
         "br": ""
       },
+      "howToRead": {
+        "en": "How To Read?",
+        "br": ""
+      },
       "days": {
         "en": "Days",
         "br": ""
@@ -245,6 +249,10 @@ export default {
       "subtitle": {
         "en": "Connecting Brazilian Flood Data From Communities & Official Sources",
         "br": "Conectando dados brasileiros de enchentes de comunidades e fontes oficiais"
+      },
+      "topBlue": {
+        "en": "Monitor Flood Data in Brazil",
+        "br": "Conectando dados brasileiros de enchentes de comunidades e fontes oficiais"
       }
     },
     "statisticsBar": {
@@ -283,7 +291,7 @@ export default {
         "br": ""
       },
       "description": {
-        "en": "Select a region to explore more",
+        "en": "Toggle between map views",
         "br": ""
       }
     },

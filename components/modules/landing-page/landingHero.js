@@ -18,6 +18,7 @@ const LandingHeroSection = ({ toggleLanguage }) => {
             <LanguageToggle language={toggleLanguage.language}/>
             <ThematicIllustration />
             <Container className={styles.heroInnerContainer}>
+                <Typography variant={'topBlue'}>{uiText.landingPage.hero.topBlue[toggleLanguage.language]}</Typography>
                 <Typography variant={'pageTitle'}>{uiText.global.labels.projectTitle[toggleLanguage.language]}<span className={'bluePunctuation'}>.</span></Typography>
                 <Typography>{uiText.landingPage.hero.subtitle[toggleLanguage.language]}</Typography>
                 <Search/>

@@ -24,15 +24,17 @@ const RainfallMapSection = ({ toggleLanguage, mapBoxToken }) => {
             <Box className={styles.textLegendWrapper}>
                 <Box className={styles.textWrapper}>
                     {/*INSERT TEXT LAYOUT HERE*/}
+                    <Box >
+                        <MyTooltip title={uiText.locationPage.rainfallMap.title[toggleLanguage.language]} text={uiText.locationPage.rainfallMap.descriptionParOne[toggleLanguage.language] + "\n" + uiText.locationPage.rainfallMap.descriptionParTwo[toggleLanguage.language]}/>
+                        <Typography sx={{marginLeft: (theme) => (theme.spacing(2)), marginRight: (theme) => (theme.spacing(1)), fontWeight: (theme) => (theme.typography.fontWeightBold)}} variant={"description"}>{uiText.global.labels.howToRead[toggleLanguage.language]}</Typography>
+                    </Box>
                     <Typography variant={'title'}>{uiText.locationPage.rainfallMap.title[toggleLanguage.language]}<span className={'bluePunctuation'}>.</span></Typography>
                     <Divider sx={{width: `60%`, height: (theme) => (theme.spacing(1)), background: `linear-gradient(90deg, #2196F3 0%, #1565C0 100%)`, marginBottom: (theme) => (theme.spacing(2)), marginTop: (theme) => (theme.spacing(1))}}/>
-                    <Typography variant={'description'}>{uiText.locationPage.rainfallMap.descriptionParOne[toggleLanguage.language]}</Typography>
-                    <Typography sx={{marginTop: (theme) => (theme.spacing(1))}} variant={'description'}>{uiText.locationPage.rainfallMap.descriptionParTwo[toggleLanguage.language]}</Typography>
                     <Typography sx={{marginTop: (theme) => (theme.spacing(2)), fontWeight: (theme) => (theme.typography.fontWeightBold)}} variant={'description'}>{uiText.locationPage.rainfallMap.scaleTitle[toggleLanguage.language]}</Typography>
                     <Box className={styles.colorScaleWrapper}>
                         <Typography>{uiText.locationPage.rainfallMap.lowerScale[toggleLanguage.language]}</Typography>
 
-                        {[`#A1C1E6`, `#5B93D3`, `#1565C0`, `#0F4786`].map((item, index) => {
+                        {[`#E3C1CA`, `#E09DAE`, `#DD6886`, `#DA4167`].map((item, index) => {
                             return (
                                 <span key={index} style={{backgroundColor: item}} className={styles.colorScaleCircle}/>
                             )
