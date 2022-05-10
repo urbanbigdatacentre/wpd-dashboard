@@ -92,39 +92,44 @@ const RainfallChart = ({toggleLanguage, toggleDate}) => {
             )
 
         // =========
+        // FILTER DATA
+        // =========
+        const filteredData = dummyRainfallData.filter(d => (new Date(d.timestamp) >= new Date(d3.timeFormat("%B %d, %Y")(toggleDate.startDate))) && (new Date(d.timestamp) <= new Date(d3.timeFormat("%B %d, %Y")(toggleDate.endDate))));
+
+        // =========
         // CHART RENDERING SECTION
         // ========
         // Add the area
         svg.append("path")
-            .datum(dummyRainfallData)
+            .datum(filteredData)
             .attr("fill", "#2196F3")
             .attr("fill-opacity", .3)
             .attr("stroke", "none")
             .attr("d", d3.area()
-                .x(function(d) { return xScale(new Date(d.timestamp))})
-                .y0(height )
-                .y1(function(d) { return yScale(d.value) })
+                .x(function(d) {return xScale(new Date(d.timestamp).setHours(0, 0, 0, 0))})
+                .y0(height)
+                .y1(function(d) {return yScale(d.value)})
             )
 
         // Add the line
         svg.append("path")
-            .datum(dummyRainfallData)
+            .datum(filteredData)
             .attr("fill", "none")
             .attr("stroke", "#2196F3")
             .attr("stroke-width", 2)
             .attr("d", d3.line()
-                .x(function(d) { return xScale(new Date(d.timestamp))})
+                .x(function(d) { return xScale(new Date(d.timestamp).setHours(0, 0, 0, 0))})
                 .y(function(d) { return yScale(d.value) })
             )
 
         // Add the dots
         svg.selectAll("points")
-            .data(dummyRainfallData)
+            .data(filteredData)
             .enter()
             .append("circle")
             .attr("fill", "#2196F3")
             .attr("stroke", "none")
-            .attr("cx", function(d) { return xScale(new Date(d.timestamp))})
+            .attr("cx", function(d) { return xScale(new Date(d.timestamp).setHours(0, 0, 0, 0))})
             .attr("cy", function(d) { return yScale(d.value)})
             .attr("r", 5)
 

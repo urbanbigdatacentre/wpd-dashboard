@@ -26,6 +26,11 @@ const ControlPanel = ({ toggleLanguage, updatePrimaryLocation, updateAdditionalL
 
     const [addingLocationStatus, setAddingLocationStatus] = useState(false);
 
+    useEffect(() => {
+        const window = document.querySelector('.window-overlay')
+        if (window) { window.addEventListener('click', function() {setAddingLocationStatus(false);})}
+    })
+
     const handleClick = (e) => {
         setAddingLocationStatus(true);
     }

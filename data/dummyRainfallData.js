@@ -2,6 +2,18 @@
 
 const dummyRainfallData = [
     {
+        timestamp: "2022-05-10T13:32:30.745Z",
+        value: 12
+    },
+    {
+        timestamp: "2022-05-09T13:32:30.745Z",
+        value: 15
+    },
+    {
+        timestamp: "2022-05-08T13:32:30.745Z",
+        value: 32
+    },
+    {
         timestamp: "2022-05-07T13:32:30.745Z",
         value: 45
     },

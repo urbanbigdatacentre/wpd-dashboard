@@ -67,8 +67,8 @@ const RainfallMap = ({ toggleLanguage, mapBoxToken, updateCarouselCoordinates, m
         longitude: updateCarouselCoordinates.longitude - 0.07,
         latitude: updateCarouselCoordinates.latitude,
         zoom: 5,
-        minZoom: 2,
-        maxZoom: 16,
+        minZoom: 1,
+        maxZoom: 50,
         pitch: 0,
         bearing: 0
     };

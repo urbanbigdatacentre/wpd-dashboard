@@ -24,6 +24,7 @@ const AddingLocationWindow = ({ toggleLanguage, updateAdditionalLocation, update
         updateAdditionalLocation.locations.length >= threshold ? setThresholdReached(true) : setThresholdReached(false)
     }, [updateAdditionalLocation.locations.length, threshold])
 
+
     const returnPopoverLayout = () => {
         if (thresholdReached) {
             return (
