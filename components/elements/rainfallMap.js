@@ -9,29 +9,68 @@ import React, {useEffect, useState} from "react";
 import {IconLayer} from '@deck.gl/layers';
 
 // Local Imports
-import mapIcons from '../../public/images/icons/location-icon-atlas.svg';
+import avatarIcons from '../../public/images/icons/location-icon-atlas.svg';
+import officialPluviometerIcons from '../../public/images/icons/citizen-pluviometer-icon-atlas.svg'
 import {styled, Box, Typography} from "@mui/material";
 import locationPaths from "../../data/locationPaths";
+import scaleColorKeys from "../../data/rainfallScaleColorMapping";
 
+
+// ==================
 // Map Configuration
-const mapStyleMapBox1 = 'mapbox://styles/mapbox/streets-v11';
-const mapStyleMono = 'mapbox://styles/andyclarke/cl2svmbha002u15pi3k6bqxjn';
-const mapStyleMapBox2 = 'mapbox://styles/andyclarke/cl1z4iue1002w14qdnfkb3gjj'
-const mapStyleCarto = 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json';
+// ==================
 
-const ICON_MAPPING = {
+const mapStyleMono = 'mapbox://styles/andyclarke/cl2svmbha002u15pi3k6bqxjn';
+
+const AVATAR_ICON_MAPPING = {
     Student: { x: 384, y: 512, width: 128, height: 128, mask: false, anchorY: 128 },
     Teacher: { x: 256, y: 512, width: 128, height: 128, mask: false, anchorY: 128 },
     School: { x: 128, y: 512, width: 128, height: 128, mask: false, anchorY: 128 },
 };
+
+const OFFICIAL_PLUVIOMETER_ICON_MAPPING = {
+    Student: { x: 384, y: 512, width: 128, height: 128, mask: true, anchorY: 128 },
+    Teacher: { x: 256, y: 512, width: 128, height: 128, mask: true, anchorY: 128 },
+    School: { x: 128, y: 512, width: 128, height: 128, mask: true, anchorY: 128 },
+};
+
+// ==================
+// End of Map Configuration
+// ==================
+
 
 // Street Map Component
 const RainfallMap = ({ toggleLanguage, mapBoxToken, updateAdditionalLocation, updateCarouselCoordinates, mapStylePlain, updatePrimaryLocation, toggleLocationPreference }) => {
 
     const [tooltip, setTooltip] = useState({});
 
-    const iconLayer = new IconLayer({
-        id: "icon-layer",
+    // OFFICIAL PLUVIOMETER RECORDS LAYER
+    const officialPluviometerLayer = new IconLayer({
+        id: "official-pluviometer-layer",
+        data: [
+            {
+                coordinates: [updateCarouselCoordinates.longitude, updateCarouselCoordinates.latitude],
+                timestamp: "2022-04-09T13:32:30.745Z",
+                type: "Rain Event",
+                citizenType: "Student",
+                citizenOrganisation: "School in São Paulo",
+                submissionText: "It's a dry day here today!",
+                scaleCategory: 3,
+            }
+        ],
+        pickable: true,
+        iconAtlas: officialPluviometerIcons.src,
+        getPosition: (d) => d.coordinates,
+        iconMapping: OFFICIAL_PLUVIOMETER_ICON_MAPPING,
+        sizeScale: 10,
+        getIcon: (d) => d.citizenType,
+        getSize: (d) => 12,
+        getColor: (d) => scaleColorKeys[d['scaleCategory']].color,
+    })
+
+    // CITIZEN RAINFALL EVENTS LAYER
+    const rainfallEventsLayer = new IconLayer({
+        id: "rainfall-events-layer",
         data: [
             {
                 coordinates: [updateCarouselCoordinates.longitude, updateCarouselCoordinates.latitude],
@@ -51,10 +90,9 @@ const RainfallMap = ({ toggleLanguage, mapBoxToken, updateAdditionalLocation, up
             }
         ],
         pickable: true,
-        iconAtlas: mapIcons.src,
+        iconAtlas: avatarIcons.src,
         getIcon: (d) => d.citizenType,
-        // NOTE ** ITS ONLY POSSIBLE TO HAVE ONE ICON HERE
-        iconMapping: ICON_MAPPING,
+        iconMapping: AVATAR_ICON_MAPPING,
         sizeScale: 10,
         getPosition: (d) => d.coordinates,
         getSize: (d) => 12,
@@ -80,9 +118,7 @@ const RainfallMap = ({ toggleLanguage, mapBoxToken, updateAdditionalLocation, up
     };
 
 
-    const layers = mapStylePlain ? null : [iconLayer]
-
-    console.log(mapBoxToken)
+    const layers = mapStylePlain ? null : [rainfallEventsLayer, officialPluviometerLayer]
 
     return (
         <DeckGL layers={[layers]} controller={!mapStylePlain} preventStyleDiffing={true} initialViewState={INITIAL_VIEW_STATE} height={'100%'} width={'100%'} ContextProvider={_MapContext.Provider} >

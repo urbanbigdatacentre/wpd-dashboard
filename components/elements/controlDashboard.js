@@ -17,7 +17,7 @@ import WeatherCarousel from "./weatherCarousel";
 // Control Dashboard Component
 
 
-const ControlDashboard = ({ toggleLanguage, locationData, color }) => {
+const ControlDashboard = ({ toggleLanguage, locationData, color, weatherAPIToken }) => {
 
     return (
         <ControlDashboardOuterBox >
@@ -30,7 +30,7 @@ const ControlDashboard = ({ toggleLanguage, locationData, color }) => {
                     <StatCard text={uiText.locationPage.controlPanel.avgDailyRainfall[toggleLanguage.language]} number={34}/>
                     <StatCard text={uiText.locationPage.controlPanel.citizenReports[toggleLanguage.language]} number={34}/>
                 </ControlDashboardStatCardBox>
-                <WeatherCarousel/>
+                <WeatherCarousel weatherAPIToken={weatherAPIToken} locationData={locationData}/>
             </ControlDashboardInnerBox>
         </ControlDashboardOuterBox>
     );

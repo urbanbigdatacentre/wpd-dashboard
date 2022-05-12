@@ -22,7 +22,7 @@ import styles from '../../../styles/modules/location-page/ControlPanel.module.cs
 
 
 // Control Panel Component
-const ControlPanel = ({ toggleLanguage, updatePrimaryLocation, updateAdditionalLocation }) => {
+const ControlPanel = ({ toggleLanguage, updatePrimaryLocation, updateAdditionalLocation, weatherAPIToken }) => {
 
     const [addingLocationStatus, setAddingLocationStatus] = useState(false);
 
@@ -55,11 +55,11 @@ const ControlPanel = ({ toggleLanguage, updatePrimaryLocation, updateAdditionalL
             <ControlPanelNav clickHandler={handleClick} setAddingLocationStatus={setAddingLocationStatus}/>
 
             }
-            <ControlDashboard color={'#2196F3'} locationData={updatePrimaryLocation.location}/>
+            <ControlDashboard weatherAPIToken={weatherAPIToken} color={'#2196F3'} locationData={updatePrimaryLocation.location}/>
             {/*SPACE HERE TO MAP OTHER CONTROL DASHBOARDS*/
                 updateAdditionalLocation.locations.length ? updateAdditionalLocation.locations.map((item, index) => {
                     return (
-                        <ControlDashboard color={locationColorKeys[index].color} locationData={item}/>
+                        <ControlDashboard key={index}  weatherAPIToken={weatherAPIToken} color={locationColorKeys[index].color} locationData={item}/>
                     )
                 }) : null
             }

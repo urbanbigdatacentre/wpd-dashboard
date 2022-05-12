@@ -5,6 +5,8 @@ import {connect} from "react-redux";
 import {Container, styled} from "@mui/material";
 import dummyWeatherData from "../../data/dummyWeatherData";
 import WeatherItem from "./weatherItem";
+import {useEffect} from "react";
+import axios from "axios";
 
 // Swiper Imports & config
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -18,12 +20,22 @@ import 'swiper/css/virtual';
 
 
 
-const WeatherCarousel = ({ toggleLanguage }) => {
+const WeatherCarousel = ({ toggleLanguage, weatherAPIToken, locationData }) => {
 
-    // Handle Toggle Change
-    const handleChange = (swiper) => {
-        console.log(swiper.activeIndex)
+    const formatWeatherResponse = (res) => {
+        const dayArray = res.data['daily'];
+        dayArray.for
+
     }
+
+    useEffect(() => {
+
+        const URL = `https://api.openweathermap.org/data/2.5/onecall?lat=${locationData['latitude']}&lon=${locationData['longitude']}&units=metric&exclude=hourly,minutely&appid=${weatherAPIToken}`
+        axios.get(URL).then(function (res) {
+            formatWeatherResponse(res)
+        })
+    })
+
 
     return (
         <WeatherCarouselContainer>
@@ -35,9 +47,9 @@ const WeatherCarousel = ({ toggleLanguage }) => {
                 lazy={true}
                 loop={true}
                 className="mySwiper"
-                onSlideChange={(swiper) => handleChange(swiper)}
+                // onSlideChange={(swiper) => handleChange(swiper)}
                 virtual={true}
-                onSwiper={(swiper) => handleChange(swiper)}
+                // onSwiper={(swiper) => handleChange(swiper)}
             >
                 {
                     dummyWeatherData.map((item, index) => {

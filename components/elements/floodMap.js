@@ -14,6 +14,7 @@ import mapIcons from '../../public/images/icons/location-icon-atlas.svg';
 import {styled, Box, Typography} from "@mui/material";
 import dummyGeoJSON from "../../data/dummyGeoJSON";
 import dummyGeoJSONTwo from "../../data/dummyGeoJSONTwo";
+import locationPaths from "../../data/locationPaths";
 
 // Map Configuration
 const mapStyleMapBox1 = 'mapbox://styles/mapbox/streets-v11';
@@ -41,7 +42,7 @@ const ICON_MAPPING = {
 };
 
 // Street Map Component
-const FloodMap = ({ mapBoxToken, updateCarouselCoordinates, mapStylePlain, toggleDataType }) => {
+const FloodMap = ({ mapBoxToken, updateCarouselCoordinates, mapStylePlain, toggleDataType, updateAdditionalLocation, updatePrimaryLocation, toggleLocationPreference }) => {
 
     const [effects] = useState(() => {
         const lightingEffect = new LightingEffect({ambientLight, dirLight});
@@ -125,10 +126,18 @@ const FloodMap = ({ mapBoxToken, updateCarouselCoordinates, mapStylePlain, toggl
     // const initialLongitude = mapStylePlain ? updatePrimaryLocation.location.geo.longitude - 0.07 : updateCarouselCoordinates.longitude - 0.07
     // const initialLatitude = mapStylePlain ? updatePrimaryLocation.location.geo.latitude : updateCarouselCoordinates.latitude
 
+    const additionalLocationFilter = updateAdditionalLocation.locations.filter(item => item['placename'] === toggleLocationPreference.locationPreference)
+
+    const locationSettings = {
+        initialLongitude: additionalLocationFilter.length ? additionalLocationFilter[0]['longitude'] - 0.07 : updatePrimaryLocation.location.longitude - 0.07,
+        initialLatitude: additionalLocationFilter.length ? additionalLocationFilter[0]['latitude'] - 0.07: updatePrimaryLocation.location.latitude - 0.07,
+        zoom: additionalLocationFilter.length ?  locationPaths[additionalLocationFilter[0]['placetype']].zoom : locationPaths[updatePrimaryLocation.location['placetype']].zoom
+    }
+
     const INITIAL_VIEW_STATE = {
-        longitude: updateCarouselCoordinates.longitude - 0.07,
-        latitude: updateCarouselCoordinates.latitude,
-        zoom: 10,
+        longitude: locationSettings.initialLongitude,
+        latitude: locationSettings.initialLatitude,
+        zoom: locationSettings.zoom,
         minZoom: 2,
         maxZoom: 16,
         pitch: 25,

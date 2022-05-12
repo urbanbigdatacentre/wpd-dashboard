@@ -23,7 +23,7 @@ const mapStyleMapBox2 = 'mapbox://styles/andyclarke/cl1z4iue1002w14qdnfkb3gjj'
 const mapStyleBrazilOnly = 'mapbox://styles/andyclarke/cl32tkwur000p14qjkf29169z';
 const mapStyleCarto = 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json';
 
-const DATA_URL = 'https://gist.githubusercontent.com/andyclarkemedia/9f39ef2390f358967d5ee74db56733dc/raw/82828b5355a6d7aca27d7b02eb6c75ed2c6d3272/random-brazil-coordinates.csv'
+const DATA_URL = 'https://gist.githubusercontent.com/andyclarkemedia/a4a7865e33ea133e1a9a73d79f314cf5/raw/1c51e5225dc2b4159c50b5ba272be628bf401660/wpd-overview-dummy-data.csv'
 
 const upperPercentile = 100;
 const coverage = 0.7;

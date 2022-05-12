@@ -54,7 +54,7 @@ const Location = (props) => {
                         props.updatePrimaryLocation.location.hasOwnProperty("placename") ? (
                             <>
                                 <CitizenSection mapBoxToken={props.env.MAPBOX_TOKEN} mapStylePlain={true}/>
-                                <ControlPanel/>
+                                <ControlPanel weatherAPIToken={props.env.WEATHER_API_TOKEN}/>
                                 <RainfallChartSection/>
                                 <RainfallMapSection mapBoxToken={props.env.MAPBOX_TOKEN} mapStylePlain={true}/>
                                 <CitizenSection mapBoxToken={props.env.MAPBOX_TOKEN} mapStylePlain={false} dashboardRender={true}/>
@@ -83,7 +83,8 @@ export const getStaticProps = wrapper.getStaticProps((store) => () => {
 
             env: {
                 MAPBOX_TOKEN: process.env.MAPBOX_TOKEN,
-                NODE_ENV: process.env.NODE_ENV
+                NODE_ENV: process.env.NODE_ENV,
+                WEATHER_API_TOKEN: process.env.WEATHER_API_TOKEN
             }
         }
     }
