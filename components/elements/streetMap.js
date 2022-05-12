@@ -11,6 +11,8 @@ import {IconLayer} from '@deck.gl/layers';
 
 // Local Imports
 import mapIcons from '../../public/images/icons/location-icon-atlas.svg';
+import locationPaths from "../../data/locationPaths";
+import {toggleLocationPreference} from "../../store/reducers";
 
 // Map Configuration
 const mapStyleMapBox1 = 'mapbox://styles/mapbox/streets-v11';
@@ -26,7 +28,7 @@ const ICON_MAPPING = {
 
 
 // Street Map Component
-const StreetMap = ({ toggleLanguage, mapBoxToken, updateCarouselCoordinates, mapStylePlain, updatePrimaryLocation }) => {
+const StreetMap = ({ toggleLanguage, toggleLocationPreference, mapBoxToken, updateCarouselCoordinates, updateAdditionalLocation, mapStylePlain, updatePrimaryLocation }) => {
 
     const iconLayer = new IconLayer({
         id: "icon-layer",
@@ -45,13 +47,21 @@ const StreetMap = ({ toggleLanguage, mapBoxToken, updateCarouselCoordinates, map
 
     });
 
-    // const initialLongitude = mapStylePlain ? updatePrimaryLocation.location.geo.longitude - 0.07 : updateCarouselCoordinates.longitude - 0.07
-    // const initialLatitude = mapStylePlain ? updatePrimaryLocation.location.geo.latitude : updateCarouselCoordinates.latitude
+    const additionalLocationFilter = mapStylePlain ? updateAdditionalLocation.locations.filter(item => item['placename'] === toggleLocationPreference.locationPreference): [];
+
+    const actualLocation = additionalLocationFilter.length ? additionalLocationFilter[0] : updatePrimaryLocation.location
+
+    const locationSettings = {
+        initialLongitude: mapStylePlain ? updatePrimaryLocation.location.longitude - 0.17 : updateCarouselCoordinates.longitude - 0.17,
+        initialLatitude: mapStylePlain ? updatePrimaryLocation.location.latitude - 0.07 : updateCarouselCoordinates.latitude - 0.07,
+        // zoom: 12 mapStylePlain ?  locationPaths[additionalLocationFilter['placetype']].zoom : locationPaths[actualLocation.location['placetype']].zoom
+        zoom: 10
+    }
 
     const INITIAL_VIEW_STATE = {
-        longitude: updateCarouselCoordinates.longitude - 0.07,
-        latitude: updateCarouselCoordinates.latitude,
-        zoom: mapStylePlain ? 7.0 : 12.0,
+        longitude: locationSettings.initialLongitude,
+        latitude: locationSettings.initialLatitude,
+        zoom: locationSettings.zoom,
         minZoom: 2,
         maxZoom: 16,
         pitch: 0,

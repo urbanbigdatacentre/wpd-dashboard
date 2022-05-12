@@ -11,8 +11,10 @@ import ThematicIllustration from "../../elements/thematicIllustration";
 import LanguageToggle from "../../elements/languageToggle";
 import uiText from "../../../data/ui-text";
 import Search from '../../elements/search';
+import {useEffect} from "react";
 
 const LandingHeroSection = ({ toggleLanguage }) => {
+
     return (
         <>
             <LanguageToggle language={toggleLanguage.language}/>
@@ -21,7 +23,7 @@ const LandingHeroSection = ({ toggleLanguage }) => {
                 <Typography variant={'topBlue'}>{uiText.landingPage.hero.topBlue[toggleLanguage.language]}</Typography>
                 <Typography variant={'pageTitle'}>{uiText.global.labels.projectTitle[toggleLanguage.language]}<span className={'bluePunctuation'}>.</span></Typography>
                 <Typography>{uiText.landingPage.hero.subtitle[toggleLanguage.language]}</Typography>
-                <Search/>
+                <Search />
             </Container>
 
         </>

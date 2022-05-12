@@ -18,14 +18,21 @@ import CitizenSection from "../components/modules/landing-page/citizenSection";
 
 // State MGMT Imports
 import { wrapper } from '../store/store';
-import {changeLanguage, changeDate} from "../store/actions";
+import {
+    setAPIConfig
+} from "../store/actions";
 
 // Style Imports
 import styles from '../styles/modules/Home.module.css'
+import {useEffect} from "react";
 
 
 // Landing Page Component
 const Home = (props) => {
+
+    useEffect(() => {
+        props.setAPIConfig(props.env)
+    }, [props.env])
 
     return (
     <div className={styles.container}>
@@ -36,7 +43,7 @@ const Home = (props) => {
 
       <main className={styles.main}>
           <MyNavbar />
-          <LandingHeroSection />
+          <LandingHeroSection/>
           <StatisticsBar/>
           <span id="national-activity" > </span>
           <NationalActivity mapBoxToken={props.env.MAPBOX_TOKEN}/>
@@ -56,12 +63,20 @@ export const getStaticProps = wrapper.getStaticProps((store) => () => {
     return {
         props: {
             env: {
-                MAPBOX_TOKEN: process.env.MAPBOX_TOKEN
+                MAPBOX_TOKEN: process.env.MAPBOX_TOKEN,
+                NODE_ENV: process.env.NODE_ENV,
+
             }
         }
     }
 })
 
+const mapDispatchToProps = (dispatch) => {
+    return {
+        setAPIConfig: bindActionCreators(setAPIConfig, dispatch),
+    }
+}
 
 
-export default connect((state) => state)(Home)
+
+export default connect((state) => state, mapDispatchToProps)(Home)

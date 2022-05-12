@@ -5,6 +5,7 @@ import {composeWithDevTools} from 'redux-devtools-extension'
 import {createWrapper, HYDRATE} from "next-redux-wrapper";
 import thunkMiddleware from 'redux-thunk'
 import {
+    configureAPI,
     toggleLanguage,
     toggleDate,
     changeRadiusWithSlider,
@@ -12,7 +13,7 @@ import {
     updatePrimaryLocation,
     updateAdditionalLocation,
     toggleDataType,
-    toggleLocationPreference
+    toggleLocationPreference,
 } from "./reducers";
 
 
@@ -26,6 +27,7 @@ const bindMiddleware = (middleware) => {
 
 // Combine Reducers Together
 const combinedReducer = combineReducers({
+    configureAPI,
     toggleLanguage,
     toggleDate,
     changeRadiusWithSlider,
@@ -53,6 +55,7 @@ const reducer = (state, action) => {
         if (state.updateCarouselCoordinates) nextState.updateCarouselCoordinates = state.updateCarouselCoordinates;
         if (state.toggleDate.date) nextState.toggleDate.date = state.toggleDate.date;
         if (state.toggleLanguage.language) nextState.toggleLanguage.language = state.toggleLanguage.language;
+        if (state.configureAPI.node_env) nextState.configureAPI.node_env = state.configureAPI.node_env;
         return nextState;
     } else {
         return combinedReducer(state, action)

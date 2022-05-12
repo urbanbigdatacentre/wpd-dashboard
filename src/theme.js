@@ -49,9 +49,7 @@ const theme = createTheme({
             fontWeight: 700
         }
     },
-    shape: {
-        borderRadius: '5px'
-    }
+
 });
 
 export default theme;

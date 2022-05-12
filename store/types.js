@@ -1,5 +1,8 @@
 // REDUX ACTION TYPES
 
+// Set API Config
+export const SETAPICONFIG = "SETAPICONFIG";
+
 export const SWITCHLANGUAGE = "SWITCHLANGUAGE";
 export const SWITCHDATE = "SWITCHDATE";
 

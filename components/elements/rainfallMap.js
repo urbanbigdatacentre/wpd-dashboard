@@ -11,6 +11,7 @@ import {IconLayer} from '@deck.gl/layers';
 // Local Imports
 import mapIcons from '../../public/images/icons/location-icon-atlas.svg';
 import {styled, Box, Typography} from "@mui/material";
+import locationPaths from "../../data/locationPaths";
 
 // Map Configuration
 const mapStyleMapBox1 = 'mapbox://styles/mapbox/streets-v11';
@@ -25,7 +26,7 @@ const ICON_MAPPING = {
 };
 
 // Street Map Component
-const RainfallMap = ({ toggleLanguage, mapBoxToken, updateCarouselCoordinates, mapStylePlain, updatePrimaryLocation }) => {
+const RainfallMap = ({ toggleLanguage, mapBoxToken, updateAdditionalLocation, updateCarouselCoordinates, mapStylePlain, updatePrimaryLocation, toggleLocationPreference }) => {
 
     const [tooltip, setTooltip] = useState({});
 
@@ -60,24 +61,31 @@ const RainfallMap = ({ toggleLanguage, mapBoxToken, updateCarouselCoordinates, m
         onHover: d => setTooltip(d)
     });
 
-    // const initialLongitude = mapStylePlain ? updatePrimaryLocation.location.geo.longitude - 0.07 : updateCarouselCoordinates.longitude - 0.07
-    // const initialLatitude = mapStylePlain ? updatePrimaryLocation.location.geo.latitude : updateCarouselCoordinates.latitude
+    const additionalLocationFilter = updateAdditionalLocation.locations.filter(item => item['placename'] === toggleLocationPreference.locationPreference)
+
+    const locationSettings = {
+        initialLongitude: additionalLocationFilter.length ? additionalLocationFilter[0]['longitude'] - 0.07 : updatePrimaryLocation.location.longitude - 0.07,
+        initialLatitude: additionalLocationFilter.length ? additionalLocationFilter[0]['latitude'] - 0.07: updatePrimaryLocation.location.latitude - 0.07,
+        zoom: additionalLocationFilter.length ?  locationPaths[additionalLocationFilter[0]['placetype']].zoom : locationPaths[updatePrimaryLocation.location['placetype']].zoom
+    }
 
     const INITIAL_VIEW_STATE = {
-        longitude: updateCarouselCoordinates.longitude - 0.07,
-        latitude: updateCarouselCoordinates.latitude,
-        zoom: 5,
+        longitude: locationSettings.initialLongitude,
+        latitude: locationSettings.initialLatitude,
+        zoom: locationSettings.zoom,
         minZoom: 1,
         maxZoom: 50,
         pitch: 0,
         bearing: 0
     };
 
+
     const layers = mapStylePlain ? null : [iconLayer]
-    const controllerTrue = mapStylePlain ? Boolean(0) : Boolean(1)
+
+    console.log(mapBoxToken)
 
     return (
-        <DeckGL layers={[layers]} controller={controllerTrue} preventStyleDiffing={true} initialViewState={INITIAL_VIEW_STATE} height={'100%'} width={'100%'} ContextProvider={_MapContext.Provider} >
+        <DeckGL layers={[layers]} controller={!mapStylePlain} preventStyleDiffing={true} initialViewState={INITIAL_VIEW_STATE} height={'100%'} width={'100%'} ContextProvider={_MapContext.Provider} >
             <StaticMap
                 reuseMaps
                 mapStyle={mapStyleMono}

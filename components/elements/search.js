@@ -12,6 +12,7 @@ import axios from "axios";
 import uiText from "../../data/ui-text";
 import SearchDropdown from "./searchDropdown";
 import { makeSearch } from "../../api/makeSearch";
+import config from "../../api/config";
 
 // Search Component
 
@@ -63,7 +64,7 @@ class SearchBar extends React.Component {
     async liveSearch(searchValue) {
 
         const searchPromise = await makeSearch(
-            `http://0.0.0.0:9090/dashboard/search?value=${searchValue}`
+            `${config[this.props.node_env['NODE_ENV']]}/dashboard/search?value=${searchValue}`
         );
 
         const liveSearchResults = await searchPromise;
@@ -104,72 +105,11 @@ class SearchBar extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        language: state.toggleLanguage.language
+        language: state.toggleLanguage.language,
+        node_env: state.configureAPI.node_env
     };
 };
 
-
-// const Search = ({ toggleLanguage }) => {
-//
-//     const [searchText, setSearch] = useState("");
-//     const [results, setResults] = useState([]);
-//
-//     const handleInput = (e) => {
-//         setSearch(e.target.value)
-//         if (e.target.value) {
-//             liveSearch(e)
-//         }
-//     }
-//
-//     async function liveSearch(e) {
-//
-//         // console.log(e.target.value)
-//
-//         // setResults(dummySearchData.filter(item => item['location'].includes(e.target.value)))
-//         const searchPromise = await makeSearch(
-//             `http://0.0.0.0:9090/dashboard/search?value=${e.target.value}`
-//         );
-//
-//         const liveSearchResults = await searchPromise;
-//         const responseData = liveSearchResults ? liveSearchResults['data']['responseData'] : false
-//
-//         if ((responseData) && (liveSearchResults['data']['responseData'] !== 'No Data')) {
-//
-//             if (liveSearchResults['data']['responseData']['array_to_json']) {
-//                 setResults(liveSearchResults['data']['responseData']['array_to_json'])
-//                 // console.log(liveSearchResults['data']['responseData']['array_to_json'])
-//                 // console.log( "results", results)
-//             }
-//         } else {
-//             setResults(null)
-//             console.log("Executing")
-//         }
-//     }
-//
-//     return (
-//         <MyFormControl variant="standard" >
-//             <MyTextField autoComplete="off" InputProps={{
-//
-//                 endAdornment: (
-//                     <InputAdornment position="end">
-//                         <IconButton type="submit" aria-label="search">
-//                             <SearchIcon style={{ fill: `#2196F3` }} />
-//                         </IconButton>
-//                     </InputAdornment>
-//                 ),
-//             }}
-//            id="search-bar"
-//            variant={'outlined'}
-//            onInput={(e) => {handleInput(e)}}
-//            label={uiText.global.labels.searchPlaceholder[toggleLanguage.language]}
-//            placeholder={uiText.global.labels.searchPlaceholder[toggleLanguage.language]}
-//            size="small"/>
-//
-//             <SearchDropdown searchText={searchText} results={results}/>
-//
-//         </MyFormControl>
-//     );
-// }
 
 const MyFormControl = styled(FormControl)(({theme}) => ({
     marginTop: theme.spacing(6),

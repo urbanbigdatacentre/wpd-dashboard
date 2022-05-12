@@ -4,6 +4,22 @@
 import * as actionTypes from './types';
 import dates from '../data/dates';
 
+// - SET API CONFIG
+const apiConfig = {
+    node_env: "",
+}
+
+export const configureAPI = (state = apiConfig, action) => {
+    switch (action.type) {
+        case actionTypes.SETAPICONFIG:
+            return Object.assign({}, state, {
+                node_env: action.node_env,
+            });
+        default:
+            return state
+    }
+}
+
 // - TOGGLE LANGUAGE
 const languageInitialState = {
     language: "en",

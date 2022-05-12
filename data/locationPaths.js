@@ -1,8 +1,10 @@
 export default {
     M: {
-        text: "Municipality"
+        text: "Municipality",
+        zoom: 6.5,
     },
     S: {
-        text: "School"
+        text: "School",
+        zoom: 15,
     }
 }

@@ -40,7 +40,7 @@ const OverviewMapLegendComponent = ({ changeRadius, hexRadius}) => {
             </Box>
             <Box sx={{display: `flex`, width: `100%`, justifyContent: `space-between`}}>
                 <Typography sx={{fontWeight: (theme) => (theme.typography.fontWeightBold), fontSize: `12px`}} >HEXAGON RADIUS</Typography>
-                <Slider min={2000} max={40000} value={hexRadius} onChange={handleChange}/>
+                <Slider min={5000} max={40000} value={hexRadius} onChange={handleChange}/>
             </Box>
         </LegendWrapperBox>
     );

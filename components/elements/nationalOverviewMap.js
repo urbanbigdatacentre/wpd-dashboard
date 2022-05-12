@@ -20,6 +20,7 @@ import {MapboxLayer} from '@deck.gl/mapbox';
 
 const mapStyleMapBox1 = 'mapbox://styles/mapbox/streets-v11';
 const mapStyleMapBox2 = 'mapbox://styles/andyclarke/cl1z4iue1002w14qdnfkb3gjj'
+const mapStyleBrazilOnly = 'mapbox://styles/andyclarke/cl32tkwur000p14qjkf29169z';
 const mapStyleCarto = 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json';
 
 const DATA_URL = 'https://gist.githubusercontent.com/andyclarkemedia/9f39ef2390f358967d5ee74db56733dc/raw/82828b5355a6d7aca27d7b02eb6c75ed2c6d3272/random-brazil-coordinates.csv'
@@ -63,13 +64,13 @@ const material = {
 };
 
 const INITIAL_VIEW_STATE = {
-    longitude: -53.2,
-    latitude: -10.3,
+    longitude: -47.2,
+    latitude: -13.3,
     zoom: 4.0,
-    minZoom: 2,
-    maxZoom: 10,
-    pitch: 40.5,
-    bearing: -27
+    minZoom: 3.5,
+    maxZoom: 12,
+    pitch: 25,
+    bearing: 0
 };
 
 function getTooltip({object}) {
@@ -91,6 +92,68 @@ const NationalOverviewMap = ({ mapBoxToken, changeRadiusWithSlider }) => {
 
     const [data, setData] = useState([]);
 
+    // DeckGL and mapbox will both draw into this WebGL context
+    const [glContext, setGLContext] = useState();
+    const [mapLoaded, setMapLoaded] = useState(false);
+    const deckRef = useRef(null);
+    const mapRef = useRef(null);
+
+    const onMapLoad = useCallback(() => {
+
+        if (!mapLoaded) {
+
+
+            const map = mapRef.current.getMap();
+            const deck = deckRef.current.deck;
+
+
+            // map.addLayer(
+            //     new MapboxLayer({ id: "national-overview-map", deck}, 'waterway-label')
+            // );
+
+            // MAP BOX CODE
+            const layers = map.getStyle().layers;
+
+            // Find the index of the first symbol layer in the map style.
+            let firstSymbolId;
+            for (const layer of layers) {
+                if (layer.type === 'symbol') {
+                    firstSymbolId = layer.id;
+                    break;
+                }
+            }
+
+            map.addSource('urban-areas', {
+                'type': 'geojson',
+                'data': 'https://docs.mapbox.com/mapbox-gl-js/assets/ne_50m_urban_areas.geojson'
+            });
+
+
+            map.addLayer(new MapboxLayer({ id: "dummy-layer", deck }));
+            map.addLayer(new MapboxLayer({ id: "national-overview-map", deck }), firstSymbolId);
+
+
+        }
+        setMapLoaded(true);
+
+    }, [deckRef, mapRef]);
+
+    const customLayers = [
+        new HexagonLayer({
+            id: 'national-overview-map',
+            colorRange,
+            coverage,
+            data: data,
+            elevationRange: [0, 2000],
+            elevationScale: data && data.length ? 50 : 0,
+            extruded: true,
+            getPosition: d => d,
+            radius: changeRadiusWithSlider.hexRadius,
+            upperPercentile,
+            material,
+        })
+    ];
+
 
     useEffect(() => {
         require('d3-request').csv(DATA_URL, (error, response) => {
@@ -102,34 +165,38 @@ const NationalOverviewMap = ({ mapBoxToken, changeRadiusWithSlider }) => {
     }, [data.length])
 
 
-    const layers = [
-        new HexagonLayer({
-            id: 'national-overview-map',
-            colorRange,
-            coverage,
-            data: data,
-            elevationRange: [0, 3000],
-            elevationScale: data && data.length ? 50 : 0,
-            extruded: true,
-            getPosition: d => d,
-            radius: changeRadiusWithSlider.hexRadius,
-            upperPercentile,
-            material,
-        })
-    ];
 
     return (
-        <DeckGL getTooltip={getTooltip} layers={layers} controller={true} initialViewState={INITIAL_VIEW_STATE} height={'100%'} width={'100%'}>
+        <DeckGL
+            ref={deckRef}
+            onWebGLInitialized={setGLContext}
+            glOptions={{
+                /* To render vector tile polygons correctly */
+                stencil: true
+            }}
+            getTooltip={getTooltip}
+            layers={customLayers}
+            controller={true}
+            initialViewState={INITIAL_VIEW_STATE}
+            height={'100%'}
+            width={'100%'}>
 
-            <StaticMap
-                reuseMaps
-                mapStyle={mapStyleMapBox2}
-                mapboxAccessToken={mapBoxToken}
-            />
+            {glContext && (
+                /* This is important: Mapbox must be instantiated after the WebGLContext is available */
+                <StaticMap
+                    reuseMaps
+                    ref={mapRef}
+                    gl={glContext}
+                    mapStyle={mapStyleBrazilOnly}
+                    mapboxAccessToken={mapBoxToken}
+                    onLoad={onMapLoad}
+                />
+            )}
 
         </DeckGL>
     );
 }
+
 
 
 export default connect((state) => state)(NationalOverviewMap)

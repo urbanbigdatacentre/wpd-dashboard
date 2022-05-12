@@ -2,6 +2,13 @@
 
 import * as types from './types';
 
+// Set API Config
+export const setAPIConfig = (node_env) => (dispatch) => {
+    return dispatch({
+        type: types.SETAPICONFIG,
+        node_env: node_env
+    })
+}
 // CHANGE LANGUAGE
 export const changeLanguage = (languageSelected) => (dispatch) => {
     return dispatch({

@@ -51,7 +51,7 @@ const InlineMapContainer = ({ toggleLanguage, mapBoxToken, mapStylePlain, update
                             background: `rgba(255, 255, 255, 0.75)`,
                             boxShadow: `0px 0px 15px rgba(33, 150, 243, .25)`,
                         }}} type="submit" aria-label="search">
-                        <Typography sx={{fontSize: `15px`, color: `#161616`,borderRadius: (theme) => (theme.shape.borderRadius), fontWeight: (theme) => (theme.typography.fontWeightBold), textAlign: 'right', marginRight: (theme) => (theme.spacing(1))}}>{uiText.global.labels.changeLocation[toggleLanguage.language].toUpperCase()}</Typography>
+                        <Typography sx={{fontSize: `15px`, color: `#161616`,borderRadius: `5px`, fontWeight: (theme) => (theme.typography.fontWeightBold), textAlign: 'right', marginRight: (theme) => (theme.spacing(1))}}>{uiText.global.labels.changeLocation[toggleLanguage.language].toUpperCase()}</Typography>
                         <SearchIcon style={{ fill: `#2196F3` }} />
                     </Button>
                 </ChangeLocationContainer>
@@ -134,7 +134,7 @@ const ChangeLocationContainer = styled(Container)(({theme}) => ({
     top: `80px`,
     right: `0`,
     left: `0`,
-    borderRadius: theme.shape.borderRadius,
+    borderRadius: `5px`,
 }))
 
 const MapDescriptionTextBox = styled(Box)(({theme}) => ({

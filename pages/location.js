@@ -5,6 +5,7 @@ import Head from 'next/head'
 import Link from 'next/link'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import {useEffect} from "react";
 
 // Component Imports
 import Footer from "../components/modules/footer";
@@ -20,17 +21,18 @@ import {NoSsr} from "@mui/material";
 
 // State MGMT Imports
 import { wrapper } from '../store/store';
-import {changeLanguage, changeDate} from "../store/actions";
+import {changeLanguage, changeDate, setAPIConfig} from "../store/actions";
 
 // Style Imports
 import styles from '../styles/modules/Home.module.css'
-import {useEffect} from "react";
 
 
 // Landing Page Component
 const Location = (props) => {
 
-
+    useEffect(() => {
+        props.setAPIConfig(props.env)
+    }, [props.env])
 
     return (
 
@@ -80,7 +82,8 @@ export const getStaticProps = wrapper.getStaticProps((store) => () => {
         props: {
 
             env: {
-                MAPBOX_TOKEN: process.env.MAPBOX_TOKEN
+                MAPBOX_TOKEN: process.env.MAPBOX_TOKEN,
+                NODE_ENV: process.env.NODE_ENV
             }
         }
     }
@@ -93,5 +96,11 @@ const mapStateToProps = (state) => {
     }
 }
 
+const mapDispatchToProps = (dispatch) => {
+    return {
+        setAPIConfig: bindActionCreators(setAPIConfig, dispatch),
+    }
+}
 
-export default connect(mapStateToProps)(Location)
+
+export default connect(mapStateToProps, mapDispatchToProps)(Location)

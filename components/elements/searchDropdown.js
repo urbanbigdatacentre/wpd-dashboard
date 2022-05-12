@@ -5,23 +5,40 @@ import {connect} from "react-redux";
 import {List, ListItem, Divider, ListItemText, ListItemButton, styled} from "@mui/material";
 import {bindActionCreators} from "redux";
 import Link from 'next/link';
+import axios from "axios";
 
 // Local Imports
 import LocationBox from "./locationBox";
 import {updatePrimaryLocation, updateAdditionalLocation, changeLocationPreference} from "../../store/actions";
 import locationPaths from "../../data/locationPaths";
 import uiText from "../../data/ui-text";
-import {useEffect} from "react";
+import config from "../../api/config";
+import {configureAPI} from "../../store/reducers";
 
 // Search Dropdown Component
 
-const SearchDropdown = ({ toggleLanguage, searchText, results, updatePrimaryLocation, updateAdditionalLocation, addingLocation, clickHandler, changeLocationPreference }) => {
+const SearchDropdown = ({ configureAPI, toggleLanguage, searchText, results, updatePrimaryLocation, updateAdditionalLocation, addingLocation, clickHandler, changeLocationPreference }) => {
 
     const handleClick = (item) => {
 
-        addingLocation ? updateAdditionalLocation(item) : updatePrimaryLocation(item);
-        !addingLocation ? changeLocationPreference(item['placename']) : null;
-        clickHandler(item);
+        // Make Simple Geometry Request
+        const requestURL = `${config[configureAPI.node_env['NODE_ENV']]}/dashboard/simplegeometry?id=${item['placeid']}`
+
+        // Make this use promise tracker
+        axios.get(requestURL)
+            .then(res => {
+
+                addingLocation ? updateAdditionalLocation(res.data.responseData.array_to_json[0]) : updatePrimaryLocation(res.data.responseData.array_to_json[0]);
+                !addingLocation ? changeLocationPreference(res.data.responseData.array_to_json[0]['placename']) : null;
+                clickHandler(item);
+            })
+            .catch(err => {
+                console.log("An error occurred", err)
+            })
+
+        // addingLocation ? updateAdditionalLocation(item) : updatePrimaryLocation(item);
+        // !addingLocation ? changeLocationPreference(item['placename']) : null;
+        // clickHandler(item);
     }
 
     const displayMode = Boolean(searchText) ? `block`: `none`;
