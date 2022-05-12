@@ -171,7 +171,6 @@ const NationalOverviewMap = ({ mapBoxToken, changeRadiusWithSlider }) => {
             ref={deckRef}
             onWebGLInitialized={setGLContext}
             glOptions={{
-                /* To render vector tile polygons correctly */
                 stencil: true
             }}
             getTooltip={getTooltip}
