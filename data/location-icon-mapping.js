@@ -1,9 +1,10 @@
-export default {
+const LOCATION_ICON_MAPPING = {
     "marker-1": {
         "x": 0,
         "y": 0,
         "width": 128,
         "height": 128,
+        "mask": true,
         "anchorY": 128
     },
     "marker-2": {
@@ -141,5 +142,4 @@ export default {
     }
 }
 
-
-// Icon Mapping for Citizen Carousel Map
+export default LOCATION_ICON_MAPPING;

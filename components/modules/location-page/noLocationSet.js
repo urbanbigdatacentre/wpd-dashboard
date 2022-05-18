@@ -7,7 +7,7 @@ import React from "react";
 
 // Local Imports
 import ThematicIllustration from "../../elements/thematicIllustration";
-import SearchBar from "../../elements/search";
+import SearchBar from "../../elements/searchBar";
 import uiText from "../../../data/ui-text";
 
 

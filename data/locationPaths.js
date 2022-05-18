@@ -1,7 +1,7 @@
 export default {
     M: {
         text: "Municipality",
-        zoom: 6.5,
+        zoom: 8,
     },
     S: {
         text: "School",

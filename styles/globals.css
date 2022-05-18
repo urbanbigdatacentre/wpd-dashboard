@@ -25,8 +25,28 @@ a {
 
 /*MAP ELEMENTS*/
 
+
 .mapboxgl-ctrl-attrib {
+  display: flex;
+  width: max-content;
+  position: absolute;
+  bottom: 0;
+  right: 5px;
+  text-decoration: none;
+}
+
+.mapbox-improve-map {
   display: none;
+}
+
+.mapboxgl-ctrl-attrib-button {
+  display: none;
+}
+
+.mapboxgl-ctrl-attrib-inner a {
+  font-family: 'Inter', sans-serif;
+  text-decoration: none;
+  font-size: 12px;
 }
 
 /*SWIPER SLIDER */

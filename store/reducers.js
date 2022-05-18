@@ -39,7 +39,7 @@ export const toggleLanguage = (state = languageInitialState, action) => {
 // - TOGGLE DATE
 
 const dateInitialState = {
-    startDate: dates['24Hours'],
+    startDate: dates['7Days'],
     endDate: dates.now
 }
 
@@ -58,7 +58,7 @@ export const toggleDate = (state= dateInitialState, action) => {
 // - SLIDE HEX RADIUS - NATIONAL OVERVIEW MAP
 
 const hexRadiusInitialState = {
-    hexRadius: 2500
+    hexRadius: 15000
 }
 
 export const changeRadiusWithSlider = (state= hexRadiusInitialState, action) => {
@@ -153,6 +153,7 @@ export const toggleDataType = (state = dataTypeInitialState, action) => {
 // - CHANGE LOCATION PREFERENCE
 const locationPreferenceInitialState = {
     locationPreference: "",
+    locationID: ""
 }
 
 export const toggleLocationPreference = (state = locationPreferenceInitialState, action) => {
@@ -160,9 +161,35 @@ export const toggleLocationPreference = (state = locationPreferenceInitialState,
         case actionTypes.SETLOCATIONPREFERENCE:
             return Object.assign({}, state, {
                 locationPreference: action.locationPreference,
+                locationID: action.locationID,
             });
         default:
             return state
     }
 }
 
+
+// - UPDATE PLUVIOMETER DATA
+const pluviometerDataInitialState = {
+    locations: [],
+}
+
+export const updatePluviometerData = (state = pluviometerDataInitialState, action) => {
+    switch (action.type) {
+        case actionTypes.SETPLUVIOMETERDATA:
+
+            return Object.assign({}, state, {
+                locations:
+                    [
+                        ...state.locations,
+                        {
+                            id: action.locationID,
+                            pluviometerData: action.pluviometerData
+                        }
+
+                    ]
+            });
+        default:
+            return state
+    }
+}

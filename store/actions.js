@@ -83,11 +83,23 @@ export const changeDataType = (newDataType) => (dispatch) => {
 }
 
 // SET LOCATION PREFERENCE
-export const changeLocationPreference = (newLocationPreference) => (dispatch) => {
+export const changeLocationPreference = (newLocationPreference, newLocationID) => (dispatch) => {
 
     return dispatch({
         type: types.SETLOCATIONPREFERENCE,
         locationPreference: newLocationPreference,
+        locationID: newLocationID,
+    })
+}
+
+
+// SET PLUVIOMETER DATA
+export const updatePluviometerData = (pluviometerDataArray, locationID) => (dispatch) => {
+
+    return dispatch({
+        type: types.SETPLUVIOMETERDATA,
+        pluviometerData: pluviometerDataArray,
+        locationID: locationID,
     })
 }
 

@@ -92,6 +92,14 @@ export default {
         "en": "No matching locations found",
         "br": ""
       },
+      "loadingResults": {
+        "en": "Loading Search Results",
+        "br": ""
+      },
+      "loadingData": {
+        "en": "Loading Data",
+        "br": ""
+      },
       "addNewLocation": {
         "en": "Add a New Location",
         "br": ""
@@ -115,6 +123,16 @@ export default {
       "dataSources": {
         "en": "Data Sources",
         "br": ""
+      },
+      "submissionTypes": {
+        "C": {
+          "en": "Citizen Report",
+          "br": ""
+        },
+        "O": {
+          "en": "Official Record",
+          "br": ""
+        },
       }
     },
     "tooltips": {
@@ -126,8 +144,28 @@ export default {
         "en": "Official Pluviometer",
         "br": ""
       },
+      "officialPluviometers": {
+        "en": "Official Pluviometers",
+        "br": ""
+      },
+      "multiple": {
+        "en": "Multiple",
+        "br": ""
+      },
+      "nearby": {
+        "en": "Nearby",
+        "br": ""
+      },
+      "measurement": {
+        "en": "Measurement (mm)",
+        "br": ""
+      },
       "citizenPluviometer": {
         "en": "Citizen Pluviometer",
+        "br": ""
+      },
+      "citizenPluviometers": {
+        "en": "Citizen Pluviometers",
         "br": ""
       },
       "lower": {

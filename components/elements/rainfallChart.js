@@ -4,6 +4,7 @@
 import {connect} from "react-redux";
 import {Box, styled} from "@mui/material";
 import * as d3 from 'd3';
+import {usePromiseTracker} from "react-promise-tracker";
 
 // Local Imports
 import useD3 from '../../hooks/useD3';
@@ -12,9 +13,10 @@ import dummyRainfallData from "../../data/dummyRainfallData";
 
 // Style Imports
 import styles from '../../styles/modules/location-page/Chart.module.css'
+import LoadingSkeleton from "./loadingSkeleton";
 
 // Rainfall Chart Component
-const RainfallChart = ({toggleLanguage, toggleDate}) => {
+const RainfallChart = ({toggleLanguage, toggleDate, data, updatePrimaryLocation}) => {
 
     useEffect(() => {
         // Select and Clear the Chart
@@ -23,7 +25,7 @@ const RainfallChart = ({toggleLanguage, toggleDate}) => {
 
         // Draw the chart again
         drawChart();
-    })
+    }, [toggleDate, updatePrimaryLocation])
 
     // DRAW CHART FUNCTION
     const drawChart = () => {
@@ -103,23 +105,25 @@ const RainfallChart = ({toggleLanguage, toggleDate}) => {
         svg.append("path")
             .datum(filteredData)
             .attr("fill", "#2196F3")
+            .attr("class", "area-path")
             .attr("fill-opacity", .3)
             .attr("stroke", "none")
             .attr("d", d3.area()
                 .x(function(d) {return xScale(new Date(d.timestamp).setHours(0, 0, 0, 0))})
                 .y0(height)
-                .y1(function(d) {return yScale(d.value)})
+                .y1(function(d) {return height})
             )
 
         // Add the line
         svg.append("path")
             .datum(filteredData)
             .attr("fill", "none")
+            .attr("class", "line-path")
             .attr("stroke", "#2196F3")
             .attr("stroke-width", 2)
             .attr("d", d3.line()
                 .x(function(d) { return xScale(new Date(d.timestamp).setHours(0, 0, 0, 0))})
-                .y(function(d) { return yScale(d.value) })
+                .y(function(d) { return height })
             )
 
         // Add the dots
@@ -127,19 +131,49 @@ const RainfallChart = ({toggleLanguage, toggleDate}) => {
             .data(filteredData)
             .enter()
             .append("circle")
+            .attr("class", "chart-points")
             .attr("fill", "#2196F3")
             .attr("stroke", "none")
             .attr("cx", function(d) { return xScale(new Date(d.timestamp).setHours(0, 0, 0, 0))})
-            .attr("cy", function(d) { return yScale(d.value)})
+            .attr("cy", function(d) { return height})
             .attr("r", 5)
 
+        // Animate on Scroll
 
-    }
+        d3.selectAll(".chart-points")
+            .transition()
+            .duration(1000)
+            .attr("cx", function(d) { return xScale(new Date(d.timestamp).setHours(0, 0, 0, 0))})
+            .attr("cy", function(d) { return yScale(d.value)})
+
+        d3.selectAll(".line-path")
+            .transition()
+            .duration(1000)
+            .attr("d", d3.line()
+                .x(function(d) { return xScale(new Date(d.timestamp).setHours(0, 0, 0, 0))})
+                .y(function(d) { return yScale(d.value) })
+            )
+
+        d3.selectAll(".area-path")
+            .transition()
+            .duration(1000)
+            .attr("d", d3.area()
+                .x(function(d) {return xScale(new Date(d.timestamp).setHours(0, 0, 0, 0))})
+                .y0(height)
+                .y1(function(d) {return yScale(d.value)})
+            )
+
+        }
+
+
+
+    // Animate on Scroll
 
 
 
     return (
       <ChartBox >
+          <LoadingSkeleton area="pluviometer-data"/>
           <svg
               id={'rainfall-chart-svg-container'}
               style={{

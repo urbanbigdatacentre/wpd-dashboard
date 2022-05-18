@@ -4,15 +4,15 @@
 import {connect} from "react-redux";
 import React from "react";
 import {InputAdornment, FormControl, TextField, IconButton, styled} from "@mui/material";
-import SearchIcon from '@mui/icons-material/search';
-import {useState} from "react";
-import axios from "axios";
+import SearchIcon from '@mui/icons-material/Search';
+import {trackPromise} from "react-promise-tracker";
 
 // Local Imports
 import uiText from "../../data/ui-text";
 import SearchDropdown from "./searchDropdown";
 import { makeSearch } from "../../api/makeSearch";
 import config from "../../api/config";
+import LoadingSkeleton from "./loadingSkeleton";
 
 // Search Component
 
@@ -40,6 +40,10 @@ class SearchBar extends React.Component {
 
     _handleChange = async searchTerm => {
 
+        this.setState({
+            loading: true
+        });
+
         if((searchTerm) && (this.state.searchTerm !== searchTerm)) {
             // Trigger a live search with the search term
             this.liveSearch(searchTerm);
@@ -58,10 +62,11 @@ class SearchBar extends React.Component {
     }
 
     get renderSearchResults() {
-        return <SearchDropdown addingLocation={this.props.addingLocation} searchText={this.state.searchTerm} results={this.state.liveSearchResults} clickHandler={this._clickHandler}/>;;
+        return <SearchDropdown loading={this.state.loading} addingLocation={this.props.addingLocation} searchText={this.state.searchTerm} results={this.state.liveSearchResults} clickHandler={this._clickHandler}/>;;
     }
 
     async liveSearch(searchValue) {
+
 
         const searchPromise = await makeSearch(
             `${config[this.props.node_env['NODE_ENV']]}/dashboard/search?value=${searchValue}`

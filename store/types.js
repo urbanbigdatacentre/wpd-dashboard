@@ -26,3 +26,6 @@ export const SETDATATYPE = "SETDATATYPE"
 
 // Set Location Preference
 export const SETLOCATIONPREFERENCE = "SETLOCATIONPREFERENCE"
+
+// Set Pluviometer Data
+export const SETPLUVIOMETERDATA = "SETPLUVIOMETERDATA"

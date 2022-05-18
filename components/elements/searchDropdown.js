@@ -6,43 +6,58 @@ import {List, ListItem, Divider, ListItemText, ListItemButton, styled} from "@mu
 import {bindActionCreators} from "redux";
 import Link from 'next/link';
 import axios from "axios";
+import {trackPromise} from "react-promise-tracker";
 
 // Local Imports
 import LocationBox from "./locationBox";
-import {updatePrimaryLocation, updateAdditionalLocation, changeLocationPreference} from "../../store/actions";
+import {updatePrimaryLocation, updateAdditionalLocation, changeLocationPreference, updatePluviometerData} from "../../store/actions";
 import locationPaths from "../../data/locationPaths";
 import uiText from "../../data/ui-text";
 import config from "../../api/config";
-import {configureAPI} from "../../store/reducers";
 
 // Search Dropdown Component
 
-const SearchDropdown = ({ configureAPI, toggleLanguage, searchText, results, updatePrimaryLocation, updateAdditionalLocation, addingLocation, clickHandler, changeLocationPreference }) => {
+const SearchDropdown = ({ loading, configureAPI, toggleDate, toggleLanguage, searchText, results, updatePrimaryLocation, updateAdditionalLocation, updateAdditionalLocationDispatch, addingLocation, clickHandler, changeLocationPreference, updatePluviometerData, updatePluviometerDataDispatch }) => {
+
 
     const handleClick = (item) => {
 
         // Make Simple Geometry Request
         const requestURL = `${config[configureAPI.node_env['NODE_ENV']]}/dashboard/simplegeometry?id=${item['placeid']}`
 
-        // Make this use promise tracker
+        // Make this use promise tracker - This also is causing memory leaks in the application
+        // Request for simple Geometry
         axios.get(requestURL)
             .then(res => {
-
-                addingLocation ? updateAdditionalLocation(res.data.responseData.array_to_json[0]) : updatePrimaryLocation(res.data.responseData.array_to_json[0]);
-                !addingLocation ? changeLocationPreference(res.data.responseData.array_to_json[0]['placename']) : null;
+                addingLocation ? updateAdditionalLocationDispatch(res.data.responseData.array_to_json[0]) : updatePrimaryLocation(res.data.responseData.array_to_json[0]);
+                !addingLocation ? changeLocationPreference(res.data.responseData.array_to_json[0]['placename'], res.data.responseData.array_to_json[0]['placeid']) : null;
                 clickHandler(item);
+                setValue("Request Complete")
             })
             .catch(err => {
                 console.log("An error occurred", err)
             })
 
-        // addingLocation ? updateAdditionalLocation(item) : updatePrimaryLocation(item);
-        // !addingLocation ? changeLocationPreference(item['placename']) : null;
-        // clickHandler(item);
+        // Make requests for Additional Location Data - If addingLocation
+        // PLUVIOMETERS
+        const API_URL = `${config[configureAPI['node_env'].NODE_ENV]}/dashboard/pluviometers?id=${item['placeid']}&startDate=${toggleDate.startDate}&endDate=${toggleDate.endDate}`
+
+        // Check if Pluviometer Data already exists for this location
+        const filteredPluviometerData = updatePluviometerData.locations.length ? updatePluviometerData.locations.filter(function(location){
+            return location['id'] === item['placeid'];
+        }) : [];
+
+        // Make request and track promise if data doesn't already exist
+        !filteredPluviometerData.length ?
+            trackPromise(
+                axios.get(API_URL)
+                    .then(res => {
+                        updatePluviometerDataDispatch(res.data['responseData']['array_to_json'], item['placeid'])
+                    })
+            ,"pluviometer-data") : null
     }
 
     const displayMode = Boolean(searchText) ? `block`: `none`;
-
 
         return (
             <MyList sx={{display: displayMode}} disablePadding >
@@ -70,7 +85,7 @@ const SearchDropdown = ({ configureAPI, toggleLanguage, searchText, results, upd
                         <Divider/>
                         <ListItemButton >
                             <MyListItem disablePadding>
-                                <em>{uiText.global.labels.noDataFound[toggleLanguage.language]}</em>
+                                <em>{loading ? uiText.global.labels.loadingResults[toggleLanguage.language] : uiText.global.labels.noDataFound[toggleLanguage.language]}</em>
                             </MyListItem>
                         </ListItemButton>
                     </div>
@@ -99,8 +114,9 @@ const LocationName = styled(ListItemText)(({theme}) => ({
 const mapDispatchToProps = (dispatch) => {
     return {
         updatePrimaryLocation: bindActionCreators(updatePrimaryLocation, dispatch),
-        updateAdditionalLocation: bindActionCreators(updateAdditionalLocation, dispatch),
+        updateAdditionalLocationDispatch: bindActionCreators(updateAdditionalLocation, dispatch),
         changeLocationPreference: bindActionCreators(changeLocationPreference, dispatch),
+        updatePluviometerDataDispatch: bindActionCreators(updatePluviometerData, dispatch),
     }
 }
 

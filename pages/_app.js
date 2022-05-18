@@ -15,6 +15,7 @@ import { wrapper } from "../store/store";
 
 // CSS Imports
 import styles from '../styles/globals.css'
+import 'mapbox-gl/dist/mapbox-gl.css';
 
 // Client-side cache shared for the whole session
 // of the user in the browser

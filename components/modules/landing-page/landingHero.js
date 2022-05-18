@@ -10,7 +10,7 @@ import styles from '../../../styles/modules/landing-page/LandingHero.module.css'
 import ThematicIllustration from "../../elements/thematicIllustration";
 import LanguageToggle from "../../elements/languageToggle";
 import uiText from "../../../data/ui-text";
-import Search from '../../elements/search';
+import Search from '../../elements/searchBar';
 import {useEffect} from "react";
 
 const LandingHeroSection = ({ toggleLanguage }) => {

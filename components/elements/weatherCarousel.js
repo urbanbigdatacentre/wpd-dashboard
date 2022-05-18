@@ -24,17 +24,16 @@ const WeatherCarousel = ({ toggleLanguage, weatherAPIToken, locationData }) => {
 
     const formatWeatherResponse = (res) => {
         const dayArray = res.data['daily'];
-        dayArray.for
 
     }
 
-    useEffect(() => {
-
-        const URL = `https://api.openweathermap.org/data/2.5/onecall?lat=${locationData['latitude']}&lon=${locationData['longitude']}&units=metric&exclude=hourly,minutely&appid=${weatherAPIToken}`
-        axios.get(URL).then(function (res) {
-            formatWeatherResponse(res)
-        })
-    })
+    // useEffect(() => {
+    //
+    //     const URL = `https://api.openweathermap.org/data/2.5/onecall?lat=${locationData['latitude']}&lon=${locationData['longitude']}&units=metric&exclude=hourly,minutely&appid=${weatherAPIToken}`
+    //     axios.get(URL).then(function (res) {
+    //         formatWeatherResponse(res)
+    //     })
+    // })
 
 
     return (

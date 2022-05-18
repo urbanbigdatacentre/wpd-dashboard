@@ -55,7 +55,7 @@ const FloodMap = ({ mapBoxToken, updateCarouselCoordinates, mapStylePlain, toggl
     const [jsonTooltip, setJSONTooltip] = useState({});
 
     const geoJsonLayerOfficial = new GeoJsonLayer({
-        id: 'geojson-layer',
+        id: 'geojson-layer' + Math.random(),
         data: dummyGeoJSON.features,
         pickable: true,
         stroked: true,
@@ -74,7 +74,7 @@ const FloodMap = ({ mapBoxToken, updateCarouselCoordinates, mapStylePlain, toggl
     });
 
     const geoJsonLayerCitizen = new GeoJsonLayer({
-        id: 'geojson-layer',
+        id: 'geojson-layer' + new Date().getTime(),
         data: dummyGeoJSONTwo.features,
         pickable: true,
         stroked: true,
@@ -93,7 +93,7 @@ const FloodMap = ({ mapBoxToken, updateCarouselCoordinates, mapStylePlain, toggl
     });
 
     const iconLayer = new IconLayer({
-        id: "icon-layer",
+        id: "icon-layer" + new Date().getTime(),
         data: [
             {
                 coordinates: [updateCarouselCoordinates.longitude, updateCarouselCoordinates.latitude],
@@ -153,7 +153,7 @@ const FloodMap = ({ mapBoxToken, updateCarouselCoordinates, mapStylePlain, toggl
     const controllerTrue = mapStylePlain ? Boolean(0) : Boolean(1)
 
     return (
-        <DeckGL layers={layerMapping[toggleDataType.dataType]} controller={controllerTrue} preventStyleDiffing={true} initialViewState={INITIAL_VIEW_STATE} height={'100%'} width={'100%'} ContextProvider={_MapContext.Provider} >
+        <DeckGL layers={layerMapping[toggleDataType.dataType]} controller={controllerTrue} preventStyleDiffing={true} initialViewState={INITIAL_VIEW_STATE} height={'100%'} width={'100%'} >
             <StaticMap
                 reuseMaps
                 mapStyle={mapStyleSatellite}
@@ -162,6 +162,7 @@ const FloodMap = ({ mapBoxToken, updateCarouselCoordinates, mapStylePlain, toggl
             />
 
             {/*AREA TO CREATE TOOLTIP*/}
+
 
             {tooltip.hasOwnProperty('object') ? (
                 <MyTooltipBox sx={{position: 'absolute', zIndex: 1, pointerEvents: 'none', left: tooltip.x, top: tooltip.y}}>

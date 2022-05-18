@@ -9,7 +9,7 @@ import {useEffect, useState} from "react";
 
 // Local Imports
 import uiText from "../../data/ui-text";
-import SearchBar from "./search";
+import SearchBar from "./searchBar";
 import {locationColorKeys} from "../../data/colorMapping";
 import LocationControlButton from "./locationControlButton";
 

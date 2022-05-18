@@ -12,13 +12,14 @@ import RainfallMap from "../elements/rainfallMap";
 import FloodMap from "../elements/floodMap";
 import DataTypeFilter from "../elements/dataTypeFilter";
 import LocationButtonGroup from "../elements/locationButtonGroup";
+import LoadingSkeleton from "../elements/loadingSkeleton";
 
 // Framed Map Container Component
 const FramedMapContainer = ({ mapBoxToken, mapType }) => {
 
     const maps = {
         NationalOverview: <NationalOverviewMap mapBoxToken={mapBoxToken}/>,
-        RainfallMap: <RainfallMap mapBoxToken={mapBoxToken}/>,
+        RainfallMap: (<div id={"rainfall-map-wrapper"}><RainfallMap mapBoxToken={mapBoxToken}/></div>),
         FloodMap: <FloodMap mapBoxToken={mapBoxToken}/>
     }
 

@@ -39,7 +39,7 @@ const WeatherItem = ({ toggleLanguage, data }) => {
 
     return (
         <WeatherCard>
-            <Image src={weatherPaths[data.category]} width={60} height={60}/>
+            <Image alt={'weather icon'} src={weatherPaths[data.category]} width={60} height={60}/>
             <RightBox>
                 <Temperature>{data.temperature + "°C"}</Temperature>
                 <Weekday>{days[new Date(data.timestamp).getDay()].path[toggleLanguage.language]}</Weekday>

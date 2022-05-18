@@ -26,6 +26,7 @@ const ControlPanelNav = ({toggleLanguage, updateAdditionalLocation, updatePrimar
         if (windowOverlay) { windowOverlay.addEventListener('click', function() {setAddingLocationStatus(false);})}
 
         window.onscroll = function() {
+            // Check if primary location is set
             window.location.href.includes('location') ? setSticky(document.querySelector('#control-panel').getBoundingClientRect().top < 64) : null
         }
 

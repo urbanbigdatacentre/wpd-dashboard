@@ -15,8 +15,11 @@ import {bindActionCreators} from "redux";
 const LocationButtonGroup = ({toggleLanguage, updatePrimaryLocation, updateAdditionalLocation, changeLocationPreference, locationPreference, positionMode}) => {
 
     const handleClick = (e) => {
-        console.log(e.target.value)
-        changeLocationPreference(e.target.value)
+
+        // Define Location Object & Settings - Primary vs Additional
+        const additionalLocationFilter = updateAdditionalLocation.locations.filter(item => item['placename'] === e.target.value)
+        const logicalLocationObject =  additionalLocationFilter.length ? additionalLocationFilter[0]: updatePrimaryLocation.location
+        changeLocationPreference(e.target.value, logicalLocationObject['placeid'])
     }
 
 
