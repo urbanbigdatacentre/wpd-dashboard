@@ -39,7 +39,7 @@ export const toggleLanguage = (state = languageInitialState, action) => {
 // - TOGGLE DATE
 
 const dateInitialState = {
-    startDate: dates['7Days'],
+    startDate: dates['90Days'],
     endDate: dates.now
 }
 
@@ -184,7 +184,11 @@ export const updatePluviometerData = (state = pluviometerDataInitialState, actio
                         ...state.locations,
                         {
                             id: action.locationID,
-                            pluviometerData: action.pluviometerData
+                            pluviometerData: action.pluviometerData,
+                            startDate: action.startDate,
+                            endDate: action.endDate,
+                            locationName: action.locationName,
+                            locationType: action.locationType
                         }
 
                     ]

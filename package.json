@@ -26,6 +26,7 @@
     "next": "12.1.4",
     "next-redux-wrapper": "^7.0.5",
     "react": "17.0.2",
+    "react-date-range": "^1.4.0",
     "react-dom": "17.0.2",
     "react-map-gl": "^7.0.11",
     "react-player": "^2.10.0",

@@ -15,10 +15,8 @@ import locationPaths from "../../data/locationPaths";
 import {toggleLocationPreference} from "../../store/reducers";
 
 // Map Configuration
-const mapStyleMapBox1 = 'mapbox://styles/mapbox/streets-v11';
 const mapStyleMapBoxStreets = "mapbox://styles/andyclarke/cl2su9yt2001t15mu6fasl9wp";
-const mapStyleMapBox2 = 'mapbox://styles/andyclarke/cl1z4iue1002w14qdnfkb3gjj'
-const mapStyleCarto = 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json';
+const mapStyleSatellite = 'mapbox://styles/andyclarke/cl2svsl4j002f15o39tp0dy2q';
 
 const ICON_MAPPING = {
     Student: { x: 384, y: 512, width: 128, height: 128, mask: false, anchorY: 128 },
@@ -75,7 +73,7 @@ const StreetMap = ({ toggleLanguage, toggleLocationPreference, mapBoxToken, upda
         <DeckGL layers={[layers]} controller={controllerTrue} preventStyleDiffing={true} initialViewState={INITIAL_VIEW_STATE} height={'100%'} width={'100%'} ContextProvider={_MapContext.Provider} >
             <StaticMap
                 reuseMaps
-                mapStyle={mapStyleMapBoxStreets}
+                mapStyle={mapStylePlain ? mapStyleSatellite : mapStyleMapBoxStreets}
                 mapboxAccessToken={mapBoxToken}
             />
         </DeckGL>

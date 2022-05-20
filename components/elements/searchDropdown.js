@@ -32,7 +32,6 @@ const SearchDropdown = ({ loading, configureAPI, toggleDate, toggleLanguage, sea
                 addingLocation ? updateAdditionalLocationDispatch(res.data.responseData.array_to_json[0]) : updatePrimaryLocation(res.data.responseData.array_to_json[0]);
                 !addingLocation ? changeLocationPreference(res.data.responseData.array_to_json[0]['placename'], res.data.responseData.array_to_json[0]['placeid']) : null;
                 clickHandler(item);
-                setValue("Request Complete")
             })
             .catch(err => {
                 console.log("An error occurred", err)
@@ -42,9 +41,11 @@ const SearchDropdown = ({ loading, configureAPI, toggleDate, toggleLanguage, sea
         // PLUVIOMETERS
         const API_URL = `${config[configureAPI['node_env'].NODE_ENV]}/dashboard/pluviometers?id=${item['placeid']}&startDate=${toggleDate.startDate}&endDate=${toggleDate.endDate}`
 
-        // Check if Pluviometer Data already exists for this location
+        // Check if Pluviometer Data already exists for this location and if existing timestamp is sufficient
         const filteredPluviometerData = updatePluviometerData.locations.length ? updatePluviometerData.locations.filter(function(location){
-            return location['id'] === item['placeid'];
+
+            // Return the item only if the ids are equal and the existing date is newer than the current date choice
+            return (location['id'] === item['placeid'] && (location['startDate'] < toggleDate.startDate));
         }) : [];
 
         // Make request and track promise if data doesn't already exist
@@ -52,7 +53,7 @@ const SearchDropdown = ({ loading, configureAPI, toggleDate, toggleLanguage, sea
             trackPromise(
                 axios.get(API_URL)
                     .then(res => {
-                        updatePluviometerDataDispatch(res.data['responseData']['array_to_json'], item['placeid'])
+                        updatePluviometerDataDispatch(typeof (res.data['responseData']['array_to_json']) === 'undefined' ? [] : res.data['responseData']['array_to_json'], item['placeid'], toggleDate.startDate.toString(), toggleDate.endDate.toString(), item['placename'], item['placetype'])
                     })
             ,"pluviometer-data") : null
     }

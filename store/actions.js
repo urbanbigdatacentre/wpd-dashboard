@@ -94,12 +94,16 @@ export const changeLocationPreference = (newLocationPreference, newLocationID) =
 
 
 // SET PLUVIOMETER DATA
-export const updatePluviometerData = (pluviometerDataArray, locationID) => (dispatch) => {
+export const updatePluviometerData = (pluviometerDataArray, locationID, startDate, endDate, locationName, locationType) => (dispatch) => {
 
     return dispatch({
         type: types.SETPLUVIOMETERDATA,
         pluviometerData: pluviometerDataArray,
         locationID: locationID,
+        startDate: startDate,
+        endDate: endDate,
+        locationName: locationName,
+        locationType: locationType
     })
 }
 

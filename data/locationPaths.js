@@ -3,8 +3,12 @@ export default {
         text: "Municipality",
         zoom: 8,
     },
-    S: {
-        text: "School",
+    O: {
+        text: "Organisation",
         zoom: 15,
+    },
+    E: {
+        text: "State",
+        zoom: 6,
     }
 }

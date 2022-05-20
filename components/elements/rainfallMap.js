@@ -154,6 +154,8 @@ const RainfallMap = ({ toggleLanguage, toggleDate, mapBoxToken, updateAdditional
 
             typeof(locationObj['pluviometerData']) !== 'undefined' ? locationObj['pluviometerData'].forEach(function(item) {
 
+
+
                 let formattedItem = {
                     coordinates: [item.longitude, item.latitude],
                     type: uiText.global.tooltips.measurement[toggleLanguage.language],
@@ -163,6 +165,7 @@ const RainfallMap = ({ toggleLanguage, toggleDate, mapBoxToken, updateAdditional
                     scaleCategory: 1,
                 }
                 mapData.push(formattedItem)
+
             }) : null;
         }
 

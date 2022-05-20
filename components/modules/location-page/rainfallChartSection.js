@@ -75,18 +75,6 @@ import {useEffect} from "react";
 // Rainfall Chart Section Component
 class RainfallChartSection extends React.Component {
 
-    componentDidMount() {
-        // ADD METHOD TO REQUEST DATA FOR ALL LOCATIONS
-
-        // DECLARE PLUVIOMETER API URL
-        const API_URL = `${config[this.props.configureAPI['node_env'].NODE_ENV]}/dashboard/pluviometers?id=${this.props.updatePrimaryLocation.location['placeid']}&startDate=${this.props.toggleDate.startDate}&endDate=${this.props.toggleDate.endDate}`
-        axios.get(API_URL)
-            .then(res => {
-                const responseData = typeof (res.data['responseData']['array_to_json']) !== 'undefined' ? res.data['responseData']['array_to_json'] : [];
-                this.props.updatePluviometerData(responseData, this.props.updatePrimaryLocation.location['placeid'])
-            })
-    }
-
     render() {
         return (
             <Container className={styles.visSectionContainer}>

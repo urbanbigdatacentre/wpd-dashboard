@@ -4,8 +4,9 @@
 import {Typography, styled, Box} from "@mui/material";
 import LocationCityRoundedIcon from '@mui/icons-material/LocationCityRounded';
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
-import SchoolRoundedIcon from '@mui/icons-material/SchoolRounded';
+import PeopleIcon from '@mui/icons-material/People';
 import AccountBalanceRoundedIcon from '@mui/icons-material/AccountBalanceRounded';
+import TerrainIcon from '@mui/icons-material/Terrain';
 
 // Local Imports
 
@@ -16,9 +17,10 @@ const LocationBox = ({locationName, color}) => {
 
     const icons = {
         "City": <LocationCityRoundedIcon fontSize={"small"} sx={{marginRight: (theme) => (theme.spacing(1))}}/>,
+        "State": <TerrainIcon fontSize={"small"} sx={{marginRight: (theme) => (theme.spacing(1))}}/>,
         "Town": <AccountBalanceRoundedIcon fontSize={"small"} sx={{marginRight: (theme) => (theme.spacing(1))}}/>,
         "Municipality": <HomeRoundedIcon fontSize={"small"} sx={{marginRight: (theme) => (theme.spacing(1))}}/>,
-        "School": <SchoolRoundedIcon fontSize={"small"} sx={{marginRight: (theme) => (theme.spacing(1))}}/>
+        "Organisation": <PeopleIcon fontSize={"small"} sx={{marginRight: (theme) => (theme.spacing(1))}}/>
     }
 
     return (

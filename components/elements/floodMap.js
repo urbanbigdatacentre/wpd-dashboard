@@ -17,11 +17,7 @@ import dummyGeoJSONTwo from "../../data/dummyGeoJSONTwo";
 import locationPaths from "../../data/locationPaths";
 
 // Map Configuration
-const mapStyleMapBox1 = 'mapbox://styles/mapbox/streets-v11';
-const mapStyleMono = 'mapbox://styles/andyclarke/cl2svmbha002u15pi3k6bqxjn';
 const mapStyleSatellite = 'mapbox://styles/andyclarke/cl2svsl4j002f15o39tp0dy2q';
-const mapStyleMapBox2 = 'mapbox://styles/andyclarke/cl1z4iue1002w14qdnfkb3gjj'
-const mapStyleCarto = 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json';
 
 const ambientLight = new AmbientLight({
     color: [247, 203, 21],
