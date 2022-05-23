@@ -76,11 +76,7 @@ export default class IconClusterLayer extends CompositeLayer {
                 iconAtlas,
                 iconMapping,
                 sizeScale,
-                // getColor: (d) => {
-                //     if (d.properties.hasOwnProperty('scaleCategory')) {
-                //         return scaleColorKeys[d.properties['scaleCategory']].color
-                //     }
-                // },
+                getColor: (d) => d.properties.hasOwnProperty('scaleCategory') ? scaleColorKeys[d.properties['scaleCategory']].color : '#888888',
                 getPosition: d => d.geometry.coordinates,
                 getIcon: d => getIconName(d.properties.cluster ? d.properties.point_count : 1),
                 getSize: d => getIconSize(d.properties.cluster ? d.properties.point_count : 1)

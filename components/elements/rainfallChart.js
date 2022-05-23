@@ -18,7 +18,7 @@ import GeneralLegend from "./generalLegend";
 // Rainfall Chart Component
 const RainfallChart = ({toggleLanguage, toggleDate, updatePrimaryLocation, updateAdditionalLocation, updatePluviometerData}) => {
 
-    const [noDataArray, setNoDataArray] = useState([]);
+    const [legendDataArray, setLegendDataArray] = useState([]);
 
     useEffect(() => {
         // Select and Clear the Chart
@@ -28,15 +28,15 @@ const RainfallChart = ({toggleLanguage, toggleDate, updatePrimaryLocation, updat
         // Draw the chart again
         drawChart();
 
-    }, [toggleDate, updatePrimaryLocation, updatePluviometerData])
+    }, [toggleDate, updatePrimaryLocation, updateAdditionalLocation, updatePluviometerData])
 
     // DRAW CHART FUNCTION
     const drawChart = () => {
 
         // Set Margins
         const chartMargin = {
-            left: `75`,
-            right: `75`,
+            left: `85`,
+            right: `85`,
             top: `75`,
             bottom: `75`
         }
@@ -72,14 +72,32 @@ const RainfallChart = ({toggleLanguage, toggleDate, updatePrimaryLocation, updat
             const sameIDArray = updatePluviometerData.locations.filter(function(d) {return (d.id === location.id)})
             // If there is more than one - push the one with the highest timestamp
             if (sameIDArray.length > 1) {
-                const maxTimestamp = sameIDArray.filter(function(d) {return d['startDate'] > location['startDate']})
+                const maxTimestamp = sameIDArray.filter(function(d) {return d['startDate'] >= location['startDate']})
                 maxTimestamp.length ? dataArray.push(maxTimestamp[0]) : null
             } else {
                 dataArray.push(location)
             }
         })
+
+        // Ensure that location is one of the primary or additional locations selected by user
+        const validateLocation = (fullDataArray) => {
+
+            console.log(updatePluviometerData)
+
+            let temporaryDataArray = [];
+            fullDataArray.forEach(function(item) {
+
+                if (item['id'] === updatePrimaryLocation.location['placeid']) {temporaryDataArray.push(item)}
+                else {
+                    updateAdditionalLocation.locations.filter(location => location['placeid'] === item['id']).length ? temporaryDataArray.push(item) : null}
+            })
+            return temporaryDataArray;
+        }
+
         // Use the largest possible date range for each location object - and remo
-        const filteredDataTwo = [... new Set(dataArray)]
+        const filteredDataTwo = validateLocation([... new Set(dataArray)])
+
+
 
         // Draw area - line - circles for every location
         filteredDataTwo.forEach(function(location) {
@@ -110,15 +128,10 @@ const RainfallChart = ({toggleLanguage, toggleDate, updatePrimaryLocation, updat
 
                 completeDataset.push({locationID: location.id, data: formattedDataArray.sort(function (a, b) {return a.timestamp - b.timestamp})})
 
-            } else {
-                // =========
-                // If no pluviometer data
-                // =========
-
-                setNoDataArray([location])
-
             }
         })
+
+        setLegendDataArray(filteredDataTwo)
 
 
         // ========
@@ -253,7 +266,7 @@ const RainfallChart = ({toggleLanguage, toggleDate, updatePrimaryLocation, updat
       <ChartBox >
           {/*ADD KEY IN ABSOLUTE POSITION TO INDICATE MISSING DATA*/}
           {
-              <GeneralLegend locationData={noDataArray}/>
+              <GeneralLegend locationData={legendDataArray}/>
           }
           <LoadingSkeleton area="pluviometer-data"/>
           <svg

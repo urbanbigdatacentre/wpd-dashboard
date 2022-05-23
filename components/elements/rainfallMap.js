@@ -20,6 +20,7 @@ import LOCATION_ICON_MAPPING from "../../data/location-icon-mapping";
 import uiText from "../../data/ui-text";
 import config from "../../api/config";
 import LoadingSkeleton from "./loadingSkeleton";
+import * as d3 from "d3";
 
 
 // ==================
@@ -59,6 +60,25 @@ const RainfallMap = ({ toggleLanguage, toggleDate, mapBoxToken, updateAdditional
         zoom: additionalLocationFilter.length ?  locationPaths[additionalLocationFilter[0]['placetype']].zoom : locationPaths[updatePrimaryLocation.location['placetype']].zoom,
         locationObject: additionalLocationFilter.length ? additionalLocationFilter[0] : updatePrimaryLocation.location,
         pluviometerData: pluviometerData.length ? pluviometerData[0] : {}
+    }
+
+    // SET MAX VALUE
+    let maxValue = 0;
+
+    // Set Max Value and Filter Out Data Outside of Date Range
+    locationSettings.pluviometerData['pluviometerData'].forEach(function(item) {
+        // Set Max Value
+        let avgValue = item['records'].map(e => e.value).reduce((acc,v,i,a)=>(acc+v/a.length),0);
+        avgValue > maxValue ? maxValue = avgValue : null;
+    })
+
+    // Set Scale Category - how much rainfall in area considering max value
+    const binGenerator = d3.bin()
+        .domain([0, maxValue])
+        .thresholds(4)
+
+    const calculateScaleCategory = (pluviometer) => {
+        console.log(pluviometer)
     }
 
     // Function to render Tooltip
@@ -146,23 +166,31 @@ const RainfallMap = ({ toggleLanguage, toggleDate, mapBoxToken, updateAdditional
         }
     }
 
+
+    // DETERMINE AVG VALUE FOR EACH TIME
+
     const formatPluviometerData = (locationObj) => {
 
         const mapData = [];
 
         if (locationObj.hasOwnProperty('pluviometerData')) {
 
+
             typeof(locationObj['pluviometerData']) !== 'undefined' ? locationObj['pluviometerData'].forEach(function(item) {
 
-
+                const binsArray = binGenerator([item['records'].map(e => e.value).reduce((acc,v,i,a)=>(acc+v/a.length),0)]);
+                const bin = binsArray.map(a=>a.length)
+                    .indexOf(Math.max(...binsArray.map(a=>a.length)));
 
                 let formattedItem = {
                     coordinates: [item.longitude, item.latitude],
                     type: uiText.global.tooltips.measurement[toggleLanguage.language],
                     citizenType: uiText.global.labels.submissionTypes[item['submissiontype']][toggleLanguage.language],
                     info: item['institutioninfo'],
+                    // Need to filter records by date here **
                     records: item['records'],
-                    scaleCategory: 1,
+                    // Need to calculate scale category here **
+                    scaleCategory: bin,
                 }
                 mapData.push(formattedItem)
 
@@ -196,7 +224,6 @@ const RainfallMap = ({ toggleLanguage, toggleDate, mapBoxToken, updateAdditional
         getIcon: d => 'marker',
         sizeScale: 10,
         getSize: (d) => 4,
-        getColor: (d) => scaleColorKeys[d['scaleCategory']].color,
     });
 
 

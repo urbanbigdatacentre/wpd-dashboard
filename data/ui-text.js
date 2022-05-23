@@ -148,6 +148,18 @@ export default {
         "en": "Official Pluviometers",
         "br": ""
       },
+      "pluviometers": {
+        "en": "Active Pluviometers",
+        "br": ""
+      },
+      "dataOverview": {
+        "en": "Data Overview",
+        "br": ""
+      },
+      "meausurements": {
+        "en": "Measurements",
+        "br": ""
+      },
       "multiple": {
         "en": "Multiple",
         "br": ""
