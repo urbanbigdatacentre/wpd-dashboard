@@ -70,20 +70,20 @@ const NationalOverviewMap = ({ mapBoxToken, changeRadiusWithSlider }) => {
             // Find the index of the first symbol layer in the map style.
             let firstSymbolId;
             for (const layer of layers) {
-                if (layer.type === 'symbol') {
-                    firstSymbolId = layer.id;
-                    break;
+                    if (layer.type === 'symbol') {
+                        firstSymbolId = layer.id;
+                        break;
+                    }
                 }
+
+                map.addLayer(new MapboxLayer({ id: "dummy-layer", deck }));
+                map.addLayer(new MapboxLayer({ id: "national-overview-map", deck }), firstSymbolId);
+
+
             }
+            setMapLoaded(true);
 
-            map.addLayer(new MapboxLayer({ id: "dummy-layer", deck }));
-            map.addLayer(new MapboxLayer({ id: "national-overview-map", deck }), firstSymbolId);
-
-
-        }
-        setMapLoaded(true);
-
-    }, [deckRef, mapRef, mapLoaded]);
+        }, [deckRef, mapRef, mapLoaded]);
 
     const customLayers = [
         new HexagonLayer({

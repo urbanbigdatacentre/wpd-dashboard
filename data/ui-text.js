@@ -96,6 +96,30 @@ export default {
         "en": "Loading Search Results",
         "br": ""
       },
+      "backToSearch": {
+        "en": "Back to Search",
+        "br": ""
+      },
+      "enterALocation": {
+        "en": "Start typing to search for a location ...",
+        "br": ""
+      },
+      "searchResults": {
+        "en": "Search Results",
+        "br": ""
+      },
+      "hM": {
+        "en": "Hmmmm ",
+        "br": ""
+      },
+      "noResultsFound": {
+        "en": "Sorry! We couldn't find any locations matching ",
+        "br": ""
+      },
+      "checkYourSearch": {
+        "en": "Check your search for typos or try another query!",
+        "br": ""
+      },
       "loadingData": {
         "en": "Loading Data",
         "br": ""
@@ -106,6 +130,10 @@ export default {
       },
       "selectedLocations": {
         "en": "Selected Locations",
+        "br": ""
+      },
+      "selectedALocation": {
+        "en": "Select a Location",
         "br": ""
       },
       "changeLocation": {
@@ -126,7 +154,7 @@ export default {
       },
       "submissionTypes": {
         "C": {
-          "en": "Citizen Report",
+          "en": "Citizen Pluviometer",
           "br": ""
         },
         "O": {

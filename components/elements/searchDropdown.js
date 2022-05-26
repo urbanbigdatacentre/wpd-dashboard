@@ -2,23 +2,23 @@
 
 // Package Imports
 import {connect} from "react-redux";
-import {List, ListItem, Divider, ListItemText, ListItemButton, styled} from "@mui/material";
+import {List, ListItem, Divider, ListItemText, ListItemButton, styled, Skeleton} from "@mui/material";
 import {bindActionCreators} from "redux";
 import Link from 'next/link';
 import axios from "axios";
-import {trackPromise} from "react-promise-tracker";
+import {trackPromise, usePromiseTracker} from "react-promise-tracker";
 
 // Local Imports
 import LocationBox from "./locationBox";
 import {updatePrimaryLocation, updateAdditionalLocation, changeLocationPreference, updatePluviometerData} from "../../store/actions";
 import locationPaths from "../../data/locationPaths";
-import uiText from "../../data/ui-text";
 import config from "../../api/config";
 
 // Search Dropdown Component
 
-const SearchDropdown = ({ loading, configureAPI, toggleDate, toggleLanguage, searchText, results, updatePrimaryLocation, updateAdditionalLocation, updateAdditionalLocationDispatch, addingLocation, clickHandler, changeLocationPreference, updatePluviometerData, updatePluviometerDataDispatch }) => {
+const SearchDropdown = ({ configureAPI, toggleDate, searchText, results, updatePrimaryLocation, updateAdditionalLocationDispatch, addingLocation, clickHandler, changeLocationPreference, updatePluviometerData, updatePluviometerDataDispatch }) => {
 
+    const { promiseInProgress } = usePromiseTracker({area: "search-result", delay: 500});
 
     const handleClick = (item) => {
 
@@ -27,7 +27,8 @@ const SearchDropdown = ({ loading, configureAPI, toggleDate, toggleLanguage, sea
 
         // Make this use promise tracker - This also is causing memory leaks in the application
         // Request for simple Geometry
-        axios.get(requestURL)
+        trackPromise(
+            axios.get(requestURL)
             .then(res => {
                 addingLocation ? updateAdditionalLocationDispatch(res.data.responseData.array_to_json[0]) : updatePrimaryLocation(res.data.responseData.array_to_json[0]);
                 !addingLocation ? changeLocationPreference(res.data.responseData.array_to_json[0]['placename'], res.data.responseData.array_to_json[0]['placeid']) : null;
@@ -35,7 +36,7 @@ const SearchDropdown = ({ loading, configureAPI, toggleDate, toggleLanguage, sea
             })
             .catch(err => {
                 console.log("An error occurred", err)
-            })
+            }), "simple-geometry")
 
         // Make requests for Additional Location Data - If addingLocation
         // PLUVIOMETERS
@@ -63,17 +64,17 @@ const SearchDropdown = ({ loading, configureAPI, toggleDate, toggleLanguage, sea
         return (
             <MyList sx={{display: displayMode}} disablePadding >
 
-                {results?.data?.responseData?.array_to_json ? results['data']['responseData']['array_to_json'].map((searchResult, index) => {
+                {(!promiseInProgress) ? results?.data?.responseData?.array_to_json ? results['data']['responseData']['array_to_json'].map((searchResult, index) => {
 
                     return (
 
-                        <div  key={index}>
+                        <div key={index}>
                             <Divider/>
                             <Link href="/location" scroll={false}>
                                 <ListItemButton onClick={() => handleClick(searchResult)}>
                                     <MyListItem disablePadding>
-                                        <LocationName primary={searchResult['placename']} />
-                                        <LocationBox locationName={locationPaths[searchResult['placetype']].text} />
+                                        <LocationName primary={searchResult['placename']}/>
+                                        <LocationBox locationName={locationPaths[searchResult['placetype']].text}/>
                                     </MyListItem>
                                 </ListItemButton>
                             </Link>
@@ -81,12 +82,27 @@ const SearchDropdown = ({ loading, configureAPI, toggleDate, toggleLanguage, sea
 
                     )
 
-                }): (
+                }): <></> : (
                     <div>
                         <Divider/>
                         <ListItemButton >
                             <MyListItem disablePadding>
-                                <em>{loading ? uiText.global.labels.loadingResults[toggleLanguage.language] : uiText.global.labels.noDataFound[toggleLanguage.language]}</em>
+                                <SearchTextSkeleton variant={"rectangle"} width={`50%`} height={`20px`}/>
+                                <LocationBoxSkeleton variant={"rectangle"} width={`10%`} height={`20px`}/>
+                            </MyListItem>
+                        </ListItemButton>
+                        <Divider/>
+                        <ListItemButton >
+                            <MyListItem disablePadding>
+                                <SearchTextSkeleton variant={"rectangle"} width={`50%`} height={`20px`}/>
+                                <LocationBoxSkeleton variant={"rectangle"} width={`10%`} height={`20px`}/>
+                            </MyListItem>
+                        </ListItemButton>
+                        <Divider/>
+                        <ListItemButton >
+                            <MyListItem disablePadding>
+                                <SearchTextSkeleton variant={"rectangle"} width={`50%`} height={`20px`}/>
+                                <LocationBoxSkeleton variant={"rectangle"} width={`10%`} height={`20px`}/>
                             </MyListItem>
                         </ListItemButton>
                     </div>
@@ -100,15 +116,27 @@ const MyList = styled(List)(({theme}) => ({
     borderRadius: theme.shape.borderRadius,
     maxHeight: `290px`,
     zIndex: `700`,
+    width: `100%`,
 
 }))
 
 const MyListItem = styled(ListItem)(({theme}) => ({
-    display: `flex`
+    display: `flex`,
+    justifyContent: `space-between`,
+    minHeight: `40px`,
+    width: `100%`,
 }))
 
 const LocationName = styled(ListItemText)(({theme}) => ({
     color: `#686363`
+}))
+
+const SearchTextSkeleton = styled(Skeleton)(({theme}) => ({
+    borderRadius: theme.shape.borderRadius,
+}))
+
+const LocationBoxSkeleton = styled(Skeleton)(({theme}) => ({
+    borderRadius: theme.shape.borderRadius,
 }))
 
 

@@ -1,8 +1,7 @@
 // WPD Landing Hero Module
 
 // Package Imports
-import {Container, Typography, Box} from "@mui/material";
-import Image from 'next/image';
+import {Container, Typography, styled} from "@mui/material";
 import { connect } from 'react-redux'
 
 // Local Imports
@@ -11,24 +10,75 @@ import ThematicIllustration from "../../elements/thematicIllustration";
 import LanguageToggle from "../../elements/languageToggle";
 import uiText from "../../../data/ui-text";
 import Search from '../../elements/searchBar';
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
+import SearchResults from "../../elements/searchResults";
 
 const LandingHeroSection = ({ toggleLanguage }) => {
+
+    const [searchResultStatus, setSearchResultStatus] = useState();
+
+    const handleSearchClick = (e) => {
+        setSearchResultStatus(true);
+    }
+
+    const handleSearchClose = (e) => {
+        setSearchResultStatus(false);
+    }
+
+    useEffect(() => {
+        const window = document.querySelector('.search-results-window-overlay')
+        if (window) { window.addEventListener('click', function() {setSearchResultStatus(false);})}
+    })
 
     return (
         <>
             <LanguageToggle language={toggleLanguage.language}/>
             <ThematicIllustration />
+            {searchResultStatus ? <SearchResults searchResultsPopoverStatusHandler={handleSearchClose}/> : <></>}
             <Container className={styles.heroInnerContainer}>
-                <Typography variant={'topBlue'}>{uiText.landingPage.hero.topBlue[toggleLanguage.language]}</Typography>
-                <Typography variant={'pageTitle'}>{uiText.global.labels.projectTitle[toggleLanguage.language]}<span className={'bluePunctuation'}>.</span></Typography>
-                <Typography>{uiText.landingPage.hero.subtitle[toggleLanguage.language]}</Typography>
-                <Search />
+                <TopBlue variant={'topBlue'}>{uiText.landingPage.hero.topBlue[toggleLanguage.language]}</TopBlue>
+                <PageTitle variant={'pageTitle'}>{uiText.global.labels.projectTitle[toggleLanguage.language]}<span className={'bluePunctuation'}>.</span></PageTitle>
+                <StandardText>{uiText.landingPage.hero.subtitle[toggleLanguage.language]}</StandardText>
+                <Search iconClickHandler={handleSearchClick} />
             </Container>
 
         </>
     );
 }
+
+
+const PageTitle = styled(Typography)(({theme}) => ({
+    fontSize: `60px`,
+    textAlign: `center`,
+    [theme.breakpoints.down('lg')]: {
+        fontSize: `50px`,
+    },
+    [theme.breakpoints.down('sm')]: {
+        fontSize: `35px`,
+    },
+}))
+
+const TopBlue = styled(Typography)(({theme}) => ({
+    fontSize: `25px`,
+    textAlign: `center`,
+    [theme.breakpoints.down('lg')]: {
+        fontSize: `20px`,
+    },
+    [theme.breakpoints.down('sm')]: {
+        fontSize: `18px`,
+    },
+}))
+
+const StandardText = styled(Typography)(({theme}) => ({
+    fontSize: `16px`,
+    textAlign: `center`,
+    [theme.breakpoints.down('md')]: {
+        fontSize: `14px`,
+    },
+    [theme.breakpoints.down('sm')]: {
+        fontSize: `12px`,
+    },
+}))
 
 
 export default connect((state) => state)(LandingHeroSection)

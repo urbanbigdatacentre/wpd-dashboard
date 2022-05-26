@@ -11,6 +11,8 @@ import * as d3 from "d3";
 import uiText from "../../data/ui-text";
 import {locationColorKeys} from "../../data/colorMapping";
 import {useState} from "react";
+import LocationBox from "./locationBox";
+import locationPaths from "../../data/locationPaths";
 
 // General Legend Component
 const GeneralLegend = ({locationData, toggleLanguage, toggleDate}) => {
@@ -50,7 +52,7 @@ const GeneralLegend = ({locationData, toggleLanguage, toggleDate}) => {
                 {
                     locationData.length ? locationData.map((item, index) => {
 
-                        const colorCode = index === 0 ? '#2196F3' : locationColorKeys[index - 1]
+                        const colorCode = index === 0 ? '#2196F3' : locationColorKeys[index - 1].color
 
                         return (
                             <LegendItemBox key={index}>
@@ -63,11 +65,25 @@ const GeneralLegend = ({locationData, toggleLanguage, toggleDate}) => {
                     }) : null
                 }
             </Box>
-            <Box id={'closed-menu'} sx={{display: menuOpen ? `none` : `flex`}}>
+            <Box id={'closed-menu'} sx={{display: menuOpen ? `none` : `flex`, flexDirection: `column`}}>
                 {/*SECTION DISPLAYED ON MENU CLOSED*/}
-                <MyIconButton onClick={handleOpen} color={"primary"}>
+                <MyIconButton  onClick={handleOpen} color={"primary"}>
                     <DoubleArrowRoundedIcon fontSize={"small"} sx={{transform: `rotate(180deg)`}}/>
                 </MyIconButton>
+                <Box sx={{marginTop: (theme) => (theme.spacing(3))}}>
+                    {
+                        locationData.length ? locationData.map((item, index) => {
+
+                            const colorCode = index === 0 ? '#2196F3' : locationColorKeys[index - 1].color
+
+                            return (
+                                <LegendKeyBox key={index}>
+                                    <LegendColorKey sx={{backgroundColor: colorCode}}></LegendColorKey>
+                                </LegendKeyBox>
+                            )
+                        }) : null
+                    }
+                </Box>
             </Box>
 
         </LegendWrapperBox>
@@ -95,8 +111,20 @@ const LegendMetaInfoBox = styled(Box)(({theme}) => ({
 
 }))
 
+const LegendKeyBox = styled(Box)(({theme}) => ({
+
+}))
+
 const LegendItemBox = styled(Box)(({theme}) => ({
     marginTop: theme.spacing(3),
+
+}))
+
+const LegendColorKey = styled(Box)(({theme}) => ({
+    borderRadius: `50px`,
+    marginTop: theme.spacing(2),
+    width: theme.spacing(2),
+    height: theme.spacing(2)
 }))
 
 const LegendDataText = styled(Typography)(({theme}) => ({
@@ -116,8 +144,9 @@ const DateRangeText = styled(Typography)(({theme}) => ({
 
 const MyIconButton = styled(IconButton)(({theme}) => ({
     position: `absolute`,
+
     top: theme.spacing(1),
-    right: theme.spacing(1),
+    right: theme.spacing(2.1),
 }))
 
 export default connect((state) => state)(GeneralLegend);

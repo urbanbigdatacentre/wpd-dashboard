@@ -82,8 +82,6 @@ const RainfallChart = ({toggleLanguage, toggleDate, updatePrimaryLocation, updat
         // Ensure that location is one of the primary or additional locations selected by user
         const validateLocation = (fullDataArray) => {
 
-            console.log(updatePluviometerData)
-
             let temporaryDataArray = [];
             fullDataArray.forEach(function(item) {
 
@@ -265,9 +263,7 @@ const RainfallChart = ({toggleLanguage, toggleDate, updatePrimaryLocation, updat
     return (
       <ChartBox >
           {/*ADD KEY IN ABSOLUTE POSITION TO INDICATE MISSING DATA*/}
-          {
-              <GeneralLegend locationData={legendDataArray}/>
-          }
+          <GeneralLegend locationData={legendDataArray}/>
           <LoadingSkeleton area="pluviometer-data"/>
           <svg
               id={'rainfall-chart-svg-container'}
@@ -290,7 +286,8 @@ const ChartBox = styled(Box)(({theme}) => ({
     borderRadius: theme.shape.borderRadius,
     outline: `2px solid #E5E5E5`,
     zIndex: `100`
-
 }))
+
+
 
 export default connect((state) => state)(RainfallChart)

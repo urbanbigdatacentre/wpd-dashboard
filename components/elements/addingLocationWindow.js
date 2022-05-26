@@ -12,6 +12,7 @@ import uiText from "../../data/ui-text";
 import SearchBar from "./searchBar";
 import {locationColorKeys} from "../../data/colorMapping";
 import LocationControlButton from "./locationControlButton";
+import SearchResults from "./searchResults";
 
 // Adding Location Window Component
 const AddingLocationWindow = ({ toggleLanguage, updateAdditionalLocation, updatePrimaryLocation, addingLocationStatusHandler, changingLocation }) => {
@@ -23,6 +24,23 @@ const AddingLocationWindow = ({ toggleLanguage, updateAdditionalLocation, update
     useEffect(() => {
         updateAdditionalLocation.locations.length >= threshold ? setThresholdReached(true) : setThresholdReached(false)
     }, [updateAdditionalLocation.locations.length, threshold])
+
+    const [searchResultStatus, setSearchResultStatus] = useState();
+
+    const handleSearchClick = (e) => {
+        setSearchResultStatus(true);
+    }
+
+    const handleSearchClose = (e) => {
+        setSearchResultStatus(false);
+    }
+
+    useEffect(() => {
+        const window = document.querySelector('.search-results-window-overlay')
+        if (window) { window.addEventListener('click', function() {setSearchResultStatus(false);})}
+        const windowBelow = document.querySelector('.window-overlay')
+        if (windowBelow) { windowBelow.addEventListener('click', function() {addingLocationStatusHandler();})}
+    })
 
 
     const returnPopoverLayout = () => {
@@ -38,7 +56,7 @@ const AddingLocationWindow = ({ toggleLanguage, updateAdditionalLocation, update
         } else {
             return (
                 <>
-                    <SearchBar addingLocation={!changingLocation} popover={true}/>
+                    <SearchBar iconClickHandler={handleSearchClick} addingLocation={!changingLocation} popover={true}/>
                 </>
             )
         }
@@ -47,14 +65,12 @@ const AddingLocationWindow = ({ toggleLanguage, updateAdditionalLocation, update
 
     return (
         <AddingLocationWindowContainer >
-            <WindowOverlay className={"window-overlay"}/>
+            {searchResultStatus ? <></> : <WindowOverlay className={"window-overlay"}/>}
+            {searchResultStatus ? <SearchResults searchResultsPopoverStatusHandler={handleSearchClose}/> :
             <PopoverBox>
                 <MyCancelIconButton onClick={addingLocationStatusHandler}>
                     <CancelIcon color={"primary"}/>
                 </MyCancelIconButton>
-                <Box sx={{position: `absolute`, top: `5px`, left: `5px`, zIndex: `-1`, width: `40%`}}>
-
-                </Box>
                 <Typography variant={'h5'} sx={{fontWeight: (theme) => (theme.typography.fontWeightBold)}}>{changingLocation ? uiText.global.labels.changeLocation[toggleLanguage.language].toUpperCase() : uiText.global.labels.addNewLocation[toggleLanguage.language].toUpperCase()}<span className={'bluePunctuation'}>.</span></Typography>
                 {returnPopoverLayout()}
                 <SelectedLocationsBox>
@@ -74,7 +90,7 @@ const AddingLocationWindow = ({ toggleLanguage, updateAdditionalLocation, update
                         }) : null}
                     </LocationControlBox>
                 </SelectedLocationsBox>
-            </PopoverBox>
+            </PopoverBox> }
         </AddingLocationWindowContainer>
     );
 }

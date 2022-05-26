@@ -3,7 +3,7 @@
 // Package Imports
 import {connect} from "react-redux";
 import StaticMap from "react-map-gl";
-import axios from "axios";
+import {useCallback, useRef} from "react";
 import DeckGL from "@deck.gl/react";
 import React, {useEffect, useState} from "react";
 import {IconLayer} from '@deck.gl/layers';
@@ -18,9 +18,10 @@ import locationPaths from "../../data/locationPaths";
 import scaleColorKeys from "../../data/rainfallScaleColorMapping";
 import LOCATION_ICON_MAPPING from "../../data/location-icon-mapping";
 import uiText from "../../data/ui-text";
-import config from "../../api/config";
 import LoadingSkeleton from "./loadingSkeleton";
 import * as d3 from "d3";
+import {MapboxLayer} from "@deck.gl/mapbox";
+import TooltipChart from "./tooltipChart";
 
 
 // ==================
@@ -45,6 +46,40 @@ const AVATAR_ICON_MAPPING = {
 // Street Map Component
 const RainfallMap = ({ toggleLanguage, toggleDate, mapBoxToken, updateAdditionalLocation, updateCarouselCoordinates, mapStylePlain, updatePrimaryLocation, toggleLocationPreference, configureAPI, updatePluviometerData }) => {
 
+    // DeckGL and mapbox will both draw into this WebGL context
+    const [glContext, setGLContext] = useState();
+    const [mapLoaded, setMapLoaded] = useState(false);
+    const deckRef = useRef(null);
+    const mapRef = useRef(null);
+
+    const onMapLoad = useCallback(() => {
+
+        if (!mapLoaded) {
+
+            const map = mapRef.current.getMap();
+            const deck = deckRef.current.deck;
+
+            // MAP BOX CODE - Water currently overlaps Layers
+            const layers = map.getStyle().layers;
+
+            // Find the index of the first symbol layer in the map style.
+            let firstSymbolId;
+            for (const layer of layers) {
+                if (layer.type === 'symbol') {
+                    firstSymbolId = layer.id;
+                    break;
+                }
+            }
+
+            map.addLayer(new MapboxLayer({ id: "dummy-layer", deck }));
+            map.addLayer(new MapboxLayer({ id: "icon-cluster", deck }));
+
+        }
+        setMapLoaded(true);
+
+    }, [deckRef, mapRef, mapLoaded]);
+
+
     // Tooltip Storage
     const [hoverInfo, setHoverInfo] = useState({});
 
@@ -63,23 +98,26 @@ const RainfallMap = ({ toggleLanguage, toggleDate, mapBoxToken, updateAdditional
     }
 
     // SET MAX VALUE
-    let maxValue = 0;
+    let binArray = []
 
-    // Set Max Value and Filter Out Data Outside of Date Range
-    locationSettings.pluviometerData['pluviometerData'].forEach(function(item) {
-        // Set Max Value
+
+    // // Set Max Value and Filter Out Data Outside of Date Range
+
+    locationSettings.pluviometerData.hasOwnProperty('pluviometerData') ? locationSettings.pluviometerData['pluviometerData'].forEach(function(item) {
+        // Set Avg Value
         let avgValue = item['records'].map(e => e.value).reduce((acc,v,i,a)=>(acc+v/a.length),0);
-        avgValue > maxValue ? maxValue = avgValue : null;
+        // Push Value to Bins Array
+        binArray.push(avgValue)
     })
+        : null;
 
     // Set Scale Category - how much rainfall in area considering max value
-    const binGenerator = d3.bin()
-        .domain([0, maxValue])
-        .thresholds(4)
 
-    const calculateScaleCategory = (pluviometer) => {
-        console.log(pluviometer)
-    }
+    const linearScale = d3.scaleLinear()
+        .domain([Math.min(... binArray), Math.max( ... binArray)])
+        .range([0,4])
+
+    const colorArray = scaleColorKeys.map(a => a.color);
 
     // Function to render Tooltip
     const renderTooltip = (info) => {
@@ -87,36 +125,25 @@ const RainfallMap = ({ toggleLanguage, toggleDate, mapBoxToken, updateAdditional
 
         const wrapper = document.querySelector('#rainfall-map-wrapper')
         const wrapperWidth = wrapper ? wrapper.getBoundingClientRect().width : 1200;
+        const wrapperHeight = wrapper ? wrapper.getBoundingClientRect().height : 600;
 
-        let tooltipPositionSX;
+        let tooltipPositionSX = {
+            top: y,
+            width: `max-content`,
+        };
 
-        if (x > (wrapperWidth / 2)) {
-            tooltipPositionSX= {
-                right: wrapperWidth - x - 25,
-                width: `max-content`,
-                top: y
+        if (x > (wrapperWidth / 2)) {tooltipPositionSX['right'] = wrapperWidth - x - 25}
+        else {tooltipPositionSX['left'] = x}
+
+        if (object) {
+            if (object.hasOwnProperty('cluster')) {
+                // Set Y Position
+                if (y > (wrapperHeight / 2)) {tooltipPositionSX['top'] = y - 100}
+                else {tooltipPositionSX['top'] = y}
+            } else {
+                if (y > (wrapperHeight / 2)) {tooltipPositionSX['top'] = y - 350}
+                else {tooltipPositionSX['top'] = y}
             }
-        } else {
-            tooltipPositionSX= {
-                left: x,
-                top: y,
-                width: `max-content`,
-            }
-        }
-
-        if (info.objects) {
-            return (
-                <div className="tooltip interactive" style={{left: x, top: y}}>
-                    {info.objects.map(({name}) => {
-                        return (
-                            <div key={name}>
-                                <h5>{name}</h5>
-
-                            </div>
-                        );
-                    })}
-                </div>
-            );
         }
 
         if (!object) {
@@ -140,15 +167,14 @@ const RainfallMap = ({ toggleLanguage, toggleDate, mapBoxToken, updateAdditional
                     <TooltipFlex>
                         <Box sx={{display: `flex`, marginRight: (theme) => (theme.spacing(2))}}>
                             <TypeOrganisationBox>
-                                <Typography sx={{fontSize: `20px`}} >{object.citizenType}</Typography>
-                                <Typography sx={{fontSize: `14px`, color: (theme) => (theme.palette.primary.main)}}>{object.info}</Typography>
+                                <Typography sx={{fontSize: `14px`, fontWeight: (theme) => (theme.typography.fontWeightBold)}} >{object.citizenType.toUpperCase() + " " + object.type.toUpperCase()}<span className={"bluePunctuation"}>.</span></Typography>
+                                <Typography sx={{fontSize: `11px`, color: (theme) => (theme.palette.primary.main)}}>{object.info}</Typography>
                             </TypeOrganisationBox>
                         </Box>
-                        <Typography sx={{fontWeight: (theme) => (theme.typography.fontWeightBold)}}>{object.type.toUpperCase()}<span className={"bluePunctuation"}>.</span></Typography>
                     </TooltipFlex>
-                    <Typography sx={{fontSize: `20px`, textAlign: `left`, marginTop: (theme) => (theme.spacing(2)), marginBottom: (theme) => (theme.spacing(2))}} >{"CHART AREA"}</Typography>
+                    <TooltipChart data={object}/>
                     <TooltipFlex>
-                        <Typography sx={{color: `#888888`}} >{"Date Area"}</Typography>
+                        <Typography sx={{marginTop: (theme) => (theme.spacing(2)), color: `#888888`, fontSize: `12px`, fontWeight: (theme) => (theme.typography.fontWeightLight)}} >{new Date(d3.timeFormat("%B %d, %Y")(toggleDate.startDate)).toDateString() + " - " + new Date(d3.timeFormat("%B %d, %Y")(toggleDate.endDate)).toDateString()}</Typography>
                     </TooltipFlex>
             </MyTooltipBox>
         );
@@ -166,21 +192,16 @@ const RainfallMap = ({ toggleLanguage, toggleDate, mapBoxToken, updateAdditional
         }
     }
 
-
     // DETERMINE AVG VALUE FOR EACH TIME
-
     const formatPluviometerData = (locationObj) => {
 
         const mapData = [];
 
         if (locationObj.hasOwnProperty('pluviometerData')) {
 
-
             typeof(locationObj['pluviometerData']) !== 'undefined' ? locationObj['pluviometerData'].forEach(function(item) {
 
-                const binsArray = binGenerator([item['records'].map(e => e.value).reduce((acc,v,i,a)=>(acc+v/a.length),0)]);
-                const bin = binsArray.map(a=>a.length)
-                    .indexOf(Math.max(...binsArray.map(a=>a.length)));
+                let avgValue = item['records'].map(e => e.value).reduce((acc,v,i,a)=>(acc+v/a.length),0);
 
                 let formattedItem = {
                     coordinates: [item.longitude, item.latitude],
@@ -190,7 +211,7 @@ const RainfallMap = ({ toggleLanguage, toggleDate, mapBoxToken, updateAdditional
                     // Need to filter records by date here **
                     records: item['records'],
                     // Need to calculate scale category here **
-                    scaleCategory: bin,
+                    color: colorArray[Math.round(linearScale(avgValue))],
                 }
                 mapData.push(formattedItem)
 
@@ -217,15 +238,14 @@ const RainfallMap = ({ toggleLanguage, toggleDate, mapBoxToken, updateAdditional
     };
 
     const citizenPluviometerLayer = citizenPluviometerMapConfig.showCluster ?
-        new IconClusterLayer({...layerProps, id: 'icon-cluster', sizeScale: 40}) :
+        new IconClusterLayer({...layerProps, id: 'icon-cluster', sizeScale: 50}) :
         new IconLayer({
         ...layerProps,
         id: "citizen-pluviometer-layer" + new Date().getTime(),
         getIcon: d => 'marker',
-        sizeScale: 10,
-        getSize: (d) => 4,
+        sizeScale: 30,
+        getSize: (d) => 1,
     });
-
 
     // CITIZEN RAINFALL EVENTS LAYER
     const rainfallEventsLayer = new IconLayer({
@@ -274,22 +294,33 @@ const RainfallMap = ({ toggleLanguage, toggleDate, mapBoxToken, updateAdditional
     return (
 
         <DeckGL
+            ref={deckRef}
             layers={[layers]}
             controller={!mapStylePlain}
             preventStyleDiffing={true}
             initialViewState={INITIAL_VIEW_STATE}
+            onWebGLInitialized={setGLContext}
+            glOptions={{
+                stencil: true
+            }}
             height={'100%'}
             width={'100%'}
             onViewStateChange={hideTooltip}
             onClick={expandTooltip}
             >
             <LoadingSkeleton area="pluviometer-data"/>
-            <StaticMap
-                reuseMaps
-                views={MAP_VIEW}
-                mapStyle={mapStyleMono}
-                mapboxAccessToken={mapBoxToken}
-            />
+            {glContext && (
+                /* This is important: Mapbox must be instantiated after the WebGLContext is available */
+                <StaticMap
+                    ref={mapRef}
+                    gl={glContext}
+                    views={MAP_VIEW}
+                    mapStyle={mapStyleMono}
+                    mapboxAccessToken={mapBoxToken}
+                    onLoad={onMapLoad}
+                />
+            )}
+
 
             {renderTooltip(hoverInfo)}
 
@@ -301,7 +332,7 @@ const MyTooltipBox = styled(Box)(({theme}) => ({
     position: `absolute`,
     display: `flex`,
     flexDirection: `column`,
-    justifyContent: `space-between`,
+    justifyContent: `center`,
     backgroundColor: theme.palette.primary.light,
     borderRadius: theme.shape.borderRadius,
     padding: theme.spacing(2),
@@ -313,7 +344,7 @@ const TooltipFlex = styled(Box)(({theme}) => ({
     display: `flex`,
     justifyContent: `space-between`,
     alignItems: `center`,
-    maxHeight: `60px`
+    maxWidth: `350px`,
 }))
 
 const TypeOrganisationBox = styled(Box)(({theme}) => ({

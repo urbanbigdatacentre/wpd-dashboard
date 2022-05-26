@@ -9,6 +9,7 @@
 
 // General Imports
 import axios from 'axios';
+import {trackPromise} from "react-promise-tracker";
 
 const resources = {};
 
@@ -27,8 +28,8 @@ const makeRequestCreator = () => {
                 // Return result if it exists
                 return resources[query];
             }
-            const res = await axios(query, { cancelToken: cancel.token });
 
+            const res = await trackPromise(axios(query, { cancelToken: cancel.token }), "search-result");
             const result = res;
             // Store response
             resources[query] = result;

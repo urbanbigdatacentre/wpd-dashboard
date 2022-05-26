@@ -5,7 +5,7 @@ import {connect} from "react-redux";
 import StaticMap from "react-map-gl";
 import _MapContext from "react-map-gl";
 import DeckGL from "@deck.gl/react";
-import React, {useEffect, useState} from "react";
+import React, {useCallback, useEffect, useRef, useState} from "react";
 import {LightingEffect, AmbientLight, _SunLight as SunLight} from '@deck.gl/core';
 import {IconLayer, GeoJsonLayer} from '@deck.gl/layers';
 
@@ -15,6 +15,7 @@ import {styled, Box, Typography} from "@mui/material";
 import dummyGeoJSON from "../../data/dummyGeoJSON";
 import dummyGeoJSONTwo from "../../data/dummyGeoJSONTwo";
 import locationPaths from "../../data/locationPaths";
+import {MapboxLayer} from "@deck.gl/mapbox";
 
 // Map Configuration
 const mapStyleSatellite = 'mapbox://styles/andyclarke/cl2svsl4j002f15o39tp0dy2q';
@@ -38,17 +39,44 @@ const ICON_MAPPING = {
 };
 
 // Street Map Component
-const FloodMap = ({ mapBoxToken, updateCarouselCoordinates, mapStylePlain, toggleDataType, updateAdditionalLocation, updatePrimaryLocation, toggleLocationPreference }) => {
-
-    const [effects] = useState(() => {
-        const lightingEffect = new LightingEffect({ambientLight, dirLight});
-        lightingEffect.shadowColor = [0, 0, 0, 0.5];
-        return [lightingEffect];
-    });
+const FloodMap = ({ ctx, mapBoxToken, updateCarouselCoordinates, mapStylePlain, toggleDataType, updateAdditionalLocation, updatePrimaryLocation, toggleLocationPreference }) => {
 
 
     const [tooltip, setTooltip] = useState({});
     const [jsonTooltip, setJSONTooltip] = useState({});
+
+    // DeckGL and mapbox will both draw into this WebGL context
+    const [glContext, setGLContext] = useState();
+    const [mapLoaded, setMapLoaded] = useState(false);
+    const deckRef = useRef(null);
+    const mapRef = useRef(null);
+
+    const onMapLoad = useCallback(() => {
+
+        if (!mapLoaded) {
+
+            const map = mapRef.current.getMap();
+            const deck = deckRef.current.deck;
+
+            // MAP BOX CODE - Water currently overlaps Layers
+            const layers = map.getStyle().layers;
+
+            // Find the index of the first symbol layer in the map style.
+            let firstSymbolId;
+            for (const layer of layers) {
+                if (layer.type === 'symbol') {
+                    firstSymbolId = layer.id;
+                    break;
+                }
+            }
+
+            map.addLayer(new MapboxLayer({ id: "dummy-layer", deck }));
+            map.addLayer(new MapboxLayer({ id: "flood-citizen-event-icon-layer", deck }), firstSymbolId);
+
+        }
+        setMapLoaded(true);
+
+    }, [deckRef, mapRef, mapLoaded]);
 
     const geoJsonLayerOfficial = new GeoJsonLayer({
         id: 'geojson-layer' + Math.random(),
@@ -89,7 +117,7 @@ const FloodMap = ({ mapBoxToken, updateCarouselCoordinates, mapStylePlain, toggl
     });
 
     const iconLayer = new IconLayer({
-        id: "icon-layer" + new Date().getTime(),
+        id: "flood-citizen-event-icon-layer" + new Date().getTime(),
         data: [
             {
                 coordinates: [updateCarouselCoordinates.longitude, updateCarouselCoordinates.latitude],
@@ -149,13 +177,29 @@ const FloodMap = ({ mapBoxToken, updateCarouselCoordinates, mapStylePlain, toggl
     const controllerTrue = mapStylePlain ? Boolean(0) : Boolean(1)
 
     return (
-        <DeckGL layers={layerMapping[toggleDataType.dataType]} controller={controllerTrue} preventStyleDiffing={true} initialViewState={INITIAL_VIEW_STATE} height={'100%'} width={'100%'} >
-            <StaticMap
-                reuseMaps
-                mapStyle={mapStyleSatellite}
-                mapboxAccessToken={mapBoxToken}
-                getTooltip={({object}) => object && `Population:`}
-            />
+        <DeckGL
+            ref={deckRef}
+            onWebGLInitialized={setGLContext}
+            glOptions={{
+                stencil: true
+            }}
+            layers={layerMapping[toggleDataType.dataType]}
+            controller={controllerTrue} preventStyleDiffing={true}
+            initialViewState={INITIAL_VIEW_STATE}
+            height={'100%'}
+            width={'100%'} >
+
+            {glContext && (
+                /* This is important: Mapbox must be instantiated after the WebGLContext is available */
+                <StaticMap
+                    ref={mapRef}
+                    gl={glContext}
+                    mapStyle={mapStyleSatellite}
+                    mapboxAccessToken={mapBoxToken}
+                    getTooltip={({object}) => object && `Population:`}
+                    onLoad={onMapLoad}
+                />
+            )}
 
             {/*AREA TO CREATE TOOLTIP*/}
 

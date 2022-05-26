@@ -36,6 +36,22 @@ export const toggleLanguage = (state = languageInitialState, action) => {
     }
 }
 
+// - SET SEARCH TERM
+const searchTermInitialState = {
+    searchTerm: "",
+}
+
+export const setSearchTerm = (state = searchTermInitialState, action) => {
+    switch (action.type) {
+        case actionTypes.SETSEARCHTERM:
+            return Object.assign({}, state, {
+                searchTerm: action.searchTerm,
+            });
+        default:
+            return state
+    }
+}
+
 // - TOGGLE DATE
 
 const dateInitialState = {

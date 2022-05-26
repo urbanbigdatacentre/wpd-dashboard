@@ -6,11 +6,13 @@ import Link from 'next/link'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {useEffect} from "react";
+import _MapContext from "react-map-gl";
 
 // Component Imports
 import Footer from "../components/modules/footer";
 import MyNavbar from "../components/modules/navbar";
 import LanguageToggle from "../components/elements/languageToggle";
+import LandingHero from "../components/modules/landing-page/landingHero";
 import CitizenSection from "../components/modules/landing-page/citizenSection";
 import ControlPanel from "../components/modules/location-page/controlPanel";
 import RainfallMapSection from "../components/modules/location-page/rainfallMapSection";
@@ -25,20 +27,24 @@ import {changeLanguage, changeDate, setAPIConfig} from "../store/actions";
 
 // Style Imports
 import styles from '../styles/modules/Home.module.css'
+import LocationHero from "../components/modules/location-page/hero";
 
 
 // Landing Page Component
 const Location = (props) => {
 
+    const ctx = _MapContext.Provider
+
     useEffect(() => {
         props.setAPIConfig(props.env)
+        console.log(ctx)
     }, [props.env])
 
     return (
 
         // DASHBOARD LAYOUT
 
-        <NoSsr>
+
             <div className={styles.container}>
                 <Head>
                     <title>Waterproofing Data</title>
@@ -53,10 +59,10 @@ const Location = (props) => {
                         /*CHECK IF PRIMARY LOCATION IS SET - TO RETURN DASHBOARD OR NO LOCATION LAYOUT*/
                         props.updatePrimaryLocation.location.hasOwnProperty("placename") ? (
                             <>
-                                <CitizenSection mapBoxToken={props.env.MAPBOX_TOKEN} mapStylePlain={true}/>
+                                <LocationHero mapBoxToken={props.env.MAPBOX_TOKEN} mapStylePlain={true}/>
                                 <ControlPanel weatherAPIToken={props.env.WEATHER_API_TOKEN}/>
                                 <RainfallChartSection/>
-                                <RainfallMapSection mapBoxToken={props.env.MAPBOX_TOKEN} mapStylePlain={true}/>
+                                <RainfallMapSection mapBoxToken={props.env.MAPBOX_TOKEN} mapStylePlain={true} ctx={ctx}/>
                                 <CitizenSection mapBoxToken={props.env.MAPBOX_TOKEN} mapStylePlain={false} dashboardRender={true}/>
                                 <FloodMapSection mapBoxToken={props.env.MAPBOX_TOKEN} mapStylePlain={true}/>
                             </>
@@ -72,7 +78,7 @@ const Location = (props) => {
                 </main>
 
             </div>
-        </NoSsr>
+
     )
 }
 

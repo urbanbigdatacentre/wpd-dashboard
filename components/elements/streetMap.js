@@ -3,16 +3,14 @@
 // Package Imports
 import {connect} from "react-redux";
 import StaticMap from "react-map-gl";
-import _MapContext from "react-map-gl";
 import DeckGL from "@deck.gl/react";
-import React, {useEffect} from "react";
+import React, {useCallback, useRef, useState} from "react";
 import {IconLayer} from '@deck.gl/layers';
 
 
 // Local Imports
 import mapIcons from '../../public/images/icons/location-icon-atlas.svg';
-import locationPaths from "../../data/locationPaths";
-import {toggleLocationPreference} from "../../store/reducers";
+import {MapboxLayer} from "@deck.gl/mapbox";
 
 // Map Configuration
 const mapStyleMapBoxStreets = "mapbox://styles/andyclarke/cl2su9yt2001t15mu6fasl9wp";
@@ -26,10 +24,45 @@ const ICON_MAPPING = {
 
 
 // Street Map Component
-const StreetMap = ({ toggleLanguage, toggleLocationPreference, mapBoxToken, updateCarouselCoordinates, updateAdditionalLocation, mapStylePlain, updatePrimaryLocation }) => {
+const StreetMap = ({ toggleLocationPreference, mapBoxToken, updateCarouselCoordinates, updateAdditionalLocation, mapStylePlain, updatePrimaryLocation }) => {
 
-    const iconLayer = new IconLayer({
-        id: "icon-layer",
+    // DeckGL and mapbox will both draw into this WebGL context
+    const [glContext, setGLContext] = useState();
+    const [mapLoaded, setMapLoaded] = useState(false);
+    const deckRef = useRef(null);
+    const mapRef = useRef(null);
+
+    const onMapLoad = useCallback(() => {
+
+        if (!mapLoaded) {
+
+            const map = mapRef.current.getMap();
+            const deck = deckRef.current.deck;
+
+            // MAP BOX CODE
+            const layers = map.getStyle().layers;
+
+            // Find the index of the first symbol layer in the map style.
+            let firstSymbolId;
+            for (const layer of layers) {
+                if (layer.type === 'symbol') {
+                    firstSymbolId = layer.id;
+                    break;
+                }
+            }
+
+            map.addLayer(new MapboxLayer({ id: "dummy-layer", deck }));
+            map.addLayer(new MapboxLayer({ id: "carousel-citizen-report-layer", deck }));
+
+
+        }
+        setMapLoaded(true);
+
+    }, [deckRef, mapRef, mapLoaded]);
+
+
+    const citizenCarouselIconLayer = new IconLayer({
+        id: "carousel-citizen-report-layer",
         data: [
             {
                 coordinates: [updateCarouselCoordinates.longitude, updateCarouselCoordinates.latitude]
@@ -45,13 +78,13 @@ const StreetMap = ({ toggleLanguage, toggleLocationPreference, mapBoxToken, upda
 
     });
 
-    const additionalLocationFilter = mapStylePlain ? updateAdditionalLocation.locations.filter(item => item['placename'] === toggleLocationPreference.locationPreference): [];
+    const additionalLocationFilter = updateAdditionalLocation.locations.filter(item => item['placename'] === toggleLocationPreference.locationPreference)
 
-    const actualLocation = additionalLocationFilter.length ? additionalLocationFilter[0] : updatePrimaryLocation.location
+    const actualLocation = updateAdditionalLocation.locations.filter(item => item['placename'] === toggleLocationPreference.locationPreference).length ? additionalLocationFilter[0] : updatePrimaryLocation.location
 
     const locationSettings = {
-        initialLongitude: mapStylePlain ? updatePrimaryLocation.location.longitude - 0.17 : updateCarouselCoordinates.longitude - 0.17,
-        initialLatitude: mapStylePlain ? updatePrimaryLocation.location.latitude - 0.07 : updateCarouselCoordinates.latitude - 0.07,
+        initialLongitude: updateCarouselCoordinates.longitude - 0.17,
+        initialLatitude: updateCarouselCoordinates.latitude - 0.07,
         // zoom: 12 mapStylePlain ?  locationPaths[additionalLocationFilter['placetype']].zoom : locationPaths[actualLocation.location['placetype']].zoom
         zoom: 10
     }
@@ -66,16 +99,31 @@ const StreetMap = ({ toggleLanguage, toggleLocationPreference, mapBoxToken, upda
         bearing: 0
     };
 
-    const layers = mapStylePlain ? null : [iconLayer]
-    const controllerTrue = mapStylePlain ? Boolean(0) : Boolean(1)
-
     return (
-        <DeckGL layers={[layers]} controller={controllerTrue} preventStyleDiffing={true} initialViewState={INITIAL_VIEW_STATE} height={'100%'} width={'100%'} ContextProvider={_MapContext.Provider} >
-            <StaticMap
-                reuseMaps
-                mapStyle={mapStylePlain ? mapStyleSatellite : mapStyleMapBoxStreets}
-                mapboxAccessToken={mapBoxToken}
-            />
+        <DeckGL
+            ref={deckRef}
+            onWebGLInitialized={setGLContext}
+            glOptions={{
+                stencil: true
+            }}
+            layers={[citizenCarouselIconLayer]}
+            controller={true}
+            preventStyleDiffing={true}
+            initialViewState={INITIAL_VIEW_STATE}
+            height={'100%'} width={'100%'}
+        >
+
+            {glContext && (
+                /* This is important: Mapbox must be instantiated after the WebGLContext is available */
+                <StaticMap
+                    ref={mapRef}
+                    gl={glContext}
+                    onLoad={onMapLoad}
+                    mapStyle={mapStylePlain ? mapStyleSatellite : mapStyleMapBoxStreets}
+                    mapboxAccessToken={mapBoxToken}
+                />
+            )}
+
         </DeckGL>
     );
 

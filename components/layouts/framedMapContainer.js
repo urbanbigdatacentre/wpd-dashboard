@@ -15,12 +15,12 @@ import LocationButtonGroup from "../elements/locationButtonGroup";
 import LoadingSkeleton from "../elements/loadingSkeleton";
 
 // Framed Map Container Component
-const FramedMapContainer = ({ mapBoxToken, mapType }) => {
+const FramedMapContainer = ({ mapBoxToken, mapType, ctx }) => {
 
     const maps = {
         NationalOverview: <NationalOverviewMap mapBoxToken={mapBoxToken}/>,
-        RainfallMap: (<div id={"rainfall-map-wrapper"}><RainfallMap mapBoxToken={mapBoxToken}/></div>),
-        FloodMap: <FloodMap mapBoxToken={mapBoxToken}/>
+        RainfallMap: (<Box id={"rainfall-map-wrapper"} sx={{height: `600px`}}><RainfallMap ctx={ctx} mapBoxToken={mapBoxToken}/></Box>),
+        FloodMap: <FloodMap ctx={ctx} mapBoxToken={mapBoxToken}/>
     }
 
     return (

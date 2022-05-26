@@ -8,10 +8,11 @@ import Image from 'next/image';
 // Local Imports
 import uiText from "../../data/ui-text";
 import weatherPaths from "../../data/weatherPaths";
+import {useEffect, useState} from "react";
 
 // Weather Item Component
 
-const WeatherItem = ({ toggleLanguage, data }) => {
+const WeatherItem = ({ toggleLanguage, data, weekdayIndex }) => {
 
     const days = [
         {
@@ -39,10 +40,11 @@ const WeatherItem = ({ toggleLanguage, data }) => {
 
     return (
         <WeatherCard>
-            <Image alt={'weather icon'} src={weatherPaths[data.category]} width={60} height={60}/>
+            <Image alt={'weather icon'} src={weatherPaths[data.weather[0]['icon']].path} width={80} height={80}/>
             <RightBox>
-                <Temperature>{data.temperature + "°C"}</Temperature>
-                <Weekday>{days[new Date(data.timestamp).getDay()].path[toggleLanguage.language]}</Weekday>
+                <Temperature>{Math.round(data.temp['day']) + "°C"}</Temperature>
+                <Weekday>{days[(new Date().getDay() + weekdayIndex) % 7].path[toggleLanguage.language] }</Weekday>
+                <DateText>{new Date(data.dt * 1000).toLocaleDateString()}</DateText>
             </RightBox>
         </WeatherCard>
     );
@@ -54,7 +56,7 @@ const WeatherCard = styled(Card)(({theme}) => ({
     padding: `0rem 1rem`,
     boxShadow: `none`,
     textAlign: `center`,
-    width: `max-content`
+    width: `max-content`,
 }))
 
 const RightBox = styled(Box)(({theme}) => ({
@@ -69,13 +71,19 @@ const RightBox = styled(Box)(({theme}) => ({
 const Temperature = styled(Typography)(({theme}) => ({
     color: theme.palette.primary.light,
     fontWeight: `800`,
-    fontSize: `2.5rem`,
+    fontSize: `35px`,
 }))
 
 const Weekday = styled(Typography)(({theme}) => ({
     color: theme.palette.primary.light,
     fontWeight: `800`,
     fontSize: `1rem`,
+}))
+
+const DateText = styled(Typography)(({theme}) => ({
+    color: theme.palette.primary.light,
+    fontWeight: `300`,
+    fontSize: `.75rem`,
 }))
 
 

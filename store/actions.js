@@ -17,6 +17,14 @@ export const changeLanguage = (languageSelected) => (dispatch) => {
     })
 }
 
+// SET SEARCH TERM
+export const changeSearchTerm = (searchTerm) => (dispatch) => {
+    return dispatch({
+        type: types.SETSEARCHTERM,
+        searchTerm: searchTerm
+    })
+}
+
 // CHANGE DATE
 export const changeDate = (dateSelected) => (dispatch) => {
     return dispatch({

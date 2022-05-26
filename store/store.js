@@ -7,6 +7,7 @@ import thunkMiddleware from 'redux-thunk'
 import {
     configureAPI,
     toggleLanguage,
+    setSearchTerm,
     toggleDate,
     changeRadiusWithSlider,
     updateCarouselCoordinates,
@@ -30,6 +31,7 @@ const bindMiddleware = (middleware) => {
 const combinedReducer = combineReducers({
     configureAPI,
     toggleLanguage,
+    setSearchTerm,
     toggleDate,
     changeRadiusWithSlider,
     updateCarouselCoordinates,
@@ -57,6 +59,7 @@ const reducer = (state, action) => {
         if (state.updatePrimaryLocation) nextState.updatePrimaryLocation = state.updatePrimaryLocation;
         if (state.updateCarouselCoordinates) nextState.updateCarouselCoordinates = state.updateCarouselCoordinates;
         if (state.toggleDate.date) nextState.toggleDate.date = state.toggleDate.date;
+        if (state.setSearchTerm) nextState.setSearchTerm = state.setSearchTerm;
         if (state.toggleLanguage.language) nextState.toggleLanguage.language = state.toggleLanguage.language;
         if (state.configureAPI.node_env) nextState.configureAPI.node_env = state.configureAPI.node_env;
         return nextState;

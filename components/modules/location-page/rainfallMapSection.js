@@ -10,6 +10,7 @@ import React, {useState} from "react";
 import uiText from "../../../data/ui-text";
 import FramedMapContainer from "../../layouts/framedMapContainer";
 import MyTooltip from "../../elements/tooltip";
+import rainfallScaleColorMapping from "../../../data/rainfallScaleColorMapping";
 
 // Style Imports
 import styles from '../../../styles/modules/location-page/VisSectionLayout.module.css';
@@ -17,7 +18,7 @@ import styles from '../../../styles/modules/location-page/VisSectionLayout.modul
 
 // Rainfall Map Component
 
-const RainfallMapSection = ({ toggleLanguage, mapBoxToken }) => {
+const RainfallMapSection = ({ toggleLanguage, mapBoxToken, ctx }) => {
 
     return (
         <Container className={styles.visSectionContainer}>
@@ -34,7 +35,7 @@ const RainfallMapSection = ({ toggleLanguage, mapBoxToken }) => {
                     <Box className={styles.colorScaleWrapper}>
                         <Typography>{uiText.locationPage.rainfallMap.lowerScale[toggleLanguage.language]}</Typography>
 
-                        {[`#E3C1CA`, `#E09DAE`, `#DD6886`, `#DA4167`].map((item, index) => {
+                        {[`#F7996F`, `#EB5A56`, `#DA4167`, `#993C7A`, `#5C2F60`].map((item, index) => {
                             return (
                                 <span key={index} style={{backgroundColor: item}} className={styles.colorScaleCircle}/>
                             )
@@ -64,7 +65,7 @@ const RainfallMapSection = ({ toggleLanguage, mapBoxToken }) => {
             </Box>
             <Box>
                 {/*INSERT VIS LAYOUT HERE*/}
-                <FramedMapContainer mapBoxToken={mapBoxToken} mapType={"RainfallMap"}/>
+                <FramedMapContainer mapBoxToken={mapBoxToken} mapType={"RainfallMap"} ctx={ctx}/>
             </Box>
         </Container>
     );

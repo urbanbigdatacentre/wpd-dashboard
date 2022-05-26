@@ -12,7 +12,8 @@ import uiText from "../../data/ui-text";
 import SearchDropdown from "./searchDropdown";
 import { makeSearch } from "../../api/makeSearch";
 import config from "../../api/config";
-import LoadingSkeleton from "./loadingSkeleton";
+import {bindActionCreators} from "redux";
+import {changeSearchTerm} from "../../store/actions";
 
 // Search Component
 
@@ -29,12 +30,23 @@ class SearchBar extends React.Component {
         this._handleChange = this._handleChange.bind(this);
         this.liveSearch = this.liveSearch.bind(this);
         this._clickHandler = this._clickHandler.bind(this);
+        this._handleSearchResultWindowOpen = this._handleSearchResultWindowOpen.bind(this);
+    }
+
+    _handleSearchResultWindowOpen(e) {
+
+        if ((this.state.searchTerm !== "") && (this.state.searchTerm !== undefined)) {
+            this.props.iconClickHandler();
+            this.props.searchTermDispatch(this.state.searchTerm);
+        } else {
+            this.setState({placeholder: uiText.global.labels.enterALocation[this.props.language]})
+        }
     }
 
     _handleKeyDown(e) {
         // Trigger Search on Enter
         if (e.key === "Enter") {
-            this._handleClick();
+            this._handleSearchResultWindowOpen(e);
         }
     }
 
@@ -52,8 +64,7 @@ class SearchBar extends React.Component {
 
         // Update the state with the search term
         this.setState({searchTerm: searchTerm})
-
-
+        // Update Global State With Search Term
     }
 
     _clickHandler(item) {
@@ -62,7 +73,7 @@ class SearchBar extends React.Component {
     }
 
     get renderSearchResults() {
-        return <SearchDropdown loading={this.state.loading} addingLocation={this.props.addingLocation} searchText={this.state.searchTerm} results={this.state.liveSearchResults} clickHandler={this._clickHandler}/>;;
+        return <SearchDropdown loading={this.state.loading} addingLocation={this.props.addingLocation} searchText={this.state.searchTerm} results={this.state.liveSearchResults} clickHandler={this._clickHandler}/>;
     }
 
     async liveSearch(searchValue) {
@@ -88,7 +99,7 @@ class SearchBar extends React.Component {
 
                     endAdornment: (
                         <InputAdornment position="end">
-                            <IconButton type="submit" aria-label="search">
+                            <IconButton type="submit" aria-label="search" onClick={(e) =>this._handleSearchResultWindowOpen(e)}>
                                 <SearchIcon style={{ fill: `#2196F3` }} />
                             </IconButton>
                         </InputAdornment>
@@ -97,7 +108,8 @@ class SearchBar extends React.Component {
                              id="search-bar"
                              variant={'outlined'}
                              onInput={(e) => this._handleChange(e.target.value)}
-                             label={uiText.global.labels.searchPlaceholder[this.props.language]}
+                             onKeyDown={(e) => this._handleKeyDown(e)}
+                             label={this.props.searchPlaceholder ? this.props.searchPlaceholder : uiText.global.labels.searchPlaceholder[this.props.language]}
                              placeholder={this.state.placeholder}
                              size="small"/>
 
@@ -114,6 +126,12 @@ const mapStateToProps = state => {
         node_env: state.configureAPI.node_env
     };
 };
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        searchTermDispatch: bindActionCreators(changeSearchTerm, dispatch),
+    }
+}
 
 
 const MyFormControl = styled(FormControl)(({theme}) => ({
@@ -139,4 +157,4 @@ const MyTextField = styled(TextField)(({theme}) => ({
 
 
 
-export default connect(mapStateToProps)(SearchBar)
+export default connect(mapStateToProps, mapDispatchToProps)(SearchBar)

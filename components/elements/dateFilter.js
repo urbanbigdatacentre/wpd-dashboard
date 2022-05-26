@@ -8,7 +8,6 @@ import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import { DateRangePicker } from 'react-date-range';
 import * as d3 from 'd3';
-// import ClickAwayListener from "@mui/material/ClickAwayListener";
 
 // Local Imports
 import uiText from "../../data/ui-text";
@@ -71,9 +70,9 @@ const DateFilter = ({ language, startDate, endDate, changeDate, positionAbsolute
             <DateFilterButton value={dates["30Days"]}  >{"30 " + uiText.global.labels.days[language]}</DateFilterButton>
             <DateFilterButton value={dates["90Days"]}  >{"90 " + uiText.global.labels.days[language]}</DateFilterButton>
             <DateFilterButton id={'custom-date-button'} value={""} onClick={handleCustomClick} >{uiText.global.labels.custom[language]}</DateFilterButton>
-            <ClickAwayListener onClickAway={handleCustomClickAway}>
+            <ClickAwayListener onClickAway={(e) => handleCustomClickAway(e)}>
 
-                <span>
+                <Box>
                     <Box sx={{display: displayPicker ? `block` : `none`}}>
                     <DateRangePicker
                         maxDate={new Date()}
@@ -82,7 +81,7 @@ const DateFilter = ({ language, startDate, endDate, changeDate, positionAbsolute
                         ranges={[customSelectionRange]}
                         onChange={handleCustomSelect}/>
                     </Box>
-                </span>
+                </Box>
 
             </ClickAwayListener>
 

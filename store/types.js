@@ -6,6 +6,9 @@ export const SETAPICONFIG = "SETAPICONFIG";
 export const SWITCHLANGUAGE = "SWITCHLANGUAGE";
 export const SWITCHDATE = "SWITCHDATE";
 
+// Set Search Term
+export const SETSEARCHTERM = "SETSEARCHTERM";
+
 // National Overview Map
 export const SLIDERADIUS = "SLIDERADIUS";
 
