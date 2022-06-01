@@ -10,6 +10,9 @@ import React, {useRef, useEffect, useState, useCallback} from "react";
 import {AmbientLight, PointLight, LightingEffect} from '@deck.gl/core';
 import {HexagonLayer} from '@deck.gl/aggregation-layers';
 import {MapboxLayer} from '@deck.gl/mapbox';
+import {trackPromise, usePromiseTracker} from "react-promise-tracker";
+import axios from "axios";
+import config from "../../api/config";
 
 
 
@@ -21,19 +24,18 @@ const mapStyleBrazilOnly = 'mapbox://styles/andyclarke/cl32tkwur000p14qjkf29169z
 const DATA_URL = 'https://gist.githubusercontent.com/andyclarkemedia/a4a7865e33ea133e1a9a73d79f314cf5/raw/1c51e5225dc2b4159c50b5ba272be628bf401660/wpd-overview-dummy-data.csv'
 
 export const colorRange = [
-    [21, 101, 192],
-    [33, 150, 243],
-    [0, 209, 225],
-    [255, 186, 8],
-    [255, 140, 66],
-    [218, 65, 103]
+    [247, 153, 111],
+    [235, 90, 86],
+    [218, 65, 103],
+    [153, 60, 122],
+    [92, 47, 96]
 ];
 
 const material = {
     ambient: 1,
-    diffuse: 0.1,
-    shininess: 20,
-    specularColor: [13, 51, 343]
+    diffuse: .2,
+    shininess: 50,
+    specularColor: [218, 65, 103]
 };
 
 const INITIAL_VIEW_STATE = {
@@ -47,9 +49,11 @@ const INITIAL_VIEW_STATE = {
 };
 
 
-const NationalOverviewMap = ({ mapBoxToken, changeRadiusWithSlider }) => {
+const NationalOverviewMap = ({ configureAPI, mapBoxToken, changeRadiusWithSlider, toggleDate, changeOverviewMapView }) => {
 
     const [data, setData] = useState([]);
+
+
 
     // DeckGL and mapbox will both draw into this WebGL context
     const [glContext, setGLContext] = useState();
@@ -91,8 +95,8 @@ const NationalOverviewMap = ({ mapBoxToken, changeRadiusWithSlider }) => {
             colorRange,
             coverage: 0.75,
             data: data,
-            elevationRange: [0, 75000],
-            elevationScale: data && data.length ? 50 : 0,
+            elevationRange: [0, 25000],
+            elevationScale: 25,
             extruded: true,
             getPosition: d => d,
             radius: changeRadiusWithSlider.hexRadius,
@@ -102,14 +106,30 @@ const NationalOverviewMap = ({ mapBoxToken, changeRadiusWithSlider }) => {
     ];
 
 
+    const OVERVIEW_URL_PATHS = {
+        "Citizen Reports": `${config[configureAPI['node_env'].NODE_ENV]}/dashboard/citizenreportsoverview?startDate=${toggleDate.startDate}&endDate=${toggleDate.endDate}`,
+        // NEED TO UPDATE TWEETS - currently uses
+        "Tweets": "",
+        "Avg Daily Rainfall": `${config[configureAPI['node_env'].NODE_ENV]}/dashboard/avgrainfalloverview?startDate=${toggleDate.startDate}&endDate=${toggleDate.endDate}`,
+    }
+
     useEffect(() => {
-        require('d3-request').csv(DATA_URL, (error, response) => {
-            if (!error) {
-                const payload = response.map(d => [Number(d.lng), Number(d.lat)]);
-                setData(payload);
-            }
-        });
-    }, [data.length])
+
+        trackPromise(
+            axios.get(OVERVIEW_URL_PATHS[changeOverviewMapView.mapView])
+                .then(res => {
+                    const payload = res.data['responseData']['array_to_json'] === undefined ? [] : res.data['responseData']['array_to_json']
+                    if ((payload.length) && (changeOverviewMapView.mapView !== "Avg Daily Rainfall")) {
+                        setData(payload.map(d => [Number(d.longitude), Number(d.latitude)]))
+                    } else if ((payload.length) && (changeOverviewMapView.mapView === "Avg Daily Rainfall")) {
+                        setData(payload.map(d => [...Array(Math.round(d['avgrainreport']))].map((_, i) => [Number(d.longitude), Number(d.latitude)])).flat())
+                    } else {
+                        setData(payload)
+                    }
+                })
+        , "national-overview-map")
+
+    }, [configureAPI['node_env'].NODE_ENV, data.length, changeOverviewMapView.mapView, toggleDate.startDate, toggleDate.endDate])
 
 
 

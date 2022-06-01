@@ -44,7 +44,7 @@ const AVATAR_ICON_MAPPING = {
 
 
 // Street Map Component
-const RainfallMap = ({ toggleLanguage, toggleDate, mapBoxToken, updateAdditionalLocation, updateCarouselCoordinates, mapStylePlain, updatePrimaryLocation, toggleLocationPreference, configureAPI, updatePluviometerData }) => {
+const RainfallMap = ({ toggleLanguage, toggleDate, mapBoxToken, updateAdditionalLocation, updateCarouselCoordinates, mapStylePlain, updatePrimaryLocation, toggleLocationPreference, toggleClusterStatus, updatePluviometerData }) => {
 
     // DeckGL and mapbox will both draw into this WebGL context
     const [glContext, setGLContext] = useState();
@@ -73,6 +73,7 @@ const RainfallMap = ({ toggleLanguage, toggleDate, mapBoxToken, updateAdditional
 
             map.addLayer(new MapboxLayer({ id: "dummy-layer", deck }));
             map.addLayer(new MapboxLayer({ id: "icon-cluster", deck }));
+            map.addLayer(new MapboxLayer({ id: "citizen-pluviometer-layer", deck }, firstSymbolId));
 
         }
         setMapLoaded(true);
@@ -185,7 +186,7 @@ const RainfallMap = ({ toggleLanguage, toggleDate, mapBoxToken, updateAdditional
     }
 
     const expandTooltip = (info) => {
-        if (info.picked && citizenPluviometerMapConfig.showCluster) {
+        if (info.picked) {
             setHoverInfo(info);
         } else {
             setHoverInfo({});
@@ -226,8 +227,9 @@ const RainfallMap = ({ toggleLanguage, toggleDate, mapBoxToken, updateAdditional
         data: formatPluviometerData(locationSettings.pluviometerData),
         iconMapping: LOCATION_ICON_MAPPING,
         iconAtlas: citizenPluviometerIcons.src,
-        showCluster: true
+        showCluster: toggleClusterStatus.cluster
     }
+
     const layerProps = {
         data: citizenPluviometerMapConfig.data,
         pickable: true,
@@ -241,9 +243,10 @@ const RainfallMap = ({ toggleLanguage, toggleDate, mapBoxToken, updateAdditional
         new IconClusterLayer({...layerProps, id: 'icon-cluster', sizeScale: 50}) :
         new IconLayer({
         ...layerProps,
-        id: "citizen-pluviometer-layer" + new Date().getTime(),
+        id: "citizen-pluviometer-layer",
         getIcon: d => 'marker',
-        sizeScale: 30,
+        sizeScale: 50,
+        getColor: d => d.color,
         getSize: (d) => 1,
     });
 
@@ -306,9 +309,10 @@ const RainfallMap = ({ toggleLanguage, toggleDate, mapBoxToken, updateAdditional
             height={'100%'}
             width={'100%'}
             onViewStateChange={hideTooltip}
+            onHover={expandTooltip}
             onClick={expandTooltip}
             >
-            <LoadingSkeleton area="pluviometer-data"/>
+            <LoadingSkeleton area="pluviometer-data" text={uiText.global.labels.rainfallMapLoadingText[toggleLanguage.language]}/>
             {glContext && (
                 /* This is important: Mapbox must be instantiated after the WebGLContext is available */
                 <StaticMap

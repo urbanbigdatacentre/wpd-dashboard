@@ -30,19 +30,8 @@ const RainfallMapSection = ({ toggleLanguage, mapBoxToken, ctx }) => {
                         <Typography sx={{marginLeft: (theme) => (theme.spacing(2)), marginRight: (theme) => (theme.spacing(1)), fontWeight: (theme) => (theme.typography.fontWeightBold)}} variant={"description"}>{uiText.global.labels.howToRead[toggleLanguage.language]}</Typography>
                     </Box>
                     <Typography variant={'title'}>{uiText.locationPage.rainfallMap.title[toggleLanguage.language]}<span className={'bluePunctuation'}>.</span></Typography>
-                    <Divider sx={{width: `60%`, height: (theme) => (theme.spacing(1)), background: `linear-gradient(90deg, #2196F3 0%, #1565C0 100%)`, marginBottom: (theme) => (theme.spacing(2)), marginTop: (theme) => (theme.spacing(1))}}/>
-                    <Typography sx={{marginTop: (theme) => (theme.spacing(2)), fontWeight: (theme) => (theme.typography.fontWeightBold)}} variant={'description'}>{uiText.locationPage.rainfallMap.scaleTitle[toggleLanguage.language]}</Typography>
-                    <Box className={styles.colorScaleWrapper}>
-                        <Typography>{uiText.locationPage.rainfallMap.lowerScale[toggleLanguage.language]}</Typography>
+                    <Divider sx={{width: `60%`, height: (theme) => (theme.spacing(1)), background: `linear-gradient(90deg, #2196F3 0%, #1565C0 100%)`, marginTop: (theme) => (theme.spacing(1))}}/>
 
-                        {[`#F7996F`, `#EB5A56`, `#DA4167`, `#993C7A`, `#5C2F60`].map((item, index) => {
-                            return (
-                                <span key={index} style={{backgroundColor: item}} className={styles.colorScaleCircle}/>
-                            )
-                        })}
-
-                        <Typography>{uiText.locationPage.rainfallMap.higherScale[toggleLanguage.language]}</Typography>
-                    </Box>
                 </Box>
                 <Box className={styles.legendWrapper}>
                     {/*INSERT TEXT LAYOUT HERE*/}

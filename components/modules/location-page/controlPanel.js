@@ -3,7 +3,7 @@
 
 // Package Imports
 import {connect} from "react-redux";
-import {Box, Container, Typography} from "@mui/material";
+import {Box, Container, styled, Typography} from "@mui/material";
 import {useEffect} from "react";
 import {useState} from "react";
 
@@ -40,7 +40,7 @@ const ControlPanel = ({ toggleLanguage, updatePrimaryLocation, updateAdditionalL
     }
 
     return (
-        <Container maxWidth="lg" className={styles.controlPanelSectionContainer}>
+        <ControlPanelSectionContainer maxWidth="lg" >
 
             {
                 /*{ Section used for Adding Location Search Bar }*/
@@ -63,8 +63,18 @@ const ControlPanel = ({ toggleLanguage, updatePrimaryLocation, updateAdditionalL
                     )
                 }) : null
             }
-        </Container>
+        </ControlPanelSectionContainer>
     );
 }
+
+const ControlPanelSectionContainer = styled(Container)(({theme}) => ({
+    paddingTop: theme.spacing(10),
+    display: `flex`,
+    justifyContent: `space-between`,
+    flexDirection: `column`,
+    [theme.breakpoints.down('md')]: {
+        paddingTop: theme.spacing(6),
+    },
+}))
 
 export default connect((state) => state)(ControlPanel)

@@ -13,9 +13,16 @@ import FloodMap from "../elements/floodMap";
 import DataTypeFilter from "../elements/dataTypeFilter";
 import LocationButtonGroup from "../elements/locationButtonGroup";
 import LoadingSkeleton from "../elements/loadingSkeleton";
+import RainfallMapLegend from "../elements/rainfallMapLegend";
+import GeneralLegend from "../elements/generalLegend";
+import uiText from "../../data/ui-text";
+import OverviewMapToggleButton from "../elements/overviewMapToggleButton";
+import FloodMapLegend from "../elements/floodMapLegend";
 
 // Framed Map Container Component
-const FramedMapContainer = ({ mapBoxToken, mapType, ctx }) => {
+const FramedMapContainer = ({ mapBoxToken, mapType, ctx, updatePluviometerData, toggleLanguage }) => {
+
+
 
     const maps = {
         NationalOverview: <NationalOverviewMap mapBoxToken={mapBoxToken}/>,
@@ -28,10 +35,15 @@ const FramedMapContainer = ({ mapBoxToken, mapType, ctx }) => {
             {/*INSERT OVERLAPPING COMPONENTS LIKE CHART LEGENDS AND FILTERS HERE */}
             { mapType === "NationalOverview" ? <DateFilter positionAbsolute={true}/> : null}
             { mapType === "NationalOverview" ? <OverviewMapLegendComponent/> : null}
-            { mapType === "NationalOverview" ? null: <LocationButtonGroup positionMode={'absolute'}/>}
+            { mapType === "NationalOverview" ? <OverviewMapToggleButton/> : null}
+            { mapType === "RainfallMap" || mapType === "FloodMap" ? <LocationButtonGroup positionMode={'absolute'}/> : null}
             { mapType === "RainfallMap" ? <DataTypeFilter positionMode={'absolute'}/>: null}
+            { mapType === "RainfallMap" ? <RainfallMapLegend />: null}
+            { mapType === "RainfallMap" || mapType === "FloodMap" ? <GeneralLegend locationData={updatePluviometerData.locations}/>: null}
             { mapType === "FloodMap" ? <DataTypeFilter positionMode={`absolute`}/>: null}
+            { mapType === "FloodMap" ? <FloodMapLegend/>: null}
             <MapInnerWrapper>
+                { mapType === "NationalOverview" ? <LoadingSkeleton text={uiText.global.labels.overiewMapLoadingText[toggleLanguage.language]} area={'national-overview-map'}/> : null}
                 {maps[mapType]}
             </MapInnerWrapper>
         </MapOuterWrapper>
@@ -50,6 +62,14 @@ const MapInnerWrapper = styled(Box)(({theme}) => ({
     borderRadius: theme.shape.borderRadius,
     outline: `2px solid #E5E5E5`,
     zIndex: `100`
+}))
+
+const SwitchLocationViewText = styled(Typography)(({theme}) => ({
+    position: `absolute`,
+    top: theme.spacing(1),
+    left: theme.spacing(1),
+    zIndex: 1000,
+    fontWeight: theme.typography.fontWeightBold,
 }))
 
 

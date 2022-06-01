@@ -21,7 +21,7 @@ const DataTypeFilter = ({language, changeDataType, dataType, positionMode}) => {
     }
 
     return (
-        <DataFilterButtonGroup exclusive value={dataType} onChange={handleChange} sx={{position: positionMode}}>
+        <DataFilterButtonGroup exclusive value={dataType} onChange={handleChange} sx={{position: positionMode, right: positionMode === `absolute` ? (theme) => theme.spacing(10) : (theme) => theme.spacing(1), top: positionMode === `absolute` ? (theme) => theme.spacing(1) : (theme) => theme.spacing(0)}}>
                 <DataFilterButton value={"Combined"}>{uiText.global.labels.combined[language]}</DataFilterButton>
                 <DataFilterButton value={"Official"}>{uiText.global.labels.officialData[language]}</DataFilterButton>
                 <DataFilterButton value={"Citizen"}>{uiText.global.labels.citizenReports[language]}</DataFilterButton>
@@ -33,8 +33,6 @@ const DataTypeFilter = ({language, changeDataType, dataType, positionMode}) => {
 const DataFilterButtonGroup = styled(ToggleButtonGroup)(({theme}) => ({
     position: `absolute`,
     zIndex: 600,
-    top: theme.spacing(1),
-    right: theme.spacing(1),
     backgroundColor: theme.palette.primary.light,
     filter: `drop-shadow(0px 0px 15px rgba(33, 150, 243, 0.35))`
 }))

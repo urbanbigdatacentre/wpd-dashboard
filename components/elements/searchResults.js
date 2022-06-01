@@ -30,7 +30,7 @@ import MyButton from "./button";
 
 // Search Results Popover
 
-const SearchResultsPopover = ({toggleLanguage, searchResultsPopoverStatusHandler, setSearchTerm, configureAPI}) => {
+const SearchResultsPopover = ({toggleLanguage, searchResultsPopoverStatusHandler, setSearchTerm, configureAPI, addingLocation}) => {
 
     const [searchResults, setSearchResults] = useState(null);
 
@@ -74,7 +74,7 @@ const SearchResultsPopover = ({toggleLanguage, searchResultsPopoverStatusHandler
                               endAdornment: (
                                   <InputAdornment position="end">
                                       <Button text={uiText.global.labels.backToSearch[toggleLanguage.language]} variant={"text"} type="submit" aria-label="search" onClick={searchResultsPopoverStatusHandler}>
-                                          <Typography sx={{fontWeight: (theme) => (theme.typography.fontWeightBold), fontSize: `14px`}}>{uiText.global.labels.backToSearch[toggleLanguage.language]}</Typography>
+                                          <BackToSearchButtonText sx={{fontWeight: (theme) => (theme.typography.fontWeightBold), fontSize: `14px`}}>{uiText.global.labels.backToSearch[toggleLanguage.language]}</BackToSearchButtonText>
                                       </Button>
                                   </InputAdornment>
                               ),
@@ -92,10 +92,13 @@ const SearchResultsPopover = ({toggleLanguage, searchResultsPopoverStatusHandler
                   <Typography sx={{paddingBottom: `10px`, fontWeight: (theme) => (theme.typography.fontWeightBold)}}>{uiText.global.labels.selectedALocation[toggleLanguage.language].toUpperCase()}<span className={'bluePunctuation'}>.</span></Typography>
                   <Divider sx={{width: `100%`}}/>
                   {/*INSERT SPACE TO RENDER SEARCH RESULTS LIST*/}
-                  {searchResults?.data?.responseData !== "No data" ?<SearchDropdown addingLocation={false} searchText={setSearchTerm.searchTerm} results={searchResults} clickHandler={searchLinkClickHandler}/> : <Box sx={{marginTop: (theme) => (theme.spacing(4))}}>
-                      <Typography sx={{textAlign: `left`, fontWeight: (theme) => (theme.typography.fontWeightBold)}} variant={'h5'}>{uiText.global.labels.hM[toggleLanguage.language].toUpperCase()}<span className={'bluePunctuation'}>...</span></Typography>
-                      <Typography sx={{marginTop: (theme) => (theme.spacing(2)), marginBottom: (theme) => (theme.spacing(1)), textAlign: `left`, fontSize: `18px`, fontWeight: (theme) => (theme.typography.fontWeightLight)}} >{uiText.global.labels.noResultsFound[toggleLanguage.language]}<Typography display={"inline"} sx={{fontWeight: (theme) => (theme.typography.fontWeightBold)}}>{"'" + setSearchTerm.searchTerm + "'. "}</Typography></Typography>
-                      <Typography sx={{textAlign: `left`, fontSize: `16px`, fontWeight: (theme) => (theme.typography.fontWeightLight)}} >{uiText.global.labels.checkYourSearch[toggleLanguage.language]}</Typography>
+
+                  {/*MAKE SURE DROPDOWN KNOWS WHETHER ADDING LOCATION IS TRUE*/}
+
+                  {searchResults?.data?.responseData !== "No data" ?<SearchDropdown addingLocation={addingLocation} searchText={setSearchTerm.searchTerm} results={searchResults} clickHandler={searchLinkClickHandler}/> : <Box sx={{marginTop: (theme) => (theme.spacing(4))}}>
+                      <NoResultsTitle sx={{textAlign: `left`, fontWeight: (theme) => (theme.typography.fontWeightBold)}} variant={'h5'}>{uiText.global.labels.hM[toggleLanguage.language].toUpperCase()}<span className={'bluePunctuation'}>...</span></NoResultsTitle>
+                      <NoResultsSorry sx={{marginTop: (theme) => (theme.spacing(2)), marginBottom: (theme) => (theme.spacing(1)), textAlign: `left`, fontSize: `18px`, fontWeight: (theme) => (theme.typography.fontWeightLight)}} >{uiText.global.labels.noResultsFound[toggleLanguage.language]}<Typography display={"inline"} sx={{fontWeight: (theme) => (theme.typography.fontWeightBold)}}>{"'" + setSearchTerm.searchTerm + "'. "}</Typography></NoResultsSorry>
+                      <NoResultsCheck sx={{textAlign: `left`, fontSize: `16px`, fontWeight: (theme) => (theme.typography.fontWeightLight)}} >{uiText.global.labels.checkYourSearch[toggleLanguage.language]}</NoResultsCheck>
                   </Box>}
 
               </LocationItemsBox>
@@ -103,6 +106,30 @@ const SearchResultsPopover = ({toggleLanguage, searchResultsPopoverStatusHandler
       </SearchResultsWindowContainer>
     );
 }
+
+const NoResultsTitle = styled(Typography)(({theme}) => ({
+    [theme.breakpoints.down('md')]: {
+        fontSize: `18px`,
+    },
+}))
+
+const NoResultsSorry = styled(Typography)(({theme}) => ({
+    [theme.breakpoints.down('md')]: {
+        fontSize: `16px`,
+    },
+}))
+
+const NoResultsCheck = styled(Typography)(({theme}) => ({
+    [theme.breakpoints.down('md')]: {
+        fontSize: `12px`,
+    },
+}))
+
+const BackToSearchButtonText = styled(Typography)(({theme}) => ({
+    [theme.breakpoints.down('md')]: {
+        fontSize: `12px`,
+    },
+}))
 
 const SearchResultsWindowContainer = styled(Container)(({theme}) => ({
     position: `absolute`,
@@ -134,13 +161,20 @@ const SearchResultsPopoverBox = styled(Box)(({theme}) => ({
     opacity: `1`,
     zIndex: `3001`,
     width: `55%`,
+    height: `auto`,
     maxWidth: `1000px`,
-    minHeight: `55%`,
+    minHeight: `625px`,
     borderRadius: theme.shape.borderRadius,
     filter: `drop-shadow(0px 0px 15px rgba(33, 150, 243, 0.35))`,
     border: `1.5px solid #2196F3`,
     padding: theme.spacing(6),
     backgroundColor: theme.palette.primary.light,
+    [theme.breakpoints.down('1300')]: {
+        width: `75%`,
+    },
+    [theme.breakpoints.down('md')]: {
+        width: `85%`,
+    },
 }))
 
 
@@ -174,6 +208,12 @@ const MyFormControl = styled(FormControl)(({theme}) => ({
     border: `1px solid #E5E5E5`,
     borderRadius: theme.shape.borderRadius,
     backgroundColor: theme.palette.primary.light,
+    [theme.breakpoints.down('lg')]: {
+        width: `85%`,
+    },
+    [theme.breakpoints.down('sm')]: {
+        width: `100%`,
+    },
 
 }))
 
@@ -190,7 +230,8 @@ const MyTextField = styled(TextField)(({theme}) => ({
     },
     '&::placeholder': {
         color: `#161616`
-    }
+    },
+
 }))
 
 export default connect((state) => state)(SearchResultsPopover);

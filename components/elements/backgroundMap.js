@@ -11,7 +11,7 @@ import locationPaths from "../../data/locationPaths";
 
 
 // Map Configuration
-const mapStyleMapBoxSatelliteWContour = "mapbox://styles/andyclarke/cl3jxy8n7000d14npejdet872";
+const mapStyleMapBoxStreets = "mapbox://styles/andyclarke/cl2su9yt2001t15mu6fasl9wp";
 
 // Background Map Component
 const BackgroundMap = ({ mapBoxToken, updatePrimaryLocation }) => {
@@ -68,7 +68,7 @@ const BackgroundMap = ({ mapBoxToken, updatePrimaryLocation }) => {
                     ref={mapRef}
                     gl={glContext}
                     onLoad={onMapLoad}
-                    mapStyle={mapStyleMapBoxSatelliteWContour}
+                    mapStyle={mapStyleMapBoxStreets}
                     mapboxAccessToken={mapBoxToken}
                 />
             )}

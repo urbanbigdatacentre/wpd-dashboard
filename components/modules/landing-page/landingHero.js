@@ -34,7 +34,7 @@ const LandingHeroSection = ({ toggleLanguage }) => {
         <>
             <LanguageToggle language={toggleLanguage.language}/>
             <ThematicIllustration />
-            {searchResultStatus ? <SearchResults searchResultsPopoverStatusHandler={handleSearchClose}/> : <></>}
+            {searchResultStatus ? <SearchResults addingLocation={false} searchResultsPopoverStatusHandler={handleSearchClose}/> : <></>}
             <Container className={styles.heroInnerContainer}>
                 <TopBlue variant={'topBlue'}>{uiText.landingPage.hero.topBlue[toggleLanguage.language]}</TopBlue>
                 <PageTitle variant={'pageTitle'}>{uiText.global.labels.projectTitle[toggleLanguage.language]}<span className={'bluePunctuation'}>.</span></PageTitle>
@@ -79,6 +79,5 @@ const StandardText = styled(Typography)(({theme}) => ({
         fontSize: `12px`,
     },
 }))
-
 
 export default connect((state) => state)(LandingHeroSection)

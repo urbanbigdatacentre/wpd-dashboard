@@ -1,15 +1,7 @@
-.controlPanelSectionContainer {
-    padding-top: 100px;
-    display: flex;
-    justify-content: space-between;
-    flex-direction: column;
-}
-
 .controlPanelInnerBox {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    flex-wrap: wrap;
 }
 
 .controlPanelInnerBoxHolder {
@@ -34,7 +26,6 @@
     display: flex !important;
     justify-content: space-between;
     align-items: center;
-    flex-wrap: wrap;
     background-color: white;
     z-index: 1000;
     padding-bottom: 10px;
@@ -46,4 +37,22 @@
     width: 50%;
     flex-wrap: wrap;
     gap: 25px 5px;
+}
+
+
+
+/*MEDIA QUERIES*/
+
+
+@media only screen and (max-width: 950px) {
+    .controlPanelInnerBox, .controlPanelContainerSticky {
+        flex-direction: column;
+        align-items: flex-start;
+        padding-bottom: 30px;
+    }
+
+    .locationControlBox {
+        width: 100%;
+        margin-bottom: 10px;
+    }
 }

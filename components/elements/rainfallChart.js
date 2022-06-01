@@ -14,13 +14,18 @@ import {locationColorKeys} from "../../data/colorMapping";
 import styles from '../../styles/modules/location-page/Chart.module.css'
 import LoadingSkeleton from "./loadingSkeleton";
 import GeneralLegend from "./generalLegend";
+import uiText from "../../data/ui-text";
 
 // Rainfall Chart Component
 const RainfallChart = ({toggleLanguage, toggleDate, updatePrimaryLocation, updateAdditionalLocation, updatePluviometerData}) => {
 
     const [legendDataArray, setLegendDataArray] = useState([]);
 
+    console.log("Executing A")
+
     useEffect(() => {
+        console.log("Executing B")
+
         // Select and Clear the Chart
         const svg = d3.select('#rainfall-chart-svg-container')
         svg.selectAll("*").remove();
@@ -28,7 +33,7 @@ const RainfallChart = ({toggleLanguage, toggleDate, updatePrimaryLocation, updat
         // Draw the chart again
         drawChart();
 
-    }, [toggleDate, updatePrimaryLocation, updateAdditionalLocation, updatePluviometerData])
+    }, [updatePluviometerData.locations.length, toggleDate.startDate, toggleDate.endDate])
 
     // DRAW CHART FUNCTION
     const drawChart = () => {
@@ -264,7 +269,7 @@ const RainfallChart = ({toggleLanguage, toggleDate, updatePrimaryLocation, updat
       <ChartBox >
           {/*ADD KEY IN ABSOLUTE POSITION TO INDICATE MISSING DATA*/}
           <GeneralLegend locationData={legendDataArray}/>
-          <LoadingSkeleton area="pluviometer-data"/>
+          <LoadingSkeleton area="pluviometer-data" text={uiText.global.labels.timeSeriesLoadingText[toggleLanguage.language]}/>
           <svg
               id={'rainfall-chart-svg-container'}
               style={{

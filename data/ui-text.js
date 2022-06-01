@@ -72,6 +72,14 @@ export default {
         "en": "Download the app",
         "br": ""
       },
+      "hasCitizenData": {
+        "en": "Data Coverage",
+        "br": ""
+      },
+      "hasNoCitizenData": {
+        "en": "Limited Data Coverage",
+        "br": ""
+      },
       "combined": {
         "en": "Combined",
         "br": ""
@@ -124,6 +132,26 @@ export default {
         "en": "Loading Data",
         "br": ""
       },
+      "timeSeriesLoadingText": {
+        "en": "Plotting the Evolution of Time",
+        "br": ""
+      },
+      "rainfallMapLoadingText": {
+        "en": "Maps Don't Map Themselves",
+        "br": ""
+      },
+      "overiewMapLoadingText": {
+        "en": "Loading Everything Everywhere",
+        "br": ""
+      },
+      "holdOn": {
+        "en": "Hold On a Second",
+        "br": ""
+      },
+      "tweets": {
+        "en": "Tweets",
+        "br": ""
+      },
       "addNewLocation": {
         "en": "Add a New Location",
         "br": ""
@@ -166,6 +194,10 @@ export default {
     "tooltips": {
       "rainEvent": {
         "en": "Rain Event",
+        "br": ""
+      },
+      "switchLocationView": {
+        "en": "Switch Location View",
         "br": ""
       },
       "officialPluviometer": {
@@ -220,6 +252,10 @@ export default {
         "en": "Avg. Daily Rainfall",
         "br": ""
       },
+      "cluster": {
+        "en": "Cluster",
+        "br": ""
+      },
       "latestMeasurement": {
         "en": "Latest Measurement",
         "br": ""
@@ -238,6 +274,18 @@ export default {
       },
       "floodEvents": {
         "en": "Flood Events",
+        "br": ""
+      },
+      "browseRiskZones": {
+        "en": "Browse Risk Zones",
+        "br": ""
+      },
+      "risk": {
+        "en": "Risk",
+        "br": ""
+      },
+      "rainfallLegendDescription": {
+        "en": "Data represents measurements (mm) taken at pluviometers across ",
         "br": ""
       }
     },

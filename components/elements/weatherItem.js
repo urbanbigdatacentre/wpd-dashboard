@@ -57,6 +57,9 @@ const WeatherCard = styled(Card)(({theme}) => ({
     boxShadow: `none`,
     textAlign: `center`,
     width: `max-content`,
+    [theme.breakpoints.down('1250')]: {
+        padding: `0rem .25rem`,
+    },
 }))
 
 const RightBox = styled(Box)(({theme}) => ({

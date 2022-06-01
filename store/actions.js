@@ -115,4 +115,52 @@ export const updatePluviometerData = (pluviometerDataArray, locationID, startDat
     })
 }
 
+// REMOVE PLUVIOMETER DATA
+export const removePluviometerData = (locationID) => (dispatch) => {
+
+    return dispatch({
+        type: types.REMOVEPLUVIOMETERDATA,
+        locationID: locationID
+    })
+}
+
+// SET FLOODZONES DATA
+export const updateFloodZonesData = (floodDataArray, locationID, locationName) => (dispatch) => {
+
+    return dispatch({
+        type: types.SETFLOODDATA,
+        floodData: floodDataArray,
+        locationID: locationID,
+        locationName: locationName,
+    })
+}
+
+// REMOVE FLOODZONES DATA
+export const removeFloodZonesData = (locationID) => (dispatch) => {
+
+    return dispatch({
+        type: types.REMOVEFLOODDATA,
+        locationID: locationID
+    })
+}
+
+// CLUSTER RAINFALL MAP
+export const setClusterStatus = (clusterStatus) => (dispatch) => {
+
+    return dispatch({
+        type: types.CLUSTERRAINFALLMAP,
+        cluster: clusterStatus,
+    })
+}
+
+
+// SET OVERVIEW MAP VIEW
+export const setOverviewMapView = (mapView) => (dispatch) => {
+
+    return dispatch({
+        type: types.SETOVERVIEWMAPVIEW,
+        mapView: mapView,
+    })
+}
+
 

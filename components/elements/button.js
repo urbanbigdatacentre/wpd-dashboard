@@ -51,6 +51,9 @@ export default class MyButton extends React.Component {
 }
 
 const MyButtonStyled = styled(Button)(({theme}) => ({
-    width: `max-content`
+    width: `max-content`,
+    [theme.breakpoints.down('sm')]: {
+        fontSize: `12px`,
+    },
 }))
 

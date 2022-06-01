@@ -6,14 +6,21 @@ import {connect} from "react-redux";
 import {Typography, styled, Box, IconButton} from "@mui/material";
 import CancelIcon from '@mui/icons-material/Cancel';
 import {bindActionCreators} from "redux";
-import {updateAdditionalLocation, updatePrimaryLocation, removeAdditionalLocation} from "../../store/actions";
+import {
+    changeLocationPreference,
+    updatePrimaryLocation,
+    removeAdditionalLocation,
+    removePluviometerData,
+    removeFloodZonesData
+} from "../../store/actions";
+
 
 // Local Imports
 
 
 // Location Control Button Component
 
-const LocationControlButton = ({ toggleLanguage, primary, data, color, contained, updatePrimaryLocation, updateAdditionalLocation, updatePrimaryLocationAction, removeAdditionalLocation }) => {
+const LocationControlButton = ({ toggleLocationPreference, changeLocationPreferenceDispatch, primary, data, color, contained, removePluviometerData, updateAdditionalLocation, updatePrimaryLocationAction, removeAdditionalLocation, removeFloodZonesData }) => {
 
     const handleClick = (e) => {
         if (primary) {
@@ -22,10 +29,25 @@ const LocationControlButton = ({ toggleLanguage, primary, data, color, contained
             updatePrimaryLocationAction(newPrimary)
             // Remove same item from additionalLocation state
             removeAdditionalLocation(newPrimary);
+            // Remove pluviometer Data for that item
+            removePluviometerData(data['placeid'])
+            // Remove Flood Data for that Location
+            removeFloodZonesData(data['placeid'])
+            // Set new primary as new location preference
+            if (toggleLocationPreference.locationID === data['placeid']) {
+                changeLocationPreferenceDispatch(newPrimary['placename'], newPrimary['placeid'])
+            }
+
         } else {
+            const locationItem = updateAdditionalLocation.locations.find((element, index) => element['placeid'] == data['placeid']);
+            // Remove Pluviometer Data
+            removePluviometerData(locationItem['placeid'])
+            // Remove Flood Zones Data
+            removeFloodZonesData(locationItem['placeid'])
             // Find Which Item to remove
-            removeAdditionalLocation(updateAdditionalLocation.locations.find((element, index) => element['placeid'] == data['placeid']));
-            // removeAdditionalLocation(newPrimary);
+            removeAdditionalLocation(locationItem);
+            // If location preference - change location preference
+
         }
     }
 
@@ -35,7 +57,7 @@ const LocationControlButton = ({ toggleLanguage, primary, data, color, contained
           <MyCancelIconButton sx={{display: updateAdditionalLocation.locations.length ? `block`: `none`}} onClick={() => handleClick()}>
               <CancelIcon style={{color: color}}/>
           </MyCancelIconButton>
-          <Typography sx={{fontWeight: (theme) => (theme.typography.fontWeightBold), fontSize: `14px`}} >{data['placename'].toUpperCase()}</Typography>
+          <LocationName sx={{fontWeight: (theme) => (theme.typography.fontWeightBold), fontSize: `14px`}} >{data['placename'].toUpperCase()}</LocationName>
       </MyLocationControlBox>
     );
 }
@@ -62,12 +84,22 @@ const MyLocationControlBox = styled(Box)(({theme}) => ({
     paddingBottom: `8px`,
     borderRadius: theme.shape.borderRadius,
     minWidth: `max-content`,
+
+}))
+
+const LocationName = styled(Typography)(({theme}) => ({
+    [theme.breakpoints.down('sm')]: {
+        fontSize: `12px`,
+    },
 }))
 
 const mapDispatchToProps = (dispatch) => {
     return {
         updatePrimaryLocationAction: bindActionCreators(updatePrimaryLocation, dispatch),
         removeAdditionalLocation: bindActionCreators(removeAdditionalLocation, dispatch),
+        removePluviometerData: bindActionCreators(removePluviometerData, dispatch),
+        changeLocationPreferenceDispatch: bindActionCreators(changeLocationPreference, dispatch),
+        removeFloodZonesData: bindActionCreators(removeFloodZonesData, dispatch)
     }
 }
 

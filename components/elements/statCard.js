@@ -25,17 +25,26 @@ const MyStatCard = styled(Card)(({theme}) => ({
     border: `1px solid #E5E5E5`,
     boxShadow: `none`,
     textAlign: `center`,
-    width: `max-content`
+    width: `max-content`,
+    [theme.breakpoints.down('md')]: {
+        padding: `.5rem .5rem`,
+    },
 }))
 
 const StatCardNumber = styled(Typography)(({theme}) => ({
     fontSize: `2.5rem`,
     fontWeight: `900`,
-    textAlign: `center`
+    textAlign: `center`,
+    [theme.breakpoints.down('md')]: {
+        fontSize: `30px`,
+    },
 }))
 
 const StatCardText = styled(Typography)(({theme}) => ({
     fontSize: `1rem`,
     fontWeight: theme.typography.fontWeightBold,
-    color: theme.palette.primary.main
+    color: theme.palette.primary.main,
+    [theme.breakpoints.down('md')]: {
+        fontSize: `15px`,
+    },
 }))

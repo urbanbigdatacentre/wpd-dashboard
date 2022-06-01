@@ -37,8 +37,6 @@ const LocationHero = ({toggleLanguage, mapBoxToken, mapStylePlain, updatePrimary
         setChangingLocationStatus(false);
     }
 
-    const containerHeight = mapStylePlain ? `400px`: `650px`;
-
     const renderPlainMap = () => {
         return (
             <>
@@ -54,16 +52,16 @@ const LocationHero = ({toggleLanguage, mapBoxToken, mapStylePlain, updatePrimary
                             background: `rgba(255, 255, 255, 0.75)`,
                             boxShadow: `0px 0px 15px rgba(33, 150, 243, .25)`,
                         }}} type="submit" aria-label="search">
-                        <Typography sx={{fontSize: `15px`, color: `#161616`,borderRadius: `5px`, fontWeight: (theme) => (theme.typography.fontWeightBold), textAlign: 'right', marginRight: (theme) => (theme.spacing(1))}}>{uiText.global.labels.changeLocation[toggleLanguage.language].toUpperCase()}</Typography>
+                        <ChangeLocationText sx={{fontSize: `15px`, color: `#161616`,borderRadius: `5px`, fontWeight: (theme) => (theme.typography.fontWeightBold), textAlign: 'right', marginRight: (theme) => (theme.spacing(1))}}>{uiText.global.labels.changeLocation[toggleLanguage.language].toUpperCase()}</ChangeLocationText>
                         <SearchIcon style={{ fill: `#2196F3` }} />
                     </Button>
                 </ChangeLocationContainer>
                 <MapTextCarouselWrapper>
                     <MapDescriptionTextBox>
                         {promiseInProgress ? <MySkeleton variant={'rectangular'} height={`20px`} width={`10%`}/> : <LocationBox locationName={locationPaths[updatePrimaryLocation.location['placetype']].text}/>}
-                        {promiseInProgress ? <MySkeleton variant={'rectangular'} height={`40px`} width={`40%`}/> : <Typography sx={{width: `60%`}} variant={'title'}>{updatePrimaryLocation.location['placename']}<span className={'bluePunctuation'}>.</span></Typography>}
-                        {promiseInProgress ? <MySkeleton variant={'rectangular'} height={`10px`} width={`45%`}/> : <Divider sx={{width: `25%`, height: (theme) => (theme.spacing(1)), background: `linear-gradient(90deg, #2196F3 0%, #1565C0 100%)`, marginBottom: (theme) => (theme.spacing(2)), marginTop: (theme) => (theme.spacing(1))}}/>}
-                        {promiseInProgress ? <MySkeleton variant={'rectangular'} height={`10px`} width={`50%`}/> : <Typography sx={{width: `50%`}} variant={'description'}>{uiText.locationPage.hero.descriptionPartOne[toggleLanguage.language] + updatePrimaryLocation.location['placename'] + uiText.locationPage.hero.descriptionPartTwo[toggleLanguage.language]}</Typography>}
+                        {promiseInProgress ? <MySkeleton variant={'rectangular'} height={`40px`} width={`40%`}/> : <PageTitle sx={{width: `60%`}} variant={'title'}>{updatePrimaryLocation.location['placename']}<span className={'bluePunctuation'}>.</span></PageTitle>}
+                        {promiseInProgress ? <MySkeleton variant={'rectangular'} height={`10px`} width={`45%`}/> : <MyDivider sx={{width: `25%`, height: (theme) => (theme.spacing(1)), background: `linear-gradient(90deg, #2196F3 0%, #1565C0 100%)`, marginBottom: (theme) => (theme.spacing(2)), marginTop: (theme) => (theme.spacing(1))}}/>}
+                        {promiseInProgress ? <MySkeleton variant={'rectangular'} height={`10px`} width={`50%`}/> : <StandardText sx={{width: `50%`}} variant={'description'}>{uiText.locationPage.hero.descriptionPartOne[toggleLanguage.language] + updatePrimaryLocation.location['placename'] + uiText.locationPage.hero.descriptionPartTwo[toggleLanguage.language]}</StandardText>}
                     </MapDescriptionTextBox>
                 </MapTextCarouselWrapper>
             </>
@@ -73,7 +71,7 @@ const LocationHero = ({toggleLanguage, mapBoxToken, mapStylePlain, updatePrimary
     return (
         <MapOuterWrapper>
             { renderPlainMap() }
-            <MapInnerWrapper sx={{height: containerHeight}}>
+            <MapInnerWrapper >
                 <MapBackgroundBox />
                 <BackgroundMap mapBoxToken={mapBoxToken} mapStylePlain={true}/>
             </MapInnerWrapper>
@@ -94,6 +92,19 @@ const MapInnerWrapper = styled(Box)(({theme}) => ({
     width: `100%`,
     position: `relative`,
     zIndex: `100`,
+    height: `400px`,
+    [theme.breakpoints.down('md')]: {
+        height: `300px`,
+    },
+}))
+
+const MyDivider = styled(Divider)(({theme}) => ({
+    [theme.breakpoints.down('md')]: {
+        width: `40%`,
+    },
+    [theme.breakpoints.down('sm')]: {
+        width: `50%`,
+    },
 }))
 
 const MapTextCarouselWrapper = styled(Container)(({theme}) => ({
@@ -139,13 +150,43 @@ const MapBackgroundBox = styled(Container)(({theme}) => ({
     right: `0`,
     left: `0`,
     zIndex: 500,
-    background: `linear-gradient(270deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.87) 20.19%, #FFFFFF 100%);`
+    background: `linear-gradient(270deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.87) 40.19%, #FFFFFF 100%);`
 }))
 
 const MySkeleton = styled(Skeleton)(({theme}) => ({
     borderRadius: theme.shape.borderRadius,
     backgroundColor: `rgba(22, 22, 22, 0.3)`,
     marginTop: `10px`,
+}))
+
+const PageTitle = styled(Typography)(({theme}) => ({
+    fontSize: `60px`,
+    [theme.breakpoints.down('lg')]: {
+        fontSize: `50px`,
+    },
+    [theme.breakpoints.down('sm')]: {
+        fontSize: `35px`,
+    },
+}))
+
+
+const ChangeLocationText = styled(Typography)(({theme}) => ({
+    [theme.breakpoints.down('md')]: {
+        fontSize: `14px`,
+    },
+    [theme.breakpoints.down('sm')]: {
+        fontSize: `12px`,
+    },
+}))
+
+const StandardText = styled(Typography)(({theme}) => ({
+    fontSize: `16px`,
+    [theme.breakpoints.down('md')]: {
+        fontSize: `14px`,
+    },
+    [theme.breakpoints.down('sm')]: {
+        fontSize: `12px`,
+    },
 }))
 
 export default connect((state) => state)(LocationHero)

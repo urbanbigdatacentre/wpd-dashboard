@@ -2,7 +2,7 @@
 
 // Package Imports
 import React, {useEffect} from 'react';
-import {Container, Box, Toolbar, ToggleButtonGroup, ToggleButton, styled} from "@mui/material";
+import {Container, Box, Toolbar, ToggleButtonGroup, ToggleButton, styled, Typography} from "@mui/material";
 import { connect } from 'react-redux';
 import {bindActionCreators} from "redux";
 
@@ -34,15 +34,15 @@ const LanguageToggle = ({ language, changeLanguage }) => {
                     <Container sx={{
                         background: 'linear-gradient(270deg, rgba(255, 255, 255, 0.5) 7.57%, #FFFFFF 57.64%, rgba(255, 255, 255, 0.5) 100%)'
                     }}>
-                        {uiText.global.labels.language[language].toUpperCase()}
+                        <ButtonLabel display={'inline'}>{uiText.global.labels.language[language].toUpperCase()}</ButtonLabel>
                         <StyledToggleButtonGroup
                         value={language}
                         exclusive
                         aria-label={'language selection'}
                         onChange={handleChange}
                         >
-                            <ToggleButton value={'en'}>EN</ToggleButton>
-                            <ToggleButton value={'br'}>BR</ToggleButton>
+                            <MyToggleButton value={'en'}>EN</MyToggleButton>
+                            <MyToggleButton value={'br'}>BR</MyToggleButton>
                         </StyledToggleButtonGroup>
                     </Container>
                 </Toolbar>
@@ -76,6 +76,21 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
     },
 
 }));
+
+const ButtonLabel = styled(Typography)(({theme}) => ({
+    fontWeight: theme.typography.fontWeightBold,
+    [theme.breakpoints.down('sm')]: {
+        fontSize: `14px`,
+    },
+}))
+
+
+const MyToggleButton = styled(ToggleButton)(({theme}) => ({
+    [theme.breakpoints.down('sm')]: {
+        fontSize: `14px`,
+        color: `#fff`
+    },
+}))
 
 const mapStateToProps = (state) => {
     return {

@@ -49,6 +49,10 @@ const ControlDashboardInnerBox = styled(Box)(({theme}) => ({
     justifyContent: `space-between`,
     width: `100%`,
     alignItems: `center`,
+    [theme.breakpoints.down('1250')]: {
+        flexDirection: `column`,
+        alignItems: `flex-start`,
+    },
 }))
 
 const ControlDashboardStatCardBox = styled(Box)(({theme}) => ({

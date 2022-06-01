@@ -15,7 +15,10 @@ import {
     updateAdditionalLocation,
     toggleDataType,
     toggleLocationPreference,
-    updatePluviometerData
+    updatePluviometerData,
+    toggleClusterStatus,
+    changeOverviewMapView,
+    updateFloodData
 } from "./reducers";
 
 
@@ -39,7 +42,10 @@ const combinedReducer = combineReducers({
     updateAdditionalLocation,
     toggleDataType,
     toggleLocationPreference,
-    updatePluviometerData
+    updatePluviometerData,
+    toggleClusterStatus,
+    changeOverviewMapView,
+    updateFloodData
 })
 
 // Create Root Reducer
@@ -52,6 +58,9 @@ const reducer = (state, action) => {
         }
         // Return the new payload
         // ** NB ** Possibility of Preserving State Values on Client Side here
+        if (state.changeOverviewMapView) nextState.changeOverviewMapView = state.changeOverviewMapView;
+        if (state.toggleClusterStatus) nextState.toggleClusterStatus = state.toggleClusterStatus;
+        if (state.updateFloodData) nextState.updateFloodData = state.updateFloodData;
         if (state.updatePluviometerData) nextState.updatePluviometerData = state.updatePluviometerData;
         if (state.toggleLocationPreference) nextState.toggleLocationPreference = state.toggleLocationPreference;
         if (state.toggleDataType.dataType) nextState.toggleDataType.dataType = state.toggleDataType.dataType;

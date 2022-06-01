@@ -34,8 +34,6 @@ const InlineMapContainer = ({ toggleLanguage, mapBoxToken, mapStylePlain, update
         setChangingLocationStatus(false);
     }
 
-    const containerHeight = mapStylePlain ? `400px`: `650px`;
-
     const renderPlainMap = () => {
         return (
             <>
@@ -58,9 +56,9 @@ const InlineMapContainer = ({ toggleLanguage, mapBoxToken, mapStylePlain, update
                 <MapTextCarouselWrapper>
                     <MapDescriptionTextBox>
                         <LocationBox locationName={locationPaths[updatePrimaryLocation.location['placetype']].text}/>
-                        <Typography sx={{width: `60%`}} variant={'title'}>{updatePrimaryLocation.location['placename']}<span className={'bluePunctuation'}>.</span></Typography>
+                        <SectionTitle sx={{width: `60%`}} variant={'title'}>{updatePrimaryLocation.location['placename']}<span className={'bluePunctuation'}>.</span></SectionTitle>
                         <Divider sx={{width: `25%`, height: (theme) => (theme.spacing(1)), background: `linear-gradient(90deg, #2196F3 0%, #1565C0 100%)`, marginBottom: (theme) => (theme.spacing(2)), marginTop: (theme) => (theme.spacing(1))}}/>
-                        <Typography sx={{width: `50%`}} variant={'description'}>{uiText.locationPage.hero.descriptionPartOne[toggleLanguage.language] + updatePrimaryLocation.location['placename'] + uiText.locationPage.hero.descriptionPartTwo[toggleLanguage.language]}</Typography>
+                        <StandardText sx={{width: `50%`}} variant={'description'}>{uiText.locationPage.hero.descriptionPartOne[toggleLanguage.language] + updatePrimaryLocation.location['placename'] + uiText.locationPage.hero.descriptionPartTwo[toggleLanguage.language]}</StandardText>
                     </MapDescriptionTextBox>
                 </MapTextCarouselWrapper>
             </>
@@ -71,12 +69,12 @@ const InlineMapContainer = ({ toggleLanguage, mapBoxToken, mapStylePlain, update
         return (
             <MapTextCarouselWrapper>
                 <MapDescriptionTextBox>
-                    <Typography sx={{width: `50%`}} variant={'topBlue'}>{uiText.landingPage.carouselMap.topBlue[toggleLanguage.language]}</Typography>
-                    <Typography sx={{width: `50%`}} variant={'title'}>{uiText.landingPage.carouselMap.title[toggleLanguage.language]}<span className={'bluePunctuation'}>.</span> </Typography>
+                    <TopBlue sx={{width: `50%`}} variant={'topBlue'}>{uiText.landingPage.carouselMap.topBlue[toggleLanguage.language]}</TopBlue>
+                    <SectionTitle sx={{width: `50%`}} variant={'title'}>{uiText.landingPage.carouselMap.title[toggleLanguage.language]}<span className={'bluePunctuation'}>.</span> </SectionTitle>
 
                     {
                         /*INSERT LOGIC TO HIDE DESCRIPTION AND ADD LOCATION BUTTON GROUPS*/
-                        dashboardRender ? (<LocationButtonGroup positionMode={'relative'}/>) : (<Typography variant={'description'} sx={{width: `40%`, marginTop: (theme) => (theme.spacing(1))}} >{uiText.landingPage.carouselMap.description[toggleLanguage.language]}</Typography>)
+                        dashboardRender ? (<LocationButtonGroup positionMode={'relative'}/>) : (<StandardText variant={'description'} sx={{width: `40%`, marginTop: (theme) => (theme.spacing(1))}} >{uiText.landingPage.carouselMap.description[toggleLanguage.language]}</StandardText>)
                     }
                 </MapDescriptionTextBox>
                 <CitizenCarousel/>
@@ -89,7 +87,13 @@ const InlineMapContainer = ({ toggleLanguage, mapBoxToken, mapStylePlain, update
             { mapStylePlain ? renderPlainMap() : (
                 renderFullMapCarousel()
             )}
-            <MapInnerWrapper sx={{height: containerHeight}}>
+            <MapInnerWrapper sx={theme => ({
+                height: mapStylePlain ? `400px`: `650px`,
+                [theme.breakpoints.down('600')]: {
+                    height: mapStylePlain ? `400px`: `600px`,
+                },
+
+            })}>
                 <MapBackgroundBox />
                 <StreetMap mapBoxToken={mapBoxToken} mapStylePlain={mapStylePlain}/>
             </MapInnerWrapper>
@@ -155,7 +159,50 @@ const MapBackgroundBox = styled(Container)(({theme}) => ({
     right: `0`,
     left: `0`,
     zIndex: 500,
-    background: `linear-gradient(270deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.87) 40.19%, #FFFFFF 100%);`
+    background: `linear-gradient(270deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.87) 40.19%, #FFFFFF 100%);`,
+    [theme.breakpoints.down('1000')]: {
+        width: `90%`,
+    },
+}))
+
+
+const SectionTitle = styled(Typography)(({theme}) => ({
+    fontSize: `45px`,
+    [theme.breakpoints.down('lg')]: {
+        fontSize: `40px`,
+    },
+    [theme.breakpoints.down('sm')]: {
+        fontSize: `30px`,
+    },
+    [theme.breakpoints.down('1000')]: {
+        width: `75%`,
+    },
+}))
+
+const TopBlue = styled(Typography)(({theme}) => ({
+    fontSize: `20px`,
+    [theme.breakpoints.down('lg')]: {
+        fontSize: `20px`,
+    },
+    [theme.breakpoints.down('1000')]: {
+        width: `75%`,
+    },
+    [theme.breakpoints.down('sm')]: {
+        fontSize: `18px`,
+    },
+}))
+
+const StandardText = styled(Typography)(({theme}) => ({
+    fontSize: `16px`,
+    [theme.breakpoints.down('1000')]: {
+        width: `75%`,
+    },
+    [theme.breakpoints.down('md')]: {
+        fontSize: `14px`,
+    },
+    [theme.breakpoints.down('sm')]: {
+        fontSize: `12px`,
+    },
 }))
 
 

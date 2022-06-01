@@ -26,11 +26,12 @@ const LocationBox = ({locationName, color, iconOnly}) => {
     return (
         <StyledLocationBox sx={{backgroundColor: color ? color : (theme) => (theme.palette.primary.main)}}>
             { icons.hasOwnProperty(locationName) ? icons[locationName]: null}
-            { iconOnly ? null: <Typography sx={{
+            { iconOnly ? null: <LocationText sx={{
                 paddingRight: iconOnly ? (theme) => (theme.spacing(0)) : (theme) => (theme.spacing(1)),
                 fontWeight: (theme) => (theme.typography.fontWeightBold),
-                fontSize: `11px`
-            }}>{locationName.toUpperCase()}</Typography>}
+                fontSize: `11px`,
+
+            }}>{locationName.toUpperCase()}</LocationText>}
         </StyledLocationBox>
     )
 }
@@ -47,6 +48,12 @@ const StyledLocationBox = styled(Box)(({theme}) => ({
     borderRadius: theme.shape.borderRadius,
     color: theme.palette.primary.light,
     width: `max-content`,
+}))
+
+const LocationText = styled(Typography)(({theme}) => ({
+    [theme.breakpoints.down('md')] : {
+        fontSize: `10px`
+    }
 }))
 
 

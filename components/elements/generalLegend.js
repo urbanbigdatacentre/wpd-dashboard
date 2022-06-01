@@ -15,7 +15,7 @@ import LocationBox from "./locationBox";
 import locationPaths from "../../data/locationPaths";
 
 // General Legend Component
-const GeneralLegend = ({locationData, toggleLanguage, toggleDate}) => {
+const GeneralLegend = ({locationData, toggleLanguage, toggleDate, updatePrimaryLocation}) => {
 
     const [menuOpen, setMenuOpenStatus] = useState(false);
 
@@ -25,6 +25,14 @@ const GeneralLegend = ({locationData, toggleLanguage, toggleDate}) => {
 
     const handleOpen = () => {
         setMenuOpenStatus(true)
+    }
+
+    // Reformat order of location data array
+    let sortedDataArray = [];
+
+    if (locationData.length) {
+        sortedDataArray.push( ... locationData.filter((element, index) => element['id'] === updatePrimaryLocation?.location['placeid']))
+        sortedDataArray.push( ... locationData.filter((element, index) => element['id'] !== updatePrimaryLocation?.location['placeid']))
     }
 
     const calculateMeasurements = (dataItem) => {
@@ -50,7 +58,7 @@ const GeneralLegend = ({locationData, toggleLanguage, toggleDate}) => {
                     <DateRangeText>{new Date(d3.timeFormat("%B %d, %Y")(toggleDate.startDate)).toDateString() + " - " + new Date(d3.timeFormat("%B %d, %Y")(toggleDate.endDate)).toDateString()}</DateRangeText>
                 </LegendMetaInfoBox>
                 {
-                    locationData.length ? locationData.map((item, index) => {
+                    sortedDataArray.length ? sortedDataArray.map((item, index) => {
 
                         const colorCode = index === 0 ? '#2196F3' : locationColorKeys[index - 1].color
 
@@ -70,7 +78,11 @@ const GeneralLegend = ({locationData, toggleLanguage, toggleDate}) => {
                 <MyIconButton  onClick={handleOpen} color={"primary"}>
                     <DoubleArrowRoundedIcon fontSize={"small"} sx={{transform: `rotate(180deg)`}}/>
                 </MyIconButton>
-                <Box sx={{marginTop: (theme) => (theme.spacing(3))}}>
+
+                <Box sx={{marginTop: (theme) => (theme.spacing(0))}}>
+                    <LegendKeyBox>
+                        <LegendColorKey sx={{visibility: `hidden`}}></LegendColorKey>
+                    </LegendKeyBox>
                     {
                         locationData.length ? locationData.map((item, index) => {
 
@@ -96,15 +108,15 @@ const LegendWrapperBox = styled(Box)(({theme}) => ({
     flexDirection: `column`,
     justifyContent: `flex-start`,
     alignItems: `flex-start`,
-    zIndex: 600,
-    height: `100%`,
+    zIndex: 601,
     maxWidth: theme.spacing(35),
-    right: `1px`,
+    right: `0px`,
+    bottom: `0px`,
+    top: `0px`,
     backgroundColor: theme.palette.primary.light,
-    borderRadius: theme.shape.borderRadius,
     padding: theme.spacing(3),
     paddingRight: theme.spacing(3.5),
-    filter: `drop-shadow(-4px 0px 8px rgba(33, 150, 243, 0.1))`
+    filter: `drop-shadow(-4px 0px 8px rgba(33, 150, 243, 0.1))`,
 }))
 
 const LegendMetaInfoBox = styled(Box)(({theme}) => ({
@@ -124,12 +136,15 @@ const LegendColorKey = styled(Box)(({theme}) => ({
     borderRadius: `50px`,
     marginTop: theme.spacing(2),
     width: theme.spacing(2),
-    height: theme.spacing(2)
+    height: theme.spacing(2),
 }))
 
 const LegendDataText = styled(Typography)(({theme}) => ({
     fontSize: `12px`,
     fontWeight: theme.typography.fontWeightLight,
+    [theme.breakpoints.down('md')]: {
+        display: `none`
+    },
 }))
 
 const LegendLocationName = styled(Typography)(({theme}) => ({
@@ -144,7 +159,6 @@ const DateRangeText = styled(Typography)(({theme}) => ({
 
 const MyIconButton = styled(IconButton)(({theme}) => ({
     position: `absolute`,
-
     top: theme.spacing(1),
     right: theme.spacing(2.1),
 }))

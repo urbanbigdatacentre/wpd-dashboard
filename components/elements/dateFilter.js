@@ -27,7 +27,6 @@ const DateFilter = ({ language, startDate, endDate, changeDate, positionAbsolute
     const [displayPicker, setDisplayPicker] = useState(false);
 
     const handleCustomSelect = (e) => {
-        console.log(e)
         // Change Start Date in Redux store
         changeDate({"startDate": new Date(e['selection'].startDate).getTime().toString(), "endDate": new Date(e['selection'].endDate).getTime().toString()})
     }
@@ -69,17 +68,17 @@ const DateFilter = ({ language, startDate, endDate, changeDate, positionAbsolute
             <DateFilterButton value={dates["7Days"]}  >{"7 " + uiText.global.labels.days[language]}</DateFilterButton>
             <DateFilterButton value={dates["30Days"]}  >{"30 " + uiText.global.labels.days[language]}</DateFilterButton>
             <DateFilterButton value={dates["90Days"]}  >{"90 " + uiText.global.labels.days[language]}</DateFilterButton>
-            <DateFilterButton id={'custom-date-button'} value={""} onClick={handleCustomClick} >{uiText.global.labels.custom[language]}</DateFilterButton>
+            <DateFilterButton id={'custom-date-button'} value={""} onClick={handleCustomClick}>{uiText.global.labels.custom[language]}</DateFilterButton>
             <ClickAwayListener onClickAway={(e) => handleCustomClickAway(e)}>
 
                 <Box>
-                    <Box sx={{display: displayPicker ? `block` : `none`}}>
-                    <DateRangePicker
-                        maxDate={new Date()}
-                        minDate={new Date(2021, 1, 1)}
-                        fixedHeight={true}
-                        ranges={[customSelectionRange]}
-                        onChange={handleCustomSelect}/>
+                    <Box sx={{zIndex: `90000`, display: displayPicker ? `block` : `none`}}>
+                        <DateRangePicker
+                            maxDate={new Date()}
+                            minDate={new Date(2021, 1, 1)}
+                            fixedHeight={true}
+                            ranges={[customSelectionRange]}
+                            onChange={handleCustomSelect}/>
                     </Box>
                 </Box>
 
@@ -96,7 +95,11 @@ const DateFilterButtonGroup = styled(ToggleButtonGroup)(({theme}) => ({
     top: theme.spacing(6),
     right: theme.spacing(1),
     backgroundColor: theme.palette.primary.light,
-    filter: `drop-shadow(0px 0px 15px rgba(33, 150, 243, 0.35))`
+    filter: `drop-shadow(0px 0px 15px rgba(33, 150, 243, 0.35))`,
+    [theme.breakpoints.down('sm')]: {
+        top: theme.spacing(5.5),
+        right: theme.spacing(.25),
+    },
 }))
 
 const DateFilterButton = styled(ToggleButton)(({theme}) => ({
@@ -118,6 +121,16 @@ const DateFilterButton = styled(ToggleButton)(({theme}) => ({
             backgroundColor: theme.palette.primary.darkBlue,
             color: theme.palette.primary.light,
         },
+    },
+    [theme.breakpoints.down('sm')]: {
+        fontSize: `10px`,
+        padding: `2px 6px 2px 6px`,
+    },
+    [theme.breakpoints.down('450')]: {
+        fontSize: `8px`,
+    },
+    [theme.breakpoints.down('350')]: {
+        display: `none`
     },
 }))
 

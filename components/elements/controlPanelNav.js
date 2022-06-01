@@ -35,7 +35,7 @@ const ControlPanelNav = ({toggleLanguage, updateAdditionalLocation, updatePrimar
     const result = sticky ? (
         <Box>
             <Box id={'control-panel'}>
-                <Box className={styles.controlPanelInnerBoxSticky} sx={{}}>
+                <Box className={styles.controlPanelInnerBoxSticky}>
                     <Container className={styles.controlPanelContainerSticky}>
                         <Box className={styles.locationControlBox}>
                             <MyButton text={uiText.global.labels.addLocation[toggleLanguage.language]} variant={"contained"} onClick={clickHandler}/>

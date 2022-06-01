@@ -2,42 +2,43 @@
 
 // Package Imports
 import Head from 'next/head'
-import Link from 'next/link'
+import {usePromiseTracker} from "react-promise-tracker";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {useEffect} from "react";
-import _MapContext from "react-map-gl";
 
 // Component Imports
 import Footer from "../components/modules/footer";
 import MyNavbar from "../components/modules/navbar";
 import LanguageToggle from "../components/elements/languageToggle";
-import LandingHero from "../components/modules/landing-page/landingHero";
 import CitizenSection from "../components/modules/landing-page/citizenSection";
 import ControlPanel from "../components/modules/location-page/controlPanel";
 import RainfallMapSection from "../components/modules/location-page/rainfallMapSection";
 import RainfallChartSection from "../components/modules/location-page/rainfallChartSection";
 import FloodMapSection from "../components/modules/location-page/floodMapSection";
 import NoLocationSet from "../components/modules/location-page/noLocationSet";
-import {NoSsr} from "@mui/material";
+import LocationPageSkeleton from "../components/elements/locationPageSkeleton";
+
+// Search Temp
+import SearchBar from "../components/elements/searchBar";
 
 // State MGMT Imports
 import { wrapper } from '../store/store';
-import {changeLanguage, changeDate, setAPIConfig} from "../store/actions";
+import {setAPIConfig} from "../store/actions";
 
 // Style Imports
 import styles from '../styles/modules/Home.module.css'
 import LocationHero from "../components/modules/location-page/hero";
+import {Box} from "@mui/material";
 
 
 // Landing Page Component
 const Location = (props) => {
 
-    const ctx = _MapContext.Provider
+    const {promiseInProgress} = usePromiseTracker({area: "simple-geometry", delay: 30000})
 
     useEffect(() => {
         props.setAPIConfig(props.env)
-        console.log(ctx)
     }, [props.env])
 
     return (
@@ -56,13 +57,15 @@ const Location = (props) => {
                     <LanguageToggle language={props.language}/>
 
                     {
+
+                        // FIRST CHECK WHETHER A SIMPLE GEOMETRY PROMISE IS IN PROGRESS
                         /*CHECK IF PRIMARY LOCATION IS SET - TO RETURN DASHBOARD OR NO LOCATION LAYOUT*/
-                        props.updatePrimaryLocation.location.hasOwnProperty("placename") ? (
+                        promiseInProgress ? <LocationPageSkeleton/> : props.updatePrimaryLocation.location.hasOwnProperty("placename") ? (
                             <>
                                 <LocationHero mapBoxToken={props.env.MAPBOX_TOKEN} mapStylePlain={true}/>
                                 <ControlPanel weatherAPIToken={props.env.WEATHER_API_TOKEN}/>
                                 <RainfallChartSection/>
-                                <RainfallMapSection mapBoxToken={props.env.MAPBOX_TOKEN} mapStylePlain={true} ctx={ctx}/>
+                                <RainfallMapSection mapBoxToken={props.env.MAPBOX_TOKEN} mapStylePlain={true} />
                                 <CitizenSection mapBoxToken={props.env.MAPBOX_TOKEN} mapStylePlain={false} dashboardRender={true}/>
                                 <FloodMapSection mapBoxToken={props.env.MAPBOX_TOKEN} mapStylePlain={true}/>
                             </>
@@ -72,6 +75,12 @@ const Location = (props) => {
                             </>
                         )
                     }
+
+                    {/*MEMORY LEAK IS CAUSED BECAUSE SEARCH BAR IS NOT MOUNTED WHEN MAKING API CALLS*/}
+
+                    <Box sx={{opacity: `0`}}>
+                        <SearchBar />
+                    </Box>
 
                     <Footer/>
 

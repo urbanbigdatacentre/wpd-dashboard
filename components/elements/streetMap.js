@@ -107,7 +107,7 @@ const StreetMap = ({ toggleLocationPreference, mapBoxToken, updateCarouselCoordi
                 stencil: true
             }}
             layers={[citizenCarouselIconLayer]}
-            controller={true}
+            controller={false}
             preventStyleDiffing={true}
             initialViewState={INITIAL_VIEW_STATE}
             height={'100%'} width={'100%'}

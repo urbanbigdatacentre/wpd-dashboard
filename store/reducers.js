@@ -209,6 +209,74 @@ export const updatePluviometerData = (state = pluviometerDataInitialState, actio
 
                     ]
             });
+        case actionTypes.REMOVEPLUVIOMETERDATA:
+            return Object.assign({}, state, {
+                locations: [...state.locations.filter((element, index) => element['id'] !== action.locationID)],
+            })
+        default:
+            return state
+    }
+}
+
+// - UPDATE FLOODZONES DATA
+const floodDataInitialState = {
+    locations: [],
+}
+
+export const updateFloodData = (state = floodDataInitialState, action) => {
+    switch (action.type) {
+        case actionTypes.SETFLOODDATA:
+
+            return Object.assign({}, state, {
+                locations:
+                    [
+                        ...state.locations,
+                        {
+                            id: action.locationID,
+                            locationName: action.locationName,
+                            floodData: action.floodData,
+                        }
+
+                    ]
+            });
+        case actionTypes.REMOVEFLOODDATA:
+            return Object.assign({}, state, {
+                locations: [...state.locations.filter((element, index) => element['id'] !== action.locationID)],
+            })
+        default:
+            return state
+    }
+}
+
+
+// - SETCLUSTERSTATUS
+const clusterStatusInitialState = {
+    cluster: true,
+}
+
+export const toggleClusterStatus = (state = clusterStatusInitialState, action) => {
+    switch (action.type) {
+        case actionTypes.CLUSTERRAINFALLMAP:
+            return Object.assign({}, state, {
+                cluster: action.cluster,
+            });
+        default:
+            return state
+    }
+}
+
+
+// - SET OVERVIEW MAP VIEW
+const overviewMapViewIntialState = {
+    mapView: "Citizen Reports",
+}
+
+export const changeOverviewMapView = (state = overviewMapViewIntialState, action) => {
+    switch (action.type) {
+        case actionTypes.SETOVERVIEWMAPVIEW:
+            return Object.assign({}, state, {
+                mapView: action.mapView,
+            });
         default:
             return state
     }

@@ -66,7 +66,7 @@ const AddingLocationWindow = ({ toggleLanguage, updateAdditionalLocation, update
     return (
         <AddingLocationWindowContainer >
             {searchResultStatus ? <></> : <WindowOverlay className={"window-overlay"}/>}
-            {searchResultStatus ? <SearchResults searchResultsPopoverStatusHandler={handleSearchClose}/> :
+            {searchResultStatus ? <SearchResults addingLocation={!changingLocation} searchResultsPopoverStatusHandler={handleSearchClose}/> :
             <PopoverBox>
                 <MyCancelIconButton onClick={addingLocationStatusHandler}>
                     <CancelIcon color={"primary"}/>

@@ -16,12 +16,12 @@ const Footer = ({ toggleLanguage }) => {
     return (
         <Toolbar className={styles.footer}>
             <FooterFlexBox>
-                <Typography sx={{fontWeight: (theme) => (theme.typography.fontWeightBold)}}>{uiText.global.labels.projectTitle[toggleLanguage.language].toUpperCase()}<span className={'bluePunctuation'}>.</span></Typography>
-                <Typography>© UBDC, University of Glasgow | 2022</Typography>
+                <FooterText sx={{fontWeight: (theme) => (theme.typography.fontWeightBold)}}>{uiText.global.labels.projectTitle[toggleLanguage.language].toUpperCase()}<span className={'bluePunctuation'}>.</span></FooterText>
+                <FooterText>© UBDC, University of Glasgow | 2022</FooterText>
             </FooterFlexBox>
             <FooterFlexBox>
-                <Typography sx={{textAlign: `right`}}>{uiText.global.labels.footerLinkTop[toggleLanguage.language].toUpperCase()}</Typography>
-                <Typography sx={{textAlign: `right`}}>{uiText.global.labels.footerLinkBottom[toggleLanguage.language].toUpperCase()}</Typography>
+                <FooterText sx={{textAlign: `right`}}>{uiText.global.labels.footerLinkTop[toggleLanguage.language].toUpperCase()}<span className={'bluePunctuation'}>.</span></FooterText>
+                <FooterText sx={{textAlign: `right`}}>{uiText.global.labels.footerLinkBottom[toggleLanguage.language].toUpperCase()}<span className={'bluePunctuation'}>.</span></FooterText>
             </FooterFlexBox>
         </Toolbar>
     );
@@ -32,8 +32,25 @@ const FooterFlexBox = styled(Box)(({theme}) => ({
     flexDirection: `column`,
     justifyContent: `space-between`,
     minHeight: '60px',
-
+    [theme.breakpoints.down('md')]: {
+        minHeight: '50px',
+    },
+    [theme.breakpoints.down('400')]: {
+        minHeight: '40px',
+    },
 }))
 
+const FooterText = styled(Typography)(({theme}) => ({
+
+    [theme.breakpoints.down('md')]: {
+        fontSize: `14px`,
+    },
+    [theme.breakpoints.down('sm')]: {
+        fontSize: `12px`,
+    },
+    [theme.breakpoints.down('400')]: {
+        fontSize: `10px`,
+    },
+}))
 
 export default connect((state) => state)(Footer)

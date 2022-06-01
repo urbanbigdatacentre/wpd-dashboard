@@ -19,18 +19,7 @@ import {MapboxLayer} from "@deck.gl/mapbox";
 
 // Map Configuration
 const mapStyleSatellite = 'mapbox://styles/andyclarke/cl2svsl4j002f15o39tp0dy2q';
-
-const ambientLight = new AmbientLight({
-    color: [247, 203, 21],
-    intensity: 1
-});
-
-const dirLight = new SunLight({
-    timestamp: Date.UTC(2019, 7, 1, 22),
-    color: [247, 203, 21],
-    intensity: 1.0,
-    _shadow: true
-});
+const mapStyleMono = 'mapbox://styles/andyclarke/cl2svmbha002u15pi3k6bqxjn';
 
 const ICON_MAPPING = {
     Student: { x: 384, y: 512, width: 128, height: 128, mask: false, anchorY: 128 },
@@ -39,7 +28,7 @@ const ICON_MAPPING = {
 };
 
 // Street Map Component
-const FloodMap = ({ ctx, mapBoxToken, updateCarouselCoordinates, mapStylePlain, toggleDataType, updateAdditionalLocation, updatePrimaryLocation, toggleLocationPreference }) => {
+const FloodMap = ({ updateFloodData, mapBoxToken, updateCarouselCoordinates, mapStylePlain, toggleDataType, updateAdditionalLocation, updatePrimaryLocation, toggleLocationPreference }) => {
 
 
     const [tooltip, setTooltip] = useState({});
@@ -78,9 +67,22 @@ const FloodMap = ({ ctx, mapBoxToken, updateCarouselCoordinates, mapStylePlain, 
 
     }, [deckRef, mapRef, mapLoaded]);
 
+    const additionalLocationFilter = updateAdditionalLocation.locations.filter(item => item['placename'] === toggleLocationPreference.locationPreference)
+
+    // Find Preferred Location Pluviometer Data
+    const floodZonesData = updateFloodData.locations.filter(function(el){return el.id === toggleLocationPreference.locationID})
+
+    const locationSettings = {
+        initialLongitude: additionalLocationFilter.length ? additionalLocationFilter[0]['longitude'] - 0.07 : updatePrimaryLocation.location.longitude - 0.07,
+        initialLatitude: additionalLocationFilter.length ? additionalLocationFilter[0]['latitude'] - 0.07: updatePrimaryLocation.location.latitude - 0.07,
+        zoom: additionalLocationFilter.length ?  locationPaths[additionalLocationFilter[0]['placetype']].zoom : locationPaths[updatePrimaryLocation.location['placetype']].zoom,
+        locationObject: additionalLocationFilter.length ? additionalLocationFilter[0] : updatePrimaryLocation.location,
+        floodData: floodZonesData.length ? floodZonesData[0].floodData : []
+    }
+
     const geoJsonLayerOfficial = new GeoJsonLayer({
         id: 'geojson-layer' + Math.random(),
-        data: dummyGeoJSON.features,
+        data: locationSettings.floodData,
         pickable: true,
         stroked: true,
         filled: true,
@@ -147,16 +149,6 @@ const FloodMap = ({ ctx, mapBoxToken, updateCarouselCoordinates, mapStylePlain, 
         // onHover: d => setTooltip(d)
     });
 
-    // const initialLongitude = mapStylePlain ? updatePrimaryLocation.location.geo.longitude - 0.07 : updateCarouselCoordinates.longitude - 0.07
-    // const initialLatitude = mapStylePlain ? updatePrimaryLocation.location.geo.latitude : updateCarouselCoordinates.latitude
-
-    const additionalLocationFilter = updateAdditionalLocation.locations.filter(item => item['placename'] === toggleLocationPreference.locationPreference)
-
-    const locationSettings = {
-        initialLongitude: additionalLocationFilter.length ? additionalLocationFilter[0]['longitude'] - 0.07 : updatePrimaryLocation.location.longitude - 0.07,
-        initialLatitude: additionalLocationFilter.length ? additionalLocationFilter[0]['latitude'] - 0.07: updatePrimaryLocation.location.latitude - 0.07,
-        zoom: additionalLocationFilter.length ?  locationPaths[additionalLocationFilter[0]['placetype']].zoom : locationPaths[updatePrimaryLocation.location['placetype']].zoom
-    }
 
     const INITIAL_VIEW_STATE = {
         longitude: locationSettings.initialLongitude,
@@ -194,7 +186,7 @@ const FloodMap = ({ ctx, mapBoxToken, updateCarouselCoordinates, mapStylePlain, 
                 <StaticMap
                     ref={mapRef}
                     gl={glContext}
-                    mapStyle={mapStyleSatellite}
+                    mapStyle={mapStyleMono}
                     mapboxAccessToken={mapBoxToken}
                     getTooltip={({object}) => object && `Population:`}
                     onLoad={onMapLoad}

@@ -19,17 +19,19 @@ export const CarouselItem = ({ languageToggle, data }) => {
             <CarouselBox>
                 <CarouselFlex>
                     <Box sx={{display: `flex`}}>
-                        <Image src={avatarPaths[data.citizenType]} width={60} height={60} objectFit={'contain'}/>
+                        <ImageWrapperBox>
+                            <Image alt={"citizen avatar"} src={avatarPaths[data.citizenType]} width={60} height={60} objectFit={'contain'}/>
+                        </ImageWrapperBox>
                         <TypeOrganisationBox>
-                            <Typography sx={{fontSize: `20px`}} >{data.citizenType}</Typography>
-                            <Typography sx={{fontSize: `14px`, color: (theme) => (theme.palette.primary.main)}}>{data.citizenOrganisation}</Typography>
+                            <CitizenTypeText>{data.citizenType}</CitizenTypeText>
+                            <CitizenInfoText >{data.citizenOrganisation}</CitizenInfoText>
                         </TypeOrganisationBox>
                     </Box>
-                    <Typography sx={{fontWeight: (theme) => (theme.typography.fontWeightBold)}}>{data.type.toUpperCase()}<span className={"bluePunctuation"}>.</span></Typography>
+                    <EventType>{data.type.toUpperCase()}<span className={"bluePunctuation"}>.</span></EventType>
                 </CarouselFlex>
-                <Typography sx={{fontSize: `25px`, textAlign: `left`, marginTop: (theme) => (theme.spacing(2)), marginBottom: (theme) => (theme.spacing(2))}} >{'"' + data.submissionText + '"'}</Typography>
+                <MainContentText sx={{fontSize: `25px`, textAlign: `left`, marginTop: (theme) => (theme.spacing(2)), marginBottom: (theme) => (theme.spacing(2))}} >{'"' + data.submissionText + '"'}</MainContentText>
                 <CarouselFlex>
-                    <Typography sx={{color: `#888888`}} >{new Date(data.timestamp).toLocaleString().split(',')[0]}</Typography>
+                    <DateText >{new Date(data.timestamp).toLocaleString().split(',')[0]}</DateText>
                     <LocationBox locationName={data.locationName}/>
                 </CarouselFlex>
             </CarouselBox>
@@ -48,6 +50,9 @@ const CarouselBox = styled(Box)(({theme}) => ({
     padding: theme.spacing(3),
     boxShadow: `0px 0px 15px #E5E5E5`,
     border: `1.5px solid #E5E5E5`,
+    [theme.breakpoints.down('800')]: {
+        padding: theme.spacing(1.5),
+    },
 }))
 
 const CarouselFlex = styled(Box)(({theme}) => ({
@@ -57,10 +62,66 @@ const CarouselFlex = styled(Box)(({theme}) => ({
     maxHeight: `60px`
 }))
 
+const DateText = styled(Typography)(({theme}) => ({
+    color: `#888888`,
+    [theme.breakpoints.down('md')]: {
+        fontSize: `14px`
+    },
+}))
+
+const ImageWrapperBox = styled(Box)(({theme}) => ({
+    [theme.breakpoints.down('sm')]: {
+        display: `none`
+    },
+}))
+
+const CitizenTypeText = styled(Typography)(({theme}) => ({
+    fontSize: `20px`,
+    [theme.breakpoints.down('md')]: {
+        fontSize: `16px`
+    },
+}))
+
+const CitizenInfoText = styled(Typography)(({theme}) => ({
+    color: theme.palette.primary.main,
+    [theme.breakpoints.down('md')]: {
+        fontSize: `12px`
+    },
+}))
+
 const TypeOrganisationBox = styled(Box)(({theme}) => ({
     display: `flex`,
     flexDirection: `column`,
     justifyContent: `space-around`,
     marginLeft: theme.spacing(2),
+    [theme.breakpoints.down('md')]: {
+        marginLeft: theme.spacing(1),
+    },
+    [theme.breakpoints.down('sm')]: {
+        marginLeft: theme.spacing(0),
+    },
 }))
 
+const EventType = styled(Typography)(({theme}) => ({
+    fontWeight: theme.typography.fontWeightBold,
+    textAlign: `right`,
+    [theme.breakpoints.down('md')]: {
+        fontSize: `14px`,
+    },
+    [theme.breakpoints.down('sm')]: {
+        fontSize: `12px`,
+    },
+}))
+
+const MainContentText = styled(Typography)(({theme}) => ({
+    fontSize: `25px`,
+    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(2),
+    fontWeight: theme.typography.fontWeightLight,
+    [theme.breakpoints.down('md')]: {
+        fontSize: `20px`,
+    },
+    [theme.breakpoints.down('sm')]: {
+        fontSize: `16px`,
+    },
+}))

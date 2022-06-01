@@ -38,12 +38,15 @@ class SearchBar extends React.Component {
         if ((this.state.searchTerm !== "") && (this.state.searchTerm !== undefined)) {
             this.props.iconClickHandler();
             this.props.searchTermDispatch(this.state.searchTerm);
+            // Update the state with an empty search term
+            this.setState({searchTerm: ""})
         } else {
             this.setState({placeholder: uiText.global.labels.enterALocation[this.props.language]})
         }
     }
 
     _handleKeyDown(e) {
+
         // Trigger Search on Enter
         if (e.key === "Enter") {
             this._handleSearchResultWindowOpen(e);
@@ -64,7 +67,6 @@ class SearchBar extends React.Component {
 
         // Update the state with the search term
         this.setState({searchTerm: searchTerm})
-        // Update Global State With Search Term
     }
 
     _clickHandler(item) {
@@ -94,7 +96,14 @@ class SearchBar extends React.Component {
 
     render() {
         return (
-            <MyFormControl sx={{width: this.props.popover ? `80%` : `60%`}} variant="standard" >
+            <MyFormControl
+                sx={theme => ({
+                    width: this.props.popover ? `80%` : `60%`,
+                    [theme.breakpoints.down('md')] : {
+                        width: this.props.popover ? `80%` : `80%`,
+                    }
+                })}
+                variant="standard" >
                 <MyTextField autoComplete="off" InputProps={{
 
                     endAdornment: (
