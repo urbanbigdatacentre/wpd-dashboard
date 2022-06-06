@@ -45,6 +45,7 @@ const LoadingText = styled(Typography)(({theme}) => ({
     right: `0%`,
     fontWeight: theme.typography.fontWeightBold,
     fontSize: `45px`,
+    zIndex: 9000000,
 
 }))
 
@@ -53,7 +54,8 @@ const MyProgressBar = styled(LinearProgress)(({theme}) => ({
     left: `30%`,
     right: `30%`,
     top: `55%`,
-    backgroundColor: `linear-gradient(102.35deg, #1565C0 0%, #2196F3 100%)`
+    backgroundColor: `linear-gradient(102.35deg, #1565C0 0%, #2196F3 100%)`,
+    zIndex: 9000000,
 }))
 
 const LoadingSubTitle = styled(Typography)(({theme}) => ({
@@ -73,7 +75,7 @@ const LoadingSubTitle = styled(Typography)(({theme}) => ({
 
 const CustomSkeleton = styled(Skeleton)(({theme}) => ({
     borderRadius: theme.shape.borderRadius,
-    zIndex: 8000000,
+    background: `linear-gradient(90deg, rgba(247, 153, 111, 0.25) 0%, rgba(235, 90, 86, 0.25) 24.48%, rgba(218, 65, 103, 0.25) 51.56%, rgba(153, 60, 122, 0.25) 78.12%, rgba(92, 47, 96, 0.25) 100%)`
 
 }))
 

@@ -20,7 +20,7 @@ import OverviewMapToggleButton from "../elements/overviewMapToggleButton";
 import FloodMapLegend from "../elements/floodMapLegend";
 
 // Framed Map Container Component
-const FramedMapContainer = ({ mapBoxToken, mapType, ctx, updatePluviometerData, toggleLanguage }) => {
+const FramedMapContainer = ({ mapBoxToken, mapType, ctx, updatePluviometerData, toggleLanguage, updateFloodData }) => {
 
 
 
@@ -39,11 +39,13 @@ const FramedMapContainer = ({ mapBoxToken, mapType, ctx, updatePluviometerData, 
             { mapType === "RainfallMap" || mapType === "FloodMap" ? <LocationButtonGroup positionMode={'absolute'}/> : null}
             { mapType === "RainfallMap" ? <DataTypeFilter positionMode={'absolute'}/>: null}
             { mapType === "RainfallMap" ? <RainfallMapLegend />: null}
-            { mapType === "RainfallMap" || mapType === "FloodMap" ? <GeneralLegend locationData={updatePluviometerData.locations}/>: null}
+            { mapType === "RainfallMap" ? <GeneralLegend locationData={updatePluviometerData.locations}/>: null}
+            { mapType === "FloodMap" ? <GeneralLegend floodMap={true} locationData={updateFloodData.locations}/>: null}
             { mapType === "FloodMap" ? <DataTypeFilter positionMode={`absolute`}/>: null}
-            { mapType === "FloodMap" ? <FloodMapLegend/>: null}
+            { mapType === "FloodMap" ? <FloodMapLegend mapBoxToken={mapBoxToken}/>: null}
             <MapInnerWrapper>
                 { mapType === "NationalOverview" ? <LoadingSkeleton text={uiText.global.labels.overiewMapLoadingText[toggleLanguage.language]} area={'national-overview-map'}/> : null}
+                { mapType === "FloodMap" ? <LoadingSkeleton text={uiText.global.labels.overiewMapLoadingText[toggleLanguage.language]} area={'floodzones-data'}/> : null}
                 {maps[mapType]}
             </MapInnerWrapper>
         </MapOuterWrapper>

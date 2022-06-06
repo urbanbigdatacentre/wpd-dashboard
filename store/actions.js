@@ -54,6 +54,16 @@ export const updateCarouselCoordinates = (newCoordinates) => (dispatch) => {
     })
 }
 
+// SET FLOOD COORDINATES
+export const updateFloodCoordinates = (newCoordinates) => (dispatch) => {
+
+    return dispatch({
+        type: types.SETFLOODCOORDINATES,
+        latitude: parseFloat(newCoordinates.latitude),
+        longitude: parseFloat(newCoordinates.longitude),
+    })
+}
+
 // SET PRIMARY LOCATION
 export const updatePrimaryLocation = (newLocation) => (dispatch) => {
 

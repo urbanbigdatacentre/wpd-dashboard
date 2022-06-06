@@ -12,10 +12,11 @@ import {IconLayer, GeoJsonLayer} from '@deck.gl/layers';
 // Local Imports
 import mapIcons from '../../public/images/icons/location-icon-atlas.svg';
 import {styled, Box, Typography} from "@mui/material";
-import dummyGeoJSON from "../../data/dummyGeoJSON";
 import dummyGeoJSONTwo from "../../data/dummyGeoJSONTwo";
 import locationPaths from "../../data/locationPaths";
 import {MapboxLayer} from "@deck.gl/mapbox";
+import {bindActionCreators} from "redux";
+import {updateFloodCoordinates} from "../../store/actions";
 
 // Map Configuration
 const mapStyleSatellite = 'mapbox://styles/andyclarke/cl2svsl4j002f15o39tp0dy2q';
@@ -28,7 +29,7 @@ const ICON_MAPPING = {
 };
 
 // Street Map Component
-const FloodMap = ({ updateFloodData, mapBoxToken, updateCarouselCoordinates, mapStylePlain, toggleDataType, updateAdditionalLocation, updatePrimaryLocation, toggleLocationPreference }) => {
+const FloodMap = ({ updateFloodData, updateFloodCoordinates, updateFloodCoordinatesDispatch, mapBoxToken, updateCarouselCoordinates, mapStylePlain, toggleDataType, updateAdditionalLocation, updatePrimaryLocation, toggleLocationPreference }) => {
 
 
     const [tooltip, setTooltip] = useState({});
@@ -60,42 +61,62 @@ const FloodMap = ({ updateFloodData, mapBoxToken, updateCarouselCoordinates, map
             }
 
             map.addLayer(new MapboxLayer({ id: "dummy-layer", deck }));
-            map.addLayer(new MapboxLayer({ id: "flood-citizen-event-icon-layer", deck }), firstSymbolId);
+            map.addLayer(new MapboxLayer({ id: "official-floodzones-geojson-layer", deck }), "admin-0-boundary-disputed");
 
         }
         setMapLoaded(true);
 
     }, [deckRef, mapRef, mapLoaded]);
 
+
     const additionalLocationFilter = updateAdditionalLocation.locations.filter(item => item['placename'] === toggleLocationPreference.locationPreference)
 
-    // Find Preferred Location Pluviometer Data
+    // Find Preferred Location Flood Data
     const floodZonesData = updateFloodData.locations.filter(function(el){return el.id === toggleLocationPreference.locationID})
 
+    const useFloodDataSettings = floodZonesData.length ? floodZonesData[0].floodData : []
+
+
     const locationSettings = {
-        initialLongitude: additionalLocationFilter.length ? additionalLocationFilter[0]['longitude'] - 0.07 : updatePrimaryLocation.location.longitude - 0.07,
-        initialLatitude: additionalLocationFilter.length ? additionalLocationFilter[0]['latitude'] - 0.07: updatePrimaryLocation.location.latitude - 0.07,
-        zoom: additionalLocationFilter.length ?  locationPaths[additionalLocationFilter[0]['placetype']].zoom : locationPaths[updatePrimaryLocation.location['placetype']].zoom,
+        initialLongitude: useFloodDataSettings.length ? updateFloodCoordinates.latitude : additionalLocationFilter.length ? additionalLocationFilter[0]['longitude'] - 0.07 : updatePrimaryLocation.location.longitude - 0.07,
+        initialLatitude: useFloodDataSettings.length ? updateFloodCoordinates.longitude : additionalLocationFilter.length ? additionalLocationFilter[0]['latitude'] - 0.07: updatePrimaryLocation.location.latitude - 0.07,
+        zoom: useFloodDataSettings.length ? 15 : 8,
         locationObject: additionalLocationFilter.length ? additionalLocationFilter[0] : updatePrimaryLocation.location,
-        floodData: floodZonesData.length ? floodZonesData[0].floodData : []
+        floodData: useFloodDataSettings.length ? floodZonesData[0].floodData : []
+    }
+
+    // console.log("lon", locationSettings.initialLongitude)
+    // console.log("lat", locationSettings.initialLatitude)
+
+    useEffect(() => {
+
+        if (useFloodDataSettings.length) {
+            let latitude = floodZonesData[0].floodData[0].geometry['coordinates'][0][0][0][0] === undefined ? floodZonesData[0].floodData[0].geometry['coordinates'][0][0][0] : floodZonesData[0].floodData[0].geometry['coordinates'][0][0][0][0];
+            let longitude = floodZonesData[0].floodData[0].geometry['coordinates'][0][0][0][1] === undefined ? floodZonesData[0].floodData[0].geometry['coordinates'][0][0][1] : floodZonesData[0].floodData[0].geometry['coordinates'][0][0][0][1];
+
+            updateFloodCoordinatesDispatch({latitude: latitude, longitude: longitude})
+        }
+    }, [toggleLocationPreference.locationID])
+
+    const fillMapping = {
+        "Baixa": [247, 119, 111, 200],
+        "Média": [218, 65, 103, 200],
+        "Alta": [92, 47, 96, 200],
     }
 
     const geoJsonLayerOfficial = new GeoJsonLayer({
-        id: 'geojson-layer' + Math.random(),
+        id: 'official-floodzones-geojson-layer',
         data: locationSettings.floodData,
         pickable: true,
         stroked: true,
         filled: true,
-        // Do we want extruded maps?
         extruded: false,
         pointType: 'circle',
-        lineWidthScale: 0,
-        lineWidthMinPixels: 1.5,
-        getFillColor: [218, 65, 103, 175],
-        getLineColor: [107, 25, 59, 175],
+        lineWidthScale: 1,
+        lineWidthMinPixels: 0,
+        getFillColor: d => fillMapping[d['classvalue']],
         getPointRadius: 1,
-        getLineWidth: 5,
-        getElevation: 100,
+        getLineWidth: 2,
         onHover: d => setJSONTooltip(d)
     });
 
@@ -186,9 +207,8 @@ const FloodMap = ({ updateFloodData, mapBoxToken, updateCarouselCoordinates, map
                 <StaticMap
                     ref={mapRef}
                     gl={glContext}
-                    mapStyle={mapStyleMono}
+                    mapStyle={mapStyleSatellite}
                     mapboxAccessToken={mapBoxToken}
-                    getTooltip={({object}) => object && `Population:`}
                     onLoad={onMapLoad}
                 />
             )}
@@ -245,4 +265,12 @@ const TypeOrganisationBox = styled(Box)(({theme}) => ({
     marginLeft: theme.spacing(0),
 }))
 
-export default connect((state) => state)(FloodMap)
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        updateFloodCoordinatesDispatch: bindActionCreators(updateFloodCoordinates, dispatch),
+    }
+}
+
+
+export default connect((state) => state, mapDispatchToProps)(FloodMap)

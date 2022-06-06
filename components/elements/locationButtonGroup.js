@@ -7,7 +7,7 @@ import MyButton from "./button";
 
 // Local Imports
 import {locationColorKeys} from "../../data/colorMapping";
-import {changeDataType, changeLocationPreference} from "../../store/actions";
+import {changeDataType, changeLocationPreference, updateFloodCoordinates} from "../../store/actions";
 import {bindActionCreators} from "redux";
 
 // Location Button Group Component
@@ -20,6 +20,7 @@ const LocationButtonGroup = ({toggleLanguage, updatePrimaryLocation, updateAddit
         const additionalLocationFilter = updateAdditionalLocation.locations.filter(item => item['placename'] === e.target.value)
         const logicalLocationObject =  additionalLocationFilter.length ? additionalLocationFilter[0]: updatePrimaryLocation.location
         changeLocationPreference(e.target.value, logicalLocationObject['placeid'])
+
     }
 
 
@@ -53,6 +54,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         changeLocationPreference: bindActionCreators(changeLocationPreference, dispatch),
+        updateFloodCoordinates: bindActionCreators(updateFloodCoordinates, dispatch)
     }
 }
 

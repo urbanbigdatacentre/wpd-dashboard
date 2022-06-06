@@ -74,7 +74,7 @@ export const toggleDate = (state= dateInitialState, action) => {
 // - SLIDE HEX RADIUS - NATIONAL OVERVIEW MAP
 
 const hexRadiusInitialState = {
-    hexRadius: 15000
+    hexRadius: 80000
 }
 
 export const changeRadiusWithSlider = (state= hexRadiusInitialState, action) => {
@@ -109,6 +109,26 @@ export const updateCarouselCoordinates = (state= carouselCoordinatesInitialState
             return state
     }
 }
+
+// - SETCAROUSELCOORDINATES - CITIZEN CAROUSEL MAP
+
+const floodCoordinatesInitialState = {
+    latitude: null,
+    longitude: null,
+}
+
+export const updateFloodCoordinates = (state= floodCoordinatesInitialState, action) => {
+    switch (action.type) {
+        case actionTypes.SETFLOODCOORDINATES:
+            return Object.assign({}, state, {
+                latitude: action.latitude,
+                longitude: action.longitude,
+            })
+        default:
+            return state
+    }
+}
+
 
 
 // - SETPRIMARYLOCATION

@@ -21,10 +21,7 @@ const RainfallChart = ({toggleLanguage, toggleDate, updatePrimaryLocation, updat
 
     const [legendDataArray, setLegendDataArray] = useState([]);
 
-    console.log("Executing A")
-
     useEffect(() => {
-        console.log("Executing B")
 
         // Select and Clear the Chart
         const svg = d3.select('#rainfall-chart-svg-container')

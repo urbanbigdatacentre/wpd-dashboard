@@ -34,7 +34,7 @@ export const colorRange = [
 const material = {
     ambient: 1,
     diffuse: .2,
-    shininess: 50,
+    shininess: 100,
     specularColor: [218, 65, 103]
 };
 
@@ -44,7 +44,7 @@ const INITIAL_VIEW_STATE = {
     zoom: 4.0,
     minZoom: 3.5,
     maxZoom: 12,
-    pitch: 25,
+    pitch: 10,
     bearing: 0
 };
 
@@ -68,21 +68,8 @@ const NationalOverviewMap = ({ configureAPI, mapBoxToken, changeRadiusWithSlider
             const map = mapRef.current.getMap();
             const deck = deckRef.current.deck;
 
-            // MAP BOX CODE
-            const layers = map.getStyle().layers;
-
-            // Find the index of the first symbol layer in the map style.
-            let firstSymbolId;
-            for (const layer of layers) {
-                    if (layer.type === 'symbol') {
-                        firstSymbolId = layer.id;
-                        break;
-                    }
-                }
-
-                map.addLayer(new MapboxLayer({ id: "dummy-layer", deck }));
-                map.addLayer(new MapboxLayer({ id: "national-overview-map", deck }), firstSymbolId);
-
+            map.addLayer(new MapboxLayer({ id: "dummy-layer", deck }));
+            map.addLayer(new MapboxLayer({ id: "national-overview-map", deck }), 'settlement-subdivision-label');
 
             }
             setMapLoaded(true);
@@ -93,14 +80,14 @@ const NationalOverviewMap = ({ configureAPI, mapBoxToken, changeRadiusWithSlider
         new HexagonLayer({
             id: 'national-overview-map',
             colorRange,
-            coverage: 0.75,
+            coverage: .95,
             data: data,
             elevationRange: [0, 25000],
             elevationScale: 25,
-            extruded: true,
+            extruded: false,
             getPosition: d => d,
             radius: changeRadiusWithSlider.hexRadius,
-            upperPercentile: 98,
+            upperPercentile: 100,
             material,
         })
     ];

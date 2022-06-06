@@ -15,6 +15,9 @@ export const SLIDERADIUS = "SLIDERADIUS";
 // Carousel & Map
 export const SETCAROUSELCOORDINATES = "SETCAROUSELCOORDINATES";
 
+// Flood Carousel & Map
+export const SETFLOODCOORDINATES = "SETFLOODCOORDINATES";
+
 // Set Primary Location
 export const SETPRIMARYLOCATION = "SETPRIMARYLOCATION"
 

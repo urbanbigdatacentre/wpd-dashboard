@@ -48,6 +48,7 @@ const StyledLocationBox = styled(Box)(({theme}) => ({
     borderRadius: theme.shape.borderRadius,
     color: theme.palette.primary.light,
     width: `max-content`,
+    height: `max-content`
 }))
 
 const LocationText = styled(Typography)(({theme}) => ({

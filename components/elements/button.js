@@ -33,13 +33,13 @@ export default class MyButton extends React.Component {
             return (
                 <MyButtonStyled value={this.props.value} variant={(this.props.preferredLocation) && (this.props.addMargin)  && (!this.props.variant !== 'contained')? this.props.variant : "outlined"} sx={{
                     boxShadow: this.props.color ? ` 0px 0px 15px ${this.colorConverter(this.props.color)}` : `0px 0px 15px rgba(33, 150, 243, 0.)`,
-                    backgroundColor: (this.props.preferredLocation) && (this.props.addMargin) ? this.props.color : `rgba(255, 255, 255, 0.8)`,
+                    backgroundColor: (this.props.preferredLocation) && (this.props.addMargin) ? this.props.color : `rgba(255, 255, 255, 1)`,
                     marginRight: this.props.addMargin ? this.props.addMargin : `0px`,
                     border: this.props.color ? `1.5px solid ${this.props.color}`: `1.5px solid #2196F3`,
                     color: (this.props.color) && (!this.props.preferredLocation) ? this.props.color: `none`,
                     '&:hover': {
                         border: this.props.color ? `1.5px solid ${this.props.color}`: `1.5px solid #2196F3`,
-                        backgroundColor: (this.props.preferredLocation) && (this.props.addMargin) ? this.props.color : `rgba(255, 255, 255, 0.7)`,
+                        backgroundColor: (this.props.preferredLocation) && (this.props.addMargin) ? this.props.color : `rgba(255, 255, 255, 0.9)`,
                         boxShadow: 'none',
                     }
                 }} onClick={this.props.onClick}>

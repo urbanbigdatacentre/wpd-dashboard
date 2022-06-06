@@ -59,7 +59,6 @@ const RainfallMap = ({ toggleLanguage, toggleDate, mapBoxToken, updateAdditional
             const map = mapRef.current.getMap();
             const deck = deckRef.current.deck;
 
-            // MAP BOX CODE - Water currently overlaps Layers
             const layers = map.getStyle().layers;
 
             // Find the index of the first symbol layer in the map style.

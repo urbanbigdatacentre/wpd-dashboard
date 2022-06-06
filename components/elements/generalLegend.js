@@ -15,7 +15,7 @@ import LocationBox from "./locationBox";
 import locationPaths from "../../data/locationPaths";
 
 // General Legend Component
-const GeneralLegend = ({locationData, toggleLanguage, toggleDate, updatePrimaryLocation}) => {
+const GeneralLegend = ({locationData, toggleLanguage, toggleDate, updatePrimaryLocation, floodMap}) => {
 
     const [menuOpen, setMenuOpenStatus] = useState(false);
 
@@ -45,6 +45,29 @@ const GeneralLegend = ({locationData, toggleLanguage, toggleDate, updatePrimaryL
         return totalMeasurements;
     }
 
+    const renderLegend = (item, index) => {
+        const colorCode = index === 0 ? '#2196F3' : locationColorKeys[index - 1].color
+
+        if (floodMap) {
+            return (
+                <>
+                    <LegendLocationName sx={{color: colorCode}}>{item['locationName'].toUpperCase()}</LegendLocationName>
+                    <Divider sx={{width: `100%`, margin: `4px 0 2px 0`}}/>
+                    <LegendDataText sx={{fontWeight: (theme) => (theme.typography.fontWeightLight),}}>{item['floodData'].length + " " + uiText.locationPage.floodMap.riskAreas[toggleLanguage.language].toUpperCase()}</LegendDataText>
+                </>
+            )
+        } else {
+            return (
+                <>
+                    <LegendLocationName sx={{color: colorCode}}>{item['locationName'].toUpperCase()}</LegendLocationName>
+                    <Divider sx={{width: `100%`, margin: `4px 0 2px 0`}}/>
+                    <LegendDataText sx={{fontWeight: (theme) => (theme.typography.fontWeightLight),}}>{item['pluviometerData'].length + " " + uiText.global.tooltips.pluviometers[toggleLanguage.language].toUpperCase()}</LegendDataText>
+                    <LegendDataText sx={{fontWeight: (theme) => (theme.typography.fontWeightLight),}}>{calculateMeasurements(item) + " " + uiText.global.tooltips.meausurements[toggleLanguage.language].toUpperCase()}</LegendDataText>
+                </>
+            )
+        }
+    }
+
     return (
 
         <LegendWrapperBox>
@@ -60,14 +83,11 @@ const GeneralLegend = ({locationData, toggleLanguage, toggleDate, updatePrimaryL
                 {
                     sortedDataArray.length ? sortedDataArray.map((item, index) => {
 
-                        const colorCode = index === 0 ? '#2196F3' : locationColorKeys[index - 1].color
+
 
                         return (
                             <LegendItemBox key={index}>
-                                <LegendLocationName sx={{color: colorCode}}>{item['locationName'].toUpperCase()}</LegendLocationName>
-                                <Divider sx={{width: `100%`, margin: `4px 0 2px 0`}}/>
-                                <LegendDataText sx={{fontWeight: (theme) => (theme.typography.fontWeightLight),}}>{item['pluviometerData'].length + " " + uiText.global.tooltips.pluviometers[toggleLanguage.language].toUpperCase()}</LegendDataText>
-                                <LegendDataText sx={{fontWeight: (theme) => (theme.typography.fontWeightLight),}}>{calculateMeasurements(item) + " " + uiText.global.tooltips.meausurements[toggleLanguage.language].toUpperCase()}</LegendDataText>
+                                {renderLegend(item, index)}
                             </LegendItemBox>
                         )
                     }) : null

@@ -18,7 +18,8 @@ import {
     updatePluviometerData,
     toggleClusterStatus,
     changeOverviewMapView,
-    updateFloodData
+    updateFloodData,
+    updateFloodCoordinates
 } from "./reducers";
 
 
@@ -45,7 +46,8 @@ const combinedReducer = combineReducers({
     updatePluviometerData,
     toggleClusterStatus,
     changeOverviewMapView,
-    updateFloodData
+    updateFloodData,
+    updateFloodCoordinates
 })
 
 // Create Root Reducer
@@ -66,6 +68,7 @@ const reducer = (state, action) => {
         if (state.toggleDataType.dataType) nextState.toggleDataType.dataType = state.toggleDataType.dataType;
         if (state.updateAdditionalLocation) nextState.updateAdditionalLocation = state.updateAdditionalLocation;
         if (state.updatePrimaryLocation) nextState.updatePrimaryLocation = state.updatePrimaryLocation;
+        if (state.updateFloodCoordinates) nextState.updateFloodCoordinates = state.updateFloodCoordinates;
         if (state.updateCarouselCoordinates) nextState.updateCarouselCoordinates = state.updateCarouselCoordinates;
         if (state.toggleDate.date) nextState.toggleDate.date = state.toggleDate.date;
         if (state.setSearchTerm) nextState.setSearchTerm = state.setSearchTerm;

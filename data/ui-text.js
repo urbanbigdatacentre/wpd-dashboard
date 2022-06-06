@@ -284,6 +284,10 @@ export default {
         "en": "Risk",
         "br": ""
       },
+      "zone": {
+        "en": "Zone",
+        "br": ""
+      },
       "rainfallLegendDescription": {
         "en": "Data represents measurements (mm) taken at pluviometers across ",
         "br": ""
@@ -594,6 +598,10 @@ export default {
       },
       "officialTitle": {
         "en": "Official Flood Risk Area",
+        "br": ""
+      },
+      "riskAreas": {
+        "en": "Known Risk Areas",
         "br": ""
       },
       "officialDescription": {
