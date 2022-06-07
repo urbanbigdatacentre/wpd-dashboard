@@ -11,7 +11,7 @@ import {
     updatePrimaryLocation,
     removeAdditionalLocation,
     removePluviometerData,
-    removeFloodZonesData
+    removeFloodZonesData, removeCitizenRainfallEventsData
 } from "../../store/actions";
 
 
@@ -20,7 +20,7 @@ import {
 
 // Location Control Button Component
 
-const LocationControlButton = ({ toggleLocationPreference, changeLocationPreferenceDispatch, primary, data, color, contained, removePluviometerData, updateAdditionalLocation, updatePrimaryLocationAction, removeAdditionalLocation, removeFloodZonesData }) => {
+const LocationControlButton = ({ toggleLocationPreference, changeLocationPreferenceDispatch, primary, data, color, contained, removePluviometerData, updateAdditionalLocation, updatePrimaryLocationAction, removeAdditionalLocation, removeFloodZonesData, removeCitizenRainfallEventsData }) => {
 
     const handleClick = (e) => {
         if (primary) {
@@ -33,6 +33,8 @@ const LocationControlButton = ({ toggleLocationPreference, changeLocationPrefere
             removePluviometerData(data['placeid'])
             // Remove Flood Data for that Location
             removeFloodZonesData(data['placeid'])
+            // Remove Citizen Rainfall Events Data for that Location
+            removeCitizenRainfallEventsData(data['placeid'])
             // Set new primary as new location preference
             if (toggleLocationPreference.locationID === data['placeid']) {
                 changeLocationPreferenceDispatch(newPrimary['placename'], newPrimary['placeid'])
@@ -44,6 +46,8 @@ const LocationControlButton = ({ toggleLocationPreference, changeLocationPrefere
             removePluviometerData(locationItem['placeid'])
             // Remove Flood Zones Data
             removeFloodZonesData(locationItem['placeid'])
+            // Remove Citizen Rainfall Events Data for that Location
+            removeCitizenRainfallEventsData(data['placeid'])
             // Find Which Item to remove
             removeAdditionalLocation(locationItem);
             // If location preference - change location preference
@@ -99,7 +103,8 @@ const mapDispatchToProps = (dispatch) => {
         removeAdditionalLocation: bindActionCreators(removeAdditionalLocation, dispatch),
         removePluviometerData: bindActionCreators(removePluviometerData, dispatch),
         changeLocationPreferenceDispatch: bindActionCreators(changeLocationPreference, dispatch),
-        removeFloodZonesData: bindActionCreators(removeFloodZonesData, dispatch)
+        removeFloodZonesData: bindActionCreators(removeFloodZonesData, dispatch),
+        removeCitizenRainfallEventsData: bindActionCreators(removeCitizenRainfallEventsData, dispatch)
     }
 }
 

@@ -53,6 +53,7 @@ export default class IconClusterLayer extends CompositeLayer {
     }
 
     getPickingInfo({info, mode}) {
+
         const pickedObject = info.object && info.object.properties;
         if (pickedObject) {
             if (pickedObject.cluster && mode !== 'hover') {

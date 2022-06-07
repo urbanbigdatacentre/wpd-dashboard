@@ -301,3 +301,33 @@ export const changeOverviewMapView = (state = overviewMapViewIntialState, action
             return state
     }
 }
+
+// - UPDATE CITIZEN RAINFALL EVENTS DATA
+const citizenRainfallEventsDataInitialState = {
+    locations: [],
+}
+
+export const updateCitizenEventsRainfallData = (state = citizenRainfallEventsDataInitialState, action) => {
+    switch (action.type) {
+        case actionTypes.SETCITIZENRAINFALLEVENTS:
+
+            return Object.assign({}, state, {
+                locations:
+                    [
+                        ...state.locations,
+                        {
+                            id: action.locationID,
+                            locationName: action.locationName,
+                            citizenRainfallEvents: action.citizenRainfallEvents,
+                        }
+
+                    ]
+            });
+        case actionTypes.REMOVECITIZENRAINFALLEVENTS:
+            return Object.assign({}, state, {
+                locations: [...state.locations.filter((element, index) => element['id'] !== action.locationID)],
+            })
+        default:
+            return state
+    }
+}

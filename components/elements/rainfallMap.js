@@ -17,11 +17,14 @@ import {styled, Box, Typography} from "@mui/material";
 import locationPaths from "../../data/locationPaths";
 import scaleColorKeys from "../../data/rainfallScaleColorMapping";
 import LOCATION_ICON_MAPPING from "../../data/location-icon-mapping";
+import CITIZEN_EVENTS_ICON_MAPPING from "../../data/citizenRainfallEventsIconMapping";
 import uiText from "../../data/ui-text";
 import LoadingSkeleton from "./loadingSkeleton";
 import * as d3 from "d3";
 import {MapboxLayer} from "@deck.gl/mapbox";
 import TooltipChart from "./tooltipChart";
+import LocationBox from "./locationBox";
+import {locationColorKeys} from "../../data/colorMapping";
 
 
 // ==================
@@ -32,9 +35,7 @@ const MAP_VIEW = new MapView({repeat: true});
 const mapStyleMono = 'mapbox://styles/andyclarke/cl2svmbha002u15pi3k6bqxjn';
 
 const AVATAR_ICON_MAPPING = {
-    Student: { x: 384, y: 512, width: 128, height: 128, mask: false, anchorY: 128 },
-    Teacher: { x: 256, y: 512, width: 128, height: 128, mask: false, anchorY: 128 },
-    School: { x: 128, y: 512, width: 128, height: 128, mask: false, anchorY: 128 },
+    marker: { x: 384, y: 512, width: 128, height: 128, mask: false, anchorY: 128 },
 };
 
 
@@ -44,7 +45,7 @@ const AVATAR_ICON_MAPPING = {
 
 
 // Street Map Component
-const RainfallMap = ({ toggleLanguage, toggleDate, mapBoxToken, updateAdditionalLocation, updateCarouselCoordinates, mapStylePlain, updatePrimaryLocation, toggleLocationPreference, toggleClusterStatus, updatePluviometerData }) => {
+const RainfallMap = ({ toggleLanguage, toggleDate, mapBoxToken, updateAdditionalLocation, updateCarouselCoordinates, mapStylePlain, updatePrimaryLocation, toggleLocationPreference, toggleClusterStatus, updatePluviometerData, updateCitizenEventsRainfallData }) => {
 
     // DeckGL and mapbox will both draw into this WebGL context
     const [glContext, setGLContext] = useState();
@@ -59,20 +60,11 @@ const RainfallMap = ({ toggleLanguage, toggleDate, mapBoxToken, updateAdditional
             const map = mapRef.current.getMap();
             const deck = deckRef.current.deck;
 
-            const layers = map.getStyle().layers;
-
-            // Find the index of the first symbol layer in the map style.
-            let firstSymbolId;
-            for (const layer of layers) {
-                if (layer.type === 'symbol') {
-                    firstSymbolId = layer.id;
-                    break;
-                }
-            }
-
             map.addLayer(new MapboxLayer({ id: "dummy-layer", deck }));
-            map.addLayer(new MapboxLayer({ id: "icon-cluster", deck }));
-            map.addLayer(new MapboxLayer({ id: "citizen-pluviometer-layer", deck }, firstSymbolId));
+            map.addLayer(new MapboxLayer({ id: "citizen-rainfall-events-layer", deck }, "country-label"));
+            map.addLayer(new MapboxLayer({ id: "citizen-rainfall-events-icon-cluster", deck }, "country-label"));
+            map.addLayer(new MapboxLayer({ id: "pluviometer-icon-cluster", deck }));
+            map.addLayer(new MapboxLayer({ id: "citizen-pluviometer-layer", deck }, "country-label"));
 
         }
         setMapLoaded(true);
@@ -89,17 +81,20 @@ const RainfallMap = ({ toggleLanguage, toggleDate, mapBoxToken, updateAdditional
     // Find Preferred Location Pluviometer Data
     const pluviometerData = updatePluviometerData.locations.filter(function(el){return el.id === toggleLocationPreference.locationID})
 
+    // Find Preferred Location Citizen Rainfall Events Data
+    const citizenRainfallEventsData = updateCitizenEventsRainfallData.locations.filter(function(el){return el.id === toggleLocationPreference.locationID})
+
     const locationSettings = {
         initialLongitude: additionalLocationFilter.length ? additionalLocationFilter[0]['longitude'] - 0.07 : updatePrimaryLocation.location.longitude - 0.07,
         initialLatitude: additionalLocationFilter.length ? additionalLocationFilter[0]['latitude'] - 0.07: updatePrimaryLocation.location.latitude - 0.07,
         zoom: additionalLocationFilter.length ?  locationPaths[additionalLocationFilter[0]['placetype']].zoom : locationPaths[updatePrimaryLocation.location['placetype']].zoom,
         locationObject: additionalLocationFilter.length ? additionalLocationFilter[0] : updatePrimaryLocation.location,
-        pluviometerData: pluviometerData.length ? pluviometerData[0] : {}
+        pluviometerData: pluviometerData.length ? pluviometerData[0] : {},
+        citizenEventsData: citizenRainfallEventsData.length ? citizenRainfallEventsData[0] : {}
     }
 
     // SET MAX VALUE
     let binArray = []
-
 
     // // Set Max Value and Filter Out Data Outside of Date Range
 
@@ -141,7 +136,9 @@ const RainfallMap = ({ toggleLanguage, toggleDate, mapBoxToken, updateAdditional
                 if (y > (wrapperHeight / 2)) {tooltipPositionSX['top'] = y - 100}
                 else {tooltipPositionSX['top'] = y}
             } else {
-                if (y > (wrapperHeight / 2)) {tooltipPositionSX['top'] = y - 350}
+                if (y > (wrapperHeight / 2)) {
+                    !info.layer.id.includes('citizen') ? tooltipPositionSX['top'] = y - 350 : tooltipPositionSX['top'] = y - 150
+                }
                 else {tooltipPositionSX['top'] = y}
             }
         }
@@ -150,19 +147,24 @@ const RainfallMap = ({ toggleLanguage, toggleDate, mapBoxToken, updateAdditional
             return null;
         }
 
+        const colorIndex = updateCitizenEventsRainfallData.locations.findIndex(function(el){return el.id === toggleLocationPreference.locationID})
+
+        const colorCode = colorIndex <= 0 ? '#2196F3' : locationColorKeys[colorIndex - 1].color
+
         return object.cluster ? (
 
                 <MyTooltipBox className="tooltip" sx={tooltipPositionSX}>
                     <TooltipFlex>
                         <Box sx={{display: `flex`}}>
                             <TypeOrganisationBox>
-                                <Typography sx={{fontSize: `20px`, fontWeight: (theme) => (theme.typography.fontWeightBold)}} >{uiText.global.tooltips.multiple[toggleLanguage.language] + " " + uiText.global.tooltips.citizenPluviometers[toggleLanguage.language]}</Typography>
-                                <Typography sx={{fontSize: `14px`, color: (theme) => (theme.palette.primary.main)}}>{object.point_count + " " + uiText.global.tooltips.citizenPluviometers[toggleLanguage.language] + " " + uiText.global.tooltips.nearby[toggleLanguage.language]}</Typography>
+                                {"citizen-rainfall-events-icon-cluster" !== info.layer.id ?<Typography sx={{fontSize: `20px`, fontWeight: (theme) => (theme.typography.fontWeightBold)}}>{uiText.global.tooltips.multiple[toggleLanguage.language] + " " + uiText.global.tooltips.citizenPluviometers[toggleLanguage.language]}</Typography> : <Typography sx={{fontSize: `18px`, fontWeight: (theme) => (theme.typography.fontWeightBold)}}>{uiText.global.tooltips.multiple[toggleLanguage.language] + " " + uiText.locationPage.rainfallMap.citizenSubmittedRainEvent[toggleLanguage.language]}</Typography>}
+                                {"citizen-rainfall-events-icon-cluster" !== info.layer.id ? <Typography sx={{fontSize: `14px`, color: (theme) => (theme.palette.primary.main)}}>{object.point_count + " " + uiText.global.tooltips.citizenPluviometers[toggleLanguage.language] + " " + uiText.global.tooltips.nearby[toggleLanguage.language]}</Typography> : <Typography sx={{fontSize: `14px`, color: (theme) => (theme.palette.primary.main)}}>{object.point_count + " " + uiText.locationPage.rainfallMap.citizenSubmittedRainEvent[toggleLanguage.language] + " " + uiText.global.tooltips.nearby[toggleLanguage.language]}</Typography>}
                             </TypeOrganisationBox>
                         </Box>
                     </TooltipFlex>
                 </MyTooltipBox>
-        ) : (
+        ) : !info.layer.id.includes('citizen') ?
+        (
             <MyTooltipBox className="tooltip" sx={tooltipPositionSX}>
                     <TooltipFlex>
                         <Box sx={{display: `flex`, marginRight: (theme) => (theme.spacing(2))}}>
@@ -177,7 +179,24 @@ const RainfallMap = ({ toggleLanguage, toggleDate, mapBoxToken, updateAdditional
                         <Typography sx={{marginTop: (theme) => (theme.spacing(2)), color: `#888888`, fontSize: `12px`, fontWeight: (theme) => (theme.typography.fontWeightLight)}} >{new Date(d3.timeFormat("%B %d, %Y")(toggleDate.startDate)).toDateString() + " - " + new Date(d3.timeFormat("%B %d, %Y")(toggleDate.endDate)).toDateString()}</Typography>
                     </TooltipFlex>
             </MyTooltipBox>
-        );
+        ) : (
+            <MyTooltipBox className="tooltip" sx={tooltipPositionSX}>
+                <TooltipFlex>
+                    <Box sx={{width: `100%`, justifyContent: `space-between`, alignItems: `center`, display: `flex`}}>
+                        <TypeOrganisationBox>
+                            <Typography sx={{fontWeight: `400`}} >{uiText.locationPage.rainfallMap.citizenReport[toggleLanguage.language].toUpperCase() + " "}</Typography>
+                            <Typography sx={{fontSize: `11px`, color: (theme) => (theme.palette.primary.main)}}>{object.citizenType !== undefined ? object.citizenType.text : ""}</Typography>
+                        </TypeOrganisationBox>
+                        <Typography sx={{marginLeft: (theme) => (theme.spacing(4)), fontWeight: (theme) => (theme.typography.fontWeightBold)}}>{uiText.global.tooltips.rainEvent[toggleLanguage.language].toUpperCase()}<span className={"bluePunctuation"}>.</span></Typography>
+                    </Box>
+                </TooltipFlex>
+                <Typography sx={{fontSize: `20px`, fontWeight: (theme) => (theme.typography.fontWeightLight), marginTop: (theme) => (theme.spacing(2))}}>{"'" + object.submissionText + "'"}</Typography>
+                <TooltipFlex sx={{marginTop: (theme) => (theme.spacing(2))}}>
+                    <Typography sx={{ color: `#888888`, fontSize: `14px`, fontWeight: (theme) => (theme.typography.fontWeightLight)}} >{object.timestamp.toString().split('T')[0]}</Typography>
+                    <LocationBox locationName={toggleLocationPreference.locationPreference} color={colorCode}/>
+                </TooltipFlex>
+            </MyTooltipBox>
+            );
     }
 
     const hideTooltip = () => {
@@ -239,7 +258,7 @@ const RainfallMap = ({ toggleLanguage, toggleDate, mapBoxToken, updateAdditional
     };
 
     const citizenPluviometerLayer = citizenPluviometerMapConfig.showCluster ?
-        new IconClusterLayer({...layerProps, id: 'icon-cluster', sizeScale: 50}) :
+        new IconClusterLayer({...layerProps, id: 'pluviometer-icon-cluster', sizeScale: 50}) :
         new IconLayer({
         ...layerProps,
         id: "citizen-pluviometer-layer",
@@ -250,34 +269,48 @@ const RainfallMap = ({ toggleLanguage, toggleDate, mapBoxToken, updateAdditional
     });
 
     // CITIZEN RAINFALL EVENTS LAYER
-    const rainfallEventsLayer = new IconLayer({
-        id: "rainfall-events-layer" + new Date().getTime(),
-        data: [
-            {
-                coordinates: [updateCarouselCoordinates.longitude, updateCarouselCoordinates.latitude],
-                timestamp: "2022-04-09T13:32:30.745Z",
-                type: "Rain Event",
-                citizenType: "Student",
-                citizenOrganisation: "School in São Paulo",
-                submissionText: "It's a dry day here today!"
-            },
-            {
-                coordinates: [updateCarouselCoordinates.longitude + 0.07, updateCarouselCoordinates.latitude + 0.07],
-                timestamp: "2022-04-07T13:32:30.745Z",
-                type: "Rain Event",
-                citizenType: "Teacher",
-                citizenOrganisation: "Colégio Humboldt São Paulo",
-                submissionText: "Chuva leve a noite toda continua chovendo ainda."
+
+
+    const formatCitizenEventsData = (locationObj) => {
+
+        const mapData = [];
+
+        typeof(locationObj['citizenRainfallEvents']) !== 'undefined' ? locationObj['citizenRainfallEvents'].forEach(function(item) {
+            let formattedItem = {
+                coordinates: [item.longitude, item.latitude],
+                citizenType: locationPaths[item['organisationtype']],
+                locationName: item['locationame'],
+                submissionID: item['submissionid'],
+                submissionText: item['submissiontext'],
+                timestamp: item['submissiontimestamp']
+
             }
-        ],
+            mapData.push(formattedItem)
+
+        }) : null;
+
+        return mapData;
+    }
+
+    const layerPropsCitizenRainfallEvents = {
+        data: formatCitizenEventsData(locationSettings.citizenEventsData),
         pickable: true,
-        iconAtlas: avatarIcons.src,
-        getIcon: (d) => d.citizenType,
-        iconMapping: AVATAR_ICON_MAPPING,
-        sizeScale: 10,
         getPosition: (d) => d.coordinates,
-        getSize: (d) => 12,
-    });
+        iconAtlas: avatarIcons.src,
+        iconMapping: CITIZEN_EVENTS_ICON_MAPPING,
+        onHover: !hoverInfo.objects && setHoverInfo
+    };
+
+    const rainfallEventsLayer = citizenPluviometerMapConfig.showCluster ?
+        new IconClusterLayer({...layerPropsCitizenRainfallEvents, id: 'citizen-rainfall-events-icon-cluster', sizeScale: 50}) :
+        new IconLayer({
+            ...layerPropsCitizenRainfallEvents,
+            id: "citizen-rainfall-events-layer",
+            getIcon: (d) => 'marker',
+            sizeScale: 6,
+            getPosition: (d) => d.coordinates,
+            getSize: (d) => 9,
+        });
 
 
     const INITIAL_VIEW_STATE = {
@@ -312,6 +345,7 @@ const RainfallMap = ({ toggleLanguage, toggleDate, mapBoxToken, updateAdditional
             onClick={expandTooltip}
             >
             <LoadingSkeleton area="pluviometer-data" text={uiText.global.labels.rainfallMapLoadingText[toggleLanguage.language]}/>
+            <LoadingSkeleton area="RAIN_FORM" text={uiText.global.labels.rainfallMapLoadingText[toggleLanguage.language]}/>
             {glContext && (
                 /* This is important: Mapbox must be instantiated after the WebGLContext is available */
                 <StaticMap
@@ -338,6 +372,7 @@ const MyTooltipBox = styled(Box)(({theme}) => ({
     justifyContent: `center`,
     backgroundColor: theme.palette.primary.light,
     borderRadius: theme.shape.borderRadius,
+    maxWidth: `400px`,
     padding: theme.spacing(2),
     boxShadow: `0px 0px 15px #E5E5E5`,
     border: `1.5px solid #E5E5E5`,

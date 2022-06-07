@@ -23,6 +23,7 @@ const LoadingSkeleton = ({toggleLanguage, area, text}) => {
                 <LoadingText>{text.toUpperCase()}<span className={'bluePunctuation'}> ...</span></LoadingText>
                 <MyProgressBar />
                 <CustomSkeleton variant={"rectangular"} width={`100%`} height={`100%`}/>
+                {/*ADD A TIMEOUT TO TRIGGER IF THE LOAD IS TAKING A LONG TIME*/}
             </LoadingBox>
         )
     );

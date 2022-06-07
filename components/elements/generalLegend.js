@@ -15,7 +15,7 @@ import LocationBox from "./locationBox";
 import locationPaths from "../../data/locationPaths";
 
 // General Legend Component
-const GeneralLegend = ({locationData, toggleLanguage, toggleDate, updatePrimaryLocation, floodMap}) => {
+const GeneralLegend = ({locationData, toggleLanguage, toggleDate, updatePrimaryLocation, floodMap, updateCitizenEventsRainfallData}) => {
 
     const [menuOpen, setMenuOpenStatus] = useState(false);
 
@@ -57,12 +57,18 @@ const GeneralLegend = ({locationData, toggleLanguage, toggleDate, updatePrimaryL
                 </>
             )
         } else {
+            // Find number of citizen submitted rainfall for each item
+            const citizenRainEventLocationMatch = updateCitizenEventsRainfallData.locations.filter(function(el){return el.id === item['id']})
+
+            const lengthOfArray = citizenRainEventLocationMatch.length ? citizenRainEventLocationMatch[0].citizenRainfallEvents.length : 0;
+
             return (
                 <>
                     <LegendLocationName sx={{color: colorCode}}>{item['locationName'].toUpperCase()}</LegendLocationName>
                     <Divider sx={{width: `100%`, margin: `4px 0 2px 0`}}/>
                     <LegendDataText sx={{fontWeight: (theme) => (theme.typography.fontWeightLight),}}>{item['pluviometerData'].length + " " + uiText.global.tooltips.pluviometers[toggleLanguage.language].toUpperCase()}</LegendDataText>
                     <LegendDataText sx={{fontWeight: (theme) => (theme.typography.fontWeightLight),}}>{calculateMeasurements(item) + " " + uiText.global.tooltips.meausurements[toggleLanguage.language].toUpperCase()}</LegendDataText>
+                    <LegendDataText sx={{fontWeight: (theme) => (theme.typography.fontWeightLight),}}>{lengthOfArray + " " + uiText.locationPage.rainfallMap.citizenSubmittedRainEvent[toggleLanguage.language].toUpperCase()}</LegendDataText>
                 </>
             )
         }

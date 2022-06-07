@@ -174,3 +174,23 @@ export const setOverviewMapView = (mapView) => (dispatch) => {
 }
 
 
+// SET CITIZEN RAINFALL EVENTS DATA
+export const updateCitizenRainfallEventsData = (citizenRainfallEventsArray, locationID, locationName) => (dispatch) => {
+
+    return dispatch({
+        type: types.SETCITIZENRAINFALLEVENTS,
+        citizenRainfallEvents: citizenRainfallEventsArray,
+        locationID: locationID,
+        locationName: locationName,
+    })
+}
+
+// REMOVE CITIZEN RAINFALL EVENTS DATA
+export const removeCitizenRainfallEventsData = (locationID) => (dispatch) => {
+
+    return dispatch({
+        type: types.REMOVECITIZENRAINFALLEVENTS,
+        locationID: locationID
+    })
+}
+

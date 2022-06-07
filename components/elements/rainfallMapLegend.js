@@ -16,13 +16,14 @@ import {usePromiseTracker} from "react-promise-tracker";
 
 const RainfallMapLegend = ({toggleLanguage, toggleClusterStatus, setClusterStatus}) => {
     const { promiseInProgress } = usePromiseTracker({area: 'pluviometer-data', delay: 500});
+    const { promiseInProgressTwo } = usePromiseTracker({area: 'RAIN_FORM', delay: 500});
 
     const handleChange = () => {
         setClusterStatus(!toggleClusterStatus.cluster)
     }
 
     return(
-        !promiseInProgress && (
+        (!promiseInProgress && !promiseInProgressTwo) && (
         <LegendWrapperBox>
             <LegendTitle sx={{fontWeight: (theme) => (theme.typography.fontWeightBold)}}>{uiText.global.tooltips.avgDailyRainfall[toggleLanguage.language].toUpperCase()}<span className={'bluePunctuation'}>.</span> </LegendTitle>
             <LegendDescription sx={{fontSize: `14px`}}>{uiText.global.tooltips.rainfallLegendDescription[toggleLanguage.language] + "Location"}</LegendDescription>

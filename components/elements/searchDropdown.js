@@ -15,15 +15,21 @@ import {
     updateAdditionalLocation,
     changeLocationPreference,
     updatePluviometerData,
-    removePluviometerData, removeFloodZonesData, updateFloodZonesData
+    removePluviometerData,
+    removeFloodZonesData,
+    updateFloodZonesData,
+    updateCitizenRainfallEventsData,
+    removeCitizenRainfallEventsData
 } from "../../store/actions";
 import locationPaths from "../../data/locationPaths";
 import config from "../../api/config";
 import uiText from "../../data/ui-text";
+import requestCitizenEvents from "../../api/requestCitizenEvents";
+
 
 // Search Dropdown Component
 
-const SearchDropdown = ({ configureAPI, toggleDate, toggleLanguage, searchText, results, updatePrimaryLocation, updateAdditionalLocation, updatePrimaryLocationDispatch, updateAdditionalLocationDispatch, addingLocation, clickHandler, changeLocationPreference, updatePluviometerData, updatePluviometerDataDispatch, removePluviometerDataDispatch, updateFloodData, updateFloodDataDispatch, removeFloodDataDispatch }) => {
+const SearchDropdown = ({ configureAPI, toggleDate, toggleLanguage, searchText, results, updatePrimaryLocation, updateAdditionalLocation, updatePrimaryLocationDispatch, updateAdditionalLocationDispatch, addingLocation, clickHandler, changeLocationPreference, updatePluviometerData, updatePluviometerDataDispatch, removePluviometerDataDispatch, updateFloodData, updateFloodDataDispatch, removeFloodDataDispatch, updateCitizenEventsRainfallData, updateCitizenEventsRainfallDataDispatch, removeCitizenRainfallEventsDataDispatch }) => {
 
     const { promiseInProgress } = usePromiseTracker({area: "search-result", delay: 0});
 
@@ -31,8 +37,15 @@ const SearchDropdown = ({ configureAPI, toggleDate, toggleLanguage, searchText, 
 
         // Remove Pluviometer Data of Previous Primary Location
         const previousPrimary = updatePrimaryLocation.location;
-        if (!addingLocation) {previousPrimary !== {} ? removePluviometerDataDispatch(updatePrimaryLocation.location['placeid']) : null}
-        if (!addingLocation) {previousPrimary !== {} ? removeFloodDataDispatch(updatePrimaryLocation.location['placeid']) : null}
+        if (!addingLocation) {
+            previousPrimary !== {} ? removePluviometerDataDispatch(updatePrimaryLocation.location['placeid']) : null
+        }
+        if (!addingLocation) {
+            previousPrimary !== {} ? removeFloodDataDispatch(updatePrimaryLocation.location['placeid']) : null
+        }
+        if (!addingLocation) {
+            previousPrimary !== {} ? removeCitizenRainfallEventsDataDispatch(updatePrimaryLocation.location['placeid']) : null
+        }
 
         // Make Simple Geometry Request
         const requestURL = `${config[configureAPI.node_env['NODE_ENV']]}/dashboard/simplegeometry?id=${item['placeid']}`
@@ -44,14 +57,14 @@ const SearchDropdown = ({ configureAPI, toggleDate, toggleLanguage, searchText, 
 
         trackPromise(
             axios.get(requestURL)
-            .then(res => {
-                addingLocation ? updateAdditionalLocationDispatch(res.data.responseData.array_to_json[0]) : updatePrimaryLocationDispatch(res.data.responseData.array_to_json[0]);
-                !addingLocation ? changeLocationPreference(res.data.responseData.array_to_json[0]['placename'], res.data.responseData.array_to_json[0]['placeid']) : null;
-                clickHandler(item);
-            })
-            .catch(err => {
-                console.log("An error occurred", err)
-            }), "simple-geometry")
+                .then(res => {
+                    addingLocation ? updateAdditionalLocationDispatch(res.data.responseData.array_to_json[0]) : updatePrimaryLocationDispatch(res.data.responseData.array_to_json[0]);
+                    !addingLocation ? changeLocationPreference(res.data.responseData.array_to_json[0]['placename'], res.data.responseData.array_to_json[0]['placeid']) : null;
+                    clickHandler(item);
+                })
+                .catch(err => {
+                    console.log("An error occurred", err)
+                }), "simple-geometry")
 
         // ============
         // PLUVIOMETERS
@@ -60,7 +73,7 @@ const SearchDropdown = ({ configureAPI, toggleDate, toggleLanguage, searchText, 
         const API_URL = `${config[configureAPI['node_env'].NODE_ENV]}/dashboard/pluviometers?id=${item['placeid']}&startDate=${toggleDate.startDate}&endDate=${toggleDate.endDate}`
 
         // Check if Pluviometer Data already exists for this location and if existing timestamp is sufficient
-        const filteredPluviometerData = updatePluviometerData.locations.length ? updatePluviometerData.locations.filter(function(location){
+        const filteredPluviometerData = updatePluviometerData.locations.length ? updatePluviometerData.locations.filter(function (location) {
 
             // Return the item only if the ids are equal and the existing date is newer than the current date choice
             return (location['id'] === item['placeid'] && (location['startDate'] < toggleDate.startDate));
@@ -73,7 +86,7 @@ const SearchDropdown = ({ configureAPI, toggleDate, toggleLanguage, searchText, 
                     .then(res => {
                         updatePluviometerDataDispatch(typeof (res.data['responseData']['array_to_json']) === 'undefined' ? [] : res.data['responseData']['array_to_json'], item['placeid'], toggleDate.startDate.toString(), toggleDate.endDate.toString(), item['placename'], item['placetype'])
                     })
-            ,"pluviometer-data") : null
+                , "pluviometer-data") : null
 
 
         // ============
@@ -83,7 +96,7 @@ const SearchDropdown = ({ configureAPI, toggleDate, toggleLanguage, searchText, 
         const FLOODZONES_API_URL = `${config[configureAPI['node_env'].NODE_ENV]}/dashboard/floodzones?id=${item['placeid']}`
 
         // Check if Floodzones data already exists for this location **
-        const filteredFloodData = updateFloodData.locations.length ? updateFloodData.locations.filter(function(location){
+        const filteredFloodData = updateFloodData.locations.length ? updateFloodData.locations.filter(function (location) {
             // Return the item only if the ids are equal
             return (location['id'] === item['placeid']);
         }) : [];
@@ -94,9 +107,18 @@ const SearchDropdown = ({ configureAPI, toggleDate, toggleLanguage, searchText, 
                     const payload = res.data?.responseData?.json_build_object?.features?.array_to_json
                     updateFloodDataDispatch(payload === undefined ? [] : payload, item['placeid'], item['placename'])
                 })
-        , "floodzones-data") : null
+            , "floodzones-data") : null
+
+        // ============
+        // CITIZEN DATA - RAINFALL EVENTS
+        // ============
+
+        // Make Request for Citizen Rainfall Events
+        // PARAMS - locationID, formType, startDate, endDate, locationName, configureAPI, existingDataArray, dispatchFunction
+        requestCitizenEvents(item['placeid'], 9, toggleDate.startDate, toggleDate.endDate, item['placename'], configureAPI, updateCitizenEventsRainfallData, updateCitizenEventsRainfallDataDispatch)
 
     }
+
 
     const displayMode = Boolean(searchText) ? `block`: `none`;
 
@@ -202,8 +224,6 @@ const HasCitizenDataText = styled(Typography)(({theme}) => ({
 
 }))
 
-HasCitizenDataText
-
 const SearchTextSkeleton = styled(Skeleton)(({theme}) => ({
     borderRadius: theme.shape.borderRadius,
 }))
@@ -222,6 +242,8 @@ const mapDispatchToProps = (dispatch) => {
         removePluviometerDataDispatch: bindActionCreators(removePluviometerData, dispatch),
         updateFloodDataDispatch: bindActionCreators(updateFloodZonesData, dispatch),
         removeFloodDataDispatch: bindActionCreators(removeFloodZonesData, dispatch),
+        updateCitizenEventsRainfallDataDispatch: bindActionCreators(updateCitizenRainfallEventsData, dispatch),
+        removeCitizenRainfallEventsDataDispatch: bindActionCreators(removeCitizenRainfallEventsData, dispatch),
     }
 }
 

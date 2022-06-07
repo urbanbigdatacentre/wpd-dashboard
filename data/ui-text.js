@@ -509,7 +509,7 @@ export default {
       "citizenReports": {
         "en": "Citizen Reports",
         "br": ""
-      }
+      },
     },
     "rainfallChart": {
       "title": {
@@ -528,6 +528,10 @@ export default {
     "rainfallMap": {
       "title": {
         "en": "Rainfall Map",
+        "br": ""
+      },
+      "citizenReport": {
+        "en": "Citizen Report",
         "br": ""
       },
       "descriptionParOne": {
@@ -551,7 +555,7 @@ export default {
         "br": ""
       },
       "citizenSubmittedRainEvent": {
-        "en": "Citizen Submitted Rain Event",
+        "en": "Citizen Submitted Rain Events",
         "br": ""
       },
       "higherScale": {
