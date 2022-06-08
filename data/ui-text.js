@@ -196,6 +196,10 @@ export default {
         "en": "Rain Event",
         "br": ""
       },
+      "noComment": {
+        "en": "No Comment",
+        "br": ""
+      },
       "switchLocationView": {
         "en": "Switch Location View",
         "br": ""

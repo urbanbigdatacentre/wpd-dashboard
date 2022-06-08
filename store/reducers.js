@@ -331,3 +331,63 @@ export const updateCitizenEventsRainfallData = (state = citizenRainfallEventsDat
             return state
     }
 }
+
+// - UPDATE CITIZEN FLOODZONES EVENTS DATA
+const citizenFloodZonesEventsDataInitialState = {
+    locations: [],
+}
+
+export const updateCitizenEventsFloodZonesData = (state = citizenFloodZonesEventsDataInitialState, action) => {
+    switch (action.type) {
+        case actionTypes.SETCITIZENFLOODZONESEVENTS:
+
+            return Object.assign({}, state, {
+                locations:
+                    [
+                        ...state.locations,
+                        {
+                            id: action.locationID,
+                            locationName: action.locationName,
+                            citizenFloodZonesEvents: action.citizenFloodZonesEvents,
+                        }
+
+                    ]
+            });
+        case actionTypes.REMOVECITIZENFLOODZONESEVENTS:
+            return Object.assign({}, state, {
+                locations: [...state.locations.filter((element, index) => element['id'] !== action.locationID)],
+            })
+        default:
+            return state
+    }
+}
+
+// - UPDATE CITIZEN RIVERFLOOD EVENTS DATA
+const citizenRiverFloodEventsDataInitialState = {
+    locations: [],
+}
+
+export const updateCitizenEventsRiverFloodData = (state = citizenRiverFloodEventsDataInitialState, action) => {
+    switch (action.type) {
+        case actionTypes.SETCITIZENRIVERFLOODEVENTS:
+
+            return Object.assign({}, state, {
+                locations:
+                    [
+                        ...state.locations,
+                        {
+                            id: action.locationID,
+                            locationName: action.locationName,
+                            citizenRiverFloodEvents: action.citizenRiverFloodEvents,
+                        }
+
+                    ]
+            });
+        case actionTypes.REMOVECITIZENRIVERFLOODEVENTS:
+            return Object.assign({}, state, {
+                locations: [...state.locations.filter((element, index) => element['id'] !== action.locationID)],
+            })
+        default:
+            return state
+    }
+}

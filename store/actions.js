@@ -194,3 +194,42 @@ export const removeCitizenRainfallEventsData = (locationID) => (dispatch) => {
     })
 }
 
+// SET CITIZEN FLOODZONES EVENTS DATA
+export const updateCitizenFloodZonesEventsData = (citizenFloodZonesEventsArray, locationID, locationName) => (dispatch) => {
+
+    return dispatch({
+        type: types.SETCITIZENFLOODZONESEVENTS,
+        citizenFloodZonesEvents: citizenFloodZonesEventsArray,
+        locationID: locationID,
+        locationName: locationName,
+    })
+}
+
+// REMOVE CITIZEN FLOODZONES EVENTS DATA
+export const removeCitizenFloodZonesEventsData = (locationID) => (dispatch) => {
+
+    return dispatch({
+        type: types.REMOVECITIZENFLOODZONESEVENTS,
+        locationID: locationID
+    })
+}
+
+// SET CITIZEN RIVERFLOOD EVENTS DATA
+export const updateCitizenRiverFloodEventsData = (citizenRiverFloodEventsArray, locationID, locationName) => (dispatch) => {
+
+    return dispatch({
+        type: types.SETCITIZENRIVERFLOODEVENTS,
+        citizenRiverFloodEvents: citizenRiverFloodEventsArray,
+        locationID: locationID,
+        locationName: locationName,
+    })
+}
+
+// REMOVE CITIZEN RIVERFLOOD EVENTS DATA
+export const removeCitizenRiverFloodEventsData = (locationID) => (dispatch) => {
+
+    return dispatch({
+        type: types.REMOVECITIZENRIVERFLOODEVENTS,
+        locationID: locationID
+    })
+}

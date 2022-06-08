@@ -19,7 +19,11 @@ import {
     removeFloodZonesData,
     updateFloodZonesData,
     updateCitizenRainfallEventsData,
-    removeCitizenRainfallEventsData
+    removeCitizenRainfallEventsData,
+    updateCitizenFloodZonesEventsData,
+    removeCitizenFloodZonesEventsData,
+    updateCitizenRiverFloodEventsData,
+    removeCitizenRiverFloodEventsData
 } from "../../store/actions";
 import locationPaths from "../../data/locationPaths";
 import config from "../../api/config";
@@ -29,28 +33,27 @@ import requestCitizenEvents from "../../api/requestCitizenEvents";
 
 // Search Dropdown Component
 
-const SearchDropdown = ({ configureAPI, toggleDate, toggleLanguage, searchText, results, updatePrimaryLocation, updateAdditionalLocation, updatePrimaryLocationDispatch, updateAdditionalLocationDispatch, addingLocation, clickHandler, changeLocationPreference, updatePluviometerData, updatePluviometerDataDispatch, removePluviometerDataDispatch, updateFloodData, updateFloodDataDispatch, removeFloodDataDispatch, updateCitizenEventsRainfallData, updateCitizenEventsRainfallDataDispatch, removeCitizenRainfallEventsDataDispatch }) => {
+const SearchDropdown = ({ configureAPI, toggleDate, toggleLanguage, searchText, results, updatePrimaryLocation, updateAdditionalLocation, updatePrimaryLocationDispatch, updateAdditionalLocationDispatch, addingLocation, clickHandler, changeLocationPreference, updatePluviometerData, updatePluviometerDataDispatch, removePluviometerDataDispatch, updateFloodData, updateFloodDataDispatch, removeFloodDataDispatch, updateCitizenEventsRainfallData, updateCitizenEventsRainfallDataDispatch, removeCitizenRainfallEventsDataDispatch, updateCitizenEventsFloodZonesData, updateCitizenFloodZonesEventsDataDispatch, removeCitizenFloodZonesEventsDataDispatch, updateCitizenEventsRiverFloodData, updateCitizenRiverFloodEventsDataDispatch, removeCitizenRiverFloodEventsDataDispatch }) => {
 
     const { promiseInProgress } = usePromiseTracker({area: "search-result", delay: 0});
 
     const handleClick = (item) => {
 
-        // Remove Pluviometer Data of Previous Primary Location
+        // Remove Data of Previous Primary Location
         const previousPrimary = updatePrimaryLocation.location;
+
         if (!addingLocation) {
             previousPrimary !== {} ? removePluviometerDataDispatch(updatePrimaryLocation.location['placeid']) : null
-        }
-        if (!addingLocation) {
             previousPrimary !== {} ? removeFloodDataDispatch(updatePrimaryLocation.location['placeid']) : null
-        }
-        if (!addingLocation) {
             previousPrimary !== {} ? removeCitizenRainfallEventsDataDispatch(updatePrimaryLocation.location['placeid']) : null
+            previousPrimary !== {} ? removeCitizenFloodZonesEventsDataDispatch(updatePrimaryLocation.location['placeid']) : null
+            previousPrimary !== {} ? removeCitizenRiverFloodEventsDataDispatch(updatePrimaryLocation.location['placeid']) : null
         }
 
         // Make Simple Geometry Request
         const requestURL = `${config[configureAPI.node_env['NODE_ENV']]}/dashboard/simplegeometry?id=${item['placeid']}`
 
-        // Make this use promise tracker - This also is causing memory leaks in the application
+        // Keeping Requests inside Search Dropdown is causing memory leaks in the application - because component isn't rendered on location page as data is loaded
         // ============
         // Request for simple Geometry
         // ============
@@ -110,15 +113,20 @@ const SearchDropdown = ({ configureAPI, toggleDate, toggleLanguage, searchText, 
             , "floodzones-data") : null
 
         // ============
-        // CITIZEN DATA - RAINFALL EVENTS
+        // CITIZEN EVENTS DATA - RAINFALL - FLOODZONES - RIVERFLOOD
         // ============
 
-        // Make Request for Citizen Rainfall Events
         // PARAMS - locationID, formType, startDate, endDate, locationName, configureAPI, existingDataArray, dispatchFunction
+
+        // Make Request for Citizen Rainfall Events
         requestCitizenEvents(item['placeid'], 9, toggleDate.startDate, toggleDate.endDate, item['placename'], configureAPI, updateCitizenEventsRainfallData, updateCitizenEventsRainfallDataDispatch)
 
-    }
+        // Make Request for Citizen FloodZones Events
+        requestCitizenEvents(item['placeid'], 10, toggleDate.startDate, toggleDate.endDate, item['placename'], configureAPI, updateCitizenEventsFloodZonesData, updateCitizenFloodZonesEventsDataDispatch)
 
+        // Make Request for Citizen RiverFlood Events
+        requestCitizenEvents(item['placeid'], 11, toggleDate.startDate, toggleDate.endDate, item['placename'], configureAPI, updateCitizenEventsRiverFloodData, updateCitizenRiverFloodEventsDataDispatch)
+    }
 
     const displayMode = Boolean(searchText) ? `block`: `none`;
 
@@ -232,7 +240,6 @@ const LocationBoxSkeleton = styled(Skeleton)(({theme}) => ({
     borderRadius: theme.shape.borderRadius,
 }))
 
-
 const mapDispatchToProps = (dispatch) => {
     return {
         updatePrimaryLocationDispatch: bindActionCreators(updatePrimaryLocation, dispatch),
@@ -244,9 +251,11 @@ const mapDispatchToProps = (dispatch) => {
         removeFloodDataDispatch: bindActionCreators(removeFloodZonesData, dispatch),
         updateCitizenEventsRainfallDataDispatch: bindActionCreators(updateCitizenRainfallEventsData, dispatch),
         removeCitizenRainfallEventsDataDispatch: bindActionCreators(removeCitizenRainfallEventsData, dispatch),
+        updateCitizenFloodZonesEventsDataDispatch: bindActionCreators(updateCitizenFloodZonesEventsData, dispatch),
+        removeCitizenFloodZonesEventsDataDispatch: bindActionCreators(removeCitizenFloodZonesEventsData, dispatch),
+        updateCitizenRiverFloodEventsDataDispatch: bindActionCreators(updateCitizenRiverFloodEventsData, dispatch),
+        removeCitizenRiverFloodEventsDataDispatch: bindActionCreators(removeCitizenRiverFloodEventsData, dispatch)
     }
 }
-
-
 
 export default connect((state) => state, mapDispatchToProps)(SearchDropdown)

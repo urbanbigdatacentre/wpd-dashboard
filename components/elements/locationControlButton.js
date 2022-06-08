@@ -11,7 +11,10 @@ import {
     updatePrimaryLocation,
     removeAdditionalLocation,
     removePluviometerData,
-    removeFloodZonesData, removeCitizenRainfallEventsData
+    removeFloodZonesData,
+    removeCitizenRainfallEventsData,
+    removeCitizenFloodZonesEventsData,
+    removeCitizenRiverFloodEventsData
 } from "../../store/actions";
 
 
@@ -20,7 +23,7 @@ import {
 
 // Location Control Button Component
 
-const LocationControlButton = ({ toggleLocationPreference, changeLocationPreferenceDispatch, primary, data, color, contained, removePluviometerData, updateAdditionalLocation, updatePrimaryLocationAction, removeAdditionalLocation, removeFloodZonesData, removeCitizenRainfallEventsData }) => {
+const LocationControlButton = ({ toggleLocationPreference, changeLocationPreferenceDispatch, primary, data, color, contained, removePluviometerData, updateAdditionalLocation, updatePrimaryLocationAction, removeAdditionalLocation, removeFloodZonesData, removeCitizenRainfallEventsData, removeCitizenFloodZonesEventsData, removeCitizenRiverFloodEventsData }) => {
 
     const handleClick = (e) => {
         if (primary) {
@@ -35,6 +38,10 @@ const LocationControlButton = ({ toggleLocationPreference, changeLocationPrefere
             removeFloodZonesData(data['placeid'])
             // Remove Citizen Rainfall Events Data for that Location
             removeCitizenRainfallEventsData(data['placeid'])
+            // Remove Citizen FloodZone Events Data for that Location
+            removeCitizenFloodZonesEventsData(data['placeid'])
+            // Remove Citizen RiverFlood Events Data for that Location
+            removeCitizenRiverFloodEventsData(data['placeid'])
             // Set new primary as new location preference
             if (toggleLocationPreference.locationID === data['placeid']) {
                 changeLocationPreferenceDispatch(newPrimary['placename'], newPrimary['placeid'])
@@ -47,7 +54,11 @@ const LocationControlButton = ({ toggleLocationPreference, changeLocationPrefere
             // Remove Flood Zones Data
             removeFloodZonesData(locationItem['placeid'])
             // Remove Citizen Rainfall Events Data for that Location
-            removeCitizenRainfallEventsData(data['placeid'])
+            removeCitizenRainfallEventsData(locationItem['placeid'])
+            // Remove Citizen FloodZone Events Data for that Location
+            removeCitizenFloodZonesEventsData(locationItem['placeid'])
+            // Remove Citizen FloodZone Events Data for that Location
+            removeCitizenRiverFloodEventsData(locationItem['placeid'])
             // Find Which Item to remove
             removeAdditionalLocation(locationItem);
             // If location preference - change location preference
@@ -104,7 +115,11 @@ const mapDispatchToProps = (dispatch) => {
         removePluviometerData: bindActionCreators(removePluviometerData, dispatch),
         changeLocationPreferenceDispatch: bindActionCreators(changeLocationPreference, dispatch),
         removeFloodZonesData: bindActionCreators(removeFloodZonesData, dispatch),
-        removeCitizenRainfallEventsData: bindActionCreators(removeCitizenRainfallEventsData, dispatch)
+        removeCitizenRainfallEventsData: bindActionCreators(removeCitizenRainfallEventsData, dispatch),
+        removeCitizenFloodZonesEventsData: bindActionCreators(removeCitizenFloodZonesEventsData, dispatch),
+        removeCitizenRiverFloodEventsData: bindActionCreators(removeCitizenRiverFloodEventsData, dispatch)
+
+
     }
 }
 

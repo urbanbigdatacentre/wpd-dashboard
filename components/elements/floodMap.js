@@ -10,30 +10,28 @@ import {LightingEffect, AmbientLight, _SunLight as SunLight} from '@deck.gl/core
 import {IconLayer, GeoJsonLayer} from '@deck.gl/layers';
 
 // Local Imports
-import mapIcons from '../../public/images/icons/location-icon-atlas.svg';
 import {styled, Box, Typography} from "@mui/material";
 import dummyGeoJSONTwo from "../../data/dummyGeoJSONTwo";
-import locationPaths from "../../data/locationPaths";
+import CITIZEN_EVENTS_ICON_MAPPING from "../../data/citizenRainfallEventsIconMapping";
 import {MapboxLayer} from "@deck.gl/mapbox";
 import {bindActionCreators} from "redux";
 import {updateFloodCoordinates} from "../../store/actions";
+import formatCitizenEventsData from "../../api/formatCitizenEventsData";
+import avatarIcons from "../../public/images/icons/location-icon-atlas.svg";
+import IconClusterLayer from "./iconClusterLayer";
+import {locationColorKeys} from "../../data/colorMapping";
+import uiText from "../../data/ui-text";
+import TooltipChart from "./tooltipChart";
+import * as d3 from "d3";
+import LocationBox from "./locationBox";
 
 // Map Configuration
 const mapStyleSatellite = 'mapbox://styles/andyclarke/cl2svsl4j002f15o39tp0dy2q';
-const mapStyleMono = 'mapbox://styles/andyclarke/cl2svmbha002u15pi3k6bqxjn';
-
-const ICON_MAPPING = {
-    Student: { x: 384, y: 512, width: 128, height: 128, mask: false, anchorY: 128 },
-    Teacher: { x: 256, y: 512, width: 128, height: 128, mask: false, anchorY: 128 },
-    School: { x: 128, y: 512, width: 128, height: 128, mask: false, anchorY: 128 },
-};
 
 // Street Map Component
-const FloodMap = ({ updateFloodData, updateFloodCoordinates, updateFloodCoordinatesDispatch, mapBoxToken, updateCarouselCoordinates, mapStylePlain, toggleDataType, updateAdditionalLocation, updatePrimaryLocation, toggleLocationPreference }) => {
+const FloodMap = ({ toggleLanguage, updateFloodData, updateFloodCoordinates, updateFloodCoordinatesDispatch, mapBoxToken, updateCarouselCoordinates, mapStylePlain, toggleDataType, updateAdditionalLocation, updatePrimaryLocation, toggleLocationPreference, updateCitizenEventsFloodZonesData, updateCitizenEventsRiverFloodData, toggleClusterStatus }) => {
 
-
-    const [tooltip, setTooltip] = useState({});
-    const [jsonTooltip, setJSONTooltip] = useState({});
+    const [hoverInfo, setHoverInfo] = useState({});
 
     // DeckGL and mapbox will both draw into this WebGL context
     const [glContext, setGLContext] = useState();
@@ -48,45 +46,120 @@ const FloodMap = ({ updateFloodData, updateFloodCoordinates, updateFloodCoordina
             const map = mapRef.current.getMap();
             const deck = deckRef.current.deck;
 
-            // MAP BOX CODE - Water currently overlaps Layers
-            const layers = map.getStyle().layers;
-
-            // Find the index of the first symbol layer in the map style.
-            let firstSymbolId;
-            for (const layer of layers) {
-                if (layer.type === 'symbol') {
-                    firstSymbolId = layer.id;
-                    break;
-                }
-            }
-
             map.addLayer(new MapboxLayer({ id: "dummy-layer", deck }));
             map.addLayer(new MapboxLayer({ id: "official-floodzones-geojson-layer", deck }), "admin-0-boundary-disputed");
+            map.addLayer(new MapboxLayer({ id: "citizen-events-icon-cluster", deck }), "country-label");
+            map.addLayer(new MapboxLayer({ id: "citizen-events-layer", deck }), "country-label");
+
 
         }
         setMapLoaded(true);
 
     }, [deckRef, mapRef, mapLoaded]);
 
+    // Function to render Tooltip
+    const renderTooltip = (info) => {
+        const {object, x, y} = info;
+
+        const wrapper = document.querySelector('#rainfall-map-wrapper')
+        const wrapperWidth = wrapper ? wrapper.getBoundingClientRect().width : 1200;
+        const wrapperHeight = wrapper ? wrapper.getBoundingClientRect().height : 600;
+
+        let tooltipPositionSX = {
+            top: y,
+            width: `max-content`,
+        };
+
+        if (x > (wrapperWidth / 2)) {tooltipPositionSX['right'] = wrapperWidth - x - 25}
+        else {tooltipPositionSX['left'] = x}
+
+        if (object) {
+            if (object.hasOwnProperty('cluster')) {
+                // Set Y Position
+                if (y > (wrapperHeight / 2)) {tooltipPositionSX['top'] = y - 100}
+                else {tooltipPositionSX['top'] = y}
+            } else {
+                if (y > (wrapperHeight / 2)) {
+                    tooltipPositionSX['top'] = y - 150
+                }
+                else {tooltipPositionSX['top'] = y}
+            }
+        }
+
+        if (!object) {
+            return null;
+        }
+
+        const colorIndex = updateCitizenEventsFloodZonesData.locations.findIndex(function(el){return el.id === toggleLocationPreference.locationID})
+
+        const colorCode = colorIndex <= 0 ? '#2196F3' : locationColorKeys[colorIndex - 1].color
+
+        return object.cluster ? (
+
+            <MyTooltipBox className="tooltip" sx={tooltipPositionSX}>
+                <TooltipFlex>
+                    <Box sx={{display: `flex`}}>
+                        <TypeOrganisationBox>
+                            <Typography sx={{fontSize: `17px`, fontWeight: (theme) => (theme.typography.fontWeightBold)}}>{uiText.global.tooltips.multiple[toggleLanguage.language] + " " + uiText.locationPage.floodMap.floodEventTitle[toggleLanguage.language]}</Typography>
+                            <Typography sx={{fontSize: `14px`, color: (theme) => (theme.palette.primary.main)}}>{object.point_count + " " + uiText.locationPage.floodMap.floodEventTitle[toggleLanguage.language] + " " + uiText.global.tooltips.nearby[toggleLanguage.language]}</Typography>
+                        </TypeOrganisationBox>
+                    </Box>
+                </TooltipFlex>
+            </MyTooltipBox>
+        ) : !info.layer.id.includes('geojson') ? (
+                <MyTooltipBox className="tooltip" sx={tooltipPositionSX}>
+                    <TooltipFlex>
+                        <Box sx={{width: `100%`, justifyContent: `space-between`, alignItems: `center`, display: `flex`}}>
+                            <TypeOrganisationBox>
+                                <Typography sx={{fontWeight: `400`}} >{uiText.locationPage.rainfallMap.citizenReport[toggleLanguage.language].toUpperCase() + " "}</Typography>
+                                <Typography sx={{fontSize: `11px`, color: (theme) => (theme.palette.primary.main)}}>{object.citizenType !== undefined ? object.citizenType.text : ""}</Typography>
+                            </TypeOrganisationBox>
+                            <Typography sx={{marginLeft: (theme) => (theme.spacing(4)), fontWeight: (theme) => (theme.typography.fontWeightBold)}}>{uiText.global.tooltips.floodEvent[toggleLanguage.language].toUpperCase()}<span className={"bluePunctuation"}>.</span></Typography>
+                        </Box>
+                    </TooltipFlex>
+                    <Typography sx={{fontSize: `20px`, fontWeight: (theme) => (theme.typography.fontWeightLight), marginTop: (theme) => (theme.spacing(2))}}>{object.submissionText !== undefined ? "'" + object.submissionText + "'" : uiText.global.tooltips.noComment[toggleLanguage.language]}</Typography>
+                    <TooltipFlex sx={{marginTop: (theme) => (theme.spacing(2))}}>
+                        <Typography sx={{ color: `#888888`, fontSize: `14px`, fontWeight: (theme) => (theme.typography.fontWeightLight)}} >{object?.timestamp ? object.timestamp.toString().split('T')[0] : null}</Typography>
+                        <LocationBox locationName={toggleLocationPreference.locationPreference} color={colorCode}/>
+                    </TooltipFlex>
+                </MyTooltipBox>
+            ) : null;
+    }
+
+    const hideTooltip = () => {
+        setHoverInfo({});
+    }
+
+    const expandTooltip = (info) => {
+        if (info.picked) {
+            setHoverInfo(info);
+        } else {
+            setHoverInfo({});
+        }
+    }
+
 
     const additionalLocationFilter = updateAdditionalLocation.locations.filter(item => item['placename'] === toggleLocationPreference.locationPreference)
 
     // Find Preferred Location Flood Data
     const floodZonesData = updateFloodData.locations.filter(function(el){return el.id === toggleLocationPreference.locationID})
-
     const useFloodDataSettings = floodZonesData.length ? floodZonesData[0].floodData : []
 
+    // Find Preferred Citizen FloodZones Data
+    const citizenFloodZonesEventsData = updateCitizenEventsFloodZonesData.locations.filter(function(el){return el.id === toggleLocationPreference.locationID})
+
+    // Find Preferred Citizen RiverFlood Data
+    const citizenRiverFloodEventsData = updateCitizenEventsRiverFloodData.locations.filter(function(el){return el.id === toggleLocationPreference.locationID})
 
     const locationSettings = {
         initialLongitude: useFloodDataSettings.length ? updateFloodCoordinates.latitude : additionalLocationFilter.length ? additionalLocationFilter[0]['longitude'] - 0.07 : updatePrimaryLocation.location.longitude - 0.07,
         initialLatitude: useFloodDataSettings.length ? updateFloodCoordinates.longitude : additionalLocationFilter.length ? additionalLocationFilter[0]['latitude'] - 0.07: updatePrimaryLocation.location.latitude - 0.07,
         zoom: useFloodDataSettings.length ? 15 : 8,
         locationObject: additionalLocationFilter.length ? additionalLocationFilter[0] : updatePrimaryLocation.location,
-        floodData: useFloodDataSettings.length ? floodZonesData[0].floodData : []
+        floodData: useFloodDataSettings.length ? floodZonesData[0].floodData : [],
+        citizenFloodZonesEventsData: citizenFloodZonesEventsData.length ? citizenFloodZonesEventsData[0] : {},
+        citizenRiverFloodEventsData: citizenRiverFloodEventsData.length ? citizenRiverFloodEventsData[0] : {}
     }
-
-    // console.log("lon", locationSettings.initialLongitude)
-    // console.log("lat", locationSettings.initialLatitude)
 
     useEffect(() => {
 
@@ -117,7 +190,7 @@ const FloodMap = ({ updateFloodData, updateFloodCoordinates, updateFloodCoordina
         getFillColor: d => fillMapping[d['classvalue']],
         getPointRadius: 1,
         getLineWidth: 2,
-        onHover: d => setJSONTooltip(d)
+        /*onHover: d => setJSONTooltip(d)*/
     });
 
     const geoJsonLayerCitizen = new GeoJsonLayer({
@@ -136,55 +209,52 @@ const FloodMap = ({ updateFloodData, updateFloodCoordinates, updateFloodCoordina
         getPointRadius: 1,
         getLineWidth: 0,
         getElevation: 900,
-        onHover: d => setJSONTooltip(d)
+        // onHover: d => setJSONTooltip(d)
     });
 
-    const iconLayer = new IconLayer({
-        id: "flood-citizen-event-icon-layer" + new Date().getTime(),
-        data: [
-            {
-                coordinates: [updateCarouselCoordinates.longitude, updateCarouselCoordinates.latitude],
-                timestamp: "2022-04-09T13:32:30.745Z",
-                type: "Rain Event",
-                citizenType: "Student",
-                citizenOrganisation: "School in São Paulo",
-                submissionText: "It's a dry day here today!"
-            },
-            {
-                coordinates: [updateCarouselCoordinates.longitude + 0.07, updateCarouselCoordinates.latitude + 0.07],
-                timestamp: "2022-04-07T13:32:30.745Z",
-                type: "Rain Event",
-                citizenType: "Teacher",
-                citizenOrganisation: "Colégio Humboldt São Paulo",
-                submissionText: "Chuva leve a noite toda continua chovendo ainda."
-            }
-        ],
+    // ICON LAYER CONFIGURATION - CITIZEN FLOOD EVENTS
+
+    // Format and join citizen event arrays together - FloodZones - RiverFloods
+
+    const joinedCitizenDataArray = [ ...formatCitizenEventsData(locationSettings.citizenFloodZonesEventsData, 'citizenFloodZonesEvents'), ...formatCitizenEventsData(locationSettings.citizenRiverFloodEventsData, 'citizenRiverFloodEvents')]
+
+    const layerPropsCitizenEvents = {
+        data: joinedCitizenDataArray,
         pickable: true,
-        iconAtlas: mapIcons.src,
-        getIcon: (d) => d.citizenType,
-        // NOTE ** ITS ONLY POSSIBLE TO HAVE ONE ICON HERE
-        iconMapping: ICON_MAPPING,
-        sizeScale: 10,
         getPosition: (d) => d.coordinates,
+        iconAtlas: avatarIcons.src,
+        iconMapping: CITIZEN_EVENTS_ICON_MAPPING,
+        onHover: !hoverInfo.objects && setHoverInfo,
+        getIcon: (d) => d.citizenType,
+        sizeScale: 10,
         getSize: (d) => 12,
-        // onHover: d => setTooltip(d)
-    });
+    };
 
+    const citizenEventsLayer = toggleClusterStatus.cluster ?
+        new IconClusterLayer({...layerPropsCitizenEvents, id: 'citizen-events-icon-cluster', sizeScale: 50}) :
+        new IconLayer({
+            ...layerPropsCitizenEvents,
+            id: "citizen-events-layer",
+            getIcon: (d) => 'marker',
+            sizeScale: 6,
+            getPosition: (d) => d.coordinates,
+            getSize: (d) => 9,
+        });
 
     const INITIAL_VIEW_STATE = {
         longitude: locationSettings.initialLongitude,
         latitude: locationSettings.initialLatitude,
         zoom: locationSettings.zoom,
-        minZoom: 2,
-        maxZoom: 16,
+        minZoom: 1,
+        maxZoom: 50,
         pitch: 25,
         bearing: 0
     };
 
     let layerMapping = {
-        "Combined": [iconLayer, geoJsonLayerCitizen, geoJsonLayerOfficial],
+        "Combined": [geoJsonLayerCitizen, geoJsonLayerOfficial, citizenEventsLayer],
         "Official": [geoJsonLayerOfficial],
-        "Citizen": [iconLayer, geoJsonLayerCitizen]
+        "Citizen": [geoJsonLayerCitizen, citizenEventsLayer]
     }
 
     const controllerTrue = mapStylePlain ? Boolean(0) : Boolean(1)
@@ -200,7 +270,11 @@ const FloodMap = ({ updateFloodData, updateFloodCoordinates, updateFloodCoordina
             controller={controllerTrue} preventStyleDiffing={true}
             initialViewState={INITIAL_VIEW_STATE}
             height={'100%'}
-            width={'100%'} >
+            width={'100%'}
+            onViewStateChange={hideTooltip}
+            onHover={expandTooltip}
+            onClick={expandTooltip}
+        >
 
             {glContext && (
                 /* This is important: Mapbox must be instantiated after the WebGLContext is available */
@@ -213,39 +287,21 @@ const FloodMap = ({ updateFloodData, updateFloodCoordinates, updateFloodCoordina
                 />
             )}
 
-            {/*AREA TO CREATE TOOLTIP*/}
+            {renderTooltip(hoverInfo)}
 
-
-            {tooltip.hasOwnProperty('object') ? (
-                <MyTooltipBox sx={{position: 'absolute', zIndex: 1, pointerEvents: 'none', left: tooltip.x, top: tooltip.y}}>
-                    <TooltipFlex>
-                        <Box sx={{display: `flex`}}>
-                            <TypeOrganisationBox>
-                                <Typography sx={{fontSize: `20px`}} >{tooltip.object.citizenType}</Typography>
-                                <Typography sx={{fontSize: `14px`, color: (theme) => (theme.palette.primary.main)}}>{tooltip.object.citizenOrganisation}</Typography>
-                            </TypeOrganisationBox>
-                        </Box>
-                        <Typography sx={{fontWeight: (theme) => (theme.typography.fontWeightBold)}}>{tooltip.object.type.toUpperCase()}<span className={"bluePunctuation"}>.</span></Typography>
-                    </TooltipFlex>
-                    <Typography sx={{fontSize: `20px`, textAlign: `left`, marginTop: (theme) => (theme.spacing(2)), marginBottom: (theme) => (theme.spacing(2))}} >{'"' + tooltip.object.submissionText + '"'}</Typography>
-                    <TooltipFlex>
-                        <Typography sx={{color: `#888888`}} >{new Date(tooltip.object.timestamp).toLocaleString().split(',')[0]}</Typography>
-                    </TooltipFlex>
-                </MyTooltipBox>
-            ): null}
         </DeckGL>
     );
 
 }
 
 const MyTooltipBox = styled(Box)(({theme}) => ({
+    position: `absolute`,
     display: `flex`,
-    width: `400px`,
     flexDirection: `column`,
-    minHeight: `150px`,
-    justifyContent: `space-between`,
+    justifyContent: `center`,
     backgroundColor: theme.palette.primary.light,
     borderRadius: theme.shape.borderRadius,
+    maxWidth: `400px`,
     padding: theme.spacing(2),
     boxShadow: `0px 0px 15px #E5E5E5`,
     border: `1.5px solid #E5E5E5`,
@@ -255,7 +311,7 @@ const TooltipFlex = styled(Box)(({theme}) => ({
     display: `flex`,
     justifyContent: `space-between`,
     alignItems: `center`,
-    maxHeight: `60px`
+    maxWidth: `350px`,
 }))
 
 const TypeOrganisationBox = styled(Box)(({theme}) => ({

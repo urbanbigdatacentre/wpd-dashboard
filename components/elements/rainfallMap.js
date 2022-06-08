@@ -9,6 +9,8 @@ import React, {useEffect, useState} from "react";
 import {IconLayer} from '@deck.gl/layers';
 import IconClusterLayer from "./iconClusterLayer";
 import {MapView} from '@deck.gl/core';
+import * as d3 from "d3";
+import {MapboxLayer} from "@deck.gl/mapbox";
 
 // Local Imports
 import avatarIcons from '../../public/images/icons/location-icon-atlas.svg';
@@ -20,11 +22,10 @@ import LOCATION_ICON_MAPPING from "../../data/location-icon-mapping";
 import CITIZEN_EVENTS_ICON_MAPPING from "../../data/citizenRainfallEventsIconMapping";
 import uiText from "../../data/ui-text";
 import LoadingSkeleton from "./loadingSkeleton";
-import * as d3 from "d3";
-import {MapboxLayer} from "@deck.gl/mapbox";
 import TooltipChart from "./tooltipChart";
 import LocationBox from "./locationBox";
 import {locationColorKeys} from "../../data/colorMapping";
+import formatCitizenEventsData from "../../api/formatCitizenEventsData";
 
 
 // ==================
@@ -33,11 +34,6 @@ import {locationColorKeys} from "../../data/colorMapping";
 const MAP_VIEW = new MapView({repeat: true});
 
 const mapStyleMono = 'mapbox://styles/andyclarke/cl2svmbha002u15pi3k6bqxjn';
-
-const AVATAR_ICON_MAPPING = {
-    marker: { x: 384, y: 512, width: 128, height: 128, mask: false, anchorY: 128 },
-};
-
 
 // ==================
 // End of Map Configuration
@@ -59,6 +55,8 @@ const RainfallMap = ({ toggleLanguage, toggleDate, mapBoxToken, updateAdditional
 
             const map = mapRef.current.getMap();
             const deck = deckRef.current.deck;
+
+            console.log(map.getStyle().layers)
 
             map.addLayer(new MapboxLayer({ id: "dummy-layer", deck }));
             map.addLayer(new MapboxLayer({ id: "citizen-rainfall-events-layer", deck }, "country-label"));
@@ -96,8 +94,7 @@ const RainfallMap = ({ toggleLanguage, toggleDate, mapBoxToken, updateAdditional
     // SET MAX VALUE
     let binArray = []
 
-    // // Set Max Value and Filter Out Data Outside of Date Range
-
+    // Set Max Value and Filter Out Data Outside of Date Range
     locationSettings.pluviometerData.hasOwnProperty('pluviometerData') ? locationSettings.pluviometerData['pluviometerData'].forEach(function(item) {
         // Set Avg Value
         let avgValue = item['records'].map(e => e.value).reduce((acc,v,i,a)=>(acc+v/a.length),0);
@@ -137,7 +134,7 @@ const RainfallMap = ({ toggleLanguage, toggleDate, mapBoxToken, updateAdditional
                 else {tooltipPositionSX['top'] = y}
             } else {
                 if (y > (wrapperHeight / 2)) {
-                    !info.layer.id.includes('citizen') ? tooltipPositionSX['top'] = y - 350 : tooltipPositionSX['top'] = y - 150
+                    info.layer.id.includes('pluviometer') ? tooltipPositionSX['top'] = y - 350 : tooltipPositionSX['top'] = y - 150
                 }
                 else {tooltipPositionSX['top'] = y}
             }
@@ -163,7 +160,7 @@ const RainfallMap = ({ toggleLanguage, toggleDate, mapBoxToken, updateAdditional
                         </Box>
                     </TooltipFlex>
                 </MyTooltipBox>
-        ) : !info.layer.id.includes('citizen') ?
+        ) : info.layer.id.includes('pluviometer') ?
         (
             <MyTooltipBox className="tooltip" sx={tooltipPositionSX}>
                     <TooltipFlex>
@@ -192,7 +189,7 @@ const RainfallMap = ({ toggleLanguage, toggleDate, mapBoxToken, updateAdditional
                 </TooltipFlex>
                 <Typography sx={{fontSize: `20px`, fontWeight: (theme) => (theme.typography.fontWeightLight), marginTop: (theme) => (theme.spacing(2))}}>{"'" + object.submissionText + "'"}</Typography>
                 <TooltipFlex sx={{marginTop: (theme) => (theme.spacing(2))}}>
-                    <Typography sx={{ color: `#888888`, fontSize: `14px`, fontWeight: (theme) => (theme.typography.fontWeightLight)}} >{object.timestamp.toString().split('T')[0]}</Typography>
+                    <Typography sx={{ color: `#888888`, fontSize: `14px`, fontWeight: (theme) => (theme.typography.fontWeightLight)}} >{object?.timestamp ? object.timestamp.toString().split('T')[0] : null}</Typography>
                     <LocationBox locationName={toggleLocationPreference.locationPreference} color={colorCode}/>
                 </TooltipFlex>
             </MyTooltipBox>
@@ -270,30 +267,8 @@ const RainfallMap = ({ toggleLanguage, toggleDate, mapBoxToken, updateAdditional
 
     // CITIZEN RAINFALL EVENTS LAYER
 
-
-    const formatCitizenEventsData = (locationObj) => {
-
-        const mapData = [];
-
-        typeof(locationObj['citizenRainfallEvents']) !== 'undefined' ? locationObj['citizenRainfallEvents'].forEach(function(item) {
-            let formattedItem = {
-                coordinates: [item.longitude, item.latitude],
-                citizenType: locationPaths[item['organisationtype']],
-                locationName: item['locationame'],
-                submissionID: item['submissionid'],
-                submissionText: item['submissiontext'],
-                timestamp: item['submissiontimestamp']
-
-            }
-            mapData.push(formattedItem)
-
-        }) : null;
-
-        return mapData;
-    }
-
     const layerPropsCitizenRainfallEvents = {
-        data: formatCitizenEventsData(locationSettings.citizenEventsData),
+        data: formatCitizenEventsData(locationSettings.citizenEventsData, 'citizenRainfallEvents'),
         pickable: true,
         getPosition: (d) => d.coordinates,
         iconAtlas: avatarIcons.src,

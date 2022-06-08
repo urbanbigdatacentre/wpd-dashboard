@@ -31,7 +31,7 @@ const LoadingSkeleton = ({toggleLanguage, area, text}) => {
 
 const LoadingBox = styled(Box)(({theme}) => ({
     position: `absolute`,
-    top: `0`,
+    top: `-1%`,
     width: `100%`,
     height: `100%`,
     zIndex: 90000000000,
@@ -76,7 +76,7 @@ const LoadingSubTitle = styled(Typography)(({theme}) => ({
 
 const CustomSkeleton = styled(Skeleton)(({theme}) => ({
     borderRadius: theme.shape.borderRadius,
-    background: `linear-gradient(90deg, rgba(247, 153, 111, 0.25) 0%, rgba(235, 90, 86, 0.25) 24.48%, rgba(218, 65, 103, 0.25) 51.56%, rgba(153, 60, 122, 0.25) 78.12%, rgba(92, 47, 96, 0.25) 100%)`
+    background: `rgba(255, 255, 255, 0.5)`
 
 }))
 

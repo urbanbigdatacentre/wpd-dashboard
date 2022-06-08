@@ -12,6 +12,7 @@ import { CacheProvider } from '@emotion/react';
 import theme from '../src/theme';
 import createEmotionCache from '../src/createEmotionCache';
 import { wrapper } from "../store/store";
+import CookiesBanner from "../components/modules/cookies";
 
 // CSS Imports
 import styles from '../styles/globals.css'
@@ -35,6 +36,7 @@ function MyApp(props) {
 
                 <CssBaseline />
                 <Component {...pageProps} />
+                <CookiesBanner/>
             </ThemeProvider>
         </CacheProvider>
     );
