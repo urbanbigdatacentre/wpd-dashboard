@@ -2,11 +2,11 @@
 
 // Package Imports
 import {connect} from "react-redux";
-import StaticMap from "react-map-gl";
+import StaticMap, {NavigationControl} from "react-map-gl";
 import DeckGL from "@deck.gl/react";
 import React, {useCallback, useRef, useState} from "react";
 import {IconLayer} from '@deck.gl/layers';
-
+import CITIZEN_EVENTS_ICON_MAPPING from "../../data/citizenRainfallEventsIconMapping";
 
 // Local Imports
 import mapIcons from '../../public/images/icons/location-icon-atlas.svg';
@@ -16,13 +16,6 @@ import {MapboxLayer} from "@deck.gl/mapbox";
 const mapStyleMapBoxStreets = "mapbox://styles/andyclarke/cl2su9yt2001t15mu6fasl9wp";
 const mapStyleSatellite = 'mapbox://styles/andyclarke/cl2svsl4j002f15o39tp0dy2q';
 
-const ICON_MAPPING = {
-    Student: { x: 384, y: 512, width: 128, height: 128, mask: false, anchorY: 128 },
-    Teacher: { x: 256, y: 512, width: 128, height: 128, mask: false, anchorY: 128 },
-    School: { x: 128, y: 512, width: 128, height: 128, mask: false, anchorY: 128 },
-};
-
-
 // Street Map Component
 const StreetMap = ({ toggleLocationPreference, mapBoxToken, updateCarouselCoordinates, updateAdditionalLocation, mapStylePlain, updatePrimaryLocation }) => {
 
@@ -31,6 +24,7 @@ const StreetMap = ({ toggleLocationPreference, mapBoxToken, updateCarouselCoordi
     const [mapLoaded, setMapLoaded] = useState(false);
     const deckRef = useRef(null);
     const mapRef = useRef(null);
+    const [viewportControl, updateViewport] = useState({})
 
     const onMapLoad = useCallback(() => {
 
@@ -70,8 +64,8 @@ const StreetMap = ({ toggleLocationPreference, mapBoxToken, updateCarouselCoordi
         ],
         pickable: true,
         iconAtlas: mapIcons.src,
-        getIcon: (d) => updateCarouselCoordinates.citizenType,
-        iconMapping: ICON_MAPPING,
+        getIcon: (d) => 'marker',
+        iconMapping: CITIZEN_EVENTS_ICON_MAPPING,
         sizeScale: 10,
         getPosition: (d) => d.coordinates,
         getSize: (d) => 12,
@@ -83,10 +77,9 @@ const StreetMap = ({ toggleLocationPreference, mapBoxToken, updateCarouselCoordi
     const actualLocation = updateAdditionalLocation.locations.filter(item => item['placename'] === toggleLocationPreference.locationPreference).length ? additionalLocationFilter[0] : updatePrimaryLocation.location
 
     const locationSettings = {
-        initialLongitude: updateCarouselCoordinates.longitude - 0.17,
-        initialLatitude: updateCarouselCoordinates.latitude - 0.07,
-        // zoom: 12 mapStylePlain ?  locationPaths[additionalLocationFilter['placetype']].zoom : locationPaths[actualLocation.location['placetype']].zoom
-        zoom: 10
+        initialLongitude: updateCarouselCoordinates.longitude - 0.09,
+        initialLatitude: updateCarouselCoordinates.latitude,
+        zoom: 12
     }
 
     const INITIAL_VIEW_STATE = {
@@ -116,12 +109,14 @@ const StreetMap = ({ toggleLocationPreference, mapBoxToken, updateCarouselCoordi
             {glContext && (
                 /* This is important: Mapbox must be instantiated after the WebGLContext is available */
                 <StaticMap
+                    { ...viewportControl}
                     ref={mapRef}
                     gl={glContext}
                     onLoad={onMapLoad}
                     mapStyle={mapStylePlain ? mapStyleSatellite : mapStyleMapBoxStreets}
                     mapboxAccessToken={mapBoxToken}
-                />
+                >
+                </StaticMap>
             )}
 
         </DeckGL>

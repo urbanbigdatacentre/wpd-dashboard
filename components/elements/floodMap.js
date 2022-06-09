@@ -21,8 +21,6 @@ import avatarIcons from "../../public/images/icons/location-icon-atlas.svg";
 import IconClusterLayer from "./iconClusterLayer";
 import {locationColorKeys} from "../../data/colorMapping";
 import uiText from "../../data/ui-text";
-import TooltipChart from "./tooltipChart";
-import * as d3 from "d3";
 import LocationBox from "./locationBox";
 
 // Map Configuration
@@ -119,7 +117,7 @@ const FloodMap = ({ toggleLanguage, updateFloodData, updateFloodCoordinates, upd
                     </TooltipFlex>
                     <Typography sx={{fontSize: `20px`, fontWeight: (theme) => (theme.typography.fontWeightLight), marginTop: (theme) => (theme.spacing(2))}}>{object.submissionText !== undefined ? "'" + object.submissionText + "'" : uiText.global.tooltips.noComment[toggleLanguage.language]}</Typography>
                     <TooltipFlex sx={{marginTop: (theme) => (theme.spacing(2))}}>
-                        <Typography sx={{ color: `#888888`, fontSize: `14px`, fontWeight: (theme) => (theme.typography.fontWeightLight)}} >{object?.timestamp ? object.timestamp.toString().split('T')[0] : null}</Typography>
+                        <Typography sx={{ color: `#888888`, fontSize: `14px`, fontWeight: (theme) => (theme.typography.fontWeightLight)}} >{object?.timestamp ? new Date(object.timestamp).toLocaleString().split(',')[0] : null}</Typography>
                         <LocationBox locationName={toggleLocationPreference.locationPreference} color={colorCode}/>
                     </TooltipFlex>
                 </MyTooltipBox>

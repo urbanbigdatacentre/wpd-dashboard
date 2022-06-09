@@ -25,6 +25,10 @@ a {
 
 /*MAP ELEMENTS*/
 
+/*.mapboxgl-map {*/
+/*  z-index: 10000 !important;*/
+/*  left: 0;*/
+/*}*/
 
 .mapboxgl-ctrl-attrib {
   display: flex;
@@ -33,6 +37,10 @@ a {
   bottom: 0;
   right: 5px;
   text-decoration: none;
+}
+
+.mapboxgl-ctrl-bottom-right {
+
 }
 
 .mapbox-improve-map {

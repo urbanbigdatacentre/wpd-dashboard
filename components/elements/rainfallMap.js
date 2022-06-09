@@ -56,7 +56,7 @@ const RainfallMap = ({ toggleLanguage, toggleDate, mapBoxToken, updateAdditional
             const map = mapRef.current.getMap();
             const deck = deckRef.current.deck;
 
-            console.log(map.getStyle().layers)
+            // console.log(map.getStyle().layers)
 
             map.addLayer(new MapboxLayer({ id: "dummy-layer", deck }));
             map.addLayer(new MapboxLayer({ id: "citizen-rainfall-events-layer", deck }, "country-label"));
@@ -173,7 +173,7 @@ const RainfallMap = ({ toggleLanguage, toggleDate, mapBoxToken, updateAdditional
                     </TooltipFlex>
                     <TooltipChart data={object}/>
                     <TooltipFlex>
-                        <Typography sx={{marginTop: (theme) => (theme.spacing(2)), color: `#888888`, fontSize: `12px`, fontWeight: (theme) => (theme.typography.fontWeightLight)}} >{new Date(d3.timeFormat("%B %d, %Y")(toggleDate.startDate)).toDateString() + " - " + new Date(d3.timeFormat("%B %d, %Y")(toggleDate.endDate)).toDateString()}</Typography>
+                        <Typography sx={{marginTop: (theme) => (theme.spacing(2)), color: `#888888`, fontSize: `12px`, fontWeight: (theme) => (theme.typography.fontWeightLight)}} >{new Date(d3.timeFormat("%B %d, %Y")(toggleDate.startDate)).toLocaleString().split(',')[0] + " - " + new Date(d3.timeFormat("%B %d, %Y")(toggleDate.endDate)).toLocaleString().split(',')[0]}</Typography>
                     </TooltipFlex>
             </MyTooltipBox>
         ) : (
@@ -189,7 +189,7 @@ const RainfallMap = ({ toggleLanguage, toggleDate, mapBoxToken, updateAdditional
                 </TooltipFlex>
                 <Typography sx={{fontSize: `20px`, fontWeight: (theme) => (theme.typography.fontWeightLight), marginTop: (theme) => (theme.spacing(2))}}>{"'" + object.submissionText + "'"}</Typography>
                 <TooltipFlex sx={{marginTop: (theme) => (theme.spacing(2))}}>
-                    <Typography sx={{ color: `#888888`, fontSize: `14px`, fontWeight: (theme) => (theme.typography.fontWeightLight)}} >{object?.timestamp ? object.timestamp.toString().split('T')[0] : null}</Typography>
+                    <Typography sx={{ color: `#888888`, fontSize: `14px`, fontWeight: (theme) => (theme.typography.fontWeightLight)}} >{object?.timestamp ? new Date(object.timestamp).toLocaleString().split(',')[0] : null}</Typography>
                     <LocationBox locationName={toggleLocationPreference.locationPreference} color={colorCode}/>
                 </TooltipFlex>
             </MyTooltipBox>

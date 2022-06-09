@@ -18,8 +18,8 @@ const RainfallMapLegend = ({toggleLanguage, toggleClusterStatus, setClusterStatu
     const { promiseInProgress } = usePromiseTracker({area: 'pluviometer-data', delay: 500});
     const { promiseInProgressTwo } = usePromiseTracker({area: 'RAIN_FORM', delay: 500});
 
-    const handleChange = () => {
-        setClusterStatus(!toggleClusterStatus.cluster)
+    const handleChange = (e, v) => {
+        setClusterStatus(v)
     }
 
     return(
@@ -42,10 +42,11 @@ const RainfallMapLegend = ({toggleLanguage, toggleClusterStatus, setClusterStatu
             </Box>
             <Box sx={{display: `flex`, width: `100%`, justifyContent: `space-between`}}>
                 <ToggleFormControlLabel
-                    control={<ToggleClusterSwitch defaultChecked/>}
+                    control={<ToggleClusterSwitch onChange={(e, v) => handleChange(e,v)} value={toggleClusterStatus.cluster}/>}
                     label={<Typography sx={{fontWeight: (theme) => (theme.typography.fontWeightBold), fontSize: `12px`}} >{uiText.global.tooltips.cluster[toggleLanguage.language].toUpperCase()}</Typography>}
                     labelPlacement="start"
-                    onChange={handleChange}
+
+
                 />
             </Box>
         </LegendWrapperBox>

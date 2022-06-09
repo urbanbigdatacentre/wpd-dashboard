@@ -4,15 +4,28 @@
 // Package Imports
 import {Box, Container, styled, Typography} from "@mui/material";
 import Image from 'next/image';
+import {connect} from "react-redux";
+import locationPaths from "../../data/locationPaths";
 import {useEffect} from "react";
 
 // Local Imports
 import avatarPaths from '../../data/avatarPaths';
 import LocationBox from "./locationBox";
-
+import uiText from "../../data/ui-text";
+import {locationColorKeys} from "../../data/colorMapping";
 
 // Carousel Item Component
-export const CarouselItem = ({ languageToggle, data }) => {
+const CarouselItem = ({ toggleLanguage, data, toggleLocationPreference, updateCitizenEventsRainfallData }) => {
+
+    const formTypeMapping = {
+        FLOODZONES_FORM: uiText.global.tooltips.floodEvent[toggleLanguage.language],
+        RAIN_FORM: uiText.global.tooltips.rainEvent[toggleLanguage.language],
+        RIVERFLOOD_FORM: uiText.global.tooltips.floodEvent[toggleLanguage.language],
+    }
+
+    const colorIndex = updateCitizenEventsRainfallData.locations.findIndex(function(el){return el.id === toggleLocationPreference.locationID})
+
+    const colorCode = colorIndex <= 0 ? '#2196F3' : locationColorKeys[colorIndex - 1].color
 
     if (data) {
         return (
@@ -20,19 +33,19 @@ export const CarouselItem = ({ languageToggle, data }) => {
                 <CarouselFlex>
                     <Box sx={{display: `flex`}}>
                         <ImageWrapperBox>
-                            <Image alt={"citizen avatar"} src={avatarPaths[data.citizenType]} width={60} height={60} objectFit={'contain'}/>
+                            <Image alt={"citizen avatar"} src={"/images/icons/Citizen-Icon.svg"} width={60} height={60} objectFit={'contain'}/>
                         </ImageWrapperBox>
                         <TypeOrganisationBox>
-                            <CitizenTypeText>{data.citizenType}</CitizenTypeText>
-                            <CitizenInfoText >{data.citizenOrganisation}</CitizenInfoText>
+                            <CitizenTypeText>{uiText.locationPage.rainfallMap.citizenReport[toggleLanguage.language]}</CitizenTypeText>
+                            <CitizenInfoText >{locationPaths.hasOwnProperty(data['organisationtype']) ? locationPaths[data['organisationtype']].text : ""}</CitizenInfoText>
                         </TypeOrganisationBox>
                     </Box>
-                    <EventType>{data.type.toUpperCase()}<span className={"bluePunctuation"}>.</span></EventType>
+                    <EventType>{formTypeMapping[data['submissiontype']].toUpperCase()}<span className={"bluePunctuation"}>.</span></EventType>
                 </CarouselFlex>
-                <MainContentText sx={{fontSize: `25px`, textAlign: `left`, marginTop: (theme) => (theme.spacing(2)), marginBottom: (theme) => (theme.spacing(2))}} >{'"' + data.submissionText + '"'}</MainContentText>
+                <MainContentText sx={{fontSize: `25px`, textAlign: `left`, marginTop: (theme) => (theme.spacing(2)), marginBottom: (theme) => (theme.spacing(2))}} >{'"' + data.submissiontext + '"'}</MainContentText>
                 <CarouselFlex>
-                    <DateText >{new Date(data.timestamp).toLocaleString().split(',')[0]}</DateText>
-                    <LocationBox locationName={data.locationName}/>
+                    <DateText >{new Date(data['submissiontimestamp']).toLocaleString().split(',')[0]}</DateText>
+                    <LocationBox locationName={data['locationame']} color={colorCode}/>
                 </CarouselFlex>
             </CarouselBox>
         )
@@ -125,3 +138,5 @@ const MainContentText = styled(Typography)(({theme}) => ({
         fontSize: `16px`,
     },
 }))
+
+export default connect((state) => state)(CarouselItem)

@@ -50,7 +50,6 @@ export const updateCarouselCoordinates = (newCoordinates) => (dispatch) => {
         type: types.SETCAROUSELCOORDINATES,
         latitude: parseFloat(newCoordinates.latitude),
         longitude: parseFloat(newCoordinates.longitude),
-        citizenType: newCoordinates.citizenType,
     })
 }
 

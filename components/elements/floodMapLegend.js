@@ -2,20 +2,28 @@
 
 // Package Imports
 import {connect} from "react-redux";
-import {Box, styled, Typography} from "@mui/material";
+import {Box, FormControlLabel, styled, Switch, Typography} from "@mui/material";
 import {usePromiseTracker} from "react-promise-tracker";
 import uiText from "../../data/ui-text";
 import FloodMapZonesCarousel from "./floodMapZonesCarousel";
 import locationPaths from "../../data/locationPaths";
 import LocationBox from "./locationBox";
 import {locationColorKeys} from "../../data/colorMapping";
+import {bindActionCreators} from "redux";
+import {setClusterStatus} from "../../store/actions";
 // Local Imports
 
 // FloodMapLegend Component
 
-const FloodMapLegend = ({toggleLanguage, updateFloodData, toggleLocationPreference, mapBoxToken}) => {
+const FloodMapLegend = ({toggleLanguage, updateFloodData, toggleLocationPreference, mapBoxToken, setClusterStatus, toggleClusterStatus}) => {
 
     const { promiseInProgress } = usePromiseTracker({area: 'floodzones-data', delay: 0});
+
+    const handleChange = (e, v) => {
+        setClusterStatus(v)
+    }
+
+    console.log(toggleClusterStatus.cluster)
 
     // Find Current Flood Zones Data
     const floodZonesDataFilter = updateFloodData.locations.filter(function(el){return el.id === toggleLocationPreference.locationID})
@@ -54,6 +62,13 @@ const FloodMapLegend = ({toggleLanguage, updateFloodData, toggleLocationPreferen
                             fontSize: `12px`,
                             textAlign: `right`
                         }}>{uiText.global.tooltips.higher[toggleLanguage.language] + " " + uiText.global.tooltips.risk[toggleLanguage.language]}</LegendText>
+                    </Box>
+                    <Box sx={{display: `flex`, width: `100%`, justifyContent: `space-between`}}>
+                        <ToggleFormControlLabel
+                            control={<ToggleClusterSwitch onChange={(e, v) => handleChange(e,v)} value={toggleClusterStatus.cluster}/>}
+                            label={<Typography sx={{fontWeight: (theme) => (theme.typography.fontWeightBold), fontSize: `12px`}} >{uiText.global.tooltips.cluster[toggleLanguage.language].toUpperCase()}</Typography>}
+                            labelPlacement="start"
+                        />
                     </Box>
                 </Box>: null}
                 {/*SPACE TO INCLUDE CAROUSEL TO SWITCH BETWEEN MAP VIEWS*/}
@@ -135,4 +150,53 @@ const LegendDescription = styled(Typography)(({theme}) => ({
 }))
 
 
-export default connect((state)=>state)(FloodMapLegend)
+
+const ToggleFormControlLabel = styled(FormControlLabel)(({ theme }) => ({
+    display: `flex`,
+    justifyContent: `space-between`,
+    width: `100%`,
+    padding: `0`,
+    margin: `0`,
+}))
+
+const ToggleClusterSwitch = styled(Switch)(({ theme }) => ({
+    padding: 8,
+    '& .MuiSwitch-track': {
+        borderRadius: 22 / 2,
+        '&:before, &:after': {
+            content: '""',
+            position: 'absolute',
+            top: '50%',
+            transform: 'translateY(-50%)',
+            width: 16,
+            height: 16,
+        },
+        '&:before': {
+            backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 24 24"><path fill="${encodeURIComponent(
+                theme.palette.getContrastText(theme.palette.primary.main),
+            )}" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"/></svg>')`,
+            left: 12,
+        },
+        '&:after': {
+            backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 24 24"><path fill="${encodeURIComponent(
+                theme.palette.getContrastText(theme.palette.primary.main),
+            )}" d="M19,13H5V11H19V13Z" /></svg>')`,
+            right: 12,
+        },
+    },
+    '& .MuiSwitch-thumb': {
+        boxShadow: 'none',
+        width: 16,
+        height: 16,
+        margin: 2,
+    },
+}));
+
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        setClusterStatus: bindActionCreators(setClusterStatus, dispatch),
+    }
+}
+
+export default connect((state)=>state, mapDispatchToProps)(FloodMapLegend)

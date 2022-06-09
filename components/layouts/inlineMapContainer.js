@@ -77,7 +77,7 @@ const InlineMapContainer = ({ toggleLanguage, mapBoxToken, mapStylePlain, update
                         dashboardRender ? (<LocationButtonGroup positionMode={'relative'}/>) : (<StandardText variant={'description'} sx={{width: `40%`, marginTop: (theme) => (theme.spacing(1))}} >{uiText.landingPage.carouselMap.description[toggleLanguage.language]}</StandardText>)
                     }
                 </MapDescriptionTextBox>
-                <CitizenCarousel/>
+                <CitizenCarousel useAPIData={dashboardRender}/>
             </MapTextCarouselWrapper>
         )
     }
@@ -159,7 +159,7 @@ const MapBackgroundBox = styled(Container)(({theme}) => ({
     right: `0`,
     left: `0`,
     zIndex: 500,
-    background: `linear-gradient(270deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.87) 40.19%, #FFFFFF 100%);`,
+    background: `linear-gradient(270deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.87) 25.19%, #FFFFFF 100%);`,
     [theme.breakpoints.down('1000')]: {
         width: `90%`,
     },
