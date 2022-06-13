@@ -23,8 +23,6 @@ const FloodMapLegend = ({toggleLanguage, updateFloodData, toggleLocationPreferen
         setClusterStatus(v)
     }
 
-    console.log(toggleClusterStatus.cluster)
-
     // Find Current Flood Zones Data
     const floodZonesDataFilter = updateFloodData.locations.filter(function(el){return el.id === toggleLocationPreference.locationID})
 
@@ -65,7 +63,7 @@ const FloodMapLegend = ({toggleLanguage, updateFloodData, toggleLocationPreferen
                     </Box>
                     <Box sx={{display: `flex`, width: `100%`, justifyContent: `space-between`}}>
                         <ToggleFormControlLabel
-                            control={<ToggleClusterSwitch onChange={(e, v) => handleChange(e,v)} value={toggleClusterStatus.cluster}/>}
+                            control={<ToggleClusterSwitch onChange={(e, v) => handleChange(e,v)} checked={toggleClusterStatus.cluster}/>}
                             label={<Typography sx={{fontWeight: (theme) => (theme.typography.fontWeightBold), fontSize: `12px`}} >{uiText.global.tooltips.cluster[toggleLanguage.language].toUpperCase()}</Typography>}
                             labelPlacement="start"
                         />
@@ -157,6 +155,7 @@ const ToggleFormControlLabel = styled(FormControlLabel)(({ theme }) => ({
     width: `100%`,
     padding: `0`,
     margin: `0`,
+    marginTop: theme.spacing(1),
 }))
 
 const ToggleClusterSwitch = styled(Switch)(({ theme }) => ({

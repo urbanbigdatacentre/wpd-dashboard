@@ -26,6 +26,7 @@ import TooltipChart from "./tooltipChart";
 import LocationBox from "./locationBox";
 import {locationColorKeys} from "../../data/colorMapping";
 import formatCitizenEventsData from "../../api/formatCitizenEventsData";
+import {filterCitizenEventDataByDate, filterPluviometerData} from "../../api/dataFilteringFunctions";
 
 
 // ==================
@@ -33,7 +34,7 @@ import formatCitizenEventsData from "../../api/formatCitizenEventsData";
 // ==================
 const MAP_VIEW = new MapView({repeat: true});
 
-const mapStyleMono = 'mapbox://styles/andyclarke/cl2svmbha002u15pi3k6bqxjn';
+const mapStyleMono = 'mapbox://styles/andyclarke/cl4cjxdbg000615pf5n0s2wtv';
 
 // ==================
 // End of Map Configuration
@@ -41,7 +42,7 @@ const mapStyleMono = 'mapbox://styles/andyclarke/cl2svmbha002u15pi3k6bqxjn';
 
 
 // Street Map Component
-const RainfallMap = ({ toggleLanguage, toggleDate, mapBoxToken, updateAdditionalLocation, updateCarouselCoordinates, mapStylePlain, updatePrimaryLocation, toggleLocationPreference, toggleClusterStatus, updatePluviometerData, updateCitizenEventsRainfallData }) => {
+const RainfallMap = ({ toggleLanguage, toggleDate, toggleDataType, mapBoxToken, updateAdditionalLocation, updateCarouselCoordinates, mapStylePlain, updatePrimaryLocation, toggleLocationPreference, toggleClusterStatus, updatePluviometerData, updateCitizenEventsRainfallData }) => {
 
     // DeckGL and mapbox will both draw into this WebGL context
     const [glContext, setGLContext] = useState();
@@ -82,14 +83,17 @@ const RainfallMap = ({ toggleLanguage, toggleDate, mapBoxToken, updateAdditional
     // Find Preferred Location Citizen Rainfall Events Data
     const citizenRainfallEventsData = updateCitizenEventsRainfallData.locations.filter(function(el){return el.id === toggleLocationPreference.locationID})
 
+
     const locationSettings = {
         initialLongitude: additionalLocationFilter.length ? additionalLocationFilter[0]['longitude'] - 0.07 : updatePrimaryLocation.location.longitude - 0.07,
         initialLatitude: additionalLocationFilter.length ? additionalLocationFilter[0]['latitude'] - 0.07: updatePrimaryLocation.location.latitude - 0.07,
         zoom: additionalLocationFilter.length ?  locationPaths[additionalLocationFilter[0]['placetype']].zoom : locationPaths[updatePrimaryLocation.location['placetype']].zoom,
         locationObject: additionalLocationFilter.length ? additionalLocationFilter[0] : updatePrimaryLocation.location,
-        pluviometerData: pluviometerData.length ? pluviometerData[0] : {},
-        citizenEventsData: citizenRainfallEventsData.length ? citizenRainfallEventsData[0] : {}
+        pluviometerData: filterPluviometerData(pluviometerData, toggleDate),
+        citizenEventsData: filterCitizenEventDataByDate(citizenRainfallEventsData, 'citizenRainfallEvents', toggleDate)
     }
+
+
 
     // SET MAX VALUE
     let binArray = []
@@ -122,6 +126,7 @@ const RainfallMap = ({ toggleLanguage, toggleDate, mapBoxToken, updateAdditional
         let tooltipPositionSX = {
             top: y,
             width: `max-content`,
+            zIndex: 1000000000,
         };
 
         if (x > (wrapperWidth / 2)) {tooltipPositionSX['right'] = wrapperWidth - x - 25}
@@ -255,12 +260,12 @@ const RainfallMap = ({ toggleLanguage, toggleDate, mapBoxToken, updateAdditional
     };
 
     const citizenPluviometerLayer = citizenPluviometerMapConfig.showCluster ?
-        new IconClusterLayer({...layerProps, id: 'pluviometer-icon-cluster', sizeScale: 50}) :
+        new IconClusterLayer({...layerProps, id: 'pluviometer-icon-cluster', sizeScale: 45}) :
         new IconLayer({
         ...layerProps,
         id: "citizen-pluviometer-layer",
         getIcon: d => 'marker',
-        sizeScale: 50,
+        sizeScale: 30,
         getColor: d => d.color,
         getSize: (d) => 1,
     });
@@ -298,14 +303,17 @@ const RainfallMap = ({ toggleLanguage, toggleDate, mapBoxToken, updateAdditional
         bearing: 0
     };
 
-
-    const layers = mapStylePlain ? null : [rainfallEventsLayer, citizenPluviometerLayer]
+    let layerMapping = {
+        "Combined": [rainfallEventsLayer, citizenPluviometerLayer],
+        "Official": [],
+        "Citizen": [rainfallEventsLayer, citizenPluviometerLayer]
+    }
 
     return (
 
         <DeckGL
             ref={deckRef}
-            layers={[layers]}
+            layers={layerMapping[toggleDataType.dataType]}
             controller={!mapStylePlain}
             preventStyleDiffing={true}
             initialViewState={INITIAL_VIEW_STATE}
@@ -351,6 +359,7 @@ const MyTooltipBox = styled(Box)(({theme}) => ({
     padding: theme.spacing(2),
     boxShadow: `0px 0px 15px #E5E5E5`,
     border: `1.5px solid #E5E5E5`,
+    zIndex: 4001
 }))
 
 const TooltipFlex = styled(Box)(({theme}) => ({

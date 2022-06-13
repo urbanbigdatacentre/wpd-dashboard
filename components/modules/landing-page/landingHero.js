@@ -39,7 +39,7 @@ const LandingHeroSection = ({ toggleLanguage }) => {
                 <TopBlue variant={'topBlue'}>{uiText.landingPage.hero.topBlue[toggleLanguage.language]}</TopBlue>
                 <PageTitle variant={'pageTitle'}>{uiText.global.labels.projectTitle[toggleLanguage.language]}<span className={'bluePunctuation'}>.</span></PageTitle>
                 <StandardText>{uiText.landingPage.hero.subtitle[toggleLanguage.language]}</StandardText>
-                <Search iconClickHandler={handleSearchClick} />
+                <Search addingLocation={false} iconClickHandler={handleSearchClick} />
             </Container>
 
         </>

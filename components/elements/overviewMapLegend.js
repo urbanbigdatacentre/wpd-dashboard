@@ -8,10 +8,13 @@ import {styled, Box, Typography, Slider} from "@mui/material";
 import {bindActionCreators} from "redux";
 import {changeRadius} from "../../store/actions";
 import {usePromiseTracker} from "react-promise-tracker";
+import uiText from "../../data/ui-text";
+import LocationBox from "./locationBox";
+import * as d3 from "d3";
 
 // Overview Map Legend Component
 
-const OverviewMapLegendComponent = ({ changeRadius, hexRadius}) => {
+const OverviewMapLegendComponent = ({ changeRadius, changeRadiusWithSlider, toggleLanguage, changeOverviewMapView, toggleDate}) => {
 
     const { promiseInProgress } = usePromiseTracker({area: "national-overview-map", delay: 500})
 
@@ -23,12 +26,14 @@ const OverviewMapLegendComponent = ({ changeRadius, hexRadius}) => {
         }
     }
 
+
     return(
 
         !promiseInProgress && (
             <LegendWrapperBox>
-                <LegendTitle sx={{fontWeight: (theme) => (theme.typography.fontWeightBold)}}>NO. CITIZEN REPORTS</LegendTitle>
-                <LegendDescription sx={{fontSize: `14px`}}>Data represents number of citizen reports submitted in the last 24 hours across the whole of Brazil.</LegendDescription>
+                <LegendTitle sx={{marginBottom: (theme) => (theme.spacing(1)), fontWeight: (theme) => (theme.typography.fontWeightBold)}}>{uiText.landingPage.nationalActivityMap[changeOverviewMapView.mapView].title[toggleLanguage.language].toUpperCase()}</LegendTitle>
+                <DateRangeText>{new Date(d3.timeFormat("%B %d, %Y")(toggleDate.startDate)).toLocaleString().split(',')[0] + " - " + new Date(d3.timeFormat("%B %d, %Y")(toggleDate.endDate)).toLocaleString().split(',')[0]}</DateRangeText>
+                <LegendDescription>{uiText.landingPage.nationalActivityMap[changeOverviewMapView.mapView].description[toggleLanguage.language]}</LegendDescription>
                 <Box sx={{display: `flex`, flexDirection: `column`, width: `100%`}}>
                     <Box sx={{display: `flex`, width: `100%`, justifyContent: `space-between`, marginBottom: (theme) => (theme.spacing(2))}}>
                         <LegendCircle sx={{backgroundColor: `#F7996F`}}/>
@@ -38,13 +43,13 @@ const OverviewMapLegendComponent = ({ changeRadius, hexRadius}) => {
                         <LegendCircle sx={{backgroundColor: `#5C2F60`}}/>
                     </Box>
                     <Box sx={{display: `flex`, width: `100%`, justifyContent: `space-between`}}>
-                        <LegendText sx={{fontSize: `12px`}}>Fewer Reports</LegendText>
-                        <LegendText sx={{fontSize: `12px`, textAlign: `right`}}>More Reports</LegendText>
+                        <LegendText sx={{fontSize: `12px`}}>{uiText.global.tooltips.lower[toggleLanguage.language]}</LegendText>
+                        <LegendText sx={{fontSize: `12px`, textAlign: `right`}}>{uiText.global.tooltips.higher[toggleLanguage.language]}</LegendText>
                     </Box>
                 </Box>
-                <Box sx={{display: `flex`, width: `100%`, justifyContent: `space-between`}}>
-                    <Typography sx={{fontWeight: (theme) => (theme.typography.fontWeightBold), fontSize: `12px`}} >HEXAGON RADIUS</Typography>
-                    <Slider min={20000} max={200000} value={hexRadius} onChange={handleChange}/>
+                <Box sx={{display: `flex`, width: `100%`, justifyContent: `space-between`, marginTop: (theme) => (theme.spacing(2))}}>
+                    <Typography sx={{fontWeight: (theme) => (theme.typography.fontWeightBold), fontSize: `12px`}} >{uiText.global.tooltips.hexagonRadius[toggleLanguage.language].toUpperCase()}</Typography>
+                    <Slider min={20000} max={200000} value={changeRadiusWithSlider.hexRadius} onChange={handleChange}/>
                 </Box>
             </LegendWrapperBox>
         )
@@ -70,7 +75,7 @@ const LegendWrapperBox = styled(Box)(({theme}) => ({
     alignItems: `flex-start`,
     zIndex: 101,
     maxWidth: theme.spacing(35),
-    height: `300px`,
+    height: `auto`,
     top: theme.spacing(14),
     right: theme.spacing(1),
     backgroundColor: theme.palette.primary.light,
@@ -102,19 +107,22 @@ const LegendTitle = styled(Typography)(({theme}) => ({
 }))
 
 const LegendDescription = styled(Typography)(({theme}) => ({
+    fontSize: `13px`,
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(2),
     [theme.breakpoints.down('sm')]: {
         display: `none`
     },
 }))
 
-// REDUX CONNECTIONS
-// Map State + Dispatch to Props
+const DateRangeText = styled(Typography)(({theme}) => ({
+    fontSize: `12px`,
+    fontWeight: theme.typography.fontWeightLight
+}))
 
-const mapStateToProps = (state) => {
-    return {
-        hexRadius: state.changeRadiusWithSlider.hexRadius
-    }
-}
+
+// REDUX CONNECTIONS
+// Map Dispatch to Props
 
 const mapDispatchToProps = (dispatch) => {
     return {
@@ -124,4 +132,4 @@ const mapDispatchToProps = (dispatch) => {
 
 
 // Export Component & Connect to Store
-export default connect(mapStateToProps, mapDispatchToProps)(OverviewMapLegendComponent)
+export default connect((state) => state, mapDispatchToProps)(OverviewMapLegendComponent)

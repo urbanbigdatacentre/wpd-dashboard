@@ -34,6 +34,17 @@ export const changeDate = (dateSelected) => (dispatch) => {
     })
 }
 
+
+// SET GREATEST DATE RANGE
+export const updateGreatestDateRange = (dateSelected) => (dispatch) => {
+    return dispatch({
+        type: types.SETGREATESTDATERANGE,
+        startDate: dateSelected.startDate,
+        endDate: dateSelected.endDate
+    })
+}
+
+
 // SLIDE RADIUS
 export const changeRadius = (newRadius) => (dispatch) => {
 

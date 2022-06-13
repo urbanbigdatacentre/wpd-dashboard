@@ -64,22 +64,8 @@ const RainfallChart = ({toggleLanguage, toggleDate, updatePrimaryLocation, updat
         // =========
         // FILTER DATA
         // =========
-        const dataArray = [];
+        const dataArray = updatePluviometerData.locations;
         const completeDataset = [];
-
-        updatePluviometerData.locations.forEach(function(location) {
-            // Check if there are multiple entries for one location - return the one with the biggest start date
-            // OR SIMPLY REMOVE THE OLD ONE INSIDE THE REDUX STORE
-            // NOTE - CURRENTLY DOESN'T CONSIDER END DATE
-            const sameIDArray = updatePluviometerData.locations.filter(function(d) {return (d.id === location.id)})
-            // If there is more than one - push the one with the highest timestamp
-            if (sameIDArray.length > 1) {
-                const maxTimestamp = sameIDArray.filter(function(d) {return d['startDate'] >= location['startDate']})
-                maxTimestamp.length ? dataArray.push(maxTimestamp[0]) : null
-            } else {
-                dataArray.push(location)
-            }
-        })
 
         // Ensure that location is one of the primary or additional locations selected by user
         const validateLocation = (fullDataArray) => {
@@ -98,7 +84,6 @@ const RainfallChart = ({toggleLanguage, toggleDate, updatePrimaryLocation, updat
         const filteredDataTwo = validateLocation([... new Set(dataArray)])
 
 
-
         // Draw area - line - circles for every location
         filteredDataTwo.forEach(function(location) {
             // Check for pluviometerData
@@ -111,10 +96,15 @@ const RainfallChart = ({toggleLanguage, toggleDate, updatePrimaryLocation, updat
                     singlePluviometer.records.forEach(function(record){
                         // Check if {timestamp: x, valueArray: []} exists
                         if (dataRecords.hasOwnProperty(new Date(record.timestamp).setHours(0, 0, 0, 0))) {
-                            dataRecords[new Date(record.timestamp).setHours(0, 0, 0, 0)].push(record.value)
+                            // Filter Out Records not between date ranges
+                            if (new Date(d3.timeFormat("%B %d, %Y")(toggleDate.startDate)) < new Date(record.timestamp)) {
+                                dataRecords[new Date(record.timestamp).setHours(0, 0, 0, 0)].push(record.value)
+                            }
                         } else {
-                            dataRecords[new Date(record.timestamp).setHours(0, 0, 0, 0)] = []
-                            dataRecords[new Date(record.timestamp).setHours(0, 0, 0, 0)].push(record.value)
+                            if ((new Date(d3.timeFormat("%B %d, %Y")(toggleDate.startDate)) < new Date(record.timestamp)) && (new Date(d3.timeFormat("%B %d, %Y")(toggleDate.endDate)) >= new Date(record.timestamp).setHours(0, 0, 0, 0))) {
+                                dataRecords[new Date(record.timestamp).setHours(0, 0, 0, 0)] = []
+                                dataRecords[new Date(record.timestamp).setHours(0, 0, 0, 0)].push(record.value)
+                            }
                         }
                     })
                 })

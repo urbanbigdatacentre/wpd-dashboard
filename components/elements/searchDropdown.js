@@ -5,8 +5,8 @@ import {connect} from "react-redux";
 import {List, ListItem, Divider, ListItemButton, styled, Skeleton, Typography, Box} from "@mui/material";
 import {bindActionCreators} from "redux";
 import Link from 'next/link';
-import axios from "axios";
 import {trackPromise, usePromiseTracker} from "react-promise-tracker";
+import { useRouter } from "next/router";
 
 // Local Imports
 import LocationBox from "./locationBox";
@@ -29,6 +29,9 @@ import locationPaths from "../../data/locationPaths";
 import config from "../../api/config";
 import uiText from "../../data/ui-text";
 import requestCitizenEvents from "../../api/requestCitizenEvents";
+import requestSimpleGeometry from "../../api/requestSimpleGeometry";
+import requestPluviometerData from "../../api/requestPluviometerData";
+import requestFloodZonesData from "../../api/requestFloodZonesData";
 
 
 // Search Dropdown Component
@@ -36,6 +39,8 @@ import requestCitizenEvents from "../../api/requestCitizenEvents";
 const SearchDropdown = ({ configureAPI, toggleDate, toggleLanguage, searchText, results, updatePrimaryLocation, updateAdditionalLocation, updatePrimaryLocationDispatch, updateAdditionalLocationDispatch, addingLocation, clickHandler, changeLocationPreference, updatePluviometerData, updatePluviometerDataDispatch, removePluviometerDataDispatch, updateFloodData, updateFloodDataDispatch, removeFloodDataDispatch, updateCitizenEventsRainfallData, updateCitizenEventsRainfallDataDispatch, removeCitizenRainfallEventsDataDispatch, updateCitizenEventsFloodZonesData, updateCitizenFloodZonesEventsDataDispatch, removeCitizenFloodZonesEventsDataDispatch, updateCitizenEventsRiverFloodData, updateCitizenRiverFloodEventsDataDispatch, removeCitizenRiverFloodEventsDataDispatch }) => {
 
     const { promiseInProgress } = usePromiseTracker({area: "search-result", delay: 0});
+
+    const router = useRouter();
 
     const handleClick = (item) => {
 
@@ -50,82 +55,39 @@ const SearchDropdown = ({ configureAPI, toggleDate, toggleLanguage, searchText, 
             previousPrimary !== {} ? removeCitizenRiverFloodEventsDataDispatch(updatePrimaryLocation.location['placeid']) : null
         }
 
-        // Make Simple Geometry Request
-        const requestURL = `${config[configureAPI.node_env['NODE_ENV']]}/dashboard/simplegeometry?id=${item['placeid']}`
+        // =========
+        // ROUTER
+        // =========
 
-        // Keeping Requests inside Search Dropdown is causing memory leaks in the application - because component isn't rendered on location page as data is loaded
-        // ============
-        // Request for simple Geometry
-        // ============
+        if (!addingLocation) {
+            router.push(`/location?name=${item['placename']}&id=${item['placeid']}`)
+        }
 
-        trackPromise(
-            axios.get(requestURL)
-                .then(res => {
-                    addingLocation ? updateAdditionalLocationDispatch(res.data.responseData.array_to_json[0]) : updatePrimaryLocationDispatch(res.data.responseData.array_to_json[0]);
-                    !addingLocation ? changeLocationPreference(res.data.responseData.array_to_json[0]['placename'], res.data.responseData.array_to_json[0]['placeid']) : null;
-                    clickHandler(item);
-                })
-                .catch(err => {
-                    console.log("An error occurred", err)
-                }), "simple-geometry")
+        // =========
+        // IF ADDING LOCATION - HANDLE API REQUESTS IN DROPDOWN CLICK
+        // =========
+        else {
 
-        // ============
-        // PLUVIOMETERS
-        // ============
+            console.log("Requests made in Search Dropdown")
 
-        const API_URL = `${config[configureAPI['node_env'].NODE_ENV]}/dashboard/pluviometers?id=${item['placeid']}&startDate=${toggleDate.startDate}&endDate=${toggleDate.endDate}`
+            // Make Request for Simple Geometry
+            requestSimpleGeometry(item, configureAPI, addingLocation, clickHandler, changeLocationPreference, updatePrimaryLocationDispatch, updateAdditionalLocationDispatch);
 
-        // Check if Pluviometer Data already exists for this location and if existing timestamp is sufficient
-        const filteredPluviometerData = updatePluviometerData.locations.length ? updatePluviometerData.locations.filter(function (location) {
+            // Make Request for Pluviometer Data
+            requestPluviometerData(item, toggleDate, configureAPI, updatePluviometerData, updatePluviometerDataDispatch)
 
-            // Return the item only if the ids are equal and the existing date is newer than the current date choice
-            return (location['id'] === item['placeid'] && (location['startDate'] < toggleDate.startDate));
-        }) : [];
+            // Make Request for FloodZones Data
+            requestFloodZonesData(item, configureAPI, updateFloodData, updateFloodDataDispatch)
 
-        // Make request and track promise if data doesn't already exist
-        !filteredPluviometerData.length ?
-            trackPromise(
-                axios.get(API_URL)
-                    .then(res => {
-                        updatePluviometerDataDispatch(typeof (res.data['responseData']['array_to_json']) === 'undefined' ? [] : res.data['responseData']['array_to_json'], item['placeid'], toggleDate.startDate.toString(), toggleDate.endDate.toString(), item['placename'], item['placetype'])
-                    })
-                , "pluviometer-data") : null
+            // Make Request for Citizen Rainfall Events
+            requestCitizenEvents(item['placeid'], 9, toggleDate.startDate, toggleDate.endDate, item['placename'], configureAPI, updateCitizenEventsRainfallData, updateCitizenEventsRainfallDataDispatch)
 
+            // Make Request for Citizen FloodZones Events
+            requestCitizenEvents(item['placeid'], 10, toggleDate.startDate, toggleDate.endDate, item['placename'], configureAPI, updateCitizenEventsFloodZonesData, updateCitizenFloodZonesEventsDataDispatch)
 
-        // ============
-        // FLOODZONES
-        // ============
-
-        const FLOODZONES_API_URL = `${config[configureAPI['node_env'].NODE_ENV]}/dashboard/floodzones?id=${item['placeid']}`
-
-        // Check if Floodzones data already exists for this location **
-        const filteredFloodData = updateFloodData.locations.length ? updateFloodData.locations.filter(function (location) {
-            // Return the item only if the ids are equal
-            return (location['id'] === item['placeid']);
-        }) : [];
-
-        !filteredFloodData.length ? trackPromise(
-            axios.get(FLOODZONES_API_URL)
-                .then(res => {
-                    const payload = res.data?.responseData?.json_build_object?.features?.array_to_json
-                    updateFloodDataDispatch(payload === undefined ? [] : payload, item['placeid'], item['placename'])
-                })
-            , "floodzones-data") : null
-
-        // ============
-        // CITIZEN EVENTS DATA - RAINFALL - FLOODZONES - RIVERFLOOD
-        // ============
-
-        // PARAMS - locationID, formType, startDate, endDate, locationName, configureAPI, existingDataArray, dispatchFunction
-
-        // Make Request for Citizen Rainfall Events
-        requestCitizenEvents(item['placeid'], 9, toggleDate.startDate, toggleDate.endDate, item['placename'], configureAPI, updateCitizenEventsRainfallData, updateCitizenEventsRainfallDataDispatch)
-
-        // Make Request for Citizen FloodZones Events
-        requestCitizenEvents(item['placeid'], 10, toggleDate.startDate, toggleDate.endDate, item['placename'], configureAPI, updateCitizenEventsFloodZonesData, updateCitizenFloodZonesEventsDataDispatch)
-
-        // Make Request for Citizen RiverFlood Events
-        requestCitizenEvents(item['placeid'], 11, toggleDate.startDate, toggleDate.endDate, item['placename'], configureAPI, updateCitizenEventsRiverFloodData, updateCitizenRiverFloodEventsDataDispatch)
+            // Make Request for Citizen RiverFlood Events
+            requestCitizenEvents(item['placeid'], 11, toggleDate.startDate, toggleDate.endDate, item['placename'], configureAPI, updateCitizenEventsRiverFloodData, updateCitizenRiverFloodEventsDataDispatch)
+        }
     }
 
     const displayMode = Boolean(searchText) ? `block`: `none`;
@@ -145,7 +107,6 @@ const SearchDropdown = ({ configureAPI, toggleDate, toggleLanguage, searchText, 
 
                         !existingLocationIDs.includes(searchResult['placeid']) ? <div key={index}>
                             <Divider/>
-                            <Link href="/location" scroll={false}>
                                 <ListItemButton onClick={() => handleClick(searchResult)}>
                                     <MyListItem disablePadding>
                                         <LocationName>{searchResult['placename']}</LocationName>
@@ -155,7 +116,6 @@ const SearchDropdown = ({ configureAPI, toggleDate, toggleLanguage, searchText, 
                                         </DetailsBox>
                                     </MyListItem>
                                 </ListItemButton>
-                            </Link>
                         </div> : null
 
                     )

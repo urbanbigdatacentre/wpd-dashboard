@@ -22,7 +22,8 @@ import {
     updateFloodCoordinates,
     updateCitizenEventsRainfallData,
     updateCitizenEventsFloodZonesData,
-    updateCitizenEventsRiverFloodData
+    updateCitizenEventsRiverFloodData,
+    toggleGreatestDateRange,
 } from "./reducers";
 
 
@@ -53,7 +54,8 @@ const combinedReducer = combineReducers({
     updateFloodCoordinates,
     updateCitizenEventsRainfallData,
     updateCitizenEventsFloodZonesData,
-    updateCitizenEventsRiverFloodData
+    updateCitizenEventsRiverFloodData,
+    toggleGreatestDateRange
 })
 
 // Create Root Reducer
@@ -79,6 +81,7 @@ const reducer = (state, action) => {
         if (state.updatePrimaryLocation) nextState.updatePrimaryLocation = state.updatePrimaryLocation;
         if (state.updateFloodCoordinates) nextState.updateFloodCoordinates = state.updateFloodCoordinates;
         if (state.updateCarouselCoordinates) nextState.updateCarouselCoordinates = state.updateCarouselCoordinates;
+        if (state.toggleGreatestDateRange) nextState.toggleGreatestDateRange = state.toggleGreatestDateRange;
         if (state.toggleDate.date) nextState.toggleDate.date = state.toggleDate.date;
         if (state.setSearchTerm) nextState.setSearchTerm = state.setSearchTerm;
         if (state.toggleLanguage.language) nextState.toggleLanguage.language = state.toggleLanguage.language;

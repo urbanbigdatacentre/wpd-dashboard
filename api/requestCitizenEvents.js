@@ -4,7 +4,7 @@ import {trackPromise} from "react-promise-tracker";
 import axios from "axios";
 import config from "./config";
 
-const requestCitizenEvents = (locationID, formType, startDate, endDate, locationName, configureAPI, existingDataArray, dispatchFunction) => {
+const requestCitizenEvents = (locationID, formType, startDate, endDate, locationName, configureAPI, existingDataArray, dispatchFunction, forceUpdate) => {
 
     const formTypeAPIMapping = {
         9: {
@@ -24,8 +24,9 @@ const requestCitizenEvents = (locationID, formType, startDate, endDate, location
         return (location['id'] === locationID);
     }) : [];
 
+
     // Check if Citizen Rainfall Events already exists for this location
-    !filteredDataArray.length ? trackPromise(
+    ((!filteredDataArray.length) || forceUpdate) ? trackPromise(
         axios.get(`${config[configureAPI['node_env'].NODE_ENV]}/dashboard/citizenevents?id=${locationID}&type=${formType}&startDate=-${startDate}&endDate=${endDate}`)
             .then(res => {
                 const payload = res.data?.responseData?.array_to_json

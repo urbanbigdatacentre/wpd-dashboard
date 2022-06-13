@@ -14,46 +14,31 @@ import LocationBox from "../../elements/locationBox";
 import locationPaths from "../../../data/locationPaths";
 import StreetMap from "../../elements/streetMap";
 import {usePromiseTracker} from "react-promise-tracker";
+import {useRouter} from "next/router";
 
 // Location Hero Component
 
 const LocationHero = ({toggleLanguage, mapBoxToken, mapStylePlain, updatePrimaryLocation, dashboardRender}) => {
 
-    const [changingLocationStatus, setChangingLocationStatus] = useState(false);
-
     const { promiseInProgress } = usePromiseTracker({area: "simple-geometry", delay: 5000});
 
+    const router = useRouter();
 
-    useEffect(() => {
-        const window = document.querySelector('.window-overlay')
-        if (window) { window.addEventListener('click', function() {setChangingLocationStatus(false);})}
-    })
 
     const handleClick = (e) => {
-        setChangingLocationStatus(true);
-    }
-
-    const handleClose = (e) => {
-        setChangingLocationStatus(false);
+        router.push(`/`)
     }
 
     const renderPlainMap = () => {
         return (
             <>
 
-                {
-                    /*{ Section used for Adding Location Search Bar }*/
-                    changingLocationStatus ? <AddingLocationWindow addingLocationStatusHandler={handleClose} changingLocation={true}/> : <></>
-
-                }
-
                 <ChangeLocationContainer>
-                    <Button onClick={handleClick} variant={'outlined'} sx={{border: `1px solid #2196F3`, background: `rgba(255, 255, 255, 0.75)`, padding: (theme) => (theme.spacing(.75)), '&:hover': {
-                            background: `rgba(255, 255, 255, 0.75)`,
+                    <Button onClick={handleClick} variant={'outlined'} sx={{border: `1px solid #2196F3`, background: `rgba(255, 255, 255, 1)`, padding: (theme) => (theme.spacing(.75)), '&:hover': {
+                            background: `rgba(255, 255, 255, .75)`,
                             boxShadow: `0px 0px 15px rgba(33, 150, 243, .25)`,
                         }}} type="submit" aria-label="search">
                         <ChangeLocationText sx={{fontSize: `15px`, color: `#161616`,borderRadius: `5px`, fontWeight: (theme) => (theme.typography.fontWeightBold), textAlign: 'right', marginRight: (theme) => (theme.spacing(1))}}>{uiText.global.labels.changeLocation[toggleLanguage.language].toUpperCase()}</ChangeLocationText>
-                        <SearchIcon style={{ fill: `#2196F3` }} />
                     </Button>
                 </ChangeLocationContainer>
                 <MapTextCarouselWrapper>

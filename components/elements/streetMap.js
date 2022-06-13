@@ -13,8 +13,7 @@ import mapIcons from '../../public/images/icons/location-icon-atlas.svg';
 import {MapboxLayer} from "@deck.gl/mapbox";
 
 // Map Configuration
-const mapStyleMapBoxStreets = "mapbox://styles/andyclarke/cl2su9yt2001t15mu6fasl9wp";
-const mapStyleSatellite = 'mapbox://styles/andyclarke/cl2svsl4j002f15o39tp0dy2q';
+const mapStyleMapBoxStreets = "mapbox://styles/andyclarke/cl4ck4ui9000414p23bl0vft5";
 
 // Street Map Component
 const StreetMap = ({ toggleLocationPreference, mapBoxToken, updateCarouselCoordinates, updateAdditionalLocation, mapStylePlain, updatePrimaryLocation }) => {
@@ -72,10 +71,6 @@ const StreetMap = ({ toggleLocationPreference, mapBoxToken, updateCarouselCoordi
 
     });
 
-    const additionalLocationFilter = updateAdditionalLocation.locations.filter(item => item['placename'] === toggleLocationPreference.locationPreference)
-
-    const actualLocation = updateAdditionalLocation.locations.filter(item => item['placename'] === toggleLocationPreference.locationPreference).length ? additionalLocationFilter[0] : updatePrimaryLocation.location
-
     const locationSettings = {
         initialLongitude: updateCarouselCoordinates.longitude - 0.09,
         initialLatitude: updateCarouselCoordinates.latitude,
@@ -113,7 +108,7 @@ const StreetMap = ({ toggleLocationPreference, mapBoxToken, updateCarouselCoordi
                     ref={mapRef}
                     gl={glContext}
                     onLoad={onMapLoad}
-                    mapStyle={mapStylePlain ? mapStyleSatellite : mapStyleMapBoxStreets}
+                    mapStyle={mapStyleMapBoxStreets}
                     mapboxAccessToken={mapBoxToken}
                 >
                 </StaticMap>

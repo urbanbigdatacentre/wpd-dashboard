@@ -19,12 +19,15 @@ import CitizenSection from "../components/modules/landing-page/citizenSection";
 // State MGMT Imports
 import { wrapper } from '../store/store';
 import {
+    changeLanguage,
     setAPIConfig
 } from "../store/actions";
 
 // Style Imports
 import styles from '../styles/modules/Home.module.css'
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
+import uiText from "../data/ui-text";
+import {useRouter} from "next/router";
 
 
 // Landing Page Component
@@ -34,10 +37,24 @@ const Home = (props) => {
         props.setAPIConfig(props.env)
     }, [props.env])
 
+    const [pageTitle, setPageTitle] = useState("");
+    const [pageLoaded, setPageLoaded] = useState(false);
+
+    useEffect(() => {
+
+        if (!pageLoaded) {// Adapt Language of Page
+            let title = window.location.hostname.includes('dados') ? uiText.global.labels.projectTitle['br'] : uiText.global.labels.projectTitle['en'];
+            setPageTitle(title)
+            document.title = title;
+            props.changeLanguage(window.location.hostname.includes('dados') ? 'br' : 'en')
+            setPageLoaded(true)
+        }
+    }, [pageTitle, pageLoaded])
+
     return (
     <div className={styles.container}>
       <Head>
-        <title>Waterproofing Data</title>
+        <title>{pageTitle}</title>
         <meta name="description" content="Connecting Brazilian Flood Data From Communities & Official Sources"/>
       </Head>
 
@@ -74,6 +91,7 @@ export const getStaticProps = wrapper.getStaticProps((store) => () => {
 const mapDispatchToProps = (dispatch) => {
     return {
         setAPIConfig: bindActionCreators(setAPIConfig, dispatch),
+        changeLanguage: bindActionCreators(changeLanguage,dispatch)
     }
 }
 

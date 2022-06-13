@@ -24,7 +24,7 @@ import locationPaths from "../../data/locationPaths";
 import {usePromiseTracker} from "react-promise-tracker";
 
 // Citizen Carousel Component
-const CitizenCarousel = ({toggleLanguage, updateCarouselCoordinates, updateCitizenEventsRainfallData, updateCitizenEventsFloodZonesData, updateCitizenEventsRiverFloodData, useAPIData}) => {
+const CitizenCarousel = ({toggleLanguage, toggleLocationPreference, updateCarouselCoordinates, updateCitizenEventsRainfallData, updateCitizenEventsFloodZonesData, updateCitizenEventsRiverFloodData, useAPIData}) => {
 
     const { RAIN_FORM_promiseInProgress} = usePromiseTracker({area: "RAIN_FORM", delay: 0})
     const { FLOODZONES_FORM_promiseInProgress} = usePromiseTracker({area: "FLOODZONES_FORM", delay: 0})
@@ -37,23 +37,23 @@ const CitizenCarousel = ({toggleLanguage, updateCarouselCoordinates, updateCitiz
         const formattedDataArray = [];
 
         [...updateCitizenEventsFloodZonesData.locations, ...updateCitizenEventsRiverFloodData.locations, ...updateCitizenEventsRainfallData.locations].forEach(function(item) {
-            if (item.hasOwnProperty('citizenFloodZonesEvents')) {
+            if ((item.hasOwnProperty('citizenFloodZonesEvents')) && (item['id'] === toggleLocationPreference.locationID)) {
                 formattedDataArray.push(...item['citizenFloodZonesEvents'])
             }
-            else if (item.hasOwnProperty('citizenRiverFloodEvents')) {
+            else if ((item.hasOwnProperty('citizenRiverFloodEvents')) && (item['id'] === toggleLocationPreference.locationID)) {
                 formattedDataArray.push(...item['citizenRiverFloodEvents'])
             }
-            else if (item.hasOwnProperty('citizenRainfallEvents')) {
+            else if ((item.hasOwnProperty('citizenRainfallEvents')) && (item['id'] === toggleLocationPreference.locationID)) {
                 formattedDataArray.push(...item['citizenRainfallEvents'])
             }
         })
 
         setCitizenEvents(formattedDataArray)
+
         if ((useAPIData !== undefined) && (formattedDataArray.length)) {
             updateCarouselCoordinates({latitude: formattedDataArray[0].latitude, longitude: formattedDataArray[0].longitude})
         }
-
-    }, [updateCitizenEventsFloodZonesData.locations.length, updateCitizenEventsRiverFloodData.locations.length, updateCitizenEventsRainfallData.locations.length])
+    }, [toggleLocationPreference, updateCitizenEventsFloodZonesData.locations.length, updateCitizenEventsRiverFloodData.locations.length, updateCitizenEventsRainfallData.locations.length])
 
 
     const setDataArray = useAPIData !== undefined ? citizenEventsDataArray : dummyData;

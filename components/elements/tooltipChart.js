@@ -57,6 +57,16 @@ const TooltipChart = ({ data, toggleDate }) => {
             .attr("transform", "translate(" + chartMargin.left + ", " + chartMargin.top + ")")
             .attr("fill", "rgba(229, 229, 229, 0.2)");
 
+        // ========
+        // FILTER OUT DATA RECORDS NOT INSIDE DATE RANGE
+        // ========
+        const dataRecords = [];
+
+        data.records.forEach(function(item) {
+            if ((new Date(d3.timeFormat("%B %d, %Y")(toggleDate.startDate)) < new Date(item.timestamp)) && (new Date(d3.timeFormat("%B %d, %Y")(toggleDate.endDate)) >= new Date(item.timestamp).setHours(0, 0, 0, 0))) {
+                dataRecords.push(item)
+            }
+        })
 
         // ========
         // AXIS AND GRIDLINES
@@ -70,7 +80,7 @@ const TooltipChart = ({ data, toggleDate }) => {
         svg.append("g")
             .attr("transform", "translate(0," + height + ")")
             .attr("class", styles.chartAxis)
-            .call(d3.axisBottom(xScale).ticks(5).tickPadding(5));
+            .call(d3.axisBottom(xScale).ticks(3).tickPadding(5));
 
         // Draw Y Axis
         const yScale = d3.scaleLinear()
@@ -80,7 +90,7 @@ const TooltipChart = ({ data, toggleDate }) => {
         svg.append("g")
             .attr("class", styles.chartAxis)
             .attr("transform", "translate(" + chartMargin.left + ",0)")
-            .call(d3.axisLeft(yScale).ticks(5).tickPadding(5));
+            .call(d3.axisLeft(yScale).ticks(3).tickPadding(5));
 
         // Add X Gridlines
         svg.append("g")
@@ -107,7 +117,7 @@ const TooltipChart = ({ data, toggleDate }) => {
 
         // Add the area
         svg.append("path")
-            .datum(data.records)
+            .datum(dataRecords)
             .attr("fill", colorCode)
             .attr("class", "area-path")
             .attr("fill-opacity", .3)
@@ -120,7 +130,7 @@ const TooltipChart = ({ data, toggleDate }) => {
 
         // Add the line
         svg.append("path")
-            .datum(data.records)
+            .datum(dataRecords)
             .attr("fill", "none")
             .attr("class", "line-path")
             .attr("stroke", colorCode)
@@ -132,7 +142,7 @@ const TooltipChart = ({ data, toggleDate }) => {
 
         // Add the dots
         svg.selectAll("points")
-            .data(data.records)
+            .data(dataRecords)
             .enter()
             .append("circle")
             .attr("class", "chart-points")
@@ -167,7 +177,7 @@ const TooltipChartBox = styled(Box)(({theme}) => ({
     position: `relative`,
     borderRadius: theme.shape.borderRadius,
     outline: `2px solid #E5E5E5`,
-    zIndex: `100`
+    zIndex: 4000,
 }))
 
 

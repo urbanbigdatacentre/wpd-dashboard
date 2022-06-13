@@ -32,12 +32,6 @@ const FloodMapSection = ({ toggleLanguage, mapBoxToken }) => {
                     <Divider sx={{width: `60%`, height: (theme) => (theme.spacing(1)), background: `linear-gradient(90deg, #2196F3 0%, #1565C0 100%)`, marginBottom: (theme) => (theme.spacing(2)), marginTop: (theme) => (theme.spacing(1))}}/>
                 </Box>
                 <Box className={styles.legendWrapper}>
-                    {/*INSERT TEXT LAYOUT HERE*/}
-                    <Box className={styles.legendInlineBox}>
-                        <span style={{backgroundColor: `#1565C0`}} className={styles.colorScaleCircle}/>
-                        <Typography sx={{marginLeft: (theme) => (theme.spacing(2)), marginRight: (theme) => (theme.spacing(1)), fontWeight: (theme) => (theme.typography.fontWeightBold)}} variant={"description"}>{uiText.locationPage.floodMap.citizenPerceptionTitle[toggleLanguage.language]}</Typography>
-                        <MyTooltip title={uiText.locationPage.floodMap.citizenPerceptionTitle[toggleLanguage.language]} text={uiText.locationPage.floodMap.citizenPerceptionDescription[toggleLanguage.language]}/>
-                    </Box>
                     <Box className={styles.legendInlineBox}>
                         <span style={{backgroundColor: `#DA4167`}} className={styles.colorScaleCircle}/>
                         <Typography sx={{marginLeft: (theme) => (theme.spacing(2)), marginRight: (theme) => (theme.spacing(1)), fontWeight: (theme) => (theme.typography.fontWeightBold)}} variant={"description"}>{uiText.locationPage.floodMap.officialTitle[toggleLanguage.language]}</Typography>

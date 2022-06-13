@@ -6,8 +6,8 @@ import StaticMap from "react-map-gl";
 import _MapContext from "react-map-gl";
 import DeckGL from "@deck.gl/react";
 import React, {useCallback, useEffect, useRef, useState} from "react";
-import {LightingEffect, AmbientLight, _SunLight as SunLight} from '@deck.gl/core';
 import {IconLayer, GeoJsonLayer} from '@deck.gl/layers';
+import {TerrainLayer} from '@deck.gl/geo-layers';
 
 // Local Imports
 import {styled, Box, Typography} from "@mui/material";
@@ -22,12 +22,13 @@ import IconClusterLayer from "./iconClusterLayer";
 import {locationColorKeys} from "../../data/colorMapping";
 import uiText from "../../data/ui-text";
 import LocationBox from "./locationBox";
+import {filterCitizenEventDataByDate} from "../../api/dataFilteringFunctions";
 
 // Map Configuration
 const mapStyleSatellite = 'mapbox://styles/andyclarke/cl2svsl4j002f15o39tp0dy2q';
 
 // Street Map Component
-const FloodMap = ({ toggleLanguage, updateFloodData, updateFloodCoordinates, updateFloodCoordinatesDispatch, mapBoxToken, updateCarouselCoordinates, mapStylePlain, toggleDataType, updateAdditionalLocation, updatePrimaryLocation, toggleLocationPreference, updateCitizenEventsFloodZonesData, updateCitizenEventsRiverFloodData, toggleClusterStatus }) => {
+const FloodMap = ({ toggleLanguage, toggleDate, updateFloodData, updateFloodCoordinates, updateFloodCoordinatesDispatch, mapBoxToken, updateCarouselCoordinates, mapStylePlain, toggleDataType, updateAdditionalLocation, updatePrimaryLocation, toggleLocationPreference, updateCitizenEventsFloodZonesData, updateCitizenEventsRiverFloodData, toggleClusterStatus }) => {
 
     const [hoverInfo, setHoverInfo] = useState({});
 
@@ -155,8 +156,8 @@ const FloodMap = ({ toggleLanguage, updateFloodData, updateFloodCoordinates, upd
         zoom: useFloodDataSettings.length ? 15 : 8,
         locationObject: additionalLocationFilter.length ? additionalLocationFilter[0] : updatePrimaryLocation.location,
         floodData: useFloodDataSettings.length ? floodZonesData[0].floodData : [],
-        citizenFloodZonesEventsData: citizenFloodZonesEventsData.length ? citizenFloodZonesEventsData[0] : {},
-        citizenRiverFloodEventsData: citizenRiverFloodEventsData.length ? citizenRiverFloodEventsData[0] : {}
+        citizenFloodZonesEventsData: filterCitizenEventDataByDate(citizenFloodZonesEventsData, 'citizenFloodZonesEvents', toggleDate),
+        citizenRiverFloodEventsData: filterCitizenEventDataByDate(citizenRiverFloodEventsData, 'citizenRiverFloodEvents', toggleDate),
     }
 
     useEffect(() => {
@@ -189,25 +190,6 @@ const FloodMap = ({ toggleLanguage, updateFloodData, updateFloodCoordinates, upd
         getPointRadius: 1,
         getLineWidth: 2,
         /*onHover: d => setJSONTooltip(d)*/
-    });
-
-    const geoJsonLayerCitizen = new GeoJsonLayer({
-        id: 'geojson-layer' + new Date().getTime(),
-        data: dummyGeoJSONTwo.features,
-        pickable: true,
-        stroked: true,
-        filled: true,
-        // Do we want extruded maps?
-        extruded: false,
-        pointType: 'circle',
-        lineWidthScale: 0,
-        lineWidthMinPixels: 1.5,
-        getFillColor: [21, 101, 192, 175],
-        getLineColor: [16, 73, 138, 250],
-        getPointRadius: 1,
-        getLineWidth: 0,
-        getElevation: 900,
-        // onHover: d => setJSONTooltip(d)
     });
 
     // ICON LAYER CONFIGURATION - CITIZEN FLOOD EVENTS
@@ -250,9 +232,9 @@ const FloodMap = ({ toggleLanguage, updateFloodData, updateFloodCoordinates, upd
     };
 
     let layerMapping = {
-        "Combined": [geoJsonLayerCitizen, geoJsonLayerOfficial, citizenEventsLayer],
+        "Combined": [geoJsonLayerOfficial, citizenEventsLayer],
         "Official": [geoJsonLayerOfficial],
-        "Citizen": [geoJsonLayerCitizen, citizenEventsLayer]
+        "Citizen": [citizenEventsLayer]
     }
 
     const controllerTrue = mapStylePlain ? Boolean(0) : Boolean(1)

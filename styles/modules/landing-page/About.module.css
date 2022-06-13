@@ -1,11 +1,12 @@
 .reactPlayerBackground {
     position: absolute;
     height: 300px;
-    left: -3px;
+    left: 0;
+    padding: 10px;
     right: -3px;
     z-index: -2;
-    border-radius: 10px;
-    border: solid 1px #2196F3;
+    border-radius: 5px;
+    background: linear-gradient(180deg, #1565C0 0%, #1565C0 0.01%, #2196F3 99.99%, #0291E6 100%);
     -webkit-transform: rotate(-2.5deg);
     -ms-transform: rotate(-2.5deg);
     transform: rotate(-2.5deg);
@@ -16,7 +17,7 @@
     position: absolute;
     width: 100% !important;
     height: 300px !important;
-    border-radius: 10px;
+    border-radius: 5px;
     -webkit-border-radius: 10px;
     overflow: hidden;
     z-index: 1;

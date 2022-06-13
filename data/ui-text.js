@@ -252,6 +252,10 @@ export default {
         "en": "Higher",
         "br": ""
       },
+      "hexagonRadius": {
+        "en": "Hexagon Radius",
+        "br": ""
+      },
       "avgDailyRainfall": {
         "en": "Avg. Daily Rainfall",
         "br": ""
@@ -427,6 +431,26 @@ export default {
       "description": {
         "en": "Toggle between map views",
         "br": ""
+      },
+      "Citizen Reports": {
+        "title": {
+          "en": "No. Citizen Reports",
+          "br": ""
+        },
+        "description": {
+          "en": "Data represents the number of citizen reports submitted to Waterproofing Data across aggregated geographic regions (Hexagons).",
+          "br": ""
+        },
+      },
+      "Avg Daily Rainfall": {
+        "title": {
+          "en": "Avg Daily Rainfall",
+          "br": ""
+        },
+        "description": {
+          "en": "Data represents avg value of measurements taken at official and citizen registered pluviometer (rainfall) gauges across aggregated geographic regions (Hexagons).",
+          "br": ""
+        },
       }
     },
     "about": {

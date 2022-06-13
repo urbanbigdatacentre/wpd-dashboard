@@ -55,6 +55,9 @@ class SearchBar extends React.Component {
 
     _handleChange = async searchTerm => {
 
+        // Update the state with the search term
+        this.setState({searchTerm: searchTerm})
+
         this.setState({
             loading: true
         });
@@ -64,9 +67,6 @@ class SearchBar extends React.Component {
             this.liveSearch(searchTerm);
 
         }
-
-        // Update the state with the search term
-        this.setState({searchTerm: searchTerm})
     }
 
     _clickHandler(item) {

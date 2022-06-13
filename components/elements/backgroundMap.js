@@ -11,7 +11,7 @@ import locationPaths from "../../data/locationPaths";
 
 
 // Map Configuration
-const mapStyleMapBoxStreets = "mapbox://styles/andyclarke/cl2su9yt2001t15mu6fasl9wp";
+const mapStyleMapBoxStreets = "mapbox://styles/andyclarke/cl4ck4ui9000414p23bl0vft5";
 
 // Background Map Component
 const BackgroundMap = ({ mapBoxToken, updatePrimaryLocation }) => {

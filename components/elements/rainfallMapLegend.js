@@ -11,10 +11,11 @@ import uiText from "../../data/ui-text";
 import {changeLanguage, setClusterStatus} from "../../store/actions";
 import {bindActionCreators} from "redux";
 import {usePromiseTracker} from "react-promise-tracker";
+import * as d3 from "d3";
 
 // Rainfall Map Legend Component
 
-const RainfallMapLegend = ({toggleLanguage, toggleClusterStatus, setClusterStatus}) => {
+const RainfallMapLegend = ({toggleLanguage, toggleClusterStatus, setClusterStatus, toggleDate}) => {
     const { promiseInProgress } = usePromiseTracker({area: 'pluviometer-data', delay: 500});
     const { promiseInProgressTwo } = usePromiseTracker({area: 'RAIN_FORM', delay: 500});
 
@@ -26,9 +27,10 @@ const RainfallMapLegend = ({toggleLanguage, toggleClusterStatus, setClusterStatu
         (!promiseInProgress && !promiseInProgressTwo) && (
         <LegendWrapperBox>
             <LegendTitle sx={{fontWeight: (theme) => (theme.typography.fontWeightBold)}}>{uiText.global.tooltips.avgDailyRainfall[toggleLanguage.language].toUpperCase()}<span className={'bluePunctuation'}>.</span> </LegendTitle>
+            <DateRangeText>{new Date(d3.timeFormat("%B %d, %Y")(toggleDate.startDate)).toLocaleString().split(',')[0] + " - " + new Date(d3.timeFormat("%B %d, %Y")(toggleDate.endDate)).toLocaleString().split(',')[0]}</DateRangeText>
             <LegendDescription sx={{fontSize: `14px`}}>{uiText.global.tooltips.rainfallLegendDescription[toggleLanguage.language] + "Location"}</LegendDescription>
             <Box sx={{display: `flex`, flexDirection: `column`, width: `100%`}}>
-                <Box sx={{display: `flex`, width: `100%`, justifyContent: `space-between`, marginBottom: (theme) => (theme.spacing(2))}}>
+                <Box sx={{display: `flex`, width: `100%`, justifyContent: `space-between`, marginTop: (theme) => (theme.spacing(2)), marginBottom: (theme) => (theme.spacing(2))}}>
                     <LegendCircle sx={{backgroundColor: `#F7996F`}}/>
                     <LegendCircle sx={{backgroundColor: `#EB5A56`}}/>
                     <LegendCircle sx={{backgroundColor: `#DA4167`}}/>
@@ -42,9 +44,10 @@ const RainfallMapLegend = ({toggleLanguage, toggleClusterStatus, setClusterStatu
             </Box>
             <Box sx={{display: `flex`, width: `100%`, justifyContent: `space-between`}}>
                 <ToggleFormControlLabel
-                    control={<ToggleClusterSwitch onChange={(e, v) => handleChange(e,v)} value={toggleClusterStatus.cluster}/>}
+                    control={<ToggleClusterSwitch checked={toggleClusterStatus.cluster}/>}
                     label={<Typography sx={{fontWeight: (theme) => (theme.typography.fontWeightBold), fontSize: `12px`}} >{uiText.global.tooltips.cluster[toggleLanguage.language].toUpperCase()}</Typography>}
                     labelPlacement="start"
+                    onChange={(e, v) => handleChange(e,v)} value={toggleClusterStatus.cluster}
 
 
                 />
@@ -73,7 +76,7 @@ const LegendWrapperBox = styled(Box)(({theme}) => ({
     alignItems: `flex-start`,
     zIndex: 600,
     maxWidth: theme.spacing(35),
-    height: `260px`,
+    height: `auto`,
     top: theme.spacing(10),
     left: theme.spacing(1),
     backgroundColor: theme.palette.primary.light,
@@ -99,12 +102,14 @@ const LegendText = styled(Typography)(({theme}) => ({
 }))
 
 const LegendTitle = styled(Typography)(({theme}) => ({
+    marginBottom: theme.spacing(1),
     [theme.breakpoints.down('sm')]: {
         fontSize: `14px`
     },
 }))
 
 const LegendDescription = styled(Typography)(({theme}) => ({
+    marginTop: theme.spacing(1),
     [theme.breakpoints.down('sm')]: {
         display: `none`
     },
@@ -150,6 +155,11 @@ const ToggleClusterSwitch = styled(Switch)(({ theme }) => ({
         margin: 2,
     },
 }));
+
+const DateRangeText = styled(Typography)(({theme}) => ({
+    fontSize: `12px`,
+    fontWeight: theme.typography.fontWeightLight
+}))
 
 
 const mapDispatchToProps = (dispatch) => {

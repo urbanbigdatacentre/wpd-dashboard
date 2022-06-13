@@ -13,9 +13,11 @@ import {locationColorKeys} from "../../data/colorMapping";
 import {useState} from "react";
 import LocationBox from "./locationBox";
 import locationPaths from "../../data/locationPaths";
+import {toggleLocationPreference} from "../../store/reducers";
 
 // General Legend Component
-const GeneralLegend = ({locationData, toggleLanguage, toggleDate, updatePrimaryLocation, floodMap, updateCitizenEventsRainfallData}) => {
+const GeneralLegend = ({locationData, toggleLanguage, toggleDate, updatePrimaryLocation, floodMap, updateCitizenEventsRainfallData, toggleLocationPreference, updateCitizenEventsFloodZonesData, updateCitizenEventsRiverFloodData}) => {
+
 
     const [menuOpen, setMenuOpenStatus] = useState(false);
 
@@ -46,14 +48,26 @@ const GeneralLegend = ({locationData, toggleLanguage, toggleDate, updatePrimaryL
     }
 
     const renderLegend = (item, index) => {
-        const colorCode = index === 0 ? '#2196F3' : locationColorKeys[index - 1].color
+
+        console.log(sortedDataArray)
+
+        const colorCode = index === 0 ? '#2196F3' : locationColorKeys[index - 1]?.color
+
+        const citizenRiverAndFloodData = [];
+
+        const floodZonesData = [... updateCitizenEventsFloodZonesData.locations.filter((element, index) => element['id'] === item['id'])]
+        const riverFloodData = [... updateCitizenEventsRiverFloodData.locations.filter((element, index) => element['id'] === item['id'])]
+
+        if (floodZonesData[0]?.citizenFloodZonesEvents) {citizenRiverAndFloodData.push(... floodZonesData[0]['citizenFloodZonesEvents'])}
+        if (riverFloodData[0]?.citizenRiverFloodEvents) {citizenRiverAndFloodData.push(... riverFloodData[0]['citizenRiverFloodEvents'])}
 
         if (floodMap) {
             return (
                 <>
-                    <LegendLocationName sx={{color: colorCode}}>{item['locationName'].toUpperCase()}</LegendLocationName>
+                    <LegendLocationName sx={{color: colorCode, paddingRight: (theme) => (theme.spacing(8))}}>{item['locationName'].toUpperCase()}</LegendLocationName>
                     <Divider sx={{width: `100%`, margin: `4px 0 2px 0`}}/>
                     <LegendDataText sx={{fontWeight: (theme) => (theme.typography.fontWeightLight),}}>{item['floodData'].length + " " + uiText.locationPage.floodMap.riskAreas[toggleLanguage.language].toUpperCase()}</LegendDataText>
+                    <LegendDataText sx={{fontWeight: (theme) => (theme.typography.fontWeightLight),}}>{citizenRiverAndFloodData.length + " " + uiText.global.tooltips.floodEvents[toggleLanguage.language].toUpperCase()}</LegendDataText>
                 </>
             )
         } else {
@@ -84,7 +98,7 @@ const GeneralLegend = ({locationData, toggleLanguage, toggleDate, updatePrimaryL
                 </MyIconButton>
                 <LegendMetaInfoBox>
                     <Typography sx={{fontWeight: (theme) => (theme.typography.fontWeightBold)}}>{uiText.global.tooltips.dataOverview[toggleLanguage.language].toUpperCase()}</Typography>
-                    <DateRangeText>{new Date(d3.timeFormat("%B %d, %Y")(toggleDate.startDate)).toDateString() + " - " + new Date(d3.timeFormat("%B %d, %Y")(toggleDate.endDate)).toDateString()}</DateRangeText>
+                    <DateRangeText>{new Date(d3.timeFormat("%B %d, %Y")(toggleDate.startDate)).toLocaleString().split(',')[0] + " - " + new Date(d3.timeFormat("%B %d, %Y")(toggleDate.endDate)).toLocaleString().split(',')[0]}</DateRangeText>
                 </LegendMetaInfoBox>
                 {
                     sortedDataArray.length ? sortedDataArray.map((item, index) => {
@@ -112,7 +126,7 @@ const GeneralLegend = ({locationData, toggleLanguage, toggleDate, updatePrimaryL
                     {
                         locationData.length ? locationData.map((item, index) => {
 
-                            const colorCode = index === 0 ? '#2196F3' : locationColorKeys[index - 1].color
+                            const colorCode = index === 0 ? '#2196F3' : locationColorKeys[index - 1]?.color
 
                             return (
                                 <LegendKeyBox key={index}>

@@ -71,6 +71,24 @@ export const toggleDate = (state= dateInitialState, action) => {
     }
 }
 
+const greatestDateInitialState = {
+    startDate: dates['90Days'],
+    endDate: dates.now
+}
+
+export const toggleGreatestDateRange = (state= greatestDateInitialState, action) => {
+    switch (action.type) {
+        case actionTypes.SETGREATESTDATERANGE:
+            return Object.assign({}, state, {
+                startDate: action.startDate,
+                endDate: action.endDate
+            })
+        default:
+            return state
+    }
+}
+
+
 // - SLIDE HEX RADIUS - NATIONAL OVERVIEW MAP
 
 const hexRadiusInitialState = {
