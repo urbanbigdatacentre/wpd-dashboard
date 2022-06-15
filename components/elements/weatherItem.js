@@ -75,6 +75,9 @@ const Temperature = styled(Typography)(({theme}) => ({
     color: theme.palette.primary.light,
     fontWeight: `800`,
     fontSize: `35px`,
+    [theme.breakpoints.down('md')]: {
+        fontSize: `30px`,
+    },
 }))
 
 const Weekday = styled(Typography)(({theme}) => ({

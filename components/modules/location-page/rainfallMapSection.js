@@ -2,7 +2,7 @@
 
 // Package Imports
 import {connect} from "react-redux";
-import {Box, Container, Divider, Typography} from "@mui/material";
+import {Box, Container, Divider, styled, Typography} from "@mui/material";
 import Image from "next/image";
 import React, {useState} from "react";
 
@@ -27,9 +27,9 @@ const RainfallMapSection = ({ toggleLanguage, mapBoxToken, ctx }) => {
                     {/*INSERT TEXT LAYOUT HERE*/}
                     <Box >
                         <MyTooltip title={uiText.locationPage.rainfallMap.title[toggleLanguage.language]} text={uiText.locationPage.rainfallMap.descriptionParOne[toggleLanguage.language] + "\n" + uiText.locationPage.rainfallMap.descriptionParTwo[toggleLanguage.language]}/>
-                        <Typography sx={{marginLeft: (theme) => (theme.spacing(2)), marginRight: (theme) => (theme.spacing(1)), fontWeight: (theme) => (theme.typography.fontWeightBold)}} variant={"description"}>{uiText.global.labels.howToRead[toggleLanguage.language]}</Typography>
+                        <HelpText sx={{marginRight: (theme) => (theme.spacing(1)), fontWeight: (theme) => (theme.typography.fontWeightBold)}} variant={"description"}>{uiText.global.labels.howToRead[toggleLanguage.language]}</HelpText>
                     </Box>
-                    <Typography variant={'title'}>{uiText.locationPage.rainfallMap.title[toggleLanguage.language]}<span className={'bluePunctuation'}>.</span></Typography>
+                    <ChartTitle>{uiText.locationPage.rainfallMap.title[toggleLanguage.language]}<span className={'bluePunctuation'}>.</span></ChartTitle>
                     <Divider sx={{width: `60%`, height: (theme) => (theme.spacing(1)), background: `linear-gradient(90deg, #2196F3 0%, #1565C0 100%)`, marginTop: (theme) => (theme.spacing(1))}}/>
 
                 </Box>
@@ -37,17 +37,17 @@ const RainfallMapSection = ({ toggleLanguage, mapBoxToken, ctx }) => {
                     {/*INSERT TEXT LAYOUT HERE*/}
                     <Box className={styles.legendInlineBox}>
                         <Image src={'/images/icons/official-pluviometer.png'} width={31} height={46} alt={"rainfall map - official pluviometer icon"} />
-                        <Typography sx={{marginLeft: (theme) => (theme.spacing(2)), marginRight: (theme) => (theme.spacing(1)), fontWeight: (theme) => (theme.typography.fontWeightBold)}} variant={"description"}>{uiText.locationPage.rainfallMap.legendOfficial[toggleLanguage.language]}</Typography>
+                        <HelpText sx={{textAlign: `right`, marginLeft: (theme) => (theme.spacing(2)), marginRight: (theme) => (theme.spacing(1)), fontWeight: (theme) => (theme.typography.fontWeightBold)}} variant={"description"}>{uiText.locationPage.rainfallMap.legendOfficial[toggleLanguage.language]}</HelpText>
                         <MyTooltip title={uiText.locationPage.rainfallMap.legendOfficial[toggleLanguage.language]} text={uiText.locationPage.rainfallMap.officialPluviometerTooltip[toggleLanguage.language]}/>
                     </Box>
                     <Box className={styles.legendInlineBox}>
                         <Image src={'/images/icons/citizen-pluviometer.png'} width={31} height={30} alt={"rainfall map - citizen pluviometer icon"} />
-                        <Typography sx={{marginLeft: (theme) => (theme.spacing(2)), marginRight: (theme) => (theme.spacing(1)), fontWeight: (theme) => (theme.typography.fontWeightBold)}} variant={"description"}>{uiText.locationPage.rainfallMap.legendCitizen[toggleLanguage.language]}</Typography>
+                        <HelpText sx={{textAlign: `right`, marginLeft: (theme) => (theme.spacing(2)), marginRight: (theme) => (theme.spacing(1)), fontWeight: (theme) => (theme.typography.fontWeightBold)}} variant={"description"}>{uiText.locationPage.rainfallMap.legendCitizen[toggleLanguage.language]}</HelpText>
                         <MyTooltip title={uiText.locationPage.rainfallMap.legendCitizen[toggleLanguage.language]} text={uiText.locationPage.rainfallMap.citizenPluviometerTooltip[toggleLanguage.language]}/>
                     </Box>
                     <Box className={styles.legendInlineBox}>
                         <Image src={'/images/icons/citizen-submitted-rainfall-event.png'} width={30} height={50} alt={"rainfall map - citizen submitted rainfall event icon"} />
-                        <Typography sx={{marginLeft: (theme) => (theme.spacing(2)), marginRight: (theme) => (theme.spacing(1)), fontWeight: (theme) => (theme.typography.fontWeightBold)}} variant={"description"}>{uiText.locationPage.rainfallMap.citizenSubmittedRainEvent[toggleLanguage.language]}</Typography>
+                        <HelpText sx={{textAlign: `right`,marginLeft: (theme) => (theme.spacing(2)), marginRight: (theme) => (theme.spacing(1)), fontWeight: (theme) => (theme.typography.fontWeightBold)}} variant={"description"}>{uiText.locationPage.rainfallMap.citizenSubmittedRainEvent[toggleLanguage.language]}</HelpText>
                         <MyTooltip title={uiText.locationPage.rainfallMap.citizenSubmittedRainEvent[toggleLanguage.language]} text={uiText.locationPage.rainfallMap.citizenRainfallEventTooltip[toggleLanguage.language]}/>
                     </Box>
                 </Box>
@@ -59,5 +59,29 @@ const RainfallMapSection = ({ toggleLanguage, mapBoxToken, ctx }) => {
         </Container>
     );
 }
+
+const HelpText = styled(Typography)(({theme}) => ({
+    fontWeight: theme.typography.fontWeightBold,
+    fontSize: `16px`,
+    marginLeft: theme.spacing(2),
+    [theme.breakpoints.down('md')]: {
+        fontSize: `14px`,
+        marginLeft: theme.spacing(1)
+    },
+    [theme.breakpoints.down('sm')]: {
+        fontSize: `12px`,
+    },
+}))
+
+const ChartTitle = styled(Typography)(({theme}) => ({
+    fontWeight: theme.typography.fontWeightBold,
+    fontSize: `45px`,
+    [theme.breakpoints.down('lg')]: {
+        fontSize: `40px`,
+    },
+    [theme.breakpoints.down('sm')]: {
+        fontSize: `30px`,
+    },
+}))
 
 export default connect((state) => state)(RainfallMapSection)

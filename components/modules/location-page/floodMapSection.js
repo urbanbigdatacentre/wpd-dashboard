@@ -2,7 +2,7 @@
 
 // Package Imports
 import {connect} from "react-redux";
-import {Box, Container, Divider, Typography} from "@mui/material";
+import {Box, Container, Divider, styled, Typography} from "@mui/material";
 import Image from "next/image";
 import React, {useState} from "react";
 
@@ -26,20 +26,20 @@ const FloodMapSection = ({ toggleLanguage, mapBoxToken }) => {
                     {/*INSERT TEXT LAYOUT HERE*/}
                     <Box>
                         <MyTooltip title={uiText.locationPage.floodMap.title[toggleLanguage.language]} text={uiText.locationPage.floodMap.descriptionParOne[toggleLanguage.language] + "\n" + uiText.locationPage.floodMap.descriptionParTwo[toggleLanguage.language]}/>
-                        <Typography sx={{marginLeft: (theme) => (theme.spacing(2)), marginRight: (theme) => (theme.spacing(1)), fontWeight: (theme) => (theme.typography.fontWeightBold)}} variant={"description"}>{uiText.global.labels.howToRead[toggleLanguage.language]}</Typography>
+                        <HelpText sx={{marginRight: (theme) => (theme.spacing(1)), fontWeight: (theme) => (theme.typography.fontWeightBold)}} variant={"description"}>{uiText.global.labels.howToRead[toggleLanguage.language]}</HelpText>
                     </Box>
-                    <Typography variant={'title'}>{uiText.locationPage.floodMap.title[toggleLanguage.language]}<span className={'bluePunctuation'}>.</span></Typography>
+                    <ChartTitle>{uiText.locationPage.floodMap.title[toggleLanguage.language]}<span className={'bluePunctuation'}>.</span></ChartTitle>
                     <Divider sx={{width: `60%`, height: (theme) => (theme.spacing(1)), background: `linear-gradient(90deg, #2196F3 0%, #1565C0 100%)`, marginBottom: (theme) => (theme.spacing(2)), marginTop: (theme) => (theme.spacing(1))}}/>
                 </Box>
                 <Box className={styles.legendWrapper}>
                     <Box className={styles.legendInlineBox}>
                         <span style={{backgroundColor: `#DA4167`}} className={styles.colorScaleCircle}/>
-                        <Typography sx={{marginLeft: (theme) => (theme.spacing(2)), marginRight: (theme) => (theme.spacing(1)), fontWeight: (theme) => (theme.typography.fontWeightBold)}} variant={"description"}>{uiText.locationPage.floodMap.officialTitle[toggleLanguage.language]}</Typography>
+                        <HelpText sx={{marginLeft: (theme) => (theme.spacing(2)), marginRight: (theme) => (theme.spacing(1)), fontWeight: (theme) => (theme.typography.fontWeightBold)}} variant={"description"}>{uiText.locationPage.floodMap.officialTitle[toggleLanguage.language]}</HelpText>
                         <MyTooltip title={uiText.locationPage.floodMap.officialTitle[toggleLanguage.language]} text={uiText.locationPage.floodMap.officialDescription[toggleLanguage.language]}/>
                     </Box>
                     <Box className={styles.legendInlineBox}>
                         <Image src={'/images/icons/citizen-submitted-rainfall-event.png'} width={30} height={50} alt={"rainfall map - citizen submitted rainfall event icon"} />
-                        <Typography sx={{marginLeft: (theme) => (theme.spacing(2)), marginRight: (theme) => (theme.spacing(1)), fontWeight: (theme) => (theme.typography.fontWeightBold)}} variant={"description"}>{uiText.locationPage.floodMap.floodEventTitle[toggleLanguage.language]}</Typography>
+                        <HelpText sx={{marginLeft: (theme) => (theme.spacing(2)), marginRight: (theme) => (theme.spacing(1)), fontWeight: (theme) => (theme.typography.fontWeightBold)}} variant={"description"}>{uiText.locationPage.floodMap.floodEventTitle[toggleLanguage.language]}</HelpText>
                         <MyTooltip title={uiText.locationPage.floodMap.floodEventTitle[toggleLanguage.language]} text={uiText.locationPage.floodMap.floodEventDescription[toggleLanguage.language]}/>
                     </Box>
                 </Box>
@@ -51,5 +51,29 @@ const FloodMapSection = ({ toggleLanguage, mapBoxToken }) => {
         </Container>
     );
 }
+
+const HelpText = styled(Typography)(({theme}) => ({
+    fontWeight: theme.typography.fontWeightBold,
+    fontSize: `16px`,
+    [theme.breakpoints.down('md')]: {
+        fontSize: `14px`,
+        marginLeft: theme.spacing(1)
+    },
+    [theme.breakpoints.down('sm')]: {
+        fontSize: `12px`,
+    },
+}))
+
+const ChartTitle = styled(Typography)(({theme}) => ({
+    fontWeight: theme.typography.fontWeightBold,
+    fontSize: `45px`,
+    marginLeft: theme.spacing(2),
+    [theme.breakpoints.down('lg')]: {
+        fontSize: `40px`,
+    },
+    [theme.breakpoints.down('sm')]: {
+        fontSize: `30px`,
+    },
+}))
 
 export default connect((state) => state)(FloodMapSection)

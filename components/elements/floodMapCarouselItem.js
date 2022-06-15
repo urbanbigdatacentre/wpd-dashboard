@@ -44,6 +44,9 @@ const ZoneCard = styled(Card)(({theme}) => ({
     [theme.breakpoints.down('1250')]: {
         padding: `0rem .25rem`,
     },
+    [theme.breakpoints.down('md')]: {
+        display: `none`
+    },
 }))
 
 const ZoneText = styled(Typography)(({theme}) => ({

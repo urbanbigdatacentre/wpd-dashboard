@@ -131,12 +131,14 @@ const BackToSearchButtonText = styled(Typography)(({theme}) => ({
     },
 }))
 
-const SearchResultsWindowContainer = styled(Container)(({theme}) => ({
+const SearchResultsWindowContainer = styled(Box)(({theme}) => ({
     position: `absolute`,
     display: `flex`,
-    width: `100vw`,
-    height: `100vh`,
-    justifyContent: `centre`
+    width: `100%`,
+    height: `100%`,
+    maxWidth: `100vw`,
+    left: `0`,
+    justifyContent: `center`
 }))
 
 const SearchResultsWindowOverlay = styled(Box)(({theme}) => ({
@@ -145,8 +147,8 @@ const SearchResultsWindowOverlay = styled(Box)(({theme}) => ({
     right: `0`,
     opacity: `.5`,
     zIndex: `3000`,
-    width: `100vw`,
-    height: `100vh`,
+    width: `100%`,
+    height: `100%`,
     backgroundColor: `#888888`,
 }))
 
@@ -154,7 +156,7 @@ const SearchResultsPopoverBox = styled(Box)(({theme}) => ({
     position: `fixed`,
     marginLeft: `auto`,
     marginRight: `auto`,
-    top: `25%`,
+    top: `20%`,
     left: 0,
     right: 0,
     textAlign: `center`,
@@ -163,18 +165,29 @@ const SearchResultsPopoverBox = styled(Box)(({theme}) => ({
     width: `55%`,
     height: `auto`,
     maxWidth: `1000px`,
-    minHeight: `625px`,
+    minWidth: `700px`,
+    minHeight: `600px`,
     borderRadius: theme.shape.borderRadius,
     filter: `drop-shadow(0px 0px 15px rgba(33, 150, 243, 0.35))`,
     border: `1.5px solid #2196F3`,
     padding: theme.spacing(6),
     backgroundColor: theme.palette.primary.light,
-    [theme.breakpoints.down('1300')]: {
-        width: `75%`,
-    },
     [theme.breakpoints.down('md')]: {
-        width: `85%`,
+        maxWidth: `600px`,
+        minWidth: `550px`,
+        padding: theme.spacing(4),
     },
+    [theme.breakpoints.down('sm')]: {
+        maxWidth: `600px`,
+        minWidth: `450px`,
+        padding: theme.spacing(3),
+        paddingTop: theme.spacing(6),
+    },
+    [theme.breakpoints.down('480')]: {
+        maxWidth: `300px`,
+        minWidth: `350px`,
+    },
+
 }))
 
 
@@ -199,6 +212,15 @@ const LocationItemsBox = styled(Box)(({theme}) => ({
     display: `flex`,
     flexDirection: `column`,
     alignItems: `flex-start`,
+    [theme.breakpoints.down('md')]: {
+        right: theme.spacing(4),
+        left: theme.spacing(4),
+    },
+    [theme.breakpoints.down('sm')]: {
+        right: theme.spacing(2),
+        top: 220,
+        left: theme.spacing(2),
+    },
 }))
 
 

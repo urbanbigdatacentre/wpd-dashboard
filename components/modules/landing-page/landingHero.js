@@ -28,6 +28,7 @@ const LandingHeroSection = ({ toggleLanguage }) => {
     useEffect(() => {
         const window = document.querySelector('.search-results-window-overlay')
         if (window) { window.addEventListener('click', function() {setSearchResultStatus(false);})}
+        // else {window.removeEventListener('click', function() {setSearchResultStatus(false)})}
     })
 
     return (

@@ -6,7 +6,6 @@ import {connect} from "react-redux";
 // Local Imports
 import BackgroundMap from "../../elements/backgroundMap";
 import React, {useEffect, useState} from "react";
-import AddingLocationWindow from "../../elements/addingLocationWindow";
 import {Box, Button, Container, Divider, Skeleton, styled, Typography} from "@mui/material";
 import uiText from "../../../data/ui-text";
 import SearchIcon from "@mui/icons-material/Search";
@@ -15,6 +14,7 @@ import locationPaths from "../../../data/locationPaths";
 import StreetMap from "../../elements/streetMap";
 import {usePromiseTracker} from "react-promise-tracker";
 import {useRouter} from "next/router";
+import ArrowBackIosNewRoundedIcon from "@mui/icons-material/ArrowBackIosNewRounded";
 
 // Location Hero Component
 
@@ -34,11 +34,11 @@ const LocationHero = ({toggleLanguage, mapBoxToken, mapStylePlain, updatePrimary
             <>
 
                 <ChangeLocationContainer>
-                    <Button onClick={handleClick} variant={'outlined'} sx={{border: `1px solid #2196F3`, background: `rgba(255, 255, 255, 1)`, padding: (theme) => (theme.spacing(.75)), '&:hover': {
+                    <Button startIcon={<ArrowBackIosNewRoundedIcon sx={{ fontSize: 200 }} />} onClick={handleClick} variant={'text'} sx={{border: `1px solid #2196F3`, background: `rgba(255, 255, 255, 1)`, padding: (theme) => (theme.spacing(.75)), '&:hover': {
                             background: `rgba(255, 255, 255, .75)`,
                             boxShadow: `0px 0px 15px rgba(33, 150, 243, .25)`,
                         }}} type="submit" aria-label="search">
-                        <ChangeLocationText sx={{fontSize: `15px`, color: `#161616`,borderRadius: `5px`, fontWeight: (theme) => (theme.typography.fontWeightBold), textAlign: 'right', marginRight: (theme) => (theme.spacing(1))}}>{uiText.global.labels.changeLocation[toggleLanguage.language].toUpperCase()}</ChangeLocationText>
+                        {uiText.global.labels.changeLocation[toggleLanguage.language].toUpperCase()}
                     </Button>
                 </ChangeLocationContainer>
                 <MapTextCarouselWrapper>

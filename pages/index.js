@@ -10,6 +10,7 @@ import { bindActionCreators } from 'redux';
 import Footer from "../components/modules/footer";
 import MyNavbar from "../components/modules/navbar";
 import LandingHeroSection from "../components/modules/landing-page/landingHero";
+import SelectedLocations from "../components/modules/landing-page/selectedLocations";
 import StatisticsBar from "../components/modules/landing-page/statisticsBar";
 import NationalActivity from "../components/modules/landing-page/nationalActivity";
 import About from '../components/modules/landing-page/about';
@@ -61,6 +62,7 @@ const Home = (props) => {
       <main className={styles.main}>
           <MyNavbar />
           <LandingHeroSection/>
+          {props.updatePrimaryLocation.location.hasOwnProperty('placename') ? <SelectedLocations/> : null}
           <StatisticsBar/>
           <span id="national-activity" > </span>
           <NationalActivity mapBoxToken={props.env.MAPBOX_TOKEN}/>
@@ -68,7 +70,6 @@ const Home = (props) => {
           <ProjectPartners/>
           <CitizenSection mapBoxToken={props.env.MAPBOX_TOKEN}/>
           <Footer/>
-
       </main>
 
     </div>

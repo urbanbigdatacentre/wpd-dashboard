@@ -40,3 +40,25 @@
     height: 25px;
     border-radius: 50px;
 }
+
+@media only screen and (max-width: 650px) {
+    .visSectionContainer {
+        margin-top: 50px;
+    }
+}
+
+@media only screen and (max-width: 900px) {
+    .textLegendWrapper {
+        flex-direction: column;
+    }
+
+    .textWrapper {
+        width: 100%;
+    }
+
+    .legendWrapper {
+        margin-top: 30px;
+        width: 100%;
+        align-items: flex-start;
+    }
+}

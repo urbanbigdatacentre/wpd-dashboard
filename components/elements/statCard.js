@@ -29,6 +29,9 @@ const MyStatCard = styled(Card)(({theme}) => ({
     [theme.breakpoints.down('md')]: {
         padding: `.5rem .5rem`,
     },
+    [theme.breakpoints.down('550')]: {
+        margin: `0 !important`
+    },
 }))
 
 const StatCardNumber = styled(Typography)(({theme}) => ({

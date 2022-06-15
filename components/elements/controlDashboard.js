@@ -70,14 +70,26 @@ const ControlDashboardInnerBox = styled(Box)(({theme}) => ({
     alignItems: `center`,
     [theme.breakpoints.down('1250')]: {
         flexDirection: `column`,
-        alignItems: `flex-start`,
+        alignItems: `center`,
     },
 }))
 
 const ControlDashboardStatCardBox = styled(Box)(({theme}) => ({
     padding:` 20px 0 20px 0`,
     display: `flex`,
-    width: `60%`
+    width: `60%`,
+    [theme.breakpoints.down('1250')]: {
+        width: `75%`,
+        justifyContent: `space-between`,
+    },
+    [theme.breakpoints.down('900')]: {
+        width: `100%`,
+    },
+    [theme.breakpoints.down('550')]: {
+        flexWrap: `wrap`,
+        gap: `1em`,
+        justifyContent: `center`
+    },
 }))
 
 export default connect((state) => state)(ControlDashboard);

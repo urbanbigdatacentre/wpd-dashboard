@@ -2,7 +2,7 @@
 
 // Package Imports
 import {connect} from "react-redux";
-import {Container, styled, Skeleton, Box} from "@mui/material";
+import {Container, styled, Skeleton, Box, Typography} from "@mui/material";
 
 // Swiper Imports & config
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -22,9 +22,14 @@ import {updateCarouselCoordinates} from "../../store/actions";
 import {useEffect, useState} from "react";
 import locationPaths from "../../data/locationPaths";
 import {usePromiseTracker} from "react-promise-tracker";
+import {filterCitizenEventDataByDate} from "../../api/dataFilteringFunctions";
+import uiText from "../../data/ui-text";
+import Image from "next/image";
+import LocationBox from "./locationBox";
+import {locationColorKeys} from "../../data/colorMapping";
 
 // Citizen Carousel Component
-const CitizenCarousel = ({toggleLanguage, toggleLocationPreference, updateCarouselCoordinates, updateCitizenEventsRainfallData, updateCitizenEventsFloodZonesData, updateCitizenEventsRiverFloodData, useAPIData}) => {
+const CitizenCarousel = ({toggleLanguage, toggleLocationPreference, updateCarouselCoordinates, updateCitizenEventsRainfallData, toggleDate, updateCitizenEventsFloodZonesData, updateCitizenEventsRiverFloodData, useAPIData}) => {
 
     const { RAIN_FORM_promiseInProgress} = usePromiseTracker({area: "RAIN_FORM", delay: 0})
     const { FLOODZONES_FORM_promiseInProgress} = usePromiseTracker({area: "FLOODZONES_FORM", delay: 0})
@@ -38,13 +43,13 @@ const CitizenCarousel = ({toggleLanguage, toggleLocationPreference, updateCarous
 
         [...updateCitizenEventsFloodZonesData.locations, ...updateCitizenEventsRiverFloodData.locations, ...updateCitizenEventsRainfallData.locations].forEach(function(item) {
             if ((item.hasOwnProperty('citizenFloodZonesEvents')) && (item['id'] === toggleLocationPreference.locationID)) {
-                formattedDataArray.push(...item['citizenFloodZonesEvents'])
+                formattedDataArray.push(... filterCitizenEventDataByDate([item], 'citizenFloodZonesEvents', toggleDate)['citizenFloodZonesEvents'])
             }
             else if ((item.hasOwnProperty('citizenRiverFloodEvents')) && (item['id'] === toggleLocationPreference.locationID)) {
-                formattedDataArray.push(...item['citizenRiverFloodEvents'])
+                formattedDataArray.push(...filterCitizenEventDataByDate([item], 'citizenRiverFloodEvents', toggleDate)['citizenRiverFloodEvents'])
             }
             else if ((item.hasOwnProperty('citizenRainfallEvents')) && (item['id'] === toggleLocationPreference.locationID)) {
-                formattedDataArray.push(...item['citizenRainfallEvents'])
+                formattedDataArray.push(...filterCitizenEventDataByDate([item], 'citizenRainfallEvents', toggleDate)['citizenRainfallEvents'])
             }
         })
 
@@ -53,8 +58,11 @@ const CitizenCarousel = ({toggleLanguage, toggleLocationPreference, updateCarous
         if ((useAPIData !== undefined) && (formattedDataArray.length)) {
             updateCarouselCoordinates({latitude: formattedDataArray[0].latitude, longitude: formattedDataArray[0].longitude})
         }
-    }, [toggleLocationPreference, updateCitizenEventsFloodZonesData.locations.length, updateCitizenEventsRiverFloodData.locations.length, updateCitizenEventsRainfallData.locations.length])
+    }, [toggleLocationPreference, updateCitizenEventsFloodZonesData.locations.length, updateCitizenEventsRiverFloodData.locations.length, updateCitizenEventsRainfallData.locations.length, toggleDate])
 
+    const colorIndex = updateCitizenEventsRainfallData.locations.findIndex(function(el){return el.id === toggleLocationPreference.locationID})
+
+    const colorCode = colorIndex <= 0 ? '#2196F3' : locationColorKeys[colorIndex - 1].color
 
     const setDataArray = useAPIData !== undefined ? citizenEventsDataArray : dummyData;
 
@@ -74,7 +82,7 @@ const CitizenCarousel = ({toggleLanguage, toggleLocationPreference, updateCarous
         return (
 
             <CitizenCarouselContainer>
-                <Swiper
+                {setDataArray.length ? <Swiper
                     spaceBetween={0}
                     modules={[Navigation, Virtual]}
                     slidesPerView={1}
@@ -96,7 +104,27 @@ const CitizenCarousel = ({toggleLanguage, toggleLocationPreference, updateCarous
                             )
                         })
                     }
-                </Swiper>
+                </Swiper> :
+
+                <SwiperSlide>
+                    <CarouselBox>
+                        <CarouselFlex>
+                            <Box sx={{display: `flex`}}>
+                                <ImageWrapperBox>
+                                    <Image alt={"citizen avatar"} src={"/images/icons/Citizen-Icon.svg"} width={60} height={60} objectFit={'contain'}/>
+                                </ImageWrapperBox>
+                                <TypeOrganisationBox>
+                                    <CitizenTypeText>{uiText.locationPage.rainfallMap.citizenReport[toggleLanguage.language]}</CitizenTypeText>
+                                    <CitizenInfoText >{uiText.locationPage.noData.topBlue[toggleLanguage.language]}</CitizenInfoText>
+                                </TypeOrganisationBox>
+                            </Box>
+                        </CarouselFlex>
+                        <MainContentText sx={{fontSize: `20px`, textAlign: `left`, marginTop: (theme) => (theme.spacing(2)), marginBottom: (theme) => (theme.spacing(2))}} >{uiText.locationPage.noData.description[toggleLanguage.language]}</MainContentText>
+                        <CarouselFlex sx={{justifyContent: 'flex-end'}}>
+                            <LocationBox locationName={toggleLocationPreference.locationPreference} color={colorCode}/>
+                        </CarouselFlex>
+                    </CarouselBox>
+                </SwiperSlide>}
             </CitizenCarouselContainer>
         );
     } else {
@@ -107,6 +135,22 @@ const CitizenCarousel = ({toggleLanguage, toggleLocationPreference, updateCarous
         )
     }
 }
+
+const NoDataBox = styled(Box)(({theme}) => ({
+    display: `flex`,
+    width: `75%`,
+    flexDirection: `column`,
+    minHeight: `200px`,
+    justifyContent: `space-between`,
+    backgroundColor: theme.palette.primary.light,
+    borderRadius: theme.shape.borderRadius,
+    padding: theme.spacing(3),
+    boxShadow: `0px 0px 15px #E5E5E5`,
+    border: `1.5px solid #E5E5E5`,
+    [theme.breakpoints.down('800')]: {
+        padding: theme.spacing(1.5),
+    },
+}))
 
 const CarouselSkeleton = styled(Skeleton)(({theme}) => ({
     width: `75%`,
@@ -135,6 +179,84 @@ const CitizenCarouselContainer = styled(Container)(({theme}) => ({
         width: `100%`,
     },
 
+}))
+
+
+
+const CarouselBox = styled(Box)(({theme}) => ({
+    display: `flex`,
+    width: `75%`,
+    flexDirection: `column`,
+    height: `fit-content`,
+    justifyContent: `space-between`,
+    backgroundColor: theme.palette.primary.light,
+    borderRadius: theme.shape.borderRadius,
+    padding: theme.spacing(3),
+    boxShadow: `0px 0px 15px #E5E5E5`,
+    border: `1.5px solid #E5E5E5`,
+    [theme.breakpoints.down('800')]: {
+        padding: theme.spacing(1.5),
+    },
+    [theme.breakpoints.down('md')]: {
+        marginTop: theme.spacing(6),
+    },
+    [theme.breakpoints.down('sm')]: {
+        width: `90%`,
+    },
+}))
+
+const CarouselFlex = styled(Box)(({theme}) => ({
+    display: `flex`,
+    justifyContent: `space-between`,
+    alignItems: `center`,
+    maxHeight: `60px`
+}))
+
+const ImageWrapperBox = styled(Box)(({theme}) => ({
+    [theme.breakpoints.down('sm')]: {
+        display: `none`
+    },
+}))
+
+const CitizenTypeText = styled(Typography)(({theme}) => ({
+    fontSize: `20px`,
+    [theme.breakpoints.down('md')]: {
+        fontSize: `16px`
+    },
+}))
+
+const CitizenInfoText = styled(Typography)(({theme}) => ({
+    color: theme.palette.primary.main,
+    [theme.breakpoints.down('md')]: {
+        fontSize: `12px`
+    },
+}))
+
+const TypeOrganisationBox = styled(Box)(({theme}) => ({
+    display: `flex`,
+    flexDirection: `column`,
+    justifyContent: `space-around`,
+    marginLeft: theme.spacing(2),
+    [theme.breakpoints.down('md')]: {
+        marginLeft: theme.spacing(1),
+    },
+    [theme.breakpoints.down('sm')]: {
+        marginLeft: theme.spacing(0),
+    },
+}))
+
+
+const MainContentText = styled(Typography)(({theme}) => ({
+    fontSize: `25px`,
+    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(2),
+    fontWeight: theme.typography.fontWeightLight,
+    [theme.breakpoints.down('md')]: {
+        fontSize: `16px`,
+    },
+    [theme.breakpoints.down('sm')]: {
+        fontSize: `16px`,
+    },
 }))
 
 

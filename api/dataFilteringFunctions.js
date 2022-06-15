@@ -26,6 +26,8 @@ export const filterPluviometerData = (inputDataArray, toggleDate) => {
 
 export const filterCitizenEventDataByDate = (inputDataArray, dataType, toggleDate) => {
 
+    // console.log(inputDataArray)
+
     if (!inputDataArray.length) {return {}}
 
     const filteredDataObject = {

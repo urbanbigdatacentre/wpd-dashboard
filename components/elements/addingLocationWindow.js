@@ -98,9 +98,12 @@ const AddingLocationWindow = ({ toggleLanguage, updateAdditionalLocation, update
 const AddingLocationWindowContainer = styled(Container)(({theme}) => ({
     position: `absolute`,
     display: `flex`,
+    left: `0`,
     width: `100vw`,
-    height: `100vh`,
-    justifyContent: `centre`
+    height: `100%`,
+    maxWidth: `100vw`,
+    justifyContent: `center`,
+    overflow: `hidden`
 }))
 
 const WindowOverlay = styled(Box)(({theme}) => ({
@@ -110,29 +113,44 @@ const WindowOverlay = styled(Box)(({theme}) => ({
     opacity: `.5`,
     zIndex: `3000`,
     width: `100vw`,
-    height: `100vh`,
+    maxWidth: `100vw`,
+    height: `100%`,
     backgroundColor: `#888888`,
 }))
 
 
 const PopoverBox = styled(Box)(({theme}) => ({
     position: `fixed`,
-    marginLeft: `auto`,
-    marginRight: `auto`,
-    top: `25%`,
-    left: 0,
-    right: 0,
+    top: `20%`,
+    left: `auto`,
+    right: `auto`,
     textAlign: `center`,
     opacity: `1`,
     zIndex: `3001`,
     width: `55%`,
     maxWidth: `1000px`,
-    minHeight: `55%`,
+    minWidth: `700px`,
+    minHeight: `600px`,
     borderRadius: theme.shape.borderRadius,
     filter: `drop-shadow(0px 0px 15px rgba(33, 150, 243, 0.35))`,
     border: `1.5px solid #2196F3`,
     padding: theme.spacing(6),
     backgroundColor: theme.palette.primary.light,
+    [theme.breakpoints.down('md')]: {
+        maxWidth: `600px`,
+        minWidth: `550px`,
+        padding: theme.spacing(4),
+    },
+    [theme.breakpoints.down('sm')]: {
+        maxWidth: `600px`,
+        minWidth: `450px`,
+        padding: theme.spacing(3),
+        paddingTop: theme.spacing(6),
+    },
+    [theme.breakpoints.down('480')]: {
+        maxWidth: `300px`,
+        minWidth: `350px`,
+    },
 }))
 
 const SelectedLocationsBox = styled(Box)(({theme}) => ({

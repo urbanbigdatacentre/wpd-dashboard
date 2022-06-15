@@ -78,6 +78,20 @@ const WeatherCarouselContainer = styled(Container)(({theme}) => ({
     alignItems: `center`,
     margin: `0`,
     width: `55%`,
+    [theme.breakpoints.down('1250')]: {
+        width: `75%`,
+        marginTop: theme.spacing(4),
+        justifyContent: `space-between`,
+    },
+    [theme.breakpoints.down('900')]: {
+        width: `100%`,
+    },
+    [theme.breakpoints.down('700')]: {
+        padding: `0`
+    },
+    [theme.breakpoints.down('650')]: {
+        display: `none`
+    },
 }))
 
 export default connect((state) => state)(WeatherCarousel);

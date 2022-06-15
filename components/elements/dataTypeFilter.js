@@ -34,7 +34,8 @@ const DataFilterButtonGroup = styled(ToggleButtonGroup)(({theme}) => ({
     position: `absolute`,
     zIndex: 600,
     backgroundColor: theme.palette.primary.light,
-    filter: `drop-shadow(0px 0px 15px rgba(33, 150, 243, 0.35))`
+    filter: `drop-shadow(0px 0px 15px rgba(33, 150, 243, 0.35))`,
+
 }))
 
 const DataFilterButton = styled(ToggleButton)(({theme}) => ({
@@ -56,6 +57,9 @@ const DataFilterButton = styled(ToggleButton)(({theme}) => ({
             backgroundColor: theme.palette.primary.darkBlue,
             color: theme.palette.primary.light,
         },
+    },
+    [theme.breakpoints.down('sm')]: {
+        fontSize: `10px`,
     },
 }))
 

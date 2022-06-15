@@ -137,9 +137,8 @@ const DateFilter = (props) => {
             <DateFilterButton id={'30-days-button'} value={dates["30Days"]}  >{"30 " + uiText.global.labels.days[props.toggleLanguage.language]}</DateFilterButton>
             <DateFilterButton id={'90-days-button'} value={dates["90Days"]}  >{"90 " + uiText.global.labels.days[props.toggleLanguage.language]}</DateFilterButton>
             <DateFilterButton id={'custom-date-button'} value={""} onClick={handleCustomClick}>{uiText.global.labels.custom[props.toggleLanguage.language]}</DateFilterButton>
-            <ClickAwayListener onClickAway={(e) => handleCustomClickAway(e)}>
+            <ClickAwayListener onClickAway={handleCustomClickAway}>
 
-                <Box>
                     <Box sx={{zIndex: `90000`, display: displayPicker ? `block` : `none`}}>
                         <DateRangePicker
                             maxDate={new Date()}
@@ -148,7 +147,6 @@ const DateFilter = (props) => {
                             ranges={[customSelectionRange]}
                             onChange={handleCustomSelect}/>
                     </Box>
-                </Box>
 
             </ClickAwayListener>
 
@@ -195,7 +193,7 @@ const DateFilterButton = styled(ToggleButton)(({theme}) => ({
         padding: `2px 6px 2px 6px`,
     },
     [theme.breakpoints.down('450')]: {
-        fontSize: `8px`,
+
     },
     [theme.breakpoints.down('350')]: {
         display: `none`

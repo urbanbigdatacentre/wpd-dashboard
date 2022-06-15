@@ -359,7 +359,8 @@ const MyTooltipBox = styled(Box)(({theme}) => ({
     padding: theme.spacing(2),
     boxShadow: `0px 0px 15px #E5E5E5`,
     border: `1.5px solid #E5E5E5`,
-    zIndex: 4001
+    zIndex: 4001,
+
 }))
 
 const TooltipFlex = styled(Box)(({theme}) => ({

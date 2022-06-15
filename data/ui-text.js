@@ -12,6 +12,18 @@ export default {
         "en": "National Overview",
         "br": "Visão geral nacional"
       },
+      "privacyAndCookies": {
+        "en": "Privacy and Cookies",
+        "br": ""
+      },
+      "contactUs": {
+        "en": "Contact Us",
+        "br": ""
+      },
+      "accessibility": {
+        "en": "Accessibility",
+        "br": ""
+      },
       "navButton": {
         "en": "Join the project",
         "br": "Junte-se ao Projeto"
@@ -297,7 +309,7 @@ export default {
         "br": ""
       },
       "rainfallLegendDescription": {
-        "en": "Data represents measurements (mm) taken at pluviometers across ",
+        "en": "Data represents rainfall measurements (mm) taken at citizen or official pluviometer gauges.",
         "br": ""
       }
     },
@@ -391,6 +403,10 @@ export default {
       "topBlue": {
         "en": "Monitor Flood Data in Brazil",
         "br": "Conectando dados brasileiros de enchentes de comunidades e fontes oficiais"
+      },
+      "backToDashboard": {
+        "en": "Back to Dashboard",
+        "br": ""
       }
     },
     "statisticsBar": {
@@ -507,6 +523,16 @@ export default {
         "br": ""
       }
     },
+    "noData": {
+      "topBlue": {
+        "en": "No Data Found",
+        "br": ""
+      },
+      "description": {
+        "en": "We couldn't find any citizen submissions matching this location. Try expanding your date range to reflect a longer time period.",
+        "br": ""
+      },
+    },
     "noLocation": {
       "topBlue": {
         "en": "No Location Selected",
@@ -541,7 +567,7 @@ export default {
     },
     "rainfallChart": {
       "title": {
-        "en": "Rainfall (Mm)",
+        "en": "Rainfall (mm)",
         "br": ""
       },
       "descriptionParOne": {

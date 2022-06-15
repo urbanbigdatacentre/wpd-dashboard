@@ -11,6 +11,7 @@ import MyButton from '../../elements/button';
 
 // Style Imports
 import styles from '../../../styles/modules/landing-page/About.module.css'
+import Link from "next/link";
 
 
 const About = ({ toggleLanguage }) => {
@@ -22,7 +23,7 @@ const About = ({ toggleLanguage }) => {
                 <StandardText variant={'description'} sx={{marginTop: (theme) => (theme.spacing(1))}} >{uiText.landingPage.about.descriptionParOne[toggleLanguage.language]}</StandardText>
                 <StandardText variant={'description'} sx={{marginTop: (theme) => (theme.spacing(2))}} >{uiText.landingPage.about.descriptionParTwo[toggleLanguage.language]}</StandardText>
                 <StandardText variant={'description'} sx={{marginTop: (theme) => (theme.spacing(2)), marginBottom: (theme) => (theme.spacing(3))}} >{uiText.landingPage.about.descriptionParThree[toggleLanguage.language]}</StandardText>
-                <MyButton text={uiText.global.labels.mobileAppButton[toggleLanguage.language]} variant={"contained"}/>
+                <Link passHref href={`https://play.google.com/store/apps/details?id=com.dadosaprovadagua.wpdmobileapp`}><MyButton text={uiText.global.labels.mobileAppButton[toggleLanguage.language]} variant={"contained"}/></Link>
           </AboutTextBox>
           <AboutVideoBox >
               <ReactPlayerWrapper >

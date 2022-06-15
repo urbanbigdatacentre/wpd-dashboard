@@ -39,6 +39,8 @@ const LocationButtonGroup = ({toggleLanguage, updatePrimaryLocation, updateAddit
 const LocationButtonGroupBox = styled(Box)(({theme}) => ({
     zIndex: 600,
     display: `flex`,
+    flexWrap: `wrap`,
+    gap: `1em .5em`
 }))
 
 

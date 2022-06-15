@@ -55,10 +55,6 @@ function MyApp(props) {
                 `}
             </Script>
 
-            <Head>
-                <title>Waterproofing Data</title>
-                <meta name="viewport" content="initial-scale=1, width=device-width" />
-            </Head>
             <ThemeProvider theme={theme}>
 
                 <CssBaseline />

@@ -12,10 +12,12 @@ import {changeLanguage, setClusterStatus} from "../../store/actions";
 import {bindActionCreators} from "redux";
 import {usePromiseTracker} from "react-promise-tracker";
 import * as d3 from "d3";
+import LocationBox from "./locationBox";
+import {locationColorKeys} from "../../data/colorMapping";
 
 // Rainfall Map Legend Component
 
-const RainfallMapLegend = ({toggleLanguage, toggleClusterStatus, setClusterStatus, toggleDate}) => {
+const RainfallMapLegend = ({toggleLanguage, updatePluviometerData, toggleClusterStatus, setClusterStatus, toggleDate, toggleLocationPreference}) => {
     const { promiseInProgress } = usePromiseTracker({area: 'pluviometer-data', delay: 500});
     const { promiseInProgressTwo } = usePromiseTracker({area: 'RAIN_FORM', delay: 500});
 
@@ -23,12 +25,17 @@ const RainfallMapLegend = ({toggleLanguage, toggleClusterStatus, setClusterStatu
         setClusterStatus(v)
     }
 
+    const colorIndex = updatePluviometerData.locations.findIndex(function(el){return el.id === toggleLocationPreference.locationID})
+
+    const colorCode = colorIndex <= 0 ? '#2196F3' : locationColorKeys[colorIndex - 1].color
+
     return(
         (!promiseInProgress && !promiseInProgressTwo) && (
         <LegendWrapperBox>
             <LegendTitle sx={{fontWeight: (theme) => (theme.typography.fontWeightBold)}}>{uiText.global.tooltips.avgDailyRainfall[toggleLanguage.language].toUpperCase()}<span className={'bluePunctuation'}>.</span> </LegendTitle>
             <DateRangeText>{new Date(d3.timeFormat("%B %d, %Y")(toggleDate.startDate)).toLocaleString().split(',')[0] + " - " + new Date(d3.timeFormat("%B %d, %Y")(toggleDate.endDate)).toLocaleString().split(',')[0]}</DateRangeText>
-            <LegendDescription sx={{fontSize: `14px`}}>{uiText.global.tooltips.rainfallLegendDescription[toggleLanguage.language] + "Location"}</LegendDescription>
+            <LocationBox locationName={toggleLocationPreference.locationPreference} color={colorCode}/>
+            <LegendDescription sx={{fontSize: `14px`}}>{uiText.global.tooltips.rainfallLegendDescription[toggleLanguage.language]}</LegendDescription>
             <Box sx={{display: `flex`, flexDirection: `column`, width: `100%`}}>
                 <Box sx={{display: `flex`, width: `100%`, justifyContent: `space-between`, marginTop: (theme) => (theme.spacing(2)), marginBottom: (theme) => (theme.spacing(2))}}>
                     <LegendCircle sx={{backgroundColor: `#F7996F`}}/>
@@ -84,11 +91,15 @@ const LegendWrapperBox = styled(Box)(({theme}) => ({
     border: `1px solid #2196F3`,
     padding: theme.spacing(3),
     filter: `drop-shadow(0px 0px 15px rgba(33, 150, 243, 0.25))`,
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
         padding: theme.spacing(2),
+    },
+    [theme.breakpoints.down('sm')]: {
         maxWidth: theme.spacing(25),
-        top: theme.spacing(10),
-        height: `175px`,
+        bottom: theme.spacing(1),
+        left: theme.spacing(1),
+        top: `auto`,
+        height: `auto`,
     },
     [theme.breakpoints.down('350')]: {
         top: theme.spacing(6),
@@ -110,7 +121,7 @@ const LegendTitle = styled(Typography)(({theme}) => ({
 
 const LegendDescription = styled(Typography)(({theme}) => ({
     marginTop: theme.spacing(1),
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
         display: `none`
     },
 }))
@@ -121,6 +132,9 @@ const ToggleFormControlLabel = styled(FormControlLabel)(({ theme }) => ({
     width: `100%`,
     padding: `0`,
     margin: `0`,
+    [theme.breakpoints.down('700')]: {
+        display: `none`
+    },
 }))
 
 const ToggleClusterSwitch = styled(Switch)(({ theme }) => ({
@@ -154,10 +168,14 @@ const ToggleClusterSwitch = styled(Switch)(({ theme }) => ({
         height: 16,
         margin: 2,
     },
+    [theme.breakpoints.down('700')]: {
+        display: `none`
+    },
 }));
 
 const DateRangeText = styled(Typography)(({theme}) => ({
     fontSize: `12px`,
+    marginBottom: theme.spacing(1),
     fontWeight: theme.typography.fontWeightLight
 }))
 

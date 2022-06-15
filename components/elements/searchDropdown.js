@@ -184,10 +184,14 @@ const LocationName = styled(Typography)(({theme}) => ({
 const HasCitizenDataText = styled(Typography)(({theme}) => ({
     color: `#686363`,
     fontSize: `12px`,
+    textAlign: `right`,
     marginRight: theme.spacing(2),
     fontWeight: theme.typography.fontWeightLight,
     [theme.breakpoints.down('md')]: {
         fontSize: `12px`,
+    },
+    [theme.breakpoints.down('sm')]: {
+        display: `none`
     },
 
 }))

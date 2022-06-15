@@ -30,7 +30,7 @@ const FloodMapLegend = ({toggleLanguage, updateFloodData, toggleLocationPreferen
 
     const colorIndex = updateFloodData.locations.findIndex(function(el){return el.id === toggleLocationPreference.locationID})
 
-    const colorCode = colorIndex <= 0 ? '#2196F3' : locationColorKeys[colorIndex - 1].color
+    const colorCode = colorIndex <= 0 ? '#2196F3' : locationColorKeys[colorIndex - 1]?.color
 
 
     return (
@@ -79,7 +79,10 @@ const FloodMapLegend = ({toggleLanguage, updateFloodData, toggleLocationPreferen
 const NoFloodZonesText = styled(Typography)(({theme}) => ({
     fontWeight: `400`,
     marginTop: theme.spacing(1),
-    fontSize: `14px`
+    fontSize: `14px`,
+    [theme.breakpoints.down('md')]: {
+        marginBottom: `0`
+    },
 }))
 
 
@@ -87,6 +90,10 @@ const LegendCircle = styled(Box)(({theme}) => ({
     borderRadius: `20px`,
     width: `30px`,
     height: `30px`,
+    [theme.breakpoints.down('md')]: {
+        width: `20px`,
+        height: `20px`,
+    },
     [theme.breakpoints.down('sm')]: {
         width: `15px`,
         height: `15px`,
@@ -118,11 +125,19 @@ const LegendWrapperBox = styled(Box)(({theme}) => ({
     border: `1px solid #2196F3`,
     padding: theme.spacing(3),
     filter: `drop-shadow(0px 0px 15px rgba(33, 150, 243, 0.25))`,
+    [theme.breakpoints.down('md')]: {
+        padding: theme.spacing(2),
+        maxWidth: theme.spacing(28),
+        minWidth: theme.spacing(28),
+        height: `auto`,
+    },
     [theme.breakpoints.down('sm')]: {
         padding: theme.spacing(2),
-        maxWidth: theme.spacing(25),
-        top: theme.spacing(10),
-        height: `175px`,
+        maxWidth: theme.spacing(23),
+        minWidth: theme.spacing(23),
+        bottom: theme.spacing(1),
+        left: theme.spacing(1),
+        top: `auto`,
     },
     [theme.breakpoints.down('350')]: {
         top: theme.spacing(6),
@@ -156,6 +171,9 @@ const ToggleFormControlLabel = styled(FormControlLabel)(({ theme }) => ({
     padding: `0`,
     margin: `0`,
     marginTop: theme.spacing(1),
+    [theme.breakpoints.down('700')]: {
+        display: `none`
+    },
 }))
 
 const ToggleClusterSwitch = styled(Switch)(({ theme }) => ({
@@ -188,6 +206,9 @@ const ToggleClusterSwitch = styled(Switch)(({ theme }) => ({
         width: 16,
         height: 16,
         margin: 2,
+    },
+    [theme.breakpoints.down('700')]: {
+        display: `none`
     },
 }));
 

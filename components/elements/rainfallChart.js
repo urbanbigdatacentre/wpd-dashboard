@@ -21,6 +21,9 @@ const RainfallChart = ({toggleLanguage, toggleDate, updatePrimaryLocation, updat
 
     const [legendDataArray, setLegendDataArray] = useState([]);
 
+    const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
+    const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
+
     useEffect(() => {
 
         // Select and Clear the Chart
@@ -37,10 +40,10 @@ const RainfallChart = ({toggleLanguage, toggleDate, updatePrimaryLocation, updat
 
         // Set Margins
         const chartMargin = {
-            left: `85`,
-            right: `85`,
-            top: `75`,
-            bottom: `75`
+            left: vw > 900 ? `85` : vw > 600 ? `50` : `35`,
+            right: vw > 600 ? `85` : `20`,
+            top: vw > 900 ? `75` : vw > 600 ? `50` : `35`,
+            bottom: vw > 900 ? `75` : vw > 600 ? `50` : `35`,
         }
 
         // Determine highest value - 25 used where no value
@@ -55,7 +58,7 @@ const RainfallChart = ({toggleLanguage, toggleDate, updatePrimaryLocation, updat
 
         // Add Background Color to Chart
         svg.append("rect")
-            .attr("width", width - chartMargin.right)
+            .attr("width", width - chartMargin.left)
             .attr("height", height - chartMargin.bottom)
             .attr("transform", "translate(" + chartMargin.left + ", " + chartMargin.top + ")")
             .attr("fill", "rgba(229, 229, 229, 0.2)");
@@ -136,7 +139,7 @@ const RainfallChart = ({toggleLanguage, toggleDate, updatePrimaryLocation, updat
         svg.append("g")
             .attr("transform", "translate(0," + height + ")")
             .attr("class", styles.chartAxis)
-            .call(d3.axisBottom(xScale).ticks(8).tickPadding(15));
+            .call(d3.axisBottom(xScale).ticks(vw > 900 ? 8 : 4).tickPadding(vw > 600 ? 15 : 8));
 
         // Draw Y Axis
         const yScale = d3.scaleLinear()
@@ -146,14 +149,14 @@ const RainfallChart = ({toggleLanguage, toggleDate, updatePrimaryLocation, updat
         svg.append("g")
             .attr("class", styles.chartAxis)
             .attr("transform", "translate(" + chartMargin.left + ",0)")
-            .call(d3.axisLeft(yScale).ticks(5).tickPadding(15));
+            .call(d3.axisLeft(yScale).ticks(vw > 900 ? 8 : 4).tickPadding(vw > 600 ? 15 : 6));
 
         // Add X Gridlines
         svg.append("g")
             .attr("class", styles.chartGrid)
             .attr("transform", "translate(0," + (height + 10) + ")")
             .call(d3.axisBottom(xScale)
-                .ticks(16)
+                .ticks(vw > 900 ? 8 : 4)
                 .tickSize(-(height - (chartMargin.bottom - 10)))
                 .tickFormat("")
             )
@@ -163,7 +166,7 @@ const RainfallChart = ({toggleLanguage, toggleDate, updatePrimaryLocation, updat
             .attr("class", styles.chartGrid)
             .attr("transform", "translate(" + (chartMargin.left - 10) + ",0)")
             .call(d3.axisLeft(yScale)
-                .ticks(5)
+                .ticks(vw > 900 ? 8 : 4)
                 .tickSize(-(width - (chartMargin.left - 10)))
                 .tickFormat("")
             )
@@ -221,7 +224,7 @@ const RainfallChart = ({toggleLanguage, toggleDate, updatePrimaryLocation, updat
                 .attr("stroke", "none")
                 .attr("cx", function(d) { return xScale(new Date(d.timestamp).setHours(0, 0, 0, 0))})
                 .attr("cy", function(d) { return height})
-                .attr("r", 5)
+                .attr("r", vw > 900 ? `5` : vw > 600 ? `4` : `3`)
 
             // Animate on Scroll
 
@@ -277,7 +280,16 @@ const ChartBox = styled(Box)(({theme}) => ({
     position: `relative`,
     borderRadius: theme.shape.borderRadius,
     outline: `2px solid #E5E5E5`,
-    zIndex: `100`
+    zIndex: `100`,
+    [theme.breakpoints.down('lg')]: {
+        height: `500px`,
+    },
+    [theme.breakpoints.down('md')]: {
+        height: `400px`,
+    },
+    [theme.breakpoints.down('sm')]: {
+        height: `300px`,
+    },
 }))
 
 

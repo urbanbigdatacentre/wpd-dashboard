@@ -20,14 +20,16 @@ const StatisticsBar = ({ configureAPI, toggleLanguage }) => {
     // Function to set stat bar numbers using axios get request on component mount
     useEffect(() => {
         // Create Get Request Here 👇
-         trackPromise(
-            axios.get(`${config[configureAPI['node_env'].NODE_ENV]}/dashboard/summary`)
-                .then(res => {
-                    if (res.data?.responseData?.array_to_json !== undefined) {
-                        setStats(res.data.responseData.array_to_json[0])
-                    }
-                })
-         , "summary")
+        if (configureAPI?.node_env?.NODE_ENV) {
+            trackPromise(
+                axios.get(`${config[configureAPI['node_env'].NODE_ENV]}/dashboard/summary`)
+                    .then(res => {
+                        if (res.data?.responseData?.array_to_json !== undefined) {
+                            setStats(res.data.responseData.array_to_json[0])
+                        }
+                    })
+                , "summary")
+        }
     }, [Object.keys(stats).length, configureAPI['node_env'].NODE_ENV])
 
 
@@ -78,24 +80,6 @@ const StatisticsBarSectionContainer = styled(Container)(({theme}) => ({
     justifyContent: `center`,
     marginTop: theme.spacing(6),
     flexDirection: `column`,
-    [theme.breakpoints.down('1400')]: {
-        marginTop: theme.spacing(9)
-    },
-    [theme.breakpoints.down('lg')]: {
-        marginTop: theme.spacing(12)
-    },
-    [theme.breakpoints.down('1000')]: {
-        marginTop: theme.spacing(16)
-    },
-    [theme.breakpoints.down('md')]: {
-        marginTop: theme.spacing(22)
-    },
-    [theme.breakpoints.down('700')]: {
-        marginTop: theme.spacing(25)
-    },
-    [theme.breakpoints.down('500')]: {
-        display: `none`
-    },
 }));
 
 const StatisticsBarRowBox = styled(Box)(({theme}) => ({

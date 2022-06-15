@@ -14,6 +14,7 @@ import {useState} from "react";
 import LocationBox from "./locationBox";
 import locationPaths from "../../data/locationPaths";
 import {toggleLocationPreference} from "../../store/reducers";
+import {filterCitizenEventDataByDate, filterPluviometerData} from "../../api/dataFilteringFunctions";
 
 // General Legend Component
 const GeneralLegend = ({locationData, toggleLanguage, toggleDate, updatePrimaryLocation, floodMap, updateCitizenEventsRainfallData, toggleLocationPreference, updateCitizenEventsFloodZonesData, updateCitizenEventsRiverFloodData}) => {
@@ -37,10 +38,13 @@ const GeneralLegend = ({locationData, toggleLanguage, toggleDate, updatePrimaryL
         sortedDataArray.push( ... locationData.filter((element, index) => element['id'] !== updatePrimaryLocation?.location['placeid']))
     }
 
+
     const calculateMeasurements = (dataItem) => {
         let totalMeasurements = 0
 
-        dataItem['pluviometerData'].forEach(function(singlePluviometer) {
+        const filteredData = filterPluviometerData([dataItem], toggleDate);
+
+        filteredData['pluviometerData'].forEach(function(singlePluviometer) {
             totalMeasurements += singlePluviometer.hasOwnProperty('records') ?  singlePluviometer.records.length : 0
         })
 
@@ -49,8 +53,6 @@ const GeneralLegend = ({locationData, toggleLanguage, toggleDate, updatePrimaryL
 
     const renderLegend = (item, index) => {
 
-        console.log(sortedDataArray)
-
         const colorCode = index === 0 ? '#2196F3' : locationColorKeys[index - 1]?.color
 
         const citizenRiverAndFloodData = [];
@@ -58,8 +60,9 @@ const GeneralLegend = ({locationData, toggleLanguage, toggleDate, updatePrimaryL
         const floodZonesData = [... updateCitizenEventsFloodZonesData.locations.filter((element, index) => element['id'] === item['id'])]
         const riverFloodData = [... updateCitizenEventsRiverFloodData.locations.filter((element, index) => element['id'] === item['id'])]
 
-        if (floodZonesData[0]?.citizenFloodZonesEvents) {citizenRiverAndFloodData.push(... floodZonesData[0]['citizenFloodZonesEvents'])}
-        if (riverFloodData[0]?.citizenRiverFloodEvents) {citizenRiverAndFloodData.push(... riverFloodData[0]['citizenRiverFloodEvents'])}
+        if (floodZonesData[0]?.citizenFloodZonesEvents) {citizenRiverAndFloodData.push(... filterCitizenEventDataByDate(floodZonesData, 'citizenFloodZonesEvents', toggleDate)['citizenFloodZonesEvents'])}
+        if (riverFloodData[0]?.citizenRiverFloodEvents) {citizenRiverAndFloodData.push(... filterCitizenEventDataByDate(riverFloodData, 'citizenRiverFloodEvents', toggleDate)['citizenRiverFloodEvents'])}
+
 
         if (floodMap) {
             return (
@@ -74,7 +77,7 @@ const GeneralLegend = ({locationData, toggleLanguage, toggleDate, updatePrimaryL
             // Find number of citizen submitted rainfall for each item
             const citizenRainEventLocationMatch = updateCitizenEventsRainfallData.locations.filter(function(el){return el.id === item['id']})
 
-            const lengthOfArray = citizenRainEventLocationMatch.length ? citizenRainEventLocationMatch[0].citizenRainfallEvents.length : 0;
+            const lengthOfArray = citizenRainEventLocationMatch.length ? filterCitizenEventDataByDate(citizenRainEventLocationMatch, 'citizenRainfallEvents', toggleDate)['citizenRainfallEvents'].length : 0;
 
             return (
                 <>
@@ -157,6 +160,9 @@ const LegendWrapperBox = styled(Box)(({theme}) => ({
     padding: theme.spacing(3),
     paddingRight: theme.spacing(3.5),
     filter: `drop-shadow(-4px 0px 8px rgba(33, 150, 243, 0.1))`,
+    [theme.breakpoints.down('sm')]: {
+        display: `none`
+    },
 }))
 
 const LegendMetaInfoBox = styled(Box)(({theme}) => ({
@@ -182,9 +188,6 @@ const LegendColorKey = styled(Box)(({theme}) => ({
 const LegendDataText = styled(Typography)(({theme}) => ({
     fontSize: `12px`,
     fontWeight: theme.typography.fontWeightLight,
-    [theme.breakpoints.down('md')]: {
-        display: `none`
-    },
 }))
 
 const LegendLocationName = styled(Typography)(({theme}) => ({

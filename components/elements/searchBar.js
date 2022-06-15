@@ -101,6 +101,9 @@ class SearchBar extends React.Component {
                     width: this.props.popover ? `80%` : `60%`,
                     [theme.breakpoints.down('md')] : {
                         width: this.props.popover ? `80%` : `80%`,
+                    },
+                    [theme.breakpoints.down('sm')] : {
+                        width: this.props.popover ? `100%` : `80%`,
                     }
                 })}
                 variant="standard" >

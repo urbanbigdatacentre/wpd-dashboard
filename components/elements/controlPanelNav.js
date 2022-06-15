@@ -27,7 +27,7 @@ const ControlPanelNav = ({toggleLanguage, updateAdditionalLocation, updatePrimar
 
         window.onscroll = function() {
             // Check if primary location is set
-            window.location.href.includes('location') ? setSticky(document.querySelector('#control-panel').getBoundingClientRect().top < 64) : null
+            ((window.location.href.includes('location')) && (document.querySelector('#control-panel') !== undefined)) ? setSticky(document.querySelector('#control-panel').getBoundingClientRect().top < 64) : null
         }
 
     }, [sticky])

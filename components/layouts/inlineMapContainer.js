@@ -89,10 +89,9 @@ const InlineMapContainer = ({ toggleLanguage, mapBoxToken, mapStylePlain, update
             )}
             <MapInnerWrapper sx={theme => ({
                 height: mapStylePlain ? `400px`: `650px`,
-                [theme.breakpoints.down('600')]: {
-                    height: mapStylePlain ? `400px`: `600px`,
+                [theme.breakpoints.down('md')]: {
+                    height: mapStylePlain ? `400px`: `550px`,
                 },
-
             })}>
                 <MapBackgroundBox />
                 <StreetMap mapBoxToken={mapBoxToken} mapStylePlain={mapStylePlain}/>

@@ -37,11 +37,11 @@ const FramedMapContainer = ({ mapBoxToken, mapType, ctx, updatePluviometerData, 
             { mapType === "NationalOverview" ? <OverviewMapLegendComponent/> : null}
             { mapType === "NationalOverview" ? <OverviewMapToggleButton/> : null}
             { mapType === "RainfallMap" || mapType === "FloodMap" ? <LocationButtonGroup positionMode={'absolute'}/> : null}
-            { mapType === "RainfallMap" ? <DataTypeFilter positionMode={'absolute'}/>: null}
+            { mapType === "RainfallMap" ? <DataTypeBox><DataTypeFilter positionMode={'absolute'}/></DataTypeBox>: null}
             { mapType === "RainfallMap" ? <RainfallMapLegend />: null}
             { mapType === "RainfallMap" ? <GeneralLegend locationData={updatePluviometerData.locations}/>: null}
             { mapType === "FloodMap" ? <GeneralLegend floodMap={true} locationData={updateFloodData.locations}/>: null}
-            { mapType === "FloodMap" ? <DataTypeFilter positionMode={`absolute`}/>: null}
+            { mapType === "FloodMap" ? <DataTypeBox><DataTypeFilter positionMode={`absolute`}/></DataTypeBox>: null}
             { mapType === "FloodMap" ? <FloodMapLegend mapBoxToken={mapBoxToken}/>: null}
             <MapInnerWrapper>
                 { mapType === "NationalOverview" ? <LoadingSkeleton text={uiText.global.labels.overiewMapLoadingText[toggleLanguage.language]} area={'national-overview-map'}/> : null}
@@ -51,6 +51,12 @@ const FramedMapContainer = ({ mapBoxToken, mapType, ctx, updatePluviometerData, 
         </MapOuterWrapper>
     );
 }
+
+const DataTypeBox = styled(Box)(({theme}) => ({
+    [theme.breakpoints.down('1050')]: {
+        display: `none`
+    },
+}))
 
 const MapOuterWrapper = styled(Box)(({theme}) => ({
     position: `relative`,
@@ -63,7 +69,10 @@ const MapInnerWrapper = styled(Box)(({theme}) => ({
     position: `relative`,
     borderRadius: theme.shape.borderRadius,
     outline: `2px solid #E5E5E5`,
-    zIndex: `100`
+    zIndex: `100`,
+    [theme.breakpoints.down('md')]: {
+        height: `500px`,
+    },
 }))
 
 const SwitchLocationViewText = styled(Typography)(({theme}) => ({

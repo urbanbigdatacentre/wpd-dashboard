@@ -18,14 +18,14 @@ const MyNavbar = ({ toggleLanguage }) => {
         <AppBar position="fixed" className={styles.navbar}>
             <Toolbar>
                 <Box sx={{color: (theme) => (theme.palette.text.primary), fontWeight: (theme) => (theme.typography.weights.heavy)}} className={styles.navOuterContainer}>
-                    <Link href="/" >
+                    <Link passHref href="/" >
                         <NavTextHome sx={{fontWeight: (theme) => (theme.typography.weights.heavy), cursor: `pointer`}} >{uiText.global.labels.projectTitle[toggleLanguage.language].toUpperCase()} <span className={'bluePunctuation'}>.</span></NavTextHome>
                     </Link>
                     <Container className={styles.navRightContainer}>
-                        <Link href="/#national-activity" scroll={false}>
+                        <Link passHref href="/#national-activity" scroll={false}>
                             <NavTextNationalOverview sx={{fontWeight: (theme) => (theme.typography.weights.heavy), cursor: `pointer`}}>{uiText.global.labels.navRightLink[toggleLanguage.language].toUpperCase()}<span className={'bluePunctuation'}>.</span></NavTextNationalOverview>
                         </Link>
-                        <MyButton text={uiText.global.labels.navButton[toggleLanguage.language]} variant={"contained"}/>
+                        <Link passHref href={`https://play.google.com/store/apps/details?id=com.dadosaprovadagua.wpdmobileapp`}><MyButton text={uiText.global.labels.navButton[toggleLanguage.language]} variant={"contained"}/></Link>
                     </Container>
                 </Box>
             </Toolbar>

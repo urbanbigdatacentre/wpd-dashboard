@@ -7,10 +7,9 @@ import {connect} from "react-redux";
 import React, {useRef, useEffect, useState, useCallback} from "react";
 
 // Map Config Imports
-import {AmbientLight, PointLight, LightingEffect} from '@deck.gl/core';
 import {HexagonLayer} from '@deck.gl/aggregation-layers';
 import {MapboxLayer} from '@deck.gl/mapbox';
-import {trackPromise, usePromiseTracker} from "react-promise-tracker";
+import {trackPromise} from "react-promise-tracker";
 import axios from "axios";
 import config from "../../api/config";
 
@@ -21,7 +20,6 @@ import config from "../../api/config";
 
 // Map Config
 const mapStyleBrazilOnly = 'mapbox://styles/andyclarke/cl32tkwur000p14qjkf29169z';
-const DATA_URL = 'https://gist.githubusercontent.com/andyclarkemedia/a4a7865e33ea133e1a9a73d79f314cf5/raw/1c51e5225dc2b4159c50b5ba272be628bf401660/wpd-overview-dummy-data.csv'
 
 export const colorRange = [
     [247, 153, 111],
@@ -101,20 +99,21 @@ const NationalOverviewMap = ({ configureAPI, mapBoxToken, changeRadiusWithSlider
     }
 
     useEffect(() => {
-
-        trackPromise(
-            axios.get(OVERVIEW_URL_PATHS[changeOverviewMapView.mapView])
-                .then(res => {
-                    const payload = res.data['responseData']['array_to_json'] === undefined ? [] : res.data['responseData']['array_to_json']
-                    if ((payload.length) && (changeOverviewMapView.mapView !== "Avg Daily Rainfall")) {
-                        setData(payload.map(d => [Number(d.longitude), Number(d.latitude)]))
-                    } else if ((payload.length) && (changeOverviewMapView.mapView === "Avg Daily Rainfall")) {
-                        setData(payload.map(d => [...Array(Math.round(d['avgrainreport']))].map((_, i) => [Number(d.longitude), Number(d.latitude)])).flat())
-                    } else {
-                        setData(payload)
-                    }
-                })
-        , "national-overview-map")
+        if (configureAPI?.node_env?.NODE_ENV) {
+            trackPromise(
+                axios.get(OVERVIEW_URL_PATHS[changeOverviewMapView.mapView])
+                    .then(res => {
+                        const payload = res.data['responseData']['array_to_json'] === undefined ? [] : res.data['responseData']['array_to_json']
+                        if ((payload.length) && (changeOverviewMapView.mapView !== "Avg Daily Rainfall")) {
+                            setData(payload.map(d => [Number(d.longitude), Number(d.latitude)]))
+                        } else if ((payload.length) && (changeOverviewMapView.mapView === "Avg Daily Rainfall")) {
+                            setData(payload.map(d => [...Array(Math.round(d['avgrainreport']))].map((_, i) => [Number(d.longitude), Number(d.latitude)])).flat())
+                        } else {
+                            setData(payload)
+                        }
+                    })
+                , "national-overview-map")
+        }
 
     }, [configureAPI['node_env'].NODE_ENV, data.length, changeOverviewMapView.mapView, toggleDate.startDate, toggleDate.endDate])
 
