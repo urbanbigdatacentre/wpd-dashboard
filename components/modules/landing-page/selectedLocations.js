@@ -16,12 +16,12 @@ import Link from "next/link";
 // Selected Locations Component
 const SelectedLocations = (props) => {
     return (
-        <Container sx={{display: `flex`, justifyContent: `center`, marginBottom: (theme) => (theme.spacing(4))}}>
+        <Container sx={{display: `flex`, justifyContent: `center`}}>
             <SelectedLocationsBox>
-                <Box sx={{display: `flex`, justifyContent: `space-between`, width: `100%`, alignItems: `center`}}>
-                    <Typography sx={{paddingBottom: `10px`, fontWeight: (theme) => (theme.typography.fontWeightBold)}}>{uiText.global.labels.selectedLocations[props.toggleLanguage.language].toUpperCase()}<span className={'bluePunctuation'}>.</span></Typography>
-                    <Link prefetch={true} href={`/location?name=${props.updatePrimaryLocation.location['placename']}&id=${props.updatePrimaryLocation.location['placeid']}`}><BackToDashboardButton startIcon={<ArrowBackIosNewRoundedIcon />} variant={'text'}>{uiText.landingPage.hero.backToDashboard[props.toggleLanguage.language]}</BackToDashboardButton></Link>
-                </Box>
+                <TitleLinkBox sx={{display: `flex`, flexWrap: `wrap`, justifyContent: `space-between`, width: `100%`, alignItems: `center`}}>
+                    <SelectedLocationsTitle sx={{paddingBottom: `10px`, fontWeight: (theme) => (theme.typography.fontWeightBold)}}>{uiText.global.labels.selectedLocations[props.toggleLanguage.language].toUpperCase()}<span className={'bluePunctuation'}>.</span></SelectedLocationsTitle>
+                    <Link passHref href={`/location?name=${props.updatePrimaryLocation.location['placename']}&id=${props.updatePrimaryLocation.location['placeid']}`}><BackToDashboardButton startIcon={<ArrowBackIosNewRoundedIcon />} variant={'text'}>{uiText.landingPage.hero.backToDashboard[props.toggleLanguage.language]}</BackToDashboardButton></Link>
+                </TitleLinkBox>
                 <Divider sx={{width: `100%`}}/>
                 <LocationControlBox>
                     <LocationButtonLayoutBox>
@@ -41,6 +41,21 @@ const SelectedLocations = (props) => {
     );
 }
 
+const SelectedLocationsTitle = styled(Typography)(({theme}) => ({
+    fontSize: `14px`,
+    [theme.breakpoints.down('sm')]: {
+        fontSize: `14px`,
+    },
+}))
+
+const TitleLinkBox = styled(Box)(({theme}) => ({
+    [theme.breakpoints.down('450')]: {
+        marginTop: theme.spacing(3),
+        flexDirection: `column-reverse`,
+        alignItems: `flex-start`
+    },
+}))
+
 const SelectedLocationsBox = styled(Box)(({theme}) => ({
     zIndex: `500`,
     top: 200,
@@ -51,24 +66,11 @@ const SelectedLocationsBox = styled(Box)(({theme}) => ({
     flexDirection: `column`,
     alignItems: `flex-start`,
     paddingTop: theme.spacing(6),
-    [theme.breakpoints.down('1400')]: {
-        marginTop: theme.spacing(9)
-    },
-    [theme.breakpoints.down('lg')]: {
-        marginTop: theme.spacing(12)
-    },
-    [theme.breakpoints.down('1000')]: {
-        marginTop: theme.spacing(16)
-    },
     [theme.breakpoints.down('md')]: {
-        marginTop: theme.spacing(22),
         width: `90%`,
     },
-    [theme.breakpoints.down('700')]: {
-        marginTop: theme.spacing(25)
-    },
-    [theme.breakpoints.down('500')]: {
-        display: `none`
+    [theme.breakpoints.down('550')]: {
+        marginTop: theme.spacing(4)
     },
 }))
 
@@ -82,7 +84,14 @@ const LocationControlBox = styled(Box)(({theme}) => ({
 }))
 
 const BackToDashboardButton = styled(Button)(({theme}) => ({
-    marginBottom: theme.spacing(1)
+    marginBottom: theme.spacing(1),
+    [theme.breakpoints.down('sm')]: {
+        fontSize: `12px`,
+        padding: `0`
+    },
+    [theme.breakpoints.down('450')]: {
+        marginBottom: theme.spacing(2),
+    },
 }))
 
 const LocationButtonLayoutBox = styled(Box)(({theme}) => ({

@@ -47,10 +47,10 @@ const OverviewMapLegendComponent = ({ changeRadius, changeRadiusWithSlider, togg
                         <LegendText sx={{fontSize: `12px`, textAlign: `right`}}>{uiText.global.tooltips.higher[toggleLanguage.language]}</LegendText>
                     </Box>
                 </Box>
-                <Box sx={{display: `flex`, width: `100%`, justifyContent: `space-between`, marginTop: (theme) => (theme.spacing(2))}}>
+                <HexBox sx={{display: `flex`, width: `100%`, justifyContent: `space-between`, marginTop: (theme) => (theme.spacing(2))}}>
                     <Typography sx={{fontWeight: (theme) => (theme.typography.fontWeightBold), fontSize: `12px`}} >{uiText.global.tooltips.hexagonRadius[toggleLanguage.language].toUpperCase()}</Typography>
                     <Slider min={20000} max={200000} value={changeRadiusWithSlider.hexRadius} onChange={handleChange}/>
-                </Box>
+                </HexBox>
             </LegendWrapperBox>
         )
     );
@@ -65,6 +65,12 @@ const LegendCircle = styled(Box)(({theme}) => ({
         height: `15px`,
     },
 
+}))
+
+const HexBox = styled(Box)(({theme}) => ({
+    [theme.breakpoints.down('sm')]: {
+        display: `none`
+    },
 }))
 
 const LegendWrapperBox = styled(Box)(({theme}) => ({
@@ -87,9 +93,9 @@ const LegendWrapperBox = styled(Box)(({theme}) => ({
         padding: theme.spacing(2),
         maxWidth: theme.spacing(25),
         top: theme.spacing(10),
-        height: `175px`,
+        height: `auto`,
     },
-    [theme.breakpoints.down('350')]: {
+    [theme.breakpoints.down('420')]: {
         top: theme.spacing(6),
     },
 }))
@@ -117,7 +123,10 @@ const LegendDescription = styled(Typography)(({theme}) => ({
 
 const DateRangeText = styled(Typography)(({theme}) => ({
     fontSize: `12px`,
-    fontWeight: theme.typography.fontWeightLight
+    fontWeight: theme.typography.fontWeightLight,
+    [theme.breakpoints.down('sm')]: {
+        marginBottom: theme.spacing(2),
+    },
 }))
 
 

@@ -99,8 +99,8 @@ const FloodMap = ({ toggleLanguage, toggleDate, updateFloodData, updateFloodCoor
                 <TooltipFlex>
                     <Box sx={{display: `flex`}}>
                         <TypeOrganisationBox>
-                            <Typography sx={{fontSize: `17px`, fontWeight: (theme) => (theme.typography.fontWeightBold)}}>{uiText.global.tooltips.multiple[toggleLanguage.language] + " " + uiText.locationPage.floodMap.floodEventTitle[toggleLanguage.language]}</Typography>
-                            <Typography sx={{fontSize: `14px`, color: (theme) => (theme.palette.primary.main)}}>{object.point_count + " " + uiText.locationPage.floodMap.floodEventTitle[toggleLanguage.language] + " " + uiText.global.tooltips.nearby[toggleLanguage.language]}</Typography>
+                            <EventType sx={{fontSize: `17px`, fontWeight: (theme) => (theme.typography.fontWeightBold)}}>{uiText.global.tooltips.multiple[toggleLanguage.language] + " " + uiText.locationPage.floodMap.floodEventTitle[toggleLanguage.language]}</EventType>
+                            <EventNumberText sx={{fontSize: `14px`, color: (theme) => (theme.palette.primary.main)}}>{object.point_count + " " + uiText.locationPage.floodMap.floodEventTitle[toggleLanguage.language] + " " + uiText.global.tooltips.nearby[toggleLanguage.language]}</EventNumberText>
                         </TypeOrganisationBox>
                     </Box>
                 </TooltipFlex>
@@ -179,7 +179,7 @@ const FloodMap = ({ toggleLanguage, toggleDate, updateFloodData, updateFloodCoor
     const geoJsonLayerOfficial = new GeoJsonLayer({
         id: 'official-floodzones-geojson-layer',
         data: locationSettings.floodData,
-        pickable: true,
+        visible: (toggleDataType.dataType === "Combined") || (toggleDataType.dataType === "Official"),
         stroked: true,
         filled: true,
         extruded: false,
@@ -201,6 +201,7 @@ const FloodMap = ({ toggleLanguage, toggleDate, updateFloodData, updateFloodCoor
     const layerPropsCitizenEvents = {
         data: joinedCitizenDataArray,
         pickable: true,
+        visible: (toggleDataType.dataType === "Combined") || (toggleDataType.dataType === "Citizen"),
         getPosition: (d) => d.coordinates,
         iconAtlas: avatarIcons.src,
         iconMapping: CITIZEN_EVENTS_ICON_MAPPING,
@@ -231,12 +232,6 @@ const FloodMap = ({ toggleLanguage, toggleDate, updateFloodData, updateFloodCoor
         bearing: 0
     };
 
-    let layerMapping = {
-        "Combined": [geoJsonLayerOfficial, citizenEventsLayer],
-        "Official": [geoJsonLayerOfficial],
-        "Citizen": [citizenEventsLayer]
-    }
-
     const controllerTrue = mapStylePlain ? Boolean(0) : Boolean(1)
 
     return (
@@ -246,7 +241,7 @@ const FloodMap = ({ toggleLanguage, toggleDate, updateFloodData, updateFloodCoor
             glOptions={{
                 stencil: true
             }}
-            layers={layerMapping[toggleDataType.dataType]}
+            layers={[geoJsonLayerOfficial, citizenEventsLayer]}
             controller={controllerTrue} preventStyleDiffing={true}
             initialViewState={INITIAL_VIEW_STATE}
             height={'100%'}
@@ -286,6 +281,9 @@ const MyTooltipBox = styled(Box)(({theme}) => ({
     boxShadow: `0px 0px 15px #E5E5E5`,
     border: `1.5px solid #E5E5E5`,
     zIndex: 10000000000000000000000000,
+    [theme.breakpoints.down('md')]: {
+        maxWidth: `300px`,
+    },
 }))
 
 const TooltipFlex = styled(Box)(({theme}) => ({
@@ -300,6 +298,26 @@ const TypeOrganisationBox = styled(Box)(({theme}) => ({
     flexDirection: `column`,
     justifyContent: `space-around`,
     marginLeft: theme.spacing(0),
+}))
+
+const EventNumberText = styled(Typography)(({theme}) => ({
+    fontSize: `14px`,
+    [theme.breakpoints.down('md')]: {
+        fontSize: `12px`,
+    },
+    [theme.breakpoints.down('sm')]: {
+        fontSize: `10px`,
+    },
+}))
+
+const EventType = styled(Typography)(({theme}) => ({
+    fontSize: `16px`,
+    [theme.breakpoints.down('md')]: {
+        fontSize: `14px`,
+    },
+    [theme.breakpoints.down('sm')]: {
+        fontSize: `12px`,
+    },
 }))
 
 

@@ -21,7 +21,7 @@ const MyTooltip = ({ toggleLanguage, text, title }) => {
                 {text}
             </Alert>
         }>
-            <IconButton onClick={() => setOpen(true)}>
+            <IconButton aria-label="More Information Button" onClick={() => setOpen(true)}>
                 <InfoIcon style={{ fill: `#2196F3` }}/>
             </IconButton>
         </StyledTooltip>

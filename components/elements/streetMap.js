@@ -25,6 +25,14 @@ const StreetMap = ({ toggleLocationPreference, mapBoxToken, updateCarouselCoordi
     const mapRef = useRef(null);
     const [viewportControl, updateViewport] = useState({})
 
+    // Get viewport dimensions
+    let vw = 0;
+    let vh = 0;
+    if (typeof window === `object`) {
+        vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
+        vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
+    }
+
     const onMapLoad = useCallback(() => {
 
         if (!mapLoaded) {
@@ -72,7 +80,7 @@ const StreetMap = ({ toggleLocationPreference, mapBoxToken, updateCarouselCoordi
     });
 
     const locationSettings = {
-        initialLongitude: updateCarouselCoordinates.longitude - 0.09,
+        initialLongitude: vw > 1140 ? updateCarouselCoordinates.longitude - 0.09 : vw > 550 ? updateCarouselCoordinates.longitude - 0.04 : updateCarouselCoordinates.longitude - 0.03,
         initialLatitude: updateCarouselCoordinates.latitude,
         zoom: 12
     }
@@ -88,6 +96,7 @@ const StreetMap = ({ toggleLocationPreference, mapBoxToken, updateCarouselCoordi
     };
 
     return (
+
         <DeckGL
             ref={deckRef}
             onWebGLInitialized={setGLContext}

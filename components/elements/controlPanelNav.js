@@ -3,7 +3,7 @@
 // Package Imports
 import {connect} from "react-redux";
 import styles from "../../styles/modules/location-page/ControlPanel.module.css";
-import {Box, Container, Toolbar} from "@mui/material";
+import {Box, Container, Toolbar, styled} from "@mui/material";
 import MyButton from "./button";
 import uiText from "../../data/ui-text";
 import LocationControlButton from "./locationControlButton";
@@ -27,7 +27,7 @@ const ControlPanelNav = ({toggleLanguage, updateAdditionalLocation, updatePrimar
 
         window.onscroll = function() {
             // Check if primary location is set
-            ((window.location.href.includes('location')) && (document.querySelector('#control-panel') !== undefined)) ? setSticky(document.querySelector('#control-panel').getBoundingClientRect().top < 64) : null
+            ((window.location.href.includes('location')) && (document.querySelector('#control-panel') !== undefined)) ? setSticky(document.querySelector('#control-panel')?.getBoundingClientRect().top < 64) : null
         }
 
     }, [sticky])
@@ -39,9 +39,9 @@ const ControlPanelNav = ({toggleLanguage, updateAdditionalLocation, updatePrimar
                     <Container className={styles.controlPanelContainerSticky}>
                         <Box className={styles.locationControlBox}>
                             <MyButton text={uiText.global.labels.addLocation[toggleLanguage.language]} variant={"contained"} onClick={clickHandler}/>
-                            <Box sx={{marginLeft: `40px`, marginRight: `40px`}}>
+                            <FirstButtonBox>
                                 <LocationControlButton primary={true} data={updatePrimaryLocation.location} contained={false} color={'#2196F3'}/>
-                            </Box>
+                            </FirstButtonBox>
                             {/*SPACE HERE TO MAP OTHER CONTROL BUTTONS*/
                                 updateAdditionalLocation.locations.length ? updateAdditionalLocation.locations.map((item, index) => {
                                     return (
@@ -60,15 +60,15 @@ const ControlPanelNav = ({toggleLanguage, updateAdditionalLocation, updatePrimar
                 <Box className={styles.controlPanelInnerBoxHolder}>
                     <Box className={styles.locationControlBox}>
                         <MyButton text={uiText.global.labels.addLocation[toggleLanguage.language]} variant={"contained"} onClick={clickHandler}/>
-                        <Box sx={{marginLeft: `40px`, marginRight: `40px`}}>
+                        <FirstButtonBox sx={{marginLeft: `40px`, marginRight: `40px`}}>
                             <LocationControlButton primary={true} data={updatePrimaryLocation.location} contained={false} color={'#2196F3'}/>
-                        </Box>
+                        </FirstButtonBox>
                         {/*SPACE HERE TO MAP OTHER CONTROL BUTTONS*/
                             updateAdditionalLocation.locations.length ? updateAdditionalLocation.locations.map((item, index) => {
                                 return (
-                                    <Box sx={{marginRight: `40px`, }} key={index}>
+                                    <AdditionalButtonBox sx={{marginRight: `40px`, }} key={index}>
                                         <LocationControlButton data={item} contained={false} color={locationColorKeys[index].color}/>
-                                    </Box>
+                                    </AdditionalButtonBox>
                                 )
                             }) : null
                         }
@@ -82,15 +82,15 @@ const ControlPanelNav = ({toggleLanguage, updateAdditionalLocation, updatePrimar
             <Box className={styles.controlPanelInnerBox}>
                 <Box className={styles.locationControlBox}>
                     <MyButton text={uiText.global.labels.addLocation[toggleLanguage.language]} variant={"contained"} onClick={clickHandler}/>
-                    <Box sx={{marginLeft: `40px`, marginRight: `40px`}}>
+                    <FirstButtonBox sx={{marginLeft: `40px`, marginRight: `40px`}}>
                         <LocationControlButton primary={true} data={updatePrimaryLocation.location} contained={false} color={'#2196F3'}/>
-                    </Box>
+                    </FirstButtonBox>
                     {/*SPACE HERE TO MAP OTHER CONTROL BUTTONS*/
                         updateAdditionalLocation.locations.length ? updateAdditionalLocation.locations.map((item, index) => {
                             return (
-                                <Box sx={{marginRight: `40px`, }} key={index}>
+                                <AdditionalButtonBox sx={{marginRight: `40px`, }} key={index}>
                                     <LocationControlButton data={item} contained={false} color={locationColorKeys[index].color}/>
-                                </Box>
+                                </AdditionalButtonBox>
                             )
                         }) : null
                     }
@@ -102,5 +102,21 @@ const ControlPanelNav = ({toggleLanguage, updateAdditionalLocation, updatePrimar
 
     return result;
 }
+
+const FirstButtonBox = styled(Box)(({theme}) => ({
+    marginLeft: `40px`,
+    marginRight: `40px`,
+    [theme.breakpoints.down('391')]: {
+        marginLeft: `0px`,
+    },
+}))
+
+const AdditionalButtonBox = styled(Box)(({theme}) => ({
+    marginRight: `40px`,
+    [theme.breakpoints.down('sm')]: {
+    },
+    [theme.breakpoints.down('367')]: {
+    },
+}))
 
 export default connect((state) => state)(ControlPanelNav)

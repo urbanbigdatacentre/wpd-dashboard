@@ -34,7 +34,7 @@ const CookiesBanner = ({}) => {
             <CookiesContainer>
                 <CookiesTextBox>
                     <CookiesText>This site uses cookies.</CookiesText>
-                    <CookiesText>By continuing to browse you are agreeing to the use of cookies detailed in our <span><a href={"https://ubdc.ac.uk/privacy-and-cookies/"} target={"_blank"}>privacy policy</a>.</span></CookiesText>
+                    <CookiesText>By continuing to browse you are agreeing to the use of cookies detailed in our <span><a href={"https://ubdc.ac.uk/privacy-and-cookies/"} rel="noreferrer" target={"_blank"}>privacy policy</a>.</span></CookiesText>
                 </CookiesTextBox>
                 <CustomButton onClick={handleClick} variant={'contained'}>Accept & Continue</CustomButton>
             </CookiesContainer>

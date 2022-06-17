@@ -14,6 +14,7 @@ import WeatherCarousel from "./weatherCarousel";
 import {trackPromise, usePromiseTracker} from "react-promise-tracker";
 import axios from "axios";
 import config from "../../api/config";
+import * as d3 from "d3";
 
 // Local Imports
 
@@ -43,6 +44,7 @@ const ControlDashboard = ({ toggleLanguage, locationData, color, weatherAPIToken
             <LocationBox locationName={locationPaths[locationData['placetype']].text} color={color}/>
             <Typography sx={{paddingTop: `10px`, fontWeight: (theme) => (theme.typography.fontWeightBold), color: color}}>{locationData['placename'].toUpperCase()}<span className={'bluePunctuation'}>.</span></Typography>
             <Divider sx={{width: `100%`}}/>
+            <DateRangeText>{new Date(d3.timeFormat("%B %d, %Y")(toggleDate.startDate)).toLocaleString().split(',')[0] + " - " + new Date(d3.timeFormat("%B %d, %Y")(toggleDate.endDate)).toLocaleString().split(',')[0]}</DateRangeText>
             <ControlDashboardInnerBox >
                 <ControlDashboardStatCardBox>
                     <StatCard firstInSequence={true} text={uiText.locationPage.controlPanel.floodReports[toggleLanguage.language]} number={stats?.floodreports !== undefined ? stats.floodreports : "-"}/>
@@ -71,6 +73,15 @@ const ControlDashboardInnerBox = styled(Box)(({theme}) => ({
     [theme.breakpoints.down('1250')]: {
         flexDirection: `column`,
         alignItems: `center`,
+    },
+}))
+
+const DateRangeText = styled(Typography)(({theme}) => ({
+    fontSize: `14px`,
+    marginTop: theme.spacing(2),
+    fontWeight: theme.typography.fontWeightLight,
+    [theme.breakpoints.down('sm')]: {
+        marginBottom: theme.spacing(2),
     },
 }))
 

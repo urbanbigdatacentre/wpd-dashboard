@@ -30,7 +30,7 @@ const RainfallMapLegend = ({toggleLanguage, updatePluviometerData, toggleCluster
     const colorCode = colorIndex <= 0 ? '#2196F3' : locationColorKeys[colorIndex - 1].color
 
     return(
-        (!promiseInProgress && !promiseInProgressTwo) && (
+        !promiseInProgress && !promiseInProgressTwo && (
         <LegendWrapperBox>
             <LegendTitle sx={{fontWeight: (theme) => (theme.typography.fontWeightBold)}}>{uiText.global.tooltips.avgDailyRainfall[toggleLanguage.language].toUpperCase()}<span className={'bluePunctuation'}>.</span> </LegendTitle>
             <DateRangeText>{new Date(d3.timeFormat("%B %d, %Y")(toggleDate.startDate)).toLocaleString().split(',')[0] + " - " + new Date(d3.timeFormat("%B %d, %Y")(toggleDate.endDate)).toLocaleString().split(',')[0]}</DateRangeText>

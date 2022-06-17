@@ -31,7 +31,7 @@ class RainfallChartSection extends React.Component {
 
     render() {
         return (
-            <Container className={styles.visSectionContainer}>
+            <VisSectionContainer className={styles.visSectionContainer}>
                 <Box className={styles.textLegendWrapper}>
                     <Box className={styles.textWrapper}>
                         {/*INSERT TEXT LAYOUT HERE*/}
@@ -49,10 +49,17 @@ class RainfallChartSection extends React.Component {
                 </Box>
                 {/*INSERT RAINFALL CHART HERE*/}
                 <RainfallChart />
-            </Container>
+            </VisSectionContainer>
         )
     }
 }
+
+const VisSectionContainer = styled(Container)(({theme}) => ({
+    [theme.breakpoints.down('sm')]: {
+        paddingLeft: theme.spacing(0),
+        paddingRight: theme.spacing(0),
+    },
+}))
 
 const HelpText = styled(Typography)(({theme}) => ({
     fontWeight: theme.typography.fontWeightBold,

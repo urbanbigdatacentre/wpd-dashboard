@@ -134,6 +134,7 @@ const Location = (props) => {
             document.title = title;
             props.changeLanguage(window.location.hostname.includes('dados') ? 'br' : 'en')
             setPageLoaded(true)
+
         }
     }, [pageTitle, pageLoaded])
 

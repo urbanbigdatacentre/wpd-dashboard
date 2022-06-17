@@ -21,7 +21,7 @@ const LoadingSkeleton = ({toggleLanguage, area, text}) => {
             <LoadingBox>
                 <LoadingSubTitle variant={'topBlue'}>{uiText.global.labels.holdOn[toggleLanguage.language]}<span className={'bluePunctuation'}> ...</span></LoadingSubTitle>
                 <LoadingText>{text.toUpperCase()}<span className={'bluePunctuation'}> ...</span></LoadingText>
-                <MyProgressBar />
+                <MyProgressBar role="progressbar" aria-label="Loading data in chart or map" />
                 <CustomSkeleton variant={"rectangular"} width={`100%`} height={`100%`}/>
                 {/*ADD A TIMEOUT TO TRIGGER IF THE LOAD IS TAKING A LONG TIME*/}
             </LoadingBox>
@@ -47,6 +47,18 @@ const LoadingText = styled(Typography)(({theme}) => ({
     fontWeight: theme.typography.fontWeightBold,
     fontSize: `45px`,
     zIndex: 9000000,
+    [theme.breakpoints.down('lg')]: {
+        fontSize: `38px`,
+    },
+    [theme.breakpoints.down('md')]: {
+        fontSize: `26px`,
+    },
+    [theme.breakpoints.down('sm')]: {
+        fontSize: `16px`,
+    },
+    [theme.breakpoints.down('450')]: {
+        fontSize: `14px`,
+    },
 
 }))
 
@@ -69,14 +81,22 @@ const LoadingSubTitle = styled(Typography)(({theme}) => ({
     fontWeight: theme.typography.fontWeightBold,
     fontSize: `25px`,
     zIndex: 9000000,
-
+    [theme.breakpoints.down('lg')]: {
+        fontSize: `20px`,
+    },
+    [theme.breakpoints.down('md')]: {
+        fontSize: `16px`,
+    },
+    [theme.breakpoints.down('sm')]: {
+        fontSize: `14px`,
+    },
 }))
 
 
 
 const CustomSkeleton = styled(Skeleton)(({theme}) => ({
     borderRadius: theme.shape.borderRadius,
-    background: `rgba(255, 255, 255, 0.5)`
+    background: `rgba(255, 255, 255, 0.75)`
 
 }))
 

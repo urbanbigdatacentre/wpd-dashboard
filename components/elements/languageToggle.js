@@ -25,7 +25,7 @@ const LanguageToggle = ({ language, changeLanguage }) => {
                 position: "absolute",
                 width: '100%',
                 display: 'flex',
-                justifyContent: 'end',
+                justifyContent: 'flex-end',
                 zIndex: '100',
                 fontWeight: (theme) => (theme.typography.weights.heavy),
                 color: (theme) => (theme.palette.primary.main)

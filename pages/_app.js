@@ -3,7 +3,6 @@
 // Package Imports
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import Head from 'next/head';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { CacheProvider } from '@emotion/react';
@@ -16,15 +15,27 @@ import { wrapper } from "../store/store";
 import CookiesBanner from "../components/modules/cookies";
 
 // CSS Imports
-import styles from '../styles/globals.css'
 import 'mapbox-gl/dist/mapbox-gl.css';
 import uiText from "../data/ui-text";
 import {useEffect, useState} from "react";
+import styles from '../styles/globals.css'
+
+// ==================
+// RUN ACCESSIBILITY TESTS
+// ==================
+// if (typeof window !== 'undefined' && process.env.NODE_ENV !== 'production') {
+//     const ReactDOM = require('react-dom');
+//     const axe = require('@axe-core/react');
+//     axe(React, ReactDOM, 1000);
+// }
 
 // Client-side cache shared for the whole session
 // of the user in the browser
-
 const clientSideEmotionCache = createEmotionCache();
+
+// ==================
+// APP WRAPPER
+// ==================
 
 function MyApp(props) {
     const { Component, emotionCache =

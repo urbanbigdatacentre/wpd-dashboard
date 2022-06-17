@@ -24,6 +24,9 @@ const WeatherCarousel = ({ toggleLanguage, weatherAPIToken, locationData }) => {
 
     const [weatherData, setWeatherData] = useState([]);
 
+    const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
+    const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
+
     const { promiseInProgress } = usePromiseTracker({delay: 500, area: "weather-request"})
 
     useEffect(() => {
@@ -45,7 +48,7 @@ const WeatherCarousel = ({ toggleLanguage, weatherAPIToken, locationData }) => {
             </Box> : <Swiper
                 spaceBetween={-35}
                 modules={[Navigation, Virtual]}
-                slidesPerView={2}
+                slidesPerView={vw > 615 ? 2 : 1}
                 navigation
                 lazy={true}
                 loop={false}
@@ -89,7 +92,13 @@ const WeatherCarouselContainer = styled(Container)(({theme}) => ({
     [theme.breakpoints.down('700')]: {
         padding: `0`
     },
-    [theme.breakpoints.down('650')]: {
+    [theme.breakpoints.down('615')]: {
+        width: `85%`,
+    },
+    [theme.breakpoints.down('450')]: {
+        width: `100%`,
+    },
+    [theme.breakpoints.down('350')]: {
         display: `none`
     },
 }))

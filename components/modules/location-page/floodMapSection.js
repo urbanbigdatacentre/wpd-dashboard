@@ -20,7 +20,7 @@ import styles from '../../../styles/modules/location-page/VisSectionLayout.modul
 const FloodMapSection = ({ toggleLanguage, mapBoxToken }) => {
 
     return (
-        <Container className={styles.visSectionContainer}>
+        <VisSectionContainer className={styles.visSectionContainer}>
             <Box className={styles.textLegendWrapper}>
                 <Box className={styles.textWrapper}>
                     {/*INSERT TEXT LAYOUT HERE*/}
@@ -48,9 +48,16 @@ const FloodMapSection = ({ toggleLanguage, mapBoxToken }) => {
                 {/*INSERT VIS LAYOUT HERE*/}
                 <FramedMapContainer mapType={"FloodMap"} mapBoxToken={mapBoxToken}/>
             </Box>
-        </Container>
+        </VisSectionContainer>
     );
 }
+
+const VisSectionContainer = styled(Container)(({theme}) => ({
+    [theme.breakpoints.down('sm')]: {
+        paddingLeft: theme.spacing(0),
+        paddingRight: theme.spacing(0),
+    },
+}))
 
 const HelpText = styled(Typography)(({theme}) => ({
     fontWeight: theme.typography.fontWeightBold,

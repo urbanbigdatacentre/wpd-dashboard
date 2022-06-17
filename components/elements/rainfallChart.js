@@ -21,6 +21,7 @@ const RainfallChart = ({toggleLanguage, toggleDate, updatePrimaryLocation, updat
 
     const [legendDataArray, setLegendDataArray] = useState([]);
 
+    // Get viewport dimensions
     const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
     const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
 
@@ -208,7 +209,7 @@ const RainfallChart = ({toggleLanguage, toggleDate, updatePrimaryLocation, updat
                 .attr("fill", "none")
                 .attr("class", "line-path")
                 .attr("stroke", colorCode)
-                .attr("stroke-width", 2)
+                .attr("stroke-width", vw > 900 ? `2` : vw > 600 ? `1.5` : `1`)
                 .attr("d", d3.line()
                     .x(function(d) { return xScale(new Date(d.timestamp).setHours(0, 0, 0, 0))})
                     .y(function(d) { return height })
@@ -224,7 +225,7 @@ const RainfallChart = ({toggleLanguage, toggleDate, updatePrimaryLocation, updat
                 .attr("stroke", "none")
                 .attr("cx", function(d) { return xScale(new Date(d.timestamp).setHours(0, 0, 0, 0))})
                 .attr("cy", function(d) { return height})
-                .attr("r", vw > 900 ? `5` : vw > 600 ? `4` : `3`)
+                .attr("r", vw > 900 ? `5` : vw > 600 ? `4` : `2`)
 
             // Animate on Scroll
 

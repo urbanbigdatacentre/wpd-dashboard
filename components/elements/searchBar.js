@@ -3,7 +3,7 @@
 // Package Imports
 import {connect} from "react-redux";
 import React from "react";
-import {InputAdornment, FormControl, TextField, IconButton, styled} from "@mui/material";
+import {InputAdornment, FormControl, TextField, IconButton, styled, ClickAwayListener} from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
 import {trackPromise} from "react-promise-tracker";
 
@@ -31,6 +31,7 @@ class SearchBar extends React.Component {
         this.liveSearch = this.liveSearch.bind(this);
         this._clickHandler = this._clickHandler.bind(this);
         this._handleSearchResultWindowOpen = this._handleSearchResultWindowOpen.bind(this);
+        this._closeSearchResults = this._closeSearchResults.bind(this);
     }
 
     _handleSearchResultWindowOpen(e) {
@@ -74,8 +75,13 @@ class SearchBar extends React.Component {
         document.querySelector('#search-bar').value = ""
     }
 
+    _closeSearchResults() {
+        document.querySelector('#search-bar').value = ""
+        this.setState({searchTerm: ""})
+    }
+
     get renderSearchResults() {
-        return <SearchDropdown loading={this.state.loading} addingLocation={this.props.addingLocation} searchText={this.state.searchTerm} results={this.state.liveSearchResults} clickHandler={this._clickHandler}/>;
+        return <SearchDropdown loading={this.state.loading} addingLocation={this.props.addingLocation} searchText={this.state.searchTerm} results={this.state.liveSearchResults} clickHandler={this._clickHandler}/>
     }
 
     async liveSearch(searchValue) {
@@ -96,6 +102,7 @@ class SearchBar extends React.Component {
 
     render() {
         return (
+            <ClickAwayListener onClickAway={this._closeSearchResults}>
             <MyFormControl
                 sx={theme => ({
                     width: this.props.popover ? `80%` : `60%`,
@@ -124,10 +131,9 @@ class SearchBar extends React.Component {
                              label={this.props.searchPlaceholder ? this.props.searchPlaceholder : uiText.global.labels.searchPlaceholder[this.props.language]}
                              placeholder={this.state.placeholder}
                              size="small"/>
-
                 {this.renderSearchResults}
-
             </MyFormControl>
+            </ClickAwayListener>
         );
     }
 }
@@ -152,6 +158,9 @@ const MyFormControl = styled(FormControl)(({theme}) => ({
     border: `1px solid #E5E5E5`,
     borderRadius: theme.shape.borderRadius,
     backgroundColor: theme.palette.primary.light,
+    [theme.breakpoints.down('sm')]: {
+        marginTop: theme.spacing(3),
+    },
 }))
 
 const MyTextField = styled(TextField)(({theme}) => ({

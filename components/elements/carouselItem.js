@@ -23,6 +23,10 @@ const CarouselItem = ({ toggleLanguage, data, toggleLocationPreference, updateCi
         RIVERFLOOD_FORM: uiText.global.tooltips.floodEvent[toggleLanguage.language],
     }
 
+    // Get viewport dimensions
+    const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
+    const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
+
     const colorIndex = updateCitizenEventsRainfallData.locations.findIndex(function(el){return el.id === toggleLocationPreference.locationID})
 
     const colorCode = colorIndex <= 0 ? '#2196F3' : locationColorKeys[colorIndex - 1].color
@@ -31,9 +35,9 @@ const CarouselItem = ({ toggleLanguage, data, toggleLocationPreference, updateCi
         return (
             <CarouselBox>
                 <CarouselFlex>
-                    <Box sx={{display: `flex`}}>
+                    <Box sx={{display: `flex`, justifyContent: `center`, alignItems: `center`}}>
                         <ImageWrapperBox>
-                            <Image alt={"citizen avatar"} src={"/images/icons/Citizen-Icon.svg"} width={60} height={60} objectFit={'contain'}/>
+                            <Image alt={"citizen avatar"} src={"/images/icons/Citizen-Icon.svg"} width={vw > 600 ? 60 : 40} height={vw > 600 ? 60 : 40} objectFit={'contain'}/>
                         </ImageWrapperBox>
                         <TypeOrganisationBox>
                             <CitizenTypeText>{uiText.locationPage.rainfallMap.citizenReport[toggleLanguage.language]}</CitizenTypeText>
@@ -55,6 +59,7 @@ const CarouselItem = ({ toggleLanguage, data, toggleLocationPreference, updateCi
 const CarouselBox = styled(Box)(({theme}) => ({
     display: `flex`,
     width: `75%`,
+    minWidth: `500px`,
     flexDirection: `column`,
     minHeight: `200px`,
     justifyContent: `space-between`,
@@ -63,8 +68,17 @@ const CarouselBox = styled(Box)(({theme}) => ({
     padding: theme.spacing(3),
     boxShadow: `0px 0px 15px #E5E5E5`,
     border: `1.5px solid #E5E5E5`,
+    [theme.breakpoints.down('1000')]: {
+        minWidth: `400px`,
+    },
     [theme.breakpoints.down('800')]: {
         padding: theme.spacing(1.5),
+    },
+    [theme.breakpoints.down('sm')]: {
+        minHeight: `175px`,
+    },
+    [theme.breakpoints.down('470')]: {
+        minWidth: `300px`,
     },
 }))
 
@@ -83,15 +97,13 @@ const DateText = styled(Typography)(({theme}) => ({
 }))
 
 const ImageWrapperBox = styled(Box)(({theme}) => ({
-    [theme.breakpoints.down('sm')]: {
-        display: `none`
-    },
+
 }))
 
 const CitizenTypeText = styled(Typography)(({theme}) => ({
     fontSize: `20px`,
     [theme.breakpoints.down('md')]: {
-        fontSize: `16px`
+        fontSize: `18px`
     },
 }))
 
@@ -111,7 +123,7 @@ const TypeOrganisationBox = styled(Box)(({theme}) => ({
         marginLeft: theme.spacing(1),
     },
     [theme.breakpoints.down('sm')]: {
-        marginLeft: theme.spacing(0),
+
     },
 }))
 

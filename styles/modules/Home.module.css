@@ -100,3 +100,9 @@
     flex-direction: column;
   }
 }
+
+@media (max-width: 500px) {
+  .main {
+    padding: 4rem 0rem 0rem 0;
+  }
+}

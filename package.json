@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@axe-core/react": "^4.4.3",
     "@deck.gl/aggregation-layers": "^8.7.5",
     "@deck.gl/core": "^8.7.9",
     "@deck.gl/geo-layers": "^8.7.11",
@@ -23,9 +24,10 @@
     "@mui/material": "^5.5.3",
     "axios": "^0.27.2",
     "d3": "^7.4.4",
-    "d3-request": "^1.0.6",
+    "mapbox-gl": "^2.8.2",
     "next": "12.1.4",
     "next-redux-wrapper": "^7.0.5",
+    "prop-types": "^15.8.1",
     "react": "17.0.2",
     "react-date-range": "^1.4.0",
     "react-dom": "17.0.2",
@@ -36,7 +38,6 @@
     "redux": "^4.1.2",
     "redux-devtools-extension": "^2.13.9",
     "redux-thunk": "^2.4.1",
-    "simple-statistics": "^7.7.5",
     "supercluster": "^7.1.5",
     "swiper": "^8.1.4"
   },

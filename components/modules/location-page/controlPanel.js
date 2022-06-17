@@ -75,6 +75,11 @@ const ControlPanelSectionContainer = styled(Container)(({theme}) => ({
     [theme.breakpoints.down('md')]: {
         paddingTop: theme.spacing(6),
     },
+    [theme.breakpoints.down('sm')]: {
+        paddingTop: theme.spacing(6),
+        paddingLeft: theme.spacing(0),
+        paddingRight: theme.spacing(0),
+    },
 }))
 
 export default connect((state) => state)(ControlPanel)

@@ -61,7 +61,7 @@ const SearchResultsPopover = ({toggleLanguage, searchResultsPopoverStatusHandler
               <MyCancelIconButton onClick={searchResultsPopoverStatusHandler}>
                   <CancelIcon color={"primary"}/>
               </MyCancelIconButton>
-              <Typography variant={'h5'} sx={{fontWeight: (theme) => (theme.typography.fontWeightBold)}}>{uiText.global.labels.searchResults[toggleLanguage.language].toUpperCase()}<span className={'bluePunctuation'}>.</span></Typography>
+              <WindowTitle variant={'h5'} sx={{fontWeight: (theme) => (theme.typography.fontWeightBold)}}>{uiText.global.labels.searchResults[toggleLanguage.language].toUpperCase()}<span className={'bluePunctuation'}>.</span></WindowTitle>
 
               {
                   /*SPACE TO INSERT INPUT FIELD TO SHOW USER SEARCH QUERY*/
@@ -176,12 +176,16 @@ const SearchResultsPopoverBox = styled(Box)(({theme}) => ({
         maxWidth: `600px`,
         minWidth: `550px`,
         padding: theme.spacing(4),
+        top: `10%`,
+        bottom: `50%`,
     },
     [theme.breakpoints.down('sm')]: {
         maxWidth: `600px`,
         minWidth: `450px`,
+        minHeight: `570px`,
         padding: theme.spacing(3),
         paddingTop: theme.spacing(6),
+        top: `10%`,
     },
     [theme.breakpoints.down('480')]: {
         maxWidth: `300px`,
@@ -200,6 +204,12 @@ const MyCancelIconButton = styled(IconButton)(({theme}) => ({
     height: `auto`,
     backgroundColor: theme.palette.primary.light,
     padding: theme.spacing(0.25)
+}))
+
+const WindowTitle = styled(Typography)(({theme}) => ({
+    [theme.breakpoints.down('md')]: {
+        fontSize: `20px`,
+    },
 }))
 
 const LocationItemsBox = styled(Box)(({theme}) => ({

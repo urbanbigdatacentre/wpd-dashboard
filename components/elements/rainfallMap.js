@@ -110,7 +110,7 @@ const RainfallMap = ({ toggleLanguage, toggleDate, toggleDataType, mapBoxToken, 
     // Set Scale Category - how much rainfall in area considering max value
 
     const linearScale = d3.scaleLinear()
-        .domain([Math.min(... binArray), Math.max( ... binArray)])
+        .domain([0, d3.quantile(binArray, 0.85)])
         .range([0,4])
 
     const colorArray = scaleColorKeys.map(a => a.color);
@@ -159,8 +159,8 @@ const RainfallMap = ({ toggleLanguage, toggleDate, toggleDataType, mapBoxToken, 
                     <TooltipFlex>
                         <Box sx={{display: `flex`}}>
                             <TypeOrganisationBox>
-                                {"citizen-rainfall-events-icon-cluster" !== info.layer.id ?<Typography sx={{fontSize: `20px`, fontWeight: (theme) => (theme.typography.fontWeightBold)}}>{uiText.global.tooltips.multiple[toggleLanguage.language] + " " + uiText.global.tooltips.citizenPluviometers[toggleLanguage.language]}</Typography> : <Typography sx={{fontSize: `18px`, fontWeight: (theme) => (theme.typography.fontWeightBold)}}>{uiText.global.tooltips.multiple[toggleLanguage.language] + " " + uiText.locationPage.rainfallMap.citizenSubmittedRainEvent[toggleLanguage.language]}</Typography>}
-                                {"citizen-rainfall-events-icon-cluster" !== info.layer.id ? <Typography sx={{fontSize: `14px`, color: (theme) => (theme.palette.primary.main)}}>{object.point_count + " " + uiText.global.tooltips.citizenPluviometers[toggleLanguage.language] + " " + uiText.global.tooltips.nearby[toggleLanguage.language]}</Typography> : <Typography sx={{fontSize: `14px`, color: (theme) => (theme.palette.primary.main)}}>{object.point_count + " " + uiText.locationPage.rainfallMap.citizenSubmittedRainEvent[toggleLanguage.language] + " " + uiText.global.tooltips.nearby[toggleLanguage.language]}</Typography>}
+                                {"citizen-rainfall-events-icon-cluster" !== info.layer.id ?<EventType sx={{fontSize: `20px`, fontWeight: (theme) => (theme.typography.fontWeightBold)}}>{uiText.global.tooltips.multiple[toggleLanguage.language] + " " + uiText.global.tooltips.citizenPluviometers[toggleLanguage.language]}</EventType> : <Typography sx={{fontSize: `18px`, fontWeight: (theme) => (theme.typography.fontWeightBold)}}>{uiText.global.tooltips.multiple[toggleLanguage.language] + " " + uiText.locationPage.rainfallMap.citizenSubmittedRainEvent[toggleLanguage.language]}</Typography>}
+                                {"citizen-rainfall-events-icon-cluster" !== info.layer.id ? <EventNumberText sx={{fontSize: `14px`, color: (theme) => (theme.palette.primary.main)}}>{object.point_count + " " + uiText.global.tooltips.citizenPluviometers[toggleLanguage.language] + " " + uiText.global.tooltips.nearby[toggleLanguage.language]}</EventNumberText> : <Typography sx={{fontSize: `14px`, color: (theme) => (theme.palette.primary.main)}}>{object.point_count + " " + uiText.locationPage.rainfallMap.citizenSubmittedRainEvent[toggleLanguage.language] + " " + uiText.global.tooltips.nearby[toggleLanguage.language]}</Typography>}
                             </TypeOrganisationBox>
                         </Box>
                     </TooltipFlex>
@@ -186,15 +186,15 @@ const RainfallMap = ({ toggleLanguage, toggleDate, toggleDataType, mapBoxToken, 
                 <TooltipFlex>
                     <Box sx={{width: `100%`, justifyContent: `space-between`, alignItems: `center`, display: `flex`}}>
                         <TypeOrganisationBox>
-                            <Typography sx={{fontWeight: `400`}} >{uiText.locationPage.rainfallMap.citizenReport[toggleLanguage.language].toUpperCase() + " "}</Typography>
+                            <CitizenReportText sx={{fontWeight: `400`}} >{uiText.locationPage.rainfallMap.citizenReport[toggleLanguage.language].toUpperCase() + " "}</CitizenReportText>
                             <Typography sx={{fontSize: `11px`, color: (theme) => (theme.palette.primary.main)}}>{object.citizenType !== undefined ? object.citizenType.text : ""}</Typography>
                         </TypeOrganisationBox>
-                        <Typography sx={{marginLeft: (theme) => (theme.spacing(4)), fontWeight: (theme) => (theme.typography.fontWeightBold)}}>{uiText.global.tooltips.rainEvent[toggleLanguage.language].toUpperCase()}<span className={"bluePunctuation"}>.</span></Typography>
+                        <EventType sx={{marginLeft: (theme) => (theme.spacing(4)), fontWeight: (theme) => (theme.typography.fontWeightBold)}}>{uiText.global.tooltips.rainEvent[toggleLanguage.language].toUpperCase()}<span className={"bluePunctuation"}>.</span></EventType>
                     </Box>
                 </TooltipFlex>
-                <Typography sx={{fontSize: `20px`, fontWeight: (theme) => (theme.typography.fontWeightLight), marginTop: (theme) => (theme.spacing(2))}}>{"'" + object.submissionText + "'"}</Typography>
+                <SubmissionText sx={{fontWeight: (theme) => (theme.typography.fontWeightLight), marginTop: (theme) => (theme.spacing(2))}}>{"'" + object.submissionText + "'"}</SubmissionText>
                 <TooltipFlex sx={{marginTop: (theme) => (theme.spacing(2))}}>
-                    <Typography sx={{ color: `#888888`, fontSize: `14px`, fontWeight: (theme) => (theme.typography.fontWeightLight)}} >{object?.timestamp ? new Date(object.timestamp).toLocaleString().split(',')[0] : null}</Typography>
+                    <DateText sx={{ color: `#888888`, fontSize: `14px`, fontWeight: (theme) => (theme.typography.fontWeightLight)}} >{object?.timestamp ? new Date(object.timestamp).toLocaleString().split(',')[0] : null}</DateText>
                     <LocationBox locationName={toggleLocationPreference.locationPreference} color={colorCode}/>
                 </TooltipFlex>
             </MyTooltipBox>
@@ -206,6 +206,7 @@ const RainfallMap = ({ toggleLanguage, toggleDate, toggleDataType, mapBoxToken, 
     }
 
     const expandTooltip = (info) => {
+
         if (info.picked) {
             setHoverInfo(info);
         } else {
@@ -223,7 +224,6 @@ const RainfallMap = ({ toggleLanguage, toggleDate, toggleDataType, mapBoxToken, 
             typeof(locationObj['pluviometerData']) !== 'undefined' ? locationObj['pluviometerData'].forEach(function(item) {
 
                 let avgValue = item['records'].map(e => e.value).reduce((acc,v,i,a)=>(acc+v/a.length),0);
-
                 let formattedItem = {
                     coordinates: [item.longitude, item.latitude],
                     type: uiText.global.tooltips.measurement[toggleLanguage.language],
@@ -232,7 +232,7 @@ const RainfallMap = ({ toggleLanguage, toggleDate, toggleDataType, mapBoxToken, 
                     // Need to filter records by date here **
                     records: item['records'],
                     // Need to calculate scale category here **
-                    color: colorArray[Math.round(linearScale(avgValue))],
+                    color: Math.round(linearScale(avgValue)) < 5 ? colorArray[Math.round(linearScale(avgValue))] : colorArray[4],
                 }
                 mapData.push(formattedItem)
 
@@ -253,6 +253,7 @@ const RainfallMap = ({ toggleLanguage, toggleDate, toggleDataType, mapBoxToken, 
     const layerProps = {
         data: citizenPluviometerMapConfig.data,
         pickable: true,
+        visible: (toggleDataType.dataType === "Combined") || (toggleDataType.dataType === "Citizen"),
         getPosition: (d) => d.coordinates,
         iconAtlas: citizenPluviometerMapConfig.iconAtlas,
         iconMapping: citizenPluviometerMapConfig.iconMapping,
@@ -276,6 +277,7 @@ const RainfallMap = ({ toggleLanguage, toggleDate, toggleDataType, mapBoxToken, 
         data: formatCitizenEventsData(locationSettings.citizenEventsData, 'citizenRainfallEvents'),
         pickable: true,
         getPosition: (d) => d.coordinates,
+        visible: (toggleDataType.dataType === "Combined") || (toggleDataType.dataType === "Citizen"),
         iconAtlas: avatarIcons.src,
         iconMapping: CITIZEN_EVENTS_ICON_MAPPING,
         onHover: !hoverInfo.objects && setHoverInfo
@@ -303,17 +305,11 @@ const RainfallMap = ({ toggleLanguage, toggleDate, toggleDataType, mapBoxToken, 
         bearing: 0
     };
 
-    let layerMapping = {
-        "Combined": [rainfallEventsLayer, citizenPluviometerLayer],
-        "Official": [],
-        "Citizen": [rainfallEventsLayer, citizenPluviometerLayer]
-    }
-
     return (
 
         <DeckGL
             ref={deckRef}
-            layers={layerMapping[toggleDataType.dataType]}
+            layers={[rainfallEventsLayer, citizenPluviometerLayer]}
             controller={!mapStylePlain}
             preventStyleDiffing={true}
             initialViewState={INITIAL_VIEW_STATE}
@@ -360,6 +356,10 @@ const MyTooltipBox = styled(Box)(({theme}) => ({
     boxShadow: `0px 0px 15px #E5E5E5`,
     border: `1.5px solid #E5E5E5`,
     zIndex: 4001,
+    [theme.breakpoints.down('md')]: {
+        maxWidth: `300px`,
+    },
+
 
 }))
 
@@ -375,6 +375,48 @@ const TypeOrganisationBox = styled(Box)(({theme}) => ({
     flexDirection: `column`,
     justifyContent: `space-around`,
     marginLeft: theme.spacing(0),
+
+}))
+
+const EventNumberText = styled(Typography)(({theme}) => ({
+    fontSize: `14px`,
+    [theme.breakpoints.down('md')]: {
+        fontSize: `12px`,
+    },
+    [theme.breakpoints.down('sm')]: {
+        fontSize: `10px`,
+    },
+}))
+
+const EventType = styled(Typography)(({theme}) => ({
+    fontSize: `16px`,
+    [theme.breakpoints.down('md')]: {
+        fontSize: `14px`,
+    },
+    [theme.breakpoints.down('sm')]: {
+        fontSize: `12px`,
+    },
+}))
+
+const CitizenReportText = styled(Typography)(({theme}) => ({
+    fontSize: `16px`,
+    [theme.breakpoints.down('sm')]: {
+        fontSize: `14px`,
+    },
+}))
+
+const SubmissionText = styled(Typography)(({theme}) => ({
+    fontSize: `20px`,
+    [theme.breakpoints.down('sm')]: {
+        fontSize: `16px`,
+    },
+}))
+
+const DateText = styled(Typography)(({theme}) => ({
+    fontSize: `14px`,
+    [theme.breakpoints.down('sm')]: {
+        fontSize: `12px`,
+    },
 }))
 
 export default connect((state) => state)(RainfallMap)

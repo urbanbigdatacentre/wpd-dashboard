@@ -4,6 +4,7 @@
 import Head from 'next/head'
 import Link from 'next/link'
 import { connect } from 'react-redux';
+import {styled, Box} from "@mui/material";
 import { bindActionCreators } from 'redux';
 
 // Component Imports
@@ -62,6 +63,7 @@ const Home = (props) => {
       <main className={styles.main}>
           <MyNavbar />
           <LandingHeroSection/>
+          <LayoutMargin/>
           {props.updatePrimaryLocation.location.hasOwnProperty('placename') ? <SelectedLocations/> : null}
           <StatisticsBar/>
           <span id="national-activity" > </span>
@@ -75,6 +77,34 @@ const Home = (props) => {
     </div>
     )
 }
+
+const LayoutMargin = styled(Box)(({theme}) => ({
+    [theme.breakpoints.down('1400')]: {
+        marginTop: theme.spacing(9)
+    },
+    [theme.breakpoints.down('lg')]: {
+        marginTop: theme.spacing(11)
+    },
+    [theme.breakpoints.down('1000')]: {
+        marginTop: theme.spacing(15)
+    },
+    [theme.breakpoints.down('md')]: {
+        marginTop: theme.spacing(20),
+        width: `90%`,
+    },
+    [theme.breakpoints.down('700')]: {
+        marginTop: theme.spacing(23)
+    },
+    [theme.breakpoints.down('sm')]: {
+        marginTop: theme.spacing(18)
+    },
+    [theme.breakpoints.down('450')]: {
+        marginTop: theme.spacing(22)
+    },
+    [theme.breakpoints.down('385')]: {
+        marginTop: theme.spacing(30)
+    },
+}))
 
 export const getStaticProps = wrapper.getStaticProps((store) => () => {
 

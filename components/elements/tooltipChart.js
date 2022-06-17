@@ -42,9 +42,14 @@ const TooltipChart = ({ data, toggleDate }) => {
         }
     })
 
+
+    // Get viewport dimensions
+    const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
+    const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
+
     // Set dynamic height & width according to container
-    const height = 200 - chartMargin.bottom;
-    const width = 350 - chartMargin.right;
+    const height = (vw > 900 ? 200: 150) - chartMargin.bottom;
+    const width = (vw > 900 ? 350: 260) - chartMargin.right;
 
     const drawChart = () => {
         // Select SVG
@@ -178,6 +183,9 @@ const TooltipChartBox = styled(Box)(({theme}) => ({
     borderRadius: theme.shape.borderRadius,
     outline: `2px solid #E5E5E5`,
     zIndex: 4000,
+    [theme.breakpoints.down('md')]: {
+        height: `150px`,
+    },
 }))
 
 

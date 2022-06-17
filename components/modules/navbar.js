@@ -37,6 +37,9 @@ const NavTextHome = styled(Typography)(({theme}) => ({
     [theme.breakpoints.down('sm')]: {
         fontSize: `14px`
     },
+    [theme.breakpoints.down('400')]: {
+        fontSize: `13px`
+    },
 }))
 
 const NavTextNationalOverview = styled(Typography)(({theme}) => ({

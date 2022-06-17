@@ -96,7 +96,7 @@ const GeneralLegend = ({locationData, toggleLanguage, toggleDate, updatePrimaryL
         <LegendWrapperBox>
             <Box id={"open-menu"} sx={{display: menuOpen ? `block` : `none`}}>
                 {/*SECTION DISPLAYED ON MENU OPEN*/}
-                <MyIconButton onClick={handleClose} color={"primary"}>
+                <MyIconButton aria-label="Open Data Overview Menu" onClick={handleClose} color={"primary"}>
                     <DoubleArrowRoundedIcon fontSize={"small"}/>
                 </MyIconButton>
                 <LegendMetaInfoBox>
@@ -118,7 +118,7 @@ const GeneralLegend = ({locationData, toggleLanguage, toggleDate, updatePrimaryL
             </Box>
             <Box id={'closed-menu'} sx={{display: menuOpen ? `none` : `flex`, flexDirection: `column`}}>
                 {/*SECTION DISPLAYED ON MENU CLOSED*/}
-                <MyIconButton  onClick={handleOpen} color={"primary"}>
+                <MyIconButton aria-label="Close Data Overview Menu" onClick={handleOpen} color={"primary"}>
                     <DoubleArrowRoundedIcon fontSize={"small"} sx={{transform: `rotate(180deg)`}}/>
                 </MyIconButton>
 

@@ -10,6 +10,7 @@
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
+
 }
 
 .controlPanelContainerSticky {
@@ -54,5 +55,38 @@
     .locationControlBox {
         width: 100%;
         margin-bottom: 10px;
+    }
+}
+
+@media only screen and (max-width: 390px) {
+    .locationControlBox {
+        flex-direction: column;
+    }
+}
+
+@media only screen and (max-width: 1250px) {
+    .controlPanelContainerSticky {
+        padding-left: 55px;
+        padding-right: 55px;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .controlPanelContainerSticky {
+        padding-left: 30px !important;
+        padding-right: 30px !important;
+    }
+}
+
+@media only screen and (max-width: 1250px) {
+    .controlPanelContainerSticky {
+        padding-left: 55px;
+        padding-right: 55px;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .controlPanelInnerBoxSticky {
+        top: 55px;
     }
 }

@@ -31,15 +31,10 @@ const NationalActivitySectionContainer = styled(Container)(({theme}) => ({
     },
     [theme.breakpoints.down('md')]: {
         marginTop: theme.spacing(10),
+
     },
     [theme.breakpoints.down('500')]: {
-        marginTop: theme.spacing(30),
-    },
-    [theme.breakpoints.down('450')]: {
-        marginTop: theme.spacing(35),
-    },
-    [theme.breakpoints.down('384')]: {
-        marginTop: theme.spacing(40),
+        marginTop: theme.spacing(10),
     },
 }))
 
@@ -47,7 +42,10 @@ const NationalActivityTextBoxWrapper = styled(Box)(({theme}) => ({
     display: `flex`,
     flexDirection: `column`,
     justifyContent: `center`,
-    alignItems: `center`
+    alignItems: `center`,
+    [theme.breakpoints.down('md')]: {
+        marginBottom: theme.spacing(5),
+    },
 }))
 
 const SectionTitle = styled(Typography)(({theme}) => ({

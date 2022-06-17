@@ -61,6 +61,10 @@ const ButtonGroupBox = styled(ButtonGroup)(({theme}) => ({
         border: 0,
         color: theme.palette.primary.contrastText,
     },
+    [theme.breakpoints.down('md')]: {
+        top: theme.spacing(-1),
+        left: theme.spacing(0),
+    },
 }))
 
 const MyToggleButton = styled(Button)(({theme}) => ({
@@ -69,6 +73,13 @@ const MyToggleButton = styled(Button)(({theme}) => ({
         backgroundColor: '#1565C0',
         color: '#fff',
         boxShadow :`none`,
+    },
+    [theme.breakpoints.down('sm')]: {
+        fontSize: `12px`
+    },
+    [theme.breakpoints.down('400')]: {
+        padding: `5px 6px`,
+        fontSize: `11px`
     },
 
 }))

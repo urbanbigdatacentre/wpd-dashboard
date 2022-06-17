@@ -71,7 +71,7 @@ const AddingLocationWindow = ({ toggleLanguage, updateAdditionalLocation, update
                 <MyCancelIconButton onClick={addingLocationStatusHandler}>
                     <CancelIcon color={"primary"}/>
                 </MyCancelIconButton>
-                <Typography variant={'h5'} sx={{fontWeight: (theme) => (theme.typography.fontWeightBold)}}>{changingLocation ? uiText.global.labels.changeLocation[toggleLanguage.language].toUpperCase() : uiText.global.labels.addNewLocation[toggleLanguage.language].toUpperCase()}<span className={'bluePunctuation'}>.</span></Typography>
+                <WindowTitle variant={'h5'} sx={{fontWeight: (theme) => (theme.typography.fontWeightBold)}}>{changingLocation ? uiText.global.labels.changeLocation[toggleLanguage.language].toUpperCase() : uiText.global.labels.addNewLocation[toggleLanguage.language].toUpperCase()}<span className={'bluePunctuation'}>.</span></WindowTitle>
                 {returnPopoverLayout()}
                 <SelectedLocationsBox>
                     <Typography sx={{paddingBottom: `10px`, fontWeight: (theme) => (theme.typography.fontWeightBold)}}>{uiText.global.labels.selectedLocations[toggleLanguage.language].toUpperCase()}<span className={'bluePunctuation'}>.</span></Typography>
@@ -118,12 +118,19 @@ const WindowOverlay = styled(Box)(({theme}) => ({
     backgroundColor: `#888888`,
 }))
 
+const WindowTitle = styled(Typography)(({theme}) => ({
+    [theme.breakpoints.down('md')]: {
+        fontSize: `20px`,
+    },
+}))
 
 const PopoverBox = styled(Box)(({theme}) => ({
     position: `fixed`,
+    marginLeft: `auto`,
+    marginRight: `auto`,
     top: `20%`,
-    left: `auto`,
-    right: `auto`,
+    left: 0,
+    right: 0,
     textAlign: `center`,
     opacity: `1`,
     zIndex: `3001`,
@@ -140,12 +147,16 @@ const PopoverBox = styled(Box)(({theme}) => ({
         maxWidth: `600px`,
         minWidth: `550px`,
         padding: theme.spacing(4),
+        top: `10%`,
+        bottom: `50%`,
     },
     [theme.breakpoints.down('sm')]: {
         maxWidth: `600px`,
         minWidth: `450px`,
+        minHeight: `570px`,
         padding: theme.spacing(3),
         paddingTop: theme.spacing(6),
+        top: `10%`,
     },
     [theme.breakpoints.down('480')]: {
         maxWidth: `300px`,
@@ -164,6 +175,10 @@ const SelectedLocationsBox = styled(Box)(({theme}) => ({
     flexDirection: `column`,
     alignItems: `flex-start`,
     paddingTop: theme.spacing(6),
+    [theme.breakpoints.down('sm')]: {
+        right: theme.spacing(3),
+        left: theme.spacing(3),
+    },
 }))
 
 const MyAlert = styled(Alert)(({theme}) => ({

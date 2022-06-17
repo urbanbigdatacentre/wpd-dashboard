@@ -33,7 +33,7 @@ const FramedMapContainer = ({ mapBoxToken, mapType, ctx, updatePluviometerData, 
     return (
         <MapOuterWrapper>
             {/*INSERT OVERLAPPING COMPONENTS LIKE CHART LEGENDS AND FILTERS HERE */}
-            { mapType === "NationalOverview" ? <DateFilter positionAbsolute={true}/> : null}
+            { mapType === "NationalOverview" ? <DataFilterBox><DateFilter positionAbsolute={true}/></DataFilterBox> : null}
             { mapType === "NationalOverview" ? <OverviewMapLegendComponent/> : null}
             { mapType === "NationalOverview" ? <OverviewMapToggleButton/> : null}
             { mapType === "RainfallMap" || mapType === "FloodMap" ? <LocationButtonGroup positionMode={'absolute'}/> : null}
@@ -54,6 +54,12 @@ const FramedMapContainer = ({ mapBoxToken, mapType, ctx, updatePluviometerData, 
 
 const DataTypeBox = styled(Box)(({theme}) => ({
     [theme.breakpoints.down('1050')]: {
+        display: `none`
+    },
+}))
+
+const DataFilterBox = styled(Box)(({theme}) => ({
+    [theme.breakpoints.down('420')]: {
         display: `none`
     },
 }))

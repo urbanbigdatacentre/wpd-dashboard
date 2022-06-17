@@ -38,7 +38,7 @@ const LandingHeroSection = ({ toggleLanguage }) => {
             {searchResultStatus ? <SearchResults addingLocation={false} searchResultsPopoverStatusHandler={handleSearchClose}/> : <></>}
             <Container className={styles.heroInnerContainer}>
                 <TopBlue variant={'topBlue'}>{uiText.landingPage.hero.topBlue[toggleLanguage.language]}</TopBlue>
-                <PageTitle variant={'pageTitle'}>{uiText.global.labels.projectTitle[toggleLanguage.language]}<span className={'bluePunctuation'}>.</span></PageTitle>
+                <PageTitle variant={'h1'}>{uiText.global.labels.projectTitle[toggleLanguage.language]}<span className={'bluePunctuation'}>.</span></PageTitle>
                 <StandardText>{uiText.landingPage.hero.subtitle[toggleLanguage.language]}</StandardText>
                 <Search addingLocation={false} iconClickHandler={handleSearchClick} />
             </Container>
@@ -51,6 +51,9 @@ const LandingHeroSection = ({ toggleLanguage }) => {
 const PageTitle = styled(Typography)(({theme}) => ({
     fontSize: `60px`,
     textAlign: `center`,
+    fontWeight: theme.typography.fontWeightBold,
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(2),
     [theme.breakpoints.down('lg')]: {
         fontSize: `50px`,
     },
