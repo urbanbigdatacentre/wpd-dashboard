@@ -2,7 +2,7 @@
 
 const config = {
     development: "http://localhost:9090",
-    production: "https://waterproofing.geog.uni-heidelberg.de/api"
+    production: "/api"
 }
 
 export default config;
