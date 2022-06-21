@@ -2,7 +2,7 @@
 
 const config = {
     development: "http://localhost:9090",
-    production: "https://wpd.brazilsouth.cloudapp.azure.com/api"
+    production: "/api"
 }
 
 export default config;

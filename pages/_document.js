@@ -21,7 +21,7 @@ class MyDocument extends Document {
                     <meta charSet="utf-8"/>
                     <meta name="theme-color" content="#2196F3"/>
                     <meta property="og:title" content="Waterproofing Data"/>
-                    <meta property="og:image" content="OGIMAGE.png"/>
+                    <meta property="og:image" content="https://i.ibb.co/QksfXST/OGIMAGE.png"/>
                     <meta name="description"
                           content="Connecting Brazilian Flood Data From Communities & Official Sources"/>
                     <meta property="og:type" content="dashboard flooding brazil data"/>
