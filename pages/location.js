@@ -5,8 +5,9 @@ import Head from 'next/head'
 import {usePromiseTracker} from "react-promise-tracker";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useRouter} from "next/router";
+import {Button, Container, styled} from "@mui/material";
 
 // Component Imports
 import Footer from "../components/modules/footer";
@@ -48,6 +49,8 @@ import requestSimpleGeometry from "../api/requestSimpleGeometry";
 import requestPluviometerData from "../api/requestPluviometerData";
 import requestFloodZonesData from "../api/requestFloodZonesData";
 import requestCitizenEvents from "../api/requestCitizenEvents";
+import ArrowBackIosNewRoundedIcon from "@mui/icons-material/ArrowBackIosNewRounded";
+import Link from "next/link";
 
 
 // Landing Page Component
@@ -92,18 +95,6 @@ const Location = (props) => {
                 // Make Request for Pluviometer Data
                 requestPluviometerData({"placename": router.query['name'], "placeid": router.query['id']}, props.toggleDate, props.configureAPI, props.updatePluviometerData, props.updatePluviometerDataDispatch)
             }
-
-            // // Check for existing Floodzones Data
-            // if (props.updateFloodData.locations.length) {
-            //     const resultFlood = props.updateFloodData.locations.find(item => item['id'] === router.query['id'])
-            //     if (!resultFlood) {
-            //         // Make Request for FloodZones Data
-            //         requestFloodZonesData({"placename": router.query['name'], "placeid": router.query['id']}, props.configureAPI, props.updateFloodData, props.updateFloodDataDispatch)
-            //     }
-            // } else {
-            //     // Make Request for FloodZones Data
-            //     requestFloodZonesData({"placename": router.query['name'], "placeid": router.query['id']}, props.configureAPI, props.updateFloodData, props.updateFloodDataDispatch)
-            // }
 
             // Make Request for Citizen Rainfall Events
             requestCitizenEvents(router.query['id'], 9, props.toggleDate.startDate, props.toggleDate.endDate, router.query['name'], props.configureAPI, props.updateCitizenEventsRainfallData, props.updateCitizenEventsRainfallDataDispatch)
@@ -204,6 +195,7 @@ const Location = (props) => {
             </div>
     )
 }
+
 
 export const getStaticProps = wrapper.getStaticProps((store) => () => {
 

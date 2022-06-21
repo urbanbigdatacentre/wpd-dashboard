@@ -11,7 +11,6 @@ import RefreshIcon from '@mui/icons-material/Refresh';
 
 // Local Imports
 import {styled, Box, Typography, Button, ToggleButtonGroup, ToggleButton} from "@mui/material";
-import dummyGeoJSONTwo from "../../data/dummyGeoJSONTwo";
 import CITIZEN_EVENTS_ICON_MAPPING from "../../data/citizenRainfallEventsIconMapping";
 import {MapboxLayer} from "@deck.gl/mapbox";
 import {bindActionCreators} from "redux";

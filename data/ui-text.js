@@ -172,6 +172,10 @@ export default {
         "en": "Selected Locations",
         "br": ""
       },
+      "popularLocation": {
+        "en": "Popular Location Dashboards",
+        "br": ""
+      },
       "selectedALocation": {
         "en": "Select a Location",
         "br": ""
@@ -397,15 +401,19 @@ export default {
   "landingPage": {
     "hero": {
       "subtitle": {
-        "en": "Connecting Brazilian Flood Data From Communities & Official Sources",
+        "en": "Connecting Brazilian Flood Data From Citizen Reports, Communities & Official Sources",
         "br": "Conectando dados brasileiros de enchentes de comunidades e fontes oficiais"
       },
       "topBlue": {
-        "en": "Monitor Flood Data in Brazil",
+        "en": "Explore Flood Data in Brazil",
         "br": "Conectando dados brasileiros de enchentes de comunidades e fontes oficiais"
       },
       "backToDashboard": {
         "en": "Back to Dashboard",
+        "br": ""
+      },
+      "backToHome": {
+        "en": "Back to Search",
         "br": ""
       }
     },

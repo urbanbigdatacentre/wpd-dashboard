@@ -3,13 +3,14 @@
 // Package Imports
 import {connect} from "react-redux";
 import styles from "../../styles/modules/location-page/ControlPanel.module.css";
-import {Box, Container, Toolbar, styled} from "@mui/material";
+import {Box, Container, Toolbar, styled, Button} from "@mui/material";
 import MyButton from "./button";
 import uiText from "../../data/ui-text";
 import LocationControlButton from "./locationControlButton";
 import {locationColorKeys} from "../../data/colorMapping";
 import DateFilter from "./dateFilter";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
+import {useRouter} from "next/router";
 
 // Local Imports
 
@@ -32,9 +33,17 @@ const ControlPanelNav = ({toggleLanguage, updateAdditionalLocation, updatePrimar
 
     }, [sticky])
 
+    const router = useRouter();
+
+
+    const handleClick = (e) => {
+        router.push(`/`)
+    }
+
     const result = sticky ? (
         <Box>
             <Box id={'control-panel'}>
+
                 <Box className={styles.controlPanelInnerBoxSticky}>
                     <Container className={styles.controlPanelContainerSticky}>
                         <Box className={styles.locationControlBox}>
@@ -59,6 +68,7 @@ const ControlPanelNav = ({toggleLanguage, updateAdditionalLocation, updatePrimar
             <div>
                 <Box className={styles.controlPanelInnerBoxHolder}>
                     <Box className={styles.locationControlBox}>
+
                         <MyButton text={uiText.global.labels.addLocation[toggleLanguage.language]} variant={"contained"} onClick={clickHandler}/>
                         <FirstButtonBox sx={{marginLeft: `40px`, marginRight: `40px`}}>
                             <LocationControlButton primary={true} data={updatePrimaryLocation.location} contained={false} color={'#2196F3'}/>
@@ -118,5 +128,12 @@ const AdditionalButtonBox = styled(Box)(({theme}) => ({
     [theme.breakpoints.down('367')]: {
     },
 }))
+
+const ChangeLocationButton = styled(Button)(({theme}) => ({
+    [theme.breakpoints.down('sm')]: {
+        fontSize: `12px`
+    },
+}))
+
 
 export default connect((state) => state)(ControlPanelNav)

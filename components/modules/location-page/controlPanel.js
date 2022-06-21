@@ -3,8 +3,8 @@
 
 // Package Imports
 import {connect} from "react-redux";
-import {Box, Container, styled, Typography} from "@mui/material";
-import {useEffect} from "react";
+import {Box, Button, Container, styled, Typography} from "@mui/material";
+import React, {useEffect} from "react";
 import {useState} from "react";
 
 // Local Imports
@@ -19,6 +19,8 @@ import AddingLocationWindow from "../../elements/addingLocationWindow";
 
 // Style Imports
 import styles from '../../../styles/modules/location-page/ControlPanel.module.css';
+import Link from "next/link";
+import ArrowBackIosNewRoundedIcon from "@mui/icons-material/ArrowBackIosNewRounded";
 
 
 // Control Panel Component
@@ -41,7 +43,9 @@ const ControlPanel = ({ toggleLanguage, updatePrimaryLocation, updateAdditionalL
 
     return (
         <ControlPanelSectionContainer maxWidth="lg" >
-
+            <Box sx={{ width: `100%`, display: `flex`, justifyContent: `flex-end`}}>
+                <Link passHref href={`/`}><BackToDashboardButton startIcon={<ArrowBackIosNewRoundedIcon />} variant={'text'}>{uiText.landingPage.hero.backToHome[toggleLanguage.language]}</BackToDashboardButton></Link>
+            </Box>
             {
                 /*{ Section used for Adding Location Search Bar }*/
                 addingLocationStatus ? <AddingLocationWindow addingLocationStatusHandler={handleClose}/> : <></>
@@ -68,17 +72,28 @@ const ControlPanel = ({ toggleLanguage, updatePrimaryLocation, updateAdditionalL
 }
 
 const ControlPanelSectionContainer = styled(Container)(({theme}) => ({
-    paddingTop: theme.spacing(10),
+    paddingTop: theme.spacing(6),
     display: `flex`,
     justifyContent: `space-between`,
     flexDirection: `column`,
     [theme.breakpoints.down('md')]: {
-        paddingTop: theme.spacing(6),
+        paddingTop: theme.spacing(4),
     },
     [theme.breakpoints.down('sm')]: {
-        paddingTop: theme.spacing(6),
+        paddingTop: theme.spacing(4),
         paddingLeft: theme.spacing(0),
         paddingRight: theme.spacing(0),
+    },
+}))
+
+const BackToDashboardButton = styled(Button)(({theme}) => ({
+    marginBottom: theme.spacing(1),
+    [theme.breakpoints.down('sm')]: {
+        fontSize: `12px`,
+        padding: `0`
+    },
+    [theme.breakpoints.down('450')]: {
+        marginBottom: theme.spacing(2),
     },
 }))
 

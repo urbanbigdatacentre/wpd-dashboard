@@ -12,6 +12,7 @@ import Footer from "../components/modules/footer";
 import MyNavbar from "../components/modules/navbar";
 import LandingHeroSection from "../components/modules/landing-page/landingHero";
 import SelectedLocations from "../components/modules/landing-page/selectedLocations";
+import PopularLocations from "../components/elements/popularLocations";
 import StatisticsBar from "../components/modules/landing-page/statisticsBar";
 import NationalActivity from "../components/modules/landing-page/nationalActivity";
 import About from '../components/modules/landing-page/about';
@@ -64,7 +65,7 @@ const Home = (props) => {
           <MyNavbar />
           <LandingHeroSection/>
           <LayoutMargin/>
-          {props.updatePrimaryLocation.location.hasOwnProperty('placename') ? <SelectedLocations/> : null}
+          {props.updatePrimaryLocation.location.hasOwnProperty('placename') ? <SelectedLocations/> : <PopularLocations/>}
           <StatisticsBar/>
           <span id="national-activity" > </span>
           <NationalActivity mapBoxToken={props.env.MAPBOX_TOKEN}/>

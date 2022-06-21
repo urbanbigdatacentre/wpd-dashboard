@@ -42,7 +42,7 @@ const LanguageToggle = ({ language, changeLanguage }) => {
                         onChange={handleChange}
                         >
                             <MyToggleButton value={'en'}>EN</MyToggleButton>
-                            <MyToggleButton value={'br'}>BR</MyToggleButton>
+                            <MyToggleButton value={'br'}>PT</MyToggleButton>
                         </StyledToggleButtonGroup>
                     </Container>
                 </Toolbar>

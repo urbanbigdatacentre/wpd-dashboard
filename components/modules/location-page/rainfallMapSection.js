@@ -35,11 +35,11 @@ const RainfallMapSection = ({ toggleLanguage, mapBoxToken, ctx }) => {
                 </Box>
                 <Box className={styles.legendWrapper}>
                     {/*INSERT TEXT LAYOUT HERE*/}
-                    <Box className={styles.legendInlineBox}>
-                        <Image src={'/images/icons/official-pluviometer.png'} width={31} height={46} alt={"rainfall map - official pluviometer icon"} />
-                        <HelpText sx={{textAlign: `right`, marginLeft: (theme) => (theme.spacing(2)), marginRight: (theme) => (theme.spacing(1)), fontWeight: (theme) => (theme.typography.fontWeightBold)}} variant={"description"}>{uiText.locationPage.rainfallMap.legendOfficial[toggleLanguage.language]}</HelpText>
-                        <MyTooltip title={uiText.locationPage.rainfallMap.legendOfficial[toggleLanguage.language]} text={uiText.locationPage.rainfallMap.officialPluviometerTooltip[toggleLanguage.language]}/>
-                    </Box>
+                    {/*<Box className={styles.legendInlineBox}>*/}
+                    {/*    <Image src={'/images/icons/official-pluviometer.png'} width={31} height={46} alt={"rainfall map - official pluviometer icon"} />*/}
+                    {/*    <HelpText sx={{textAlign: `right`, marginLeft: (theme) => (theme.spacing(2)), marginRight: (theme) => (theme.spacing(1)), fontWeight: (theme) => (theme.typography.fontWeightBold)}} variant={"description"}>{uiText.locationPage.rainfallMap.legendOfficial[toggleLanguage.language]}</HelpText>*/}
+                    {/*    <MyTooltip title={uiText.locationPage.rainfallMap.legendOfficial[toggleLanguage.language]} text={uiText.locationPage.rainfallMap.officialPluviometerTooltip[toggleLanguage.language]}/>*/}
+                    {/*</Box>*/}
                     <Box className={styles.legendInlineBox}>
                         <Image src={'/images/icons/citizen-pluviometer.png'} width={31} height={30} alt={"rainfall map - citizen pluviometer icon"} />
                         <HelpText sx={{textAlign: `right`, marginLeft: (theme) => (theme.spacing(2)), marginRight: (theme) => (theme.spacing(1)), fontWeight: (theme) => (theme.typography.fontWeightBold)}} variant={"description"}>{uiText.locationPage.rainfallMap.legendCitizen[toggleLanguage.language]}</HelpText>
