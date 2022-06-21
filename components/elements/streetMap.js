@@ -9,7 +9,7 @@ import {IconLayer} from '@deck.gl/layers';
 import CITIZEN_EVENTS_ICON_MAPPING from "../../data/citizenRainfallEventsIconMapping";
 
 // Local Imports
-import mapIcons from '../../public/images/icons/location-icon-atlas.svg';
+import mapIcons from '../../public/images/icons/location-icon-atlas.png';
 import {MapboxLayer} from "@deck.gl/mapbox";
 
 // Map Configuration

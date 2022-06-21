@@ -12,7 +12,7 @@ import {bindActionCreators} from "redux";
 
 // Location Button Group Component
 
-const LocationButtonGroup = ({toggleLanguage, updatePrimaryLocation, updateAdditionalLocation, changeLocationPreference, locationPreference, positionMode}) => {
+const LocationButtonGroup = ({toggleLanguage, updateFloodCoordinates, updatePrimaryLocation, updateAdditionalLocation, changeLocationPreference, locationPreference, positionMode}) => {
 
     const handleClick = (e) => {
 
@@ -21,6 +21,8 @@ const LocationButtonGroup = ({toggleLanguage, updatePrimaryLocation, updateAddit
         const logicalLocationObject =  additionalLocationFilter.length ? additionalLocationFilter[0]: updatePrimaryLocation.location
         changeLocationPreference(e.target.value, logicalLocationObject['placeid'])
 
+        // Update Flood Coordinates
+        updateFloodCoordinates({latitude: logicalLocationObject.longitude, longitude: logicalLocationObject.latitude, zoom: 8})
     }
 
 
@@ -56,7 +58,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         changeLocationPreference: bindActionCreators(changeLocationPreference, dispatch),
-        updateFloodCoordinates: bindActionCreators(updateFloodCoordinates, dispatch)
+        updateFloodCoordinates: bindActionCreators(updateFloodCoordinates, dispatch),
+
     }
 }
 

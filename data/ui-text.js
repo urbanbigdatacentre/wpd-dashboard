@@ -659,7 +659,7 @@ export default {
         "br": ""
       },
       "riskAreas": {
-        "en": "Known Risk Areas",
+        "en": "Nearby Risk Areas",
         "br": ""
       },
       "officialDescription": {
@@ -672,6 +672,34 @@ export default {
       },
       "floodEventDescription": {
         "en": "Flood events and memories submitted by members of the Waterproofing Data Community.",
+        "br": ""
+      },
+      "floodMapInfo": {
+        "en": "Risks zones are loaded dynamically. Move the map and refresh to view nearby zones.",
+        "br": ""
+      },
+      "floodMapAlertTitle": {
+        "en": "Hidden Risk Zones",
+        "br": ""
+      },
+      "floodMapAlert": {
+        "en": "We can only show a max of 500 risk zones. Zoom in and refresh to find more zones.",
+        "br": ""
+      },
+      "satellite": {
+        "en": "Satellite",
+        "br": ""
+      },
+      "monochrome": {
+        "en": "monochrome",
+        "br": ""
+      },
+      "mapStyle": {
+        "en": "Map Style",
+        "br": ""
+      },
+      "loadingFloodZones": {
+        "en": "Loading Flood Zones",
         "br": ""
       }
     }

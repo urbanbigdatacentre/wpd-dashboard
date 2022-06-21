@@ -2,7 +2,8 @@
 
 // Package Imports
 import {connect} from "react-redux";
-import {Box, FormControlLabel, styled, Switch, Typography} from "@mui/material";
+import {Box, Divider, FormControlLabel, styled, Switch, Typography} from "@mui/material";
+import {IconButton, Tooltip, Alert, AlertTitle} from "@mui/material";
 import {usePromiseTracker} from "react-promise-tracker";
 import uiText from "../../data/ui-text";
 import FloodMapZonesCarousel from "./floodMapZonesCarousel";
@@ -11,11 +12,13 @@ import LocationBox from "./locationBox";
 import {locationColorKeys} from "../../data/colorMapping";
 import {bindActionCreators} from "redux";
 import {setClusterStatus} from "../../store/actions";
+import React from "react";
+import ToggleMapStyleButtonGroup from "./toggleMapStyleButtonGroup";
 // Local Imports
 
 // FloodMapLegend Component
 
-const FloodMapLegend = ({toggleLanguage, updateFloodData, toggleLocationPreference, mapBoxToken, setClusterStatus, toggleClusterStatus}) => {
+const FloodMapLegend = ({toggleLanguage, updateFloodData, toggleLocationPreference, mapBoxToken, setClusterStatus, toggleClusterStatus, refreshButtonComponent, mapStyleToggle}) => {
 
     const { promiseInProgress } = usePromiseTracker({area: 'floodzones-data', delay: 0});
 
@@ -36,17 +39,24 @@ const FloodMapLegend = ({toggleLanguage, updateFloodData, toggleLocationPreferen
     return (
         !promiseInProgress && (
             <LegendWrapperBox>
-                <LegendTitle sx={{fontWeight: (theme) => (theme.typography.fontWeightBold), marginBottom: (theme) => (theme.spacing(2))}}>{uiText.global.tooltips.browseRiskZones[toggleLanguage.language].toUpperCase()}<span className={'bluePunctuation'}>.</span> </LegendTitle>
-                <LocationBox locationName={toggleLocationPreference.locationPreference} color={colorCode}/>
-                <NoFloodZonesText sx={{marginBottom: floodDataArray.length ? (theme) => (theme.spacing(2)): 0}}><span style={{fontWeight: `800`}}>{floodDataArray.length + " "}</span>{uiText.locationPage.floodMap.riskAreas[toggleLanguage.language].toUpperCase()}<span className={'bluePunctuation'}>.</span></NoFloodZonesText>
-                <FloodMapZonesCarousel mapBoxToken={mapBoxToken} data={floodDataArray}/>
+                <LegendTitle sx={{fontWeight: (theme) => (theme.typography.fontWeightBold), marginBottom: (theme) => (theme.spacing(1))}}>{uiText.global.tooltips.browseRiskZones[toggleLanguage.language].toUpperCase()}<span className={'bluePunctuation'}>.</span> </LegendTitle>
+                <FloodMapInfo sx={{marginBottom: (theme) => (theme.spacing(1))}}>{uiText.locationPage.floodMap.floodMapInfo[toggleLanguage.language]}</FloodMapInfo>
+
+                {/*<LocationBox locationName={toggleLocationPreference.locationPreference} color={colorCode}/>*/}
+                <NoFloodZonesText sx={{marginBottom: floodDataArray.length ? (theme) => (theme.spacing(2)): 0}}><span style={{fontWeight: `800`}}>{floodDataArray.length !== 500 ? floodDataArray.length + " " : floodDataArray.length + "+ "}</span>{uiText.locationPage.floodMap.riskAreas[toggleLanguage.language].toUpperCase()}<span className={'bluePunctuation'}>.</span></NoFloodZonesText>
+                {floodDataArray.length === 500 ? <MyAlert sx={{border: `1px solid #2196F3`, fontSize: `13px`}} severity={"info"}>
+                    <AlertTitle>{uiText.locationPage.floodMap.floodMapAlertTitle[toggleLanguage.language]}</AlertTitle>
+                    {uiText.locationPage.floodMap.floodMapAlert[toggleLanguage.language]}
+                </MyAlert> : null}
+                {/*<FloodMapZonesCarousel mapBoxToken={mapBoxToken} data={floodDataArray}/>*/}
+
 
                 {floodDataArray.length ? <Box sx={{display: `flex`, flexDirection: `column`, width: `100%`}}>
                     <Box sx={{
                         display: `flex`,
                         width: `100%`,
                         justifyContent: `space-between`,
-                        marginTop: (theme) => (theme.spacing(2)),
+                        marginTop: (theme) => (theme.spacing(1)),
                         marginBottom: (theme) => (theme.spacing(2))
                     }}>
                         <LegendCircle sx={{backgroundColor: `#F7996F`}}/>
@@ -61,16 +71,18 @@ const FloodMapLegend = ({toggleLanguage, updateFloodData, toggleLocationPreferen
                             textAlign: `right`
                         }}>{uiText.global.tooltips.higher[toggleLanguage.language] + " " + uiText.global.tooltips.risk[toggleLanguage.language]}</LegendText>
                     </Box>
-                    <Box sx={{display: `flex`, width: `100%`, justifyContent: `space-between`}}>
-                        <ToggleFormControlLabel
-                            control={<ToggleClusterSwitch onChange={(e, v) => handleChange(e,v)} checked={toggleClusterStatus.cluster}/>}
-                            label={<Typography sx={{fontWeight: (theme) => (theme.typography.fontWeightBold), fontSize: `12px`}} >{uiText.global.tooltips.cluster[toggleLanguage.language].toUpperCase()}</Typography>}
-                            labelPlacement="start"
-                        />
-                    </Box>
-                </Box>: null}
-                {/*SPACE TO INCLUDE CAROUSEL TO SWITCH BETWEEN MAP VIEWS*/}
 
+                </Box>: null}
+                <Box sx={{display: `flex`, width: `100%`, justifyContent: `space-between`}}>
+                    <ToggleFormControlLabel
+                        control={<ToggleClusterSwitch onChange={(e, v) => handleChange(e,v)} checked={toggleClusterStatus.cluster}/>}
+                        label={<Typography sx={{fontWeight: (theme) => (theme.typography.fontWeightBold), fontSize: `12px`}} >{uiText.global.tooltips.cluster[toggleLanguage.language].toUpperCase() + " " + uiText.global.tooltips.floodEvents[toggleLanguage.language].toUpperCase()}</Typography>}
+                        labelPlacement="start"
+                    />
+                </Box>
+                <ToggleMapStyleButtonGroup mapStyleToggle={mapStyleToggle} />
+                {/*SPACE TO INCLUDE CAROUSEL TO SWITCH BETWEEN MAP VIEWS*/}
+                {refreshButtonComponent}
             </LegendWrapperBox>
         )
     );
@@ -85,6 +97,11 @@ const NoFloodZonesText = styled(Typography)(({theme}) => ({
     },
 }))
 
+const MyAlert = styled(Alert)(({theme}) => ({
+    [theme.breakpoints.down('md')]: {
+        display: `none`
+    },
+}))
 
 const LegendCircle = styled(Box)(({theme}) => ({
     borderRadius: `20px`,
@@ -101,12 +118,11 @@ const LegendCircle = styled(Box)(({theme}) => ({
 
 }))
 
-const DescriptionBox = styled(Box)(({theme}) => ({
-    display: `flex`,
-    justifyContent: `space-between`,
-    alignItems: `center`,
-    width: `100%`,
+const FloodMapInfo = styled(Typography)(({theme}) => ({
+    fontSize: `13px`,
+    color: `#2196F3`
 }))
+
 
 const LegendWrapperBox = styled(Box)(({theme}) => ({
     position: `absolute`,

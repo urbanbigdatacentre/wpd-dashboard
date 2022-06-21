@@ -92,7 +92,7 @@ export const toggleGreatestDateRange = (state= greatestDateInitialState, action)
 // - SLIDE HEX RADIUS - NATIONAL OVERVIEW MAP
 
 const hexRadiusInitialState = {
-    hexRadius: 80000
+    hexRadius: 30000
 }
 
 export const changeRadiusWithSlider = (state= hexRadiusInitialState, action) => {
@@ -131,6 +131,7 @@ export const updateCarouselCoordinates = (state= carouselCoordinatesInitialState
 const floodCoordinatesInitialState = {
     latitude: null,
     longitude: null,
+    zoom: 8,
 }
 
 export const updateFloodCoordinates = (state= floodCoordinatesInitialState, action) => {
@@ -139,6 +140,7 @@ export const updateFloodCoordinates = (state= floodCoordinatesInitialState, acti
             return Object.assign({}, state, {
                 latitude: action.latitude,
                 longitude: action.longitude,
+                zoom: action.zoom
             })
         default:
             return state

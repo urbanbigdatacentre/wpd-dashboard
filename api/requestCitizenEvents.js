@@ -18,6 +18,8 @@ const requestCitizenEvents = (locationID, formType, startDate, endDate, location
         },
     }
 
+    console.log(formTypeAPIMapping[formType].TYPE)
+
     // Check if citizen data already exists for this location
     const filteredDataArray = existingDataArray.locations.length ? existingDataArray.locations.filter(function(location){
         // Return the item only if the ids are equal

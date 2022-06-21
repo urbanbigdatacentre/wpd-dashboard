@@ -14,18 +14,9 @@ import * as d3 from "d3";
 
 // Overview Map Legend Component
 
-const OverviewMapLegendComponent = ({ changeRadius, changeRadiusWithSlider, toggleLanguage, changeOverviewMapView, toggleDate}) => {
+const OverviewMapLegendComponent = ({ sliderComponent, toggleLanguage, changeOverviewMapView, toggleDate }) => {
 
     const { promiseInProgress } = usePromiseTracker({area: "national-overview-map", delay: 500})
-
-    // Handle Date Change
-    const handleChange = (e) => {
-        if (e.target.value !== null && Number.isInteger(e.target.value) && !Number.isNaN(e.target.value)) {
-            // Change Redux Hex Radius value
-            changeRadius(Number(e.target.value));
-        }
-    }
-
 
     return(
 
@@ -49,7 +40,7 @@ const OverviewMapLegendComponent = ({ changeRadius, changeRadiusWithSlider, togg
                 </Box>
                 <HexBox sx={{display: `flex`, width: `100%`, justifyContent: `space-between`, marginTop: (theme) => (theme.spacing(2))}}>
                     <Typography sx={{fontWeight: (theme) => (theme.typography.fontWeightBold), fontSize: `12px`}} >{uiText.global.tooltips.hexagonRadius[toggleLanguage.language].toUpperCase()}</Typography>
-                    <Slider min={20000} max={200000} value={changeRadiusWithSlider.hexRadius} onChange={handleChange}/>
+                    {sliderComponent}
                 </HexBox>
             </LegendWrapperBox>
         )

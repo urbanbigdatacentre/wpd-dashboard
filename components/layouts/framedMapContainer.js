@@ -34,18 +34,16 @@ const FramedMapContainer = ({ mapBoxToken, mapType, ctx, updatePluviometerData, 
         <MapOuterWrapper>
             {/*INSERT OVERLAPPING COMPONENTS LIKE CHART LEGENDS AND FILTERS HERE */}
             { mapType === "NationalOverview" ? <DataFilterBox><DateFilter positionAbsolute={true}/></DataFilterBox> : null}
-            { mapType === "NationalOverview" ? <OverviewMapLegendComponent/> : null}
             { mapType === "NationalOverview" ? <OverviewMapToggleButton/> : null}
             { mapType === "RainfallMap" || mapType === "FloodMap" ? <LocationButtonGroup positionMode={'absolute'}/> : null}
             { mapType === "RainfallMap" ? <DataTypeBox><DataTypeFilter positionMode={'absolute'}/></DataTypeBox>: null}
-            { mapType === "RainfallMap" ? <RainfallMapLegend />: null}
             { mapType === "RainfallMap" ? <GeneralLegend locationData={updatePluviometerData.locations}/>: null}
             { mapType === "FloodMap" ? <GeneralLegend floodMap={true} locationData={updateFloodData.locations}/>: null}
-            { mapType === "FloodMap" ? <DataTypeBox><DataTypeFilter positionMode={`absolute`}/></DataTypeBox>: null}
-            { mapType === "FloodMap" ? <FloodMapLegend mapBoxToken={mapBoxToken}/>: null}
+            {/*{ mapType === "FloodMap" ? <DataTypeBox><DataTypeFilter positionMode={`absolute`}/></DataTypeBox>: null}*/}
+
             <MapInnerWrapper>
                 { mapType === "NationalOverview" ? <LoadingSkeleton text={uiText.global.labels.overiewMapLoadingText[toggleLanguage.language]} area={'national-overview-map'}/> : null}
-                { mapType === "FloodMap" ? <LoadingSkeleton text={uiText.global.labels.overiewMapLoadingText[toggleLanguage.language]} area={'floodzones-data'}/> : null}
+                { mapType === "FloodMap" ? <LoadingSkeleton text={uiText.locationPage.floodMap.loadingFloodZones[toggleLanguage.language]} area={'floodzones-data'}/> : null}
                 {maps[mapType]}
             </MapInnerWrapper>
         </MapOuterWrapper>

@@ -82,7 +82,7 @@ const reducer = (state, action) => {
         if (state.updateFloodCoordinates) nextState.updateFloodCoordinates = state.updateFloodCoordinates;
         if (state.updateCarouselCoordinates) nextState.updateCarouselCoordinates = state.updateCarouselCoordinates;
         if (state.toggleGreatestDateRange) nextState.toggleGreatestDateRange = state.toggleGreatestDateRange;
-        if (state.toggleDate.date) nextState.toggleDate.date = state.toggleDate.date;
+        if (state.toggleDate) nextState.toggleDate = state.toggleDate;
         if (state.setSearchTerm) nextState.setSearchTerm = state.setSearchTerm;
         if (state.toggleLanguage.language) nextState.toggleLanguage.language = state.toggleLanguage.language;
         if (state.configureAPI.node_env) nextState.configureAPI.node_env = state.configureAPI.node_env;

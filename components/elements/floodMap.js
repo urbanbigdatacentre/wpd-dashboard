@@ -3,32 +3,36 @@
 // Package Imports
 import {connect} from "react-redux";
 import StaticMap from "react-map-gl";
-import _MapContext from "react-map-gl";
+import {WebMercatorViewport} from '@deck.gl/core';
 import DeckGL from "@deck.gl/react";
 import React, {useCallback, useEffect, useRef, useState} from "react";
 import {IconLayer, GeoJsonLayer} from '@deck.gl/layers';
-import {TerrainLayer} from '@deck.gl/geo-layers';
+import RefreshIcon from '@mui/icons-material/Refresh';
 
 // Local Imports
-import {styled, Box, Typography} from "@mui/material";
+import {styled, Box, Typography, Button, ToggleButtonGroup, ToggleButton} from "@mui/material";
 import dummyGeoJSONTwo from "../../data/dummyGeoJSONTwo";
 import CITIZEN_EVENTS_ICON_MAPPING from "../../data/citizenRainfallEventsIconMapping";
 import {MapboxLayer} from "@deck.gl/mapbox";
 import {bindActionCreators} from "redux";
-import {updateFloodCoordinates} from "../../store/actions";
+import {removeFloodZonesData, updateFloodCoordinates, updateFloodZonesData} from "../../store/actions";
 import formatCitizenEventsData from "../../api/formatCitizenEventsData";
-import avatarIcons from "../../public/images/icons/location-icon-atlas.svg";
+import avatarIcons from "../../public/images/icons/location-icon-atlas.png";
 import IconClusterLayer from "./iconClusterLayer";
 import {locationColorKeys} from "../../data/colorMapping";
 import uiText from "../../data/ui-text";
 import LocationBox from "./locationBox";
 import {filterCitizenEventDataByDate} from "../../api/dataFilteringFunctions";
+import requestFloodZonesBBOXData from "../../api/requestFloodZonesBBOXData";
+import FloodMapLegend from "./floodMapLegend";
+import latLngToBounds from "../../data/getBoundingBox";
 
 // Map Configuration
 const mapStyleSatellite = 'mapbox://styles/andyclarke/cl2svsl4j002f15o39tp0dy2q';
+const mapStyleMono = 'mapbox://styles/andyclarke/cl4nznypi004i14s7qd086rbc';
 
 // Street Map Component
-const FloodMap = ({ toggleLanguage, toggleDate, updateFloodData, updateFloodCoordinates, updateFloodCoordinatesDispatch, mapBoxToken, updateCarouselCoordinates, mapStylePlain, toggleDataType, updateAdditionalLocation, updatePrimaryLocation, toggleLocationPreference, updateCitizenEventsFloodZonesData, updateCitizenEventsRiverFloodData, toggleClusterStatus }) => {
+const FloodMap = ({ toggleLanguage, configureAPI, toggleDate, updateFloodData, updateFloodCoordinates, updateFloodCoordinatesDispatch, mapBoxToken, updateCarouselCoordinates, mapStylePlain, toggleDataType, updateAdditionalLocation, updatePrimaryLocation, toggleLocationPreference, updateCitizenEventsFloodZonesData, updateCitizenEventsRiverFloodData, toggleClusterStatus, updateFloodDataDispatch, removeFloodDataDispatch }) => {
 
     const [hoverInfo, setHoverInfo] = useState({});
 
@@ -50,6 +54,12 @@ const FloodMap = ({ toggleLanguage, toggleDate, updateFloodData, updateFloodCoor
             map.addLayer(new MapboxLayer({ id: "citizen-events-icon-cluster", deck }), "country-label");
             map.addLayer(new MapboxLayer({ id: "citizen-events-layer", deck }), "country-label");
 
+            // Set Reload Coordinates
+            updateFloodCoordinatesDispatch({latitude: updatePrimaryLocation.location.longitude, longitude: updatePrimaryLocation.location.latitude, zoom: 8})
+
+            const bounds = latLngToBounds(updatePrimaryLocation.location.latitude, updatePrimaryLocation.location.longitude, 8, 1000, 600)
+            // Request new floodzones data
+            requestFloodZonesBBOXData(bounds.join(','), configureAPI, updateFloodData, updateFloodDataDispatch, toggleLocationPreference, removeFloodDataDispatch);
 
         }
         setMapLoaded(true);
@@ -151,24 +161,14 @@ const FloodMap = ({ toggleLanguage, toggleDate, updateFloodData, updateFloodCoor
     const citizenRiverFloodEventsData = updateCitizenEventsRiverFloodData.locations.filter(function(el){return el.id === toggleLocationPreference.locationID})
 
     const locationSettings = {
-        initialLongitude: useFloodDataSettings.length ? updateFloodCoordinates.latitude : additionalLocationFilter.length ? additionalLocationFilter[0]['longitude'] - 0.07 : updatePrimaryLocation.location.longitude - 0.07,
-        initialLatitude: useFloodDataSettings.length ? updateFloodCoordinates.longitude : additionalLocationFilter.length ? additionalLocationFilter[0]['latitude'] - 0.07: updatePrimaryLocation.location.latitude - 0.07,
-        zoom: useFloodDataSettings.length ? 15 : 8,
+        initialLongitude: (updateFloodCoordinates.latitude !== null) ? updateFloodCoordinates.latitude : additionalLocationFilter.length ? additionalLocationFilter[0]['longitude'] - 0.07 : updatePrimaryLocation.location.longitude - 0.07,
+        initialLatitude: (updateFloodCoordinates.longitude !== null) ? updateFloodCoordinates.longitude : additionalLocationFilter.length ? additionalLocationFilter[0]['latitude'] - 0.07: updatePrimaryLocation.location.latitude - 0.07,
+        zoom: 8,
         locationObject: additionalLocationFilter.length ? additionalLocationFilter[0] : updatePrimaryLocation.location,
         floodData: useFloodDataSettings.length ? floodZonesData[0].floodData : [],
         citizenFloodZonesEventsData: filterCitizenEventDataByDate(citizenFloodZonesEventsData, 'citizenFloodZonesEvents', toggleDate),
         citizenRiverFloodEventsData: filterCitizenEventDataByDate(citizenRiverFloodEventsData, 'citizenRiverFloodEvents', toggleDate),
     }
-
-    useEffect(() => {
-
-        if (useFloodDataSettings.length) {
-            let latitude = floodZonesData[0].floodData[0].geometry['coordinates'][0][0][0][0] === undefined ? floodZonesData[0].floodData[0].geometry['coordinates'][0][0][0] : floodZonesData[0].floodData[0].geometry['coordinates'][0][0][0][0];
-            let longitude = floodZonesData[0].floodData[0].geometry['coordinates'][0][0][0][1] === undefined ? floodZonesData[0].floodData[0].geometry['coordinates'][0][0][1] : floodZonesData[0].floodData[0].geometry['coordinates'][0][0][0][1];
-
-            updateFloodCoordinatesDispatch({latitude: latitude, longitude: longitude})
-        }
-    }, [toggleLocationPreference.locationID])
 
     const fillMapping = {
         "Baixa": [247, 119, 111, 200],
@@ -222,10 +222,35 @@ const FloodMap = ({ toggleLanguage, toggleDate, updateFloodData, updateFloodCoor
             getSize: (d) => 9,
         });
 
+
+    const [viewState, setViewState] = useState({})
+
+    const onViewStateChange = useCallback(({viewState}) => {
+
+        const viewport = new WebMercatorViewport(viewState);
+        setViewState(viewport)
+
+        // Hide Tooltip
+        hideTooltip();
+    }, []);
+
+    const handleRefresh = () => {
+
+        const nw = viewState.unproject([0, 0]);
+        const se = viewState.unproject([viewState.width, viewState.height]);
+
+        // Set Reload Coordinates
+        // updateFloodCoordinatesDispatch({latitude: viewState.longitude, longitude: viewState.latitude, zoom: viewState.zoom})
+
+        // Request new floodzones data
+        requestFloodZonesBBOXData([...nw, ...se].join(','), configureAPI, updateFloodData, updateFloodDataDispatch, toggleLocationPreference, removeFloodDataDispatch);
+    }
+
+
     const INITIAL_VIEW_STATE = {
         longitude: locationSettings.initialLongitude,
         latitude: locationSettings.initialLatitude,
-        zoom: locationSettings.zoom,
+        zoom: updateFloodCoordinates.zoom,
         minZoom: 1,
         maxZoom: 50,
         pitch: 25,
@@ -234,7 +259,20 @@ const FloodMap = ({ toggleLanguage, toggleDate, updateFloodData, updateFloodCoor
 
     const controllerTrue = mapStylePlain ? Boolean(0) : Boolean(1)
 
+    const [mapStyle, setMapStyle ] = useState(mapStyleSatellite);
+
+    const handleMapStyleChange = (e) => {
+        setMapStyle(e.target.value)
+    }
+
     return (
+        <>
+        <FloodMapLegend mapBoxToken={mapBoxToken} mapStyleToggle={
+            <MapStyleButtonGroup exclusive value={mapStyle} onChange={handleMapStyleChange}>
+                <MapStyleButton value={mapStyleMono}>{uiText.locationPage.floodMap.monochrome[toggleLanguage.language]}</MapStyleButton>
+                <MapStyleButton value={mapStyleSatellite}>{uiText.locationPage.floodMap.satellite[toggleLanguage.language]}</MapStyleButton>
+            </MapStyleButtonGroup>
+        } refreshButtonComponent={<ReloadButton variant={'outlined'} onClick={handleRefresh} endIcon={<RefreshIcon />}>Refresh Risk Zones</ReloadButton>}/>
         <DeckGL
             ref={deckRef}
             onWebGLInitialized={setGLContext}
@@ -242,11 +280,12 @@ const FloodMap = ({ toggleLanguage, toggleDate, updateFloodData, updateFloodCoor
                 stencil: true
             }}
             layers={[geoJsonLayerOfficial, citizenEventsLayer]}
-            controller={controllerTrue} preventStyleDiffing={true}
+            controller={controllerTrue}
+            preventStyleDiffing={true}
             initialViewState={INITIAL_VIEW_STATE}
             height={'100%'}
             width={'100%'}
-            onViewStateChange={hideTooltip}
+            onViewStateChange={onViewStateChange}
             onHover={expandTooltip}
             onClick={expandTooltip}
         >
@@ -256,15 +295,15 @@ const FloodMap = ({ toggleLanguage, toggleDate, updateFloodData, updateFloodCoor
                 <StaticMap
                     ref={mapRef}
                     gl={glContext}
-                    mapStyle={mapStyleSatellite}
+                    mapStyle={mapStyle}
                     mapboxAccessToken={mapBoxToken}
                     onLoad={onMapLoad}
                 />
             )}
 
             {renderTooltip(hoverInfo)}
-
         </DeckGL>
+        </>
     );
 
 }
@@ -284,6 +323,23 @@ const MyTooltipBox = styled(Box)(({theme}) => ({
     [theme.breakpoints.down('md')]: {
         maxWidth: `300px`,
     },
+}))
+
+const ReloadButton = styled(Button)(({theme}) => ({
+    backgroundColor: theme.palette.primary.light,
+    color: `#181818`,
+    width: `100%`,
+    marginTop: theme.spacing(2),
+    zIndex: 100000,
+    border: `1.5px solid #181818`,
+    fontWeight: theme.typography.fontWeightMedium,
+    '&:hover': {
+        border: `1.5px solid #2196F3`,
+    },
+    [theme.breakpoints.down('md')]: {
+        fontSize: `12px`,
+    },
+
 }))
 
 const TooltipFlex = styled(Box)(({theme}) => ({
@@ -321,9 +377,44 @@ const EventType = styled(Typography)(({theme}) => ({
 }))
 
 
+// CSS Styled Components
+const MapStyleButtonGroup = styled(ToggleButtonGroup)(({theme}) => ({
+    zIndex: 600,
+    backgroundColor: theme.palette.primary.light,
+
+}))
+
+const MapStyleButton = styled(ToggleButton)(({theme}) => ({
+    padding: `2.5px 5px 2.5px 5px`,
+    fontWeight: theme.typography.fontWeightRegular,
+    fontSize: `11px`,
+    color: theme.palette.primary.black,
+    backgroundColor: theme.palette.primary.light,
+    margin: `0px 1px 0px 0px`,
+    border: `1.5px solid #2196F3`,
+    '&:last-of-type': {
+        margin: `0px 0px 0px 0px`,
+    },
+    '&.Mui-selected': {
+        border: `1.5px solid rgba(21, 101, 192, 0.5)`,
+        color: theme.palette.primary.light,
+        backgroundColor: theme.palette.primary.main,
+        '&:hover, &.Mui-focusVisible': {
+            backgroundColor: theme.palette.primary.darkBlue,
+            color: theme.palette.primary.light,
+        },
+    },
+    [theme.breakpoints.down('sm')]: {
+        fontSize: `10px`,
+    },
+}))
+
+
 const mapDispatchToProps = (dispatch) => {
     return {
         updateFloodCoordinatesDispatch: bindActionCreators(updateFloodCoordinates, dispatch),
+        updateFloodDataDispatch: bindActionCreators(updateFloodZonesData, dispatch),
+        removeFloodDataDispatch: bindActionCreators(removeFloodZonesData, dispatch)
     }
 }
 

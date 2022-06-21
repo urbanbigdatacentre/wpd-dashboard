@@ -4,7 +4,7 @@
 // Package Imports
 import {connect} from "react-redux";
 import {Box, Switch, styled, Typography, FormGroup, FormControlLabel} from "@mui/material";
-import {useState} from "react";
+import React, {useState} from "react";
 import uiText from "../../data/ui-text";
 
 // Local Imports
@@ -16,10 +16,9 @@ import LocationBox from "./locationBox";
 import {locationColorKeys} from "../../data/colorMapping";
 
 // Rainfall Map Legend Component
-
-const RainfallMapLegend = ({toggleLanguage, updatePluviometerData, toggleClusterStatus, setClusterStatus, toggleDate, toggleLocationPreference}) => {
+const RainfallMapLegend = ({ toggleLanguage, updatePluviometerData, toggleClusterStatus, setClusterStatus, toggleDate, toggleLocationPreference, mapStyleToggle }) => {
     const { promiseInProgress } = usePromiseTracker({area: 'pluviometer-data', delay: 500});
-    const { promiseInProgressTwo } = usePromiseTracker({area: 'RAIN_FORM', delay: 500});
+    const promiseInProgressTwo = usePromiseTracker({area: "RAIN_FORM", delay: 0});
 
     const handleChange = (e, v) => {
         setClusterStatus(v)
@@ -30,7 +29,7 @@ const RainfallMapLegend = ({toggleLanguage, updatePluviometerData, toggleCluster
     const colorCode = colorIndex <= 0 ? '#2196F3' : locationColorKeys[colorIndex - 1].color
 
     return(
-        !promiseInProgress && !promiseInProgressTwo && (
+        ((!promiseInProgress) && (!promiseInProgressTwo.promiseInProgress)) && (
         <LegendWrapperBox>
             <LegendTitle sx={{fontWeight: (theme) => (theme.typography.fontWeightBold)}}>{uiText.global.tooltips.avgDailyRainfall[toggleLanguage.language].toUpperCase()}<span className={'bluePunctuation'}>.</span> </LegendTitle>
             <DateRangeText>{new Date(d3.timeFormat("%B %d, %Y")(toggleDate.startDate)).toLocaleString().split(',')[0] + " - " + new Date(d3.timeFormat("%B %d, %Y")(toggleDate.endDate)).toLocaleString().split(',')[0]}</DateRangeText>
@@ -55,10 +54,9 @@ const RainfallMapLegend = ({toggleLanguage, updatePluviometerData, toggleCluster
                     label={<Typography sx={{fontWeight: (theme) => (theme.typography.fontWeightBold), fontSize: `12px`}} >{uiText.global.tooltips.cluster[toggleLanguage.language].toUpperCase()}</Typography>}
                     labelPlacement="start"
                     onChange={(e, v) => handleChange(e,v)} value={toggleClusterStatus.cluster}
-
-
                 />
             </Box>
+            {/*<ToggleMapStyleButtonGroup mapStyleToggle={mapStyleToggle} />*/}
         </LegendWrapperBox>
         )
     );
@@ -82,7 +80,7 @@ const LegendWrapperBox = styled(Box)(({theme}) => ({
     justifyContent: `space-between`,
     alignItems: `flex-start`,
     zIndex: 600,
-    maxWidth: theme.spacing(35),
+    maxWidth: theme.spacing(38),
     height: `auto`,
     top: theme.spacing(10),
     left: theme.spacing(1),

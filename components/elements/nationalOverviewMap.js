@@ -12,6 +12,8 @@ import {MapboxLayer} from '@deck.gl/mapbox';
 import {trackPromise} from "react-promise-tracker";
 import axios from "axios";
 import config from "../../api/config";
+import OverviewMapLegend from "./overviewMapLegend";
+import {Slider} from "@mui/material";
 
 
 
@@ -51,6 +53,8 @@ const NationalOverviewMap = ({ configureAPI, mapBoxToken, changeRadiusWithSlider
 
     const [data, setData] = useState([]);
 
+    // SLIDER CHANGE
+    const [sliderValue, setSliderValue] = useState(30000);
 
 
     // DeckGL and mapbox will both draw into this WebGL context
@@ -84,7 +88,7 @@ const NationalOverviewMap = ({ configureAPI, mapBoxToken, changeRadiusWithSlider
             elevationScale: 25,
             extruded: false,
             getPosition: d => d,
-            radius: changeRadiusWithSlider.hexRadius,
+            radius: sliderValue,
             upperPercentile: 100,
             material,
         })
@@ -118,8 +122,18 @@ const NationalOverviewMap = ({ configureAPI, mapBoxToken, changeRadiusWithSlider
     }, [configureAPI['node_env'].NODE_ENV, data.length, changeOverviewMapView.mapView, toggleDate.startDate, toggleDate.endDate])
 
 
+    // Handle data Change
+    const handleSliderChange = (e) => {
+
+        if (e.target.value !== null && Number.isInteger(e.target.value) && !Number.isNaN(e.target.value)) {
+            // Change Redux Hex Radius value
+            setSliderValue(Number(e.target.value));
+        }
+    }
 
     return (
+        <>
+        <OverviewMapLegend sliderComponent={<Slider min={10000} max={90000} value={sliderValue} onChange={handleSliderChange}/>}/>
         <DeckGL
             ref={deckRef}
             onWebGLInitialized={setGLContext}
@@ -143,7 +157,8 @@ const NationalOverviewMap = ({ configureAPI, mapBoxToken, changeRadiusWithSlider
                 />
             )}
 
-        </DeckGL>
+            </DeckGL>
+            </>
     );
 }
 

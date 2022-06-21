@@ -65,17 +65,20 @@ const DateFilter = (props) => {
     // Handle Date Change
     const handleChange = (e, dateSelection) => {
 
-        // Remove All Selected Classes
-        ['24-hours-button', '2-days-button', '7-days-button', '30-days-button', '90-days-button', 'custom-date-button'].forEach(function(item){
-            document.getElementById(item).classList.remove('Mui-selected')
-        })
 
-        if ((dateSelection !== null) && (e.target.id !== 'custom-date-button')) {
-            // Change Redux Date Range State
-            handleRequests({"startDate": dateSelection, "endDate": new Date().getTime().toString()})
-            props.changeDate({"startDate": dateSelection, "endDate": new Date().getTime().toString()});
-        } else {
-            document.querySelector('#custom-date-button').classList += ' Mui-selected'
+        if (e.target.value !== null) {
+            // Remove All Selected Classes
+            ['24-hours-button', '2-days-button', '7-days-button', '30-days-button', '90-days-button', 'custom-date-button'].forEach(function(item){
+                document.getElementById(item).classList.remove('Mui-selected')
+            })
+            if ((e.target.value !== null) && (e.target.id !== 'custom-date-button')) {
+                // Change Redux Date Range State
+                document.getElementById(`${e.target.id}`).classList += ' Mui-selected'
+                handleRequests({"startDate": e.target.value, "endDate": new Date().getTime().toString()})
+                props.changeDate({"startDate": e.target.value, "endDate": new Date().getTime().toString()});
+            } else {
+                document.querySelector('#custom-date-button').classList += ' Mui-selected'
+            }
         }
     }
 

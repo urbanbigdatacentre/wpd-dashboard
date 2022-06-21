@@ -13,9 +13,9 @@ import * as d3 from "d3";
 import {MapboxLayer} from "@deck.gl/mapbox";
 
 // Local Imports
-import avatarIcons from '../../public/images/icons/location-icon-atlas.svg';
+import avatarIcons from '../../public/images/icons/location-icon-atlas.png';
 import citizenPluviometerIcons from '../../public/images/icons/citizen-pluviometer-icon-atlas.png'
-import {styled, Box, Typography} from "@mui/material";
+import {styled, Box, Typography, ToggleButtonGroup, ToggleButton} from "@mui/material";
 import locationPaths from "../../data/locationPaths";
 import scaleColorKeys from "../../data/rainfallScaleColorMapping";
 import LOCATION_ICON_MAPPING from "../../data/location-icon-mapping";
@@ -27,6 +27,7 @@ import LocationBox from "./locationBox";
 import {locationColorKeys} from "../../data/colorMapping";
 import formatCitizenEventsData from "../../api/formatCitizenEventsData";
 import {filterCitizenEventDataByDate, filterPluviometerData} from "../../api/dataFilteringFunctions";
+import RainfallMapLegend from "./rainfallMapLegend";
 
 
 // ==================
@@ -34,7 +35,8 @@ import {filterCitizenEventDataByDate, filterPluviometerData} from "../../api/dat
 // ==================
 const MAP_VIEW = new MapView({repeat: true});
 
-const mapStyleMono = 'mapbox://styles/andyclarke/cl4cjxdbg000615pf5n0s2wtv';
+const mapStyleSatellite = 'mapbox://styles/andyclarke/cl2svsl4j002f15o39tp0dy2q';
+const mapStyleMono = 'mapbox://styles/andyclarke/cl4nznypi004i14s7qd086rbc';
 
 // ==================
 // End of Map Configuration
@@ -57,6 +59,7 @@ const RainfallMap = ({ toggleLanguage, toggleDate, toggleDataType, mapBoxToken, 
             const map = mapRef.current.getMap();
             const deck = deckRef.current.deck;
 
+
             // console.log(map.getStyle().layers)
 
             map.addLayer(new MapboxLayer({ id: "dummy-layer", deck }));
@@ -64,6 +67,8 @@ const RainfallMap = ({ toggleLanguage, toggleDate, toggleDataType, mapBoxToken, 
             map.addLayer(new MapboxLayer({ id: "citizen-rainfall-events-icon-cluster", deck }, "country-label"));
             map.addLayer(new MapboxLayer({ id: "pluviometer-icon-cluster", deck }));
             map.addLayer(new MapboxLayer({ id: "citizen-pluviometer-layer", deck }, "country-label"));
+
+
 
         }
         setMapLoaded(true);
@@ -305,12 +310,30 @@ const RainfallMap = ({ toggleLanguage, toggleDate, toggleDataType, mapBoxToken, 
         bearing: 0
     };
 
-    return (
+    // Control Map Style Toggle
+    const [mapStyle, setMapStyle] = useState(mapStyleMono);
 
+    const handleMapStyleChange = (e) => {
+        const map = mapRef.current.getMap();
+
+        console.log(map.getStyle().layers)
+
+        setMapStyle(e.target.value)
+    }
+
+    return (
+        <>
+        <RainfallMapLegend mapStyleToggle={
+            <MapStyleButtonGroup sx={{marginRight: (theme) => (theme.spacing(1))}} exclusive value={mapStyle} onChange={handleMapStyleChange}>
+                <MapStyleButton value={mapStyleMono}>{uiText.locationPage.floodMap.monochrome[toggleLanguage.language]}</MapStyleButton>
+                <MapStyleButton value={mapStyleSatellite}>{uiText.locationPage.floodMap.satellite[toggleLanguage.language]}</MapStyleButton>
+            </MapStyleButtonGroup>
+        } />
         <DeckGL
             ref={deckRef}
+            reuseMaps
             layers={[rainfallEventsLayer, citizenPluviometerLayer]}
-            controller={!mapStylePlain}
+            controller={true}
             preventStyleDiffing={true}
             initialViewState={INITIAL_VIEW_STATE}
             onWebGLInitialized={setGLContext}
@@ -331,7 +354,7 @@ const RainfallMap = ({ toggleLanguage, toggleDate, toggleDataType, mapBoxToken, 
                     ref={mapRef}
                     gl={glContext}
                     views={MAP_VIEW}
-                    mapStyle={mapStyleMono}
+                    mapStyle={mapStyle}
                     mapboxAccessToken={mapBoxToken}
                     onLoad={onMapLoad}
                 />
@@ -341,6 +364,7 @@ const RainfallMap = ({ toggleLanguage, toggleDate, toggleDataType, mapBoxToken, 
             {renderTooltip(hoverInfo)}
 
         </DeckGL>
+        </>
     );
 }
 
@@ -361,6 +385,38 @@ const MyTooltipBox = styled(Box)(({theme}) => ({
     },
 
 
+}))
+
+// CSS Styled Components
+const MapStyleButtonGroup = styled(ToggleButtonGroup)(({theme}) => ({
+    zIndex: 600,
+    backgroundColor: theme.palette.primary.light,
+
+}))
+
+const MapStyleButton = styled(ToggleButton)(({theme}) => ({
+    padding: `2.5px 5px 2.5px 5px`,
+    fontWeight: theme.typography.fontWeightRegular,
+    fontSize: `11px`,
+    color: theme.palette.primary.black,
+    backgroundColor: theme.palette.primary.light,
+    margin: `0px 1px 0px 0px`,
+    border: `1.5px solid #2196F3`,
+    '&:last-of-type': {
+        margin: `0px 0px 0px 0px`,
+    },
+    '&.Mui-selected': {
+        border: `1.5px solid rgba(21, 101, 192, 0.5)`,
+        color: theme.palette.primary.light,
+        backgroundColor: theme.palette.primary.main,
+        '&:hover, &.Mui-focusVisible': {
+            backgroundColor: theme.palette.primary.darkBlue,
+            color: theme.palette.primary.light,
+        },
+    },
+    [theme.breakpoints.down('sm')]: {
+        fontSize: `10px`,
+    },
 }))
 
 const TooltipFlex = styled(Box)(({theme}) => ({

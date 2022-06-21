@@ -24,14 +24,14 @@ export default class MyButton extends React.Component {
 
         if (!this.props.addMargin) {
             return (
-                <MyButtonStyled value={this.props.value} variant={this.props.variant} sx={{boxShadow: boxShadow,
+                <MyButtonStyled endIcon={this.props.endIcon} value={this.props.value} variant={this.props.variant} sx={{boxShadow: boxShadow,
                 }} onClick={this.props.onClick}>
                     {this.props.text}
                 </MyButtonStyled>
             );
         } else {
             return (
-                <MyButtonStyled value={this.props.value} variant={(this.props.preferredLocation) && (this.props.addMargin)  && (!this.props.variant !== 'contained')? this.props.variant : "outlined"} sx={{
+                <MyButtonStyled endIcon={this.props.endIcon} value={this.props.value} variant={(this.props.preferredLocation) && (this.props.addMargin)  && (!this.props.variant !== 'contained')? this.props.variant : "outlined"} sx={{
                     boxShadow: this.props.color ? ` 0px 0px 15px ${this.colorConverter(this.props.color)}` : `0px 0px 15px rgba(33, 150, 243, 0.)`,
                     backgroundColor: (this.props.preferredLocation) && (this.props.addMargin) ? this.props.color : `rgba(255, 255, 255, 1)`,
                     marginRight: this.props.addMargin ? this.props.addMargin : `0px`,
