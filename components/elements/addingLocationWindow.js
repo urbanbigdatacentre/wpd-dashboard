@@ -133,7 +133,7 @@ const PopoverBox = styled(Box)(({theme}) => ({
     right: 0,
     textAlign: `center`,
     opacity: `1`,
-    zIndex: `3001`,
+    zIndex: `6002`,
     width: `55%`,
     maxWidth: `1000px`,
     minWidth: `700px`,
@@ -161,6 +161,10 @@ const PopoverBox = styled(Box)(({theme}) => ({
     [theme.breakpoints.down('480')]: {
         maxWidth: `300px`,
         minWidth: `350px`,
+    },
+    [theme.breakpoints.down('400')]: {
+        maxWidth: `300px`,
+        minWidth: `320px`,
     },
 }))
 

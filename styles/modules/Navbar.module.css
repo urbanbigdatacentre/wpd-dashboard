@@ -1,6 +1,7 @@
 .navbar {
     background-color: #fff;
     box-shadow: 0px 8px 8px rgba(0, 0, 0, 0.04);
+    z-index: 6001;
 }
 
 .navOuterContainer {

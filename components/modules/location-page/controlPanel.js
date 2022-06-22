@@ -43,7 +43,7 @@ const ControlPanel = ({ toggleLanguage, updatePrimaryLocation, updateAdditionalL
 
     return (
         <ControlPanelSectionContainer maxWidth="lg" >
-            <Box sx={{ width: `100%`, display: `flex`, justifyContent: `flex-end`, zIndex: `1000000`}}>
+            <Box sx={{ width: `100%`, display: `flex`, justifyContent: `flex-end`, zIndex: `600`}}>
                 <Link passHref href={`/`}><BackToDashboardButton startIcon={<ArrowBackIosNewRoundedIcon />} variant={'text'}>{uiText.landingPage.hero.backToHome[toggleLanguage.language]}</BackToDashboardButton></Link>
             </Box>
             {

@@ -90,8 +90,11 @@ const LocationControlBox = styled(Box)(({theme}) => ({
 const BackToDashboardButton = styled(Button)(({theme}) => ({
     marginBottom: theme.spacing(1),
     [theme.breakpoints.down('sm')]: {
-        fontSize: `12px`,
+        fontSize: `11px`,
         padding: `0`
+    },
+    [theme.breakpoints.down('550')]: {
+        fontSize: `11px !important`,
     },
     [theme.breakpoints.down('450')]: {
         width: `100%`,
@@ -100,6 +103,7 @@ const BackToDashboardButton = styled(Button)(({theme}) => ({
         justifyContent: `flex-end`,
         marginBottom: theme.spacing(4),
         marginTop: theme.spacing(4),
+        fontSize: `11px !important`,
     },
     [theme.breakpoints.down('384')]: {
         marginTop: theme.spacing(0),
