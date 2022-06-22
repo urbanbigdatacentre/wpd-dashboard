@@ -20,7 +20,7 @@ const LoadingSkeleton = ({toggleLanguage, area, text}) => {
         promiseInProgress && (
             <LoadingBox>
                 <LoadingSubTitle variant={'topBlue'}>{uiText.global.labels.holdOn[toggleLanguage.language]}<span className={'bluePunctuation'}> ...</span></LoadingSubTitle>
-                <LoadingText>{text.toUpperCase()}<span className={'bluePunctuation'}> ...</span></LoadingText>
+                <LoadingText>{text.toUpperCase()}<span className={'bluePunctuation'}></span></LoadingText>
                 <MyProgressBar role="progressbar" aria-label="Loading data in chart or map" />
                 <CustomSkeleton variant={"rectangular"} width={`100%`} height={`100%`}/>
                 {/*ADD A TIMEOUT TO TRIGGER IF THE LOAD IS TAKING A LONG TIME*/}
@@ -31,10 +31,10 @@ const LoadingSkeleton = ({toggleLanguage, area, text}) => {
 
 const LoadingBox = styled(Box)(({theme}) => ({
     position: `absolute`,
-    top: `-1%`,
+    top: `-5px`,
     width: `100%`,
-    height: `100%`,
-    zIndex: 90000000000,
+    height: `100.25%`,
+    zIndex: `90000000000000000000000000`,
 }))
 
 const LoadingText = styled(Typography)(({theme}) => ({
@@ -47,17 +47,14 @@ const LoadingText = styled(Typography)(({theme}) => ({
     fontWeight: theme.typography.fontWeightBold,
     fontSize: `45px`,
     zIndex: 9000000,
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('md')]: {
         fontSize: `38px`,
     },
-    [theme.breakpoints.down('md')]: {
-        fontSize: `26px`,
-    },
     [theme.breakpoints.down('sm')]: {
-        fontSize: `16px`,
+        fontSize: `30px`,
     },
-    [theme.breakpoints.down('450')]: {
-        fontSize: `14px`,
+    [theme.breakpoints.down('400')]: {
+        fontSize: `24px`,
     },
 
 }))
@@ -69,6 +66,11 @@ const MyProgressBar = styled(LinearProgress)(({theme}) => ({
     top: `55%`,
     backgroundColor: `linear-gradient(102.35deg, #1565C0 0%, #2196F3 100%)`,
     zIndex: 9000000,
+    [theme.breakpoints.down('md')]: {
+        width: `80%`,
+        left: `10%`,
+        right: `10%`,
+    },
 }))
 
 const LoadingSubTitle = styled(Typography)(({theme}) => ({
@@ -85,10 +87,10 @@ const LoadingSubTitle = styled(Typography)(({theme}) => ({
         fontSize: `20px`,
     },
     [theme.breakpoints.down('md')]: {
-        fontSize: `16px`,
+        fontSize: `20px`,
     },
     [theme.breakpoints.down('sm')]: {
-        fontSize: `14px`,
+        fontSize: `16px`,
     },
 }))
 
@@ -96,7 +98,7 @@ const LoadingSubTitle = styled(Typography)(({theme}) => ({
 
 const CustomSkeleton = styled(Skeleton)(({theme}) => ({
     borderRadius: theme.shape.borderRadius,
-    background: `rgba(255, 255, 255, 0.75)`
+    background: `rgba(255, 255, 255, 1)`
 
 }))
 

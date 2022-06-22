@@ -145,19 +145,19 @@ export default {
         "br": ""
       },
       "timeSeriesLoadingText": {
-        "en": "Plotting the Evolution of Time",
+        "en": "Loading Data",
         "br": ""
       },
       "rainfallMapLoadingText": {
-        "en": "Maps Don't Map Themselves",
+        "en": "Building Maps",
         "br": ""
       },
       "overiewMapLoadingText": {
-        "en": "Loading Everything Everywhere",
+        "en": "Fetching Data",
         "br": ""
       },
       "holdOn": {
-        "en": "Hold On a Second",
+        "en": "Hold On",
         "br": ""
       },
       "tweets": {

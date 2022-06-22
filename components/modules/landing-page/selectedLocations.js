@@ -71,6 +71,11 @@ const SelectedLocationsBox = styled(Box)(({theme}) => ({
         marginTop: theme.spacing(26),
         paddingTop: theme.spacing(0),
     },
+    [theme.breakpoints.down('450')]: {
+        width: `100%`,
+        marginTop: theme.spacing(13),
+        paddingTop: theme.spacing(0),
+    },
 }))
 
 
@@ -89,7 +94,15 @@ const BackToDashboardButton = styled(Button)(({theme}) => ({
         padding: `0`
     },
     [theme.breakpoints.down('450')]: {
-        marginBottom: theme.spacing(2),
+        width: `100%`,
+        textAlign: `right`,
+        display: `flex`,
+        justifyContent: `flex-end`,
+        marginBottom: theme.spacing(4),
+        marginTop: theme.spacing(4),
+    },
+    [theme.breakpoints.down('384')]: {
+        marginTop: theme.spacing(0),
     },
 }))
 

@@ -25,6 +25,8 @@ import {filterCitizenEventDataByDate} from "../../api/dataFilteringFunctions";
 import requestFloodZonesBBOXData from "../../api/requestFloodZonesBBOXData";
 import FloodMapLegend from "./floodMapLegend";
 import latLngToBounds from "../../data/getBoundingBox";
+import {usePromiseTracker} from "react-promise-tracker";
+import CircularProgress from "@mui/material/CircularProgress";
 
 // Map Configuration
 const mapStyleSatellite = 'mapbox://styles/andyclarke/cl2svsl4j002f15o39tp0dy2q';
@@ -34,6 +36,8 @@ const mapStyleMono = 'mapbox://styles/andyclarke/cl4nznypi004i14s7qd086rbc';
 const FloodMap = ({ toggleLanguage, configureAPI, toggleDate, updateFloodData, updateFloodCoordinates, updateFloodCoordinatesDispatch, mapBoxToken, updateCarouselCoordinates, mapStylePlain, toggleDataType, updateAdditionalLocation, updatePrimaryLocation, toggleLocationPreference, updateCitizenEventsFloodZonesData, updateCitizenEventsRiverFloodData, toggleClusterStatus, updateFloodDataDispatch, removeFloodDataDispatch }) => {
 
     const [hoverInfo, setHoverInfo] = useState({});
+
+    const { promiseInProgress } = usePromiseTracker({area: 'floodzones-data', delay: 0});
 
     // DeckGL and mapbox will both draw into this WebGL context
     const [glContext, setGLContext] = useState();
@@ -271,7 +275,7 @@ const FloodMap = ({ toggleLanguage, configureAPI, toggleDate, updateFloodData, u
                 <MapStyleButton value={mapStyleMono}>{uiText.locationPage.floodMap.monochrome[toggleLanguage.language]}</MapStyleButton>
                 <MapStyleButton value={mapStyleSatellite}>{uiText.locationPage.floodMap.satellite[toggleLanguage.language]}</MapStyleButton>
             </MapStyleButtonGroup>
-        } refreshButtonComponent={<ReloadButton variant={'outlined'} onClick={handleRefresh} endIcon={<RefreshIcon />}>Refresh Risk Zones</ReloadButton>}/>
+        } refreshButtonComponent={<ReloadButton variant={'outlined'} onClick={handleRefresh} endIcon={promiseInProgress ? <CircularProgress size={20} color={'primary'}/> : <RefreshIcon />}>Refresh Risk Zones</ReloadButton>}/>
         <DeckGL
             ref={deckRef}
             onWebGLInitialized={setGLContext}

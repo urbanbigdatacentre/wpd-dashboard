@@ -6,9 +6,7 @@ import {Box, Divider, FormControlLabel, styled, Switch, Typography} from "@mui/m
 import {IconButton, Tooltip, Alert, AlertTitle} from "@mui/material";
 import {usePromiseTracker} from "react-promise-tracker";
 import uiText from "../../data/ui-text";
-import FloodMapZonesCarousel from "./floodMapZonesCarousel";
-import locationPaths from "../../data/locationPaths";
-import LocationBox from "./locationBox";
+import CircularProgress from '@mui/material/CircularProgress';
 import {locationColorKeys} from "../../data/colorMapping";
 import {bindActionCreators} from "redux";
 import {setClusterStatus} from "../../store/actions";
@@ -37,7 +35,7 @@ const FloodMapLegend = ({toggleLanguage, updateFloodData, toggleLocationPreferen
 
 
     return (
-        !promiseInProgress && (
+        (
             <LegendWrapperBox>
                 <LegendTitle sx={{fontWeight: (theme) => (theme.typography.fontWeightBold), marginBottom: (theme) => (theme.spacing(1))}}>{uiText.global.tooltips.browseRiskZones[toggleLanguage.language].toUpperCase()}<span className={'bluePunctuation'}>.</span> </LegendTitle>
                 <FloodMapInfo sx={{marginBottom: (theme) => (theme.spacing(1))}}>{uiText.locationPage.floodMap.floodMapInfo[toggleLanguage.language]}</FloodMapInfo>
