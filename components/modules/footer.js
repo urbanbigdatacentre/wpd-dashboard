@@ -25,7 +25,7 @@ const Footer = ({ toggleLanguage }) => {
                     <Link passHref href={`https://ubdc.ac.uk/accessibility/`}><FooterText sx={{textDecoration: `underline`, textAlign: `left`, cursor: `pointer`, marginRight: (theme) => (theme.spacing(3))}}>{uiText.global.labels.accessibility[toggleLanguage.language].toUpperCase()}<span className={'bluePunctuation'}>.</span></FooterText></Link>
                 </GeneralLinkFlexBox>
             </FooterFlexBox>
-            <FooterFlexBox>
+            <FooterFlexBox sx={{width: `100%`, alignItems: `flex-end`}}>
                 <Link passHref href={'/'}><FooterText sx={{textDecoration: `underline`, textAlign: `right`, cursor: `pointer`}}>{uiText.global.labels.footerLinkTop[toggleLanguage.language].toUpperCase()}<span className={'bluePunctuation'}>.</span></FooterText></Link>
                 <Link passHref href={'/#national-activity'}><FooterText sx={{textDecoration: `underline`, textAlign: `right`, cursor: `pointer`}}>{uiText.global.labels.footerLinkBottom[toggleLanguage.language].toUpperCase()}<span className={'bluePunctuation'}>.</span></FooterText></Link>
             </FooterFlexBox>

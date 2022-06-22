@@ -80,6 +80,9 @@ const StatisticsBarSectionContainer = styled(Container)(({theme}) => ({
     justifyContent: `center`,
     marginTop: theme.spacing(6),
     flexDirection: `column`,
+    [theme.breakpoints.down('450')]: {
+        marginTop: theme.spacing(2),
+    },
 }));
 
 const StatisticsBarRowBox = styled(Box)(({theme}) => ({

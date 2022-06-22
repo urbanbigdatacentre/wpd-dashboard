@@ -4,11 +4,16 @@
     height: 200px;
     max-height: 200px;
     flex: 1;
-    padding: 2rem 0rem;
+    padding: 2rem 2rem;
     margin-top: 50px;
     border-top: 1px solid #eaeaea;
     justify-content: space-between;
-    align-items: space-around;
+}
+
+@media only screen and (max-width: 600px) {
+    .footer {
+        padding: 1rem .5rem;
+    }
 }
 
 .footer a {

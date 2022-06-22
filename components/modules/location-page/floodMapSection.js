@@ -31,7 +31,7 @@ const FloodMapSection = ({ toggleLanguage, mapBoxToken }) => {
                     <ChartTitle>{uiText.locationPage.floodMap.title[toggleLanguage.language]}<span className={'bluePunctuation'}>.</span></ChartTitle>
                     <Divider sx={{width: `60%`, height: (theme) => (theme.spacing(1)), background: `linear-gradient(90deg, #2196F3 0%, #1565C0 100%)`, marginBottom: (theme) => (theme.spacing(2)), marginTop: (theme) => (theme.spacing(1))}}/>
                 </Box>
-                <Box className={styles.legendWrapper}>
+                <LegendWrapperBox  className={styles.legendWrapper}>
                     <Box className={styles.legendInlineBox}>
                         <span style={{backgroundColor: `#DA4167`}} className={styles.colorScaleCircle}/>
                         <HelpText sx={{marginLeft: (theme) => (theme.spacing(2)), marginRight: (theme) => (theme.spacing(1)), fontWeight: (theme) => (theme.typography.fontWeightBold)}} variant={"description"}>{uiText.locationPage.floodMap.officialTitle[toggleLanguage.language]}</HelpText>
@@ -42,7 +42,7 @@ const FloodMapSection = ({ toggleLanguage, mapBoxToken }) => {
                         <HelpText sx={{marginLeft: (theme) => (theme.spacing(2)), marginRight: (theme) => (theme.spacing(1)), fontWeight: (theme) => (theme.typography.fontWeightBold)}} variant={"description"}>{uiText.locationPage.floodMap.floodEventTitle[toggleLanguage.language]}</HelpText>
                         <MyTooltip title={uiText.locationPage.floodMap.floodEventTitle[toggleLanguage.language]} text={uiText.locationPage.floodMap.floodEventDescription[toggleLanguage.language]}/>
                     </Box>
-                </Box>
+                </LegendWrapperBox>
             </Box>
             <Box>
                 {/*INSERT VIS LAYOUT HERE*/}
@@ -56,6 +56,12 @@ const VisSectionContainer = styled(Container)(({theme}) => ({
     [theme.breakpoints.down('sm')]: {
         paddingLeft: theme.spacing(0),
         paddingRight: theme.spacing(0),
+    },
+}))
+
+const LegendWrapperBox = styled(Box)(({theme}) => ({
+    [theme.breakpoints.down('md')]: {
+        marginBottom: `225px !important`,
     },
 }))
 
@@ -74,7 +80,6 @@ const HelpText = styled(Typography)(({theme}) => ({
 const ChartTitle = styled(Typography)(({theme}) => ({
     fontWeight: theme.typography.fontWeightBold,
     fontSize: `45px`,
-    marginLeft: theme.spacing(2),
     [theme.breakpoints.down('lg')]: {
         fontSize: `40px`,
     },

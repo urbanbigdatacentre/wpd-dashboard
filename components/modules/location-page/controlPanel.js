@@ -43,7 +43,7 @@ const ControlPanel = ({ toggleLanguage, updatePrimaryLocation, updateAdditionalL
 
     return (
         <ControlPanelSectionContainer maxWidth="lg" >
-            <Box sx={{ width: `100%`, display: `flex`, justifyContent: `flex-end`}}>
+            <Box sx={{ width: `100%`, display: `flex`, justifyContent: `flex-end`, zIndex: `1000000`}}>
                 <Link passHref href={`/`}><BackToDashboardButton startIcon={<ArrowBackIosNewRoundedIcon />} variant={'text'}>{uiText.landingPage.hero.backToHome[toggleLanguage.language]}</BackToDashboardButton></Link>
             </Box>
             {
@@ -52,7 +52,7 @@ const ControlPanel = ({ toggleLanguage, updatePrimaryLocation, updateAdditionalL
 
             }
 
-            <Typography sx={{fontWeight: (theme) => (theme.typography.fontWeightBold)}}>{uiText.locationPage.controlPanel.controlPanel[toggleLanguage.language].toUpperCase()}<span className={'bluePunctuation'}>.</span></Typography>
+            <ControlPanelTitle sx={{fontWeight: (theme) => (theme.typography.fontWeightBold)}}>{uiText.locationPage.controlPanel.controlPanel[toggleLanguage.language].toUpperCase()}<span className={'bluePunctuation'}>.</span></ControlPanelTitle>
             {
                 // INSERT LOGIC TO APPEND CONTROL PANEL ON SCROLL
 
@@ -92,8 +92,17 @@ const BackToDashboardButton = styled(Button)(({theme}) => ({
         fontSize: `12px`,
         padding: `0`
     },
-    [theme.breakpoints.down('450')]: {
+    [theme.breakpoints.down('550')]: {
         marginBottom: theme.spacing(2),
+        fontSize: `11px`,
+    },
+}))
+
+const ControlPanelTitle = styled(Typography)(({theme}) => ({
+    [theme.breakpoints.down('sm')]: {
+        fontSize: `12px`,
+    }, [theme.breakpoints.down('550')]: {
+        fontSize: `14px`,
     },
 }))
 

@@ -80,15 +80,21 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
 const ButtonLabel = styled(Typography)(({theme}) => ({
     fontWeight: theme.typography.fontWeightBold,
     [theme.breakpoints.down('sm')]: {
-        fontSize: `14px`,
+        fontSize: `12px`,
+    },
+    [theme.breakpoints.down('550')]: {
+        fontSize: `11px`,
     },
 }))
 
 
 const MyToggleButton = styled(ToggleButton)(({theme}) => ({
     [theme.breakpoints.down('sm')]: {
-        fontSize: `14px`,
+        fontSize: `12px`,
         color: `#fff`
+    },
+    [theme.breakpoints.down('550')]: {
+        fontSize: `11px`,
     },
 }))
 

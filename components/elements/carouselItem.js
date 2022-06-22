@@ -47,10 +47,11 @@ const CarouselItem = ({ toggleLanguage, data, toggleLocationPreference, updateCi
                     <EventType>{formTypeMapping[data['submissiontype']].toUpperCase()}<span className={"bluePunctuation"}>.</span></EventType>
                 </CarouselFlex>
                 <MainContentText sx={{fontSize: `25px`, textAlign: `left`, marginTop: (theme) => (theme.spacing(2)), marginBottom: (theme) => (theme.spacing(2))}} >{'"' + data.submissiontext + '"'}</MainContentText>
-                <CarouselFlex>
-                    <DateText >{new Date(data['submissiontimestamp']).toLocaleString().split(',')[0]}</DateText>
-                    <LocationBox locationName={data['locationame']} color={colorCode}/>
-                </CarouselFlex>
+
+                    <LocationBoxWrapper>
+                        <DateText >{new Date(data['submissiontimestamp']).toLocaleString().split(',')[0]}</DateText>
+                        <LocationBox locationName={data['locationame']} color={colorCode}/>
+                    </LocationBoxWrapper>
             </CarouselBox>
         )
     }
@@ -77,8 +78,27 @@ const CarouselBox = styled(Box)(({theme}) => ({
     [theme.breakpoints.down('sm')]: {
         minHeight: `175px`,
     },
-    [theme.breakpoints.down('470')]: {
-        minWidth: `300px`,
+    [theme.breakpoints.down('550')]: {
+        minWidth: `275px`,
+        minHeight: `200px`,
+    },
+    [theme.breakpoints.down('400')]: {
+        minWidth: `225px`,
+    },
+    [theme.breakpoints.down('350')]: {
+        minWidth: `200px`,
+        minHeight: `150px`,
+    },
+}))
+
+
+const LocationBoxWrapper = styled(Box)(({theme}) => ({
+    display: `flex`,
+    justifyContent: `space-between`,
+    alignItems: `center`,
+    maxHeight: `60px`,
+    [theme.breakpoints.down('350')]: {
+        display: `none`
     },
 }))
 
@@ -94,6 +114,9 @@ const DateText = styled(Typography)(({theme}) => ({
     [theme.breakpoints.down('md')]: {
         fontSize: `14px`
     },
+    [theme.breakpoints.down('550')]: {
+        fontSize: `12px`,
+    },
 }))
 
 const ImageWrapperBox = styled(Box)(({theme}) => ({
@@ -105,12 +128,21 @@ const CitizenTypeText = styled(Typography)(({theme}) => ({
     [theme.breakpoints.down('md')]: {
         fontSize: `18px`
     },
+    [theme.breakpoints.down('550')]: {
+        fontSize: `14px`,
+    },
 }))
 
 const CitizenInfoText = styled(Typography)(({theme}) => ({
     color: theme.palette.primary.main,
     [theme.breakpoints.down('md')]: {
         fontSize: `12px`
+    },
+    [theme.breakpoints.down('sm')]: {
+        fontSize: `10px`,
+    },
+    [theme.breakpoints.down('550')]: {
+        fontSize: `9px`,
     },
 }))
 
@@ -148,6 +180,9 @@ const MainContentText = styled(Typography)(({theme}) => ({
     },
     [theme.breakpoints.down('sm')]: {
         fontSize: `16px`,
+    },
+    [theme.breakpoints.down('550')]: {
+        fontSize: `14px`,
     },
 }))
 

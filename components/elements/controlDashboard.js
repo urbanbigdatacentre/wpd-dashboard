@@ -42,7 +42,7 @@ const ControlDashboard = ({ toggleLanguage, locationData, color, weatherAPIToken
     return (
         <ControlDashboardOuterBox >
             <LocationBox locationName={locationPaths[locationData['placetype']].text} color={color}/>
-            <Typography sx={{paddingTop: `10px`, fontWeight: (theme) => (theme.typography.fontWeightBold), color: color}}>{locationData['placename'].toUpperCase()}<span className={'bluePunctuation'}>.</span></Typography>
+            <LocationName sx={{paddingTop: `10px`, fontWeight: (theme) => (theme.typography.fontWeightBold), color: color}}>{locationData['placename'].toUpperCase()}<span className={'bluePunctuation'}>.</span></LocationName>
             <Divider sx={{width: `100%`}}/>
             <DateRangeText>{new Date(d3.timeFormat("%B %d, %Y")(toggleDate.startDate)).toLocaleString().split(',')[0] + " - " + new Date(d3.timeFormat("%B %d, %Y")(toggleDate.endDate)).toLocaleString().split(',')[0]}</DateRangeText>
             <ControlDashboardInnerBox >
@@ -65,6 +65,16 @@ const ControlDashboardOuterBox = styled(Box)(({theme}) => ({
     flexDirection: `column`
 }))
 
+const LocationName = styled(Typography)(({theme}) => ({
+    [theme.breakpoints.down('sm')]: {
+        marginBottom: theme.spacing(1),
+        fontSize: `14px`,
+    },
+    [theme.breakpoints.down('550')]: {
+        fontSize: `14px`,
+    }
+}))
+
 const ControlDashboardInnerBox = styled(Box)(({theme}) => ({
     display: `flex`,
     justifyContent: `space-between`,
@@ -82,6 +92,10 @@ const DateRangeText = styled(Typography)(({theme}) => ({
     fontWeight: theme.typography.fontWeightLight,
     [theme.breakpoints.down('sm')]: {
         marginBottom: theme.spacing(2),
+        fontSize: `12px`,
+    },
+    [theme.breakpoints.down('550')]: {
+        fontSize: `11px`,
     },
 }))
 

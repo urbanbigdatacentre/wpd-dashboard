@@ -34,6 +34,16 @@ const StyledTooltip = styled(({ className, ...props }) => (
     font-size: 14px;
     padding: 0;
     border-radius: 5px;
+    [theme.breakpoints.down('sm')]: {
+        font-size: 10px;
+    },
+    [theme.breakpoints.down('550')]: {
+        fontSize: 9px;
+        padding: 2px 4px 2px 4px';
+    },
+    [theme.breakpoints.down('350')]: {
+        font-size: 8px;
+    },
 `);
 
 

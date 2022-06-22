@@ -42,10 +42,10 @@ class RainfallChartSection extends React.Component {
                         <ChartTitle >{uiText.locationPage.rainfallChart.title[this.props.toggleLanguage.language]}<span className={'bluePunctuation'}>.</span></ChartTitle>
                         <Divider sx={{width: `60%`, height: (theme) => (theme.spacing(1)), background: `linear-gradient(90deg, #2196F3 0%, #1565C0 100%)`, marginBottom: (theme) => (theme.spacing(2)), marginTop: (theme) => (theme.spacing(1))}}/>
                     </Box>
-                    <Box className={styles.legendWrapper}>
+                    <LegendWrapperBox className={styles.legendWrapper}>
                         {/*INSERT DATA FILTER HERE*/}
                         <DataTypeFilter positionMode={`relative`}/>
-                    </Box>
+                    </LegendWrapperBox>
                 </Box>
                 {/*INSERT RAINFALL CHART HERE*/}
                 <RainfallChart />
@@ -53,6 +53,12 @@ class RainfallChartSection extends React.Component {
         )
     }
 }
+
+const LegendWrapperBox = styled(Box)(({theme}) => ({
+    [theme.breakpoints.down('md')]: {
+        marginBottom: `0px !important`,
+    },
+}))
 
 const VisSectionContainer = styled(Container)(({theme}) => ({
     [theme.breakpoints.down('sm')]: {

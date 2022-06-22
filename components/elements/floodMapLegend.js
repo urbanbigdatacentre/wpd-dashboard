@@ -111,10 +111,7 @@ const LegendCircle = styled(Box)(({theme}) => ({
         width: `20px`,
         height: `20px`,
     },
-    [theme.breakpoints.down('sm')]: {
-        width: `15px`,
-        height: `15px`,
-    },
+
 
 }))
 
@@ -132,7 +129,7 @@ const LegendWrapperBox = styled(Box)(({theme}) => ({
     alignItems: `flex-start`,
     zIndex: 600,
     maxWidth: theme.spacing(40),
-    minWidth: theme.spacing(40),
+
     height: `max-content`,
     top: theme.spacing(10),
     left: theme.spacing(1),
@@ -142,21 +139,21 @@ const LegendWrapperBox = styled(Box)(({theme}) => ({
     padding: theme.spacing(3),
     filter: `drop-shadow(0px 0px 15px rgba(33, 150, 243, 0.25))`,
     [theme.breakpoints.down('md')]: {
-        padding: theme.spacing(2),
-        maxWidth: theme.spacing(28),
-        minWidth: theme.spacing(28),
-        height: `auto`,
+        padding: theme.spacing(0),
+
+        top: theme.spacing(-30),
+        position: `relative`,
+        left: theme.spacing(0),
+        right: theme.spacing(0),
+        maxWidth: `55%`,
+        filter: `drop-shadow(0px 0px 15px rgba(33, 150, 243, 0))`,
+        border: `0px solid #2196F3`,
     },
     [theme.breakpoints.down('sm')]: {
-        padding: theme.spacing(2),
-        maxWidth: theme.spacing(23),
-        minWidth: theme.spacing(23),
-        bottom: theme.spacing(1),
-        left: theme.spacing(1),
-        top: `auto`,
+        maxWidth: `90%`,
     },
     [theme.breakpoints.down('350')]: {
-        top: theme.spacing(6),
+        maxWidth: `100%`,
     },
 }))
 
@@ -167,8 +164,13 @@ const LegendText = styled(Typography)(({theme}) => ({
 }))
 
 const LegendTitle = styled(Typography)(({theme}) => ({
+    [theme.breakpoints.down('md')]: {
+        fontSize: `14px`,
+
+    },
     [theme.breakpoints.down('sm')]: {
-        fontSize: `14px`
+        fontSize: `14px`,
+
     },
 }))
 
@@ -187,7 +189,7 @@ const ToggleFormControlLabel = styled(FormControlLabel)(({ theme }) => ({
     padding: `0`,
     margin: `0`,
     marginTop: theme.spacing(1),
-    [theme.breakpoints.down('700')]: {
+    [theme.breakpoints.down('md')]: {
         display: `none`
     },
 }))
@@ -223,7 +225,7 @@ const ToggleClusterSwitch = styled(Switch)(({ theme }) => ({
         height: 16,
         margin: 2,
     },
-    [theme.breakpoints.down('700')]: {
+    [theme.breakpoints.down('md')]: {
         display: `none`
     },
 }));

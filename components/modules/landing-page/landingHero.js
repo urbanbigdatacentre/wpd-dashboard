@@ -71,6 +71,9 @@ const TopBlue = styled(Typography)(({theme}) => ({
     [theme.breakpoints.down('sm')]: {
         fontSize: `18px`,
     },
+    [theme.breakpoints.down('550')]: {
+        fontSize: `16px`,
+    },
 }))
 
 const StandardText = styled(Typography)(({theme}) => ({

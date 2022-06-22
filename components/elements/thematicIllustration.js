@@ -38,6 +38,9 @@ const ThematicIllustration = ({renderRightOnly}) => {
 const ImageBoxWrapper = styled(Box)(({theme}) => ({
     width: `100%`,
 
+    [theme.breakpoints.down('md')]: {
+        display: `none`
+    },
 }))
 
 export default ThematicIllustration;

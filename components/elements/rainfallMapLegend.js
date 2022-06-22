@@ -90,17 +90,20 @@ const LegendWrapperBox = styled(Box)(({theme}) => ({
     padding: theme.spacing(3),
     filter: `drop-shadow(0px 0px 15px rgba(33, 150, 243, 0.25))`,
     [theme.breakpoints.down('md')]: {
-        padding: theme.spacing(2),
+        padding: theme.spacing(0),
+        top: theme.spacing(-20),
+        position: `relative`,
+        left: theme.spacing(0),
+        right: theme.spacing(0),
+        maxWidth: `55%`,
+        filter: `drop-shadow(0px 0px 15px rgba(33, 150, 243, 0))`,
+        border: `0px solid #2196F3`,
     },
     [theme.breakpoints.down('sm')]: {
-        maxWidth: theme.spacing(25),
-        bottom: theme.spacing(1),
-        left: theme.spacing(1),
-        top: `auto`,
-        height: `auto`,
+        maxWidth: `65%`,
     },
     [theme.breakpoints.down('350')]: {
-        top: theme.spacing(6),
+        maxWidth: `75%`,
     },
 }))
 
@@ -130,7 +133,7 @@ const ToggleFormControlLabel = styled(FormControlLabel)(({ theme }) => ({
     width: `100%`,
     padding: `0`,
     margin: `0`,
-    [theme.breakpoints.down('700')]: {
+    [theme.breakpoints.down('md')]: {
         display: `none`
     },
 }))
@@ -166,7 +169,7 @@ const ToggleClusterSwitch = styled(Switch)(({ theme }) => ({
         height: 16,
         margin: 2,
     },
-    [theme.breakpoints.down('700')]: {
+    [theme.breakpoints.down('md')]: {
         display: `none`
     },
 }));

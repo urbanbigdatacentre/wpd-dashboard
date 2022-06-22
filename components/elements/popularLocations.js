@@ -59,13 +59,14 @@ const SelectedLocationsBox = styled(Box)(({theme}) => ({
     alignItems: `flex-start`,
     paddingTop: theme.spacing(6),
     [theme.breakpoints.down('md')]: {
-        width: `90%`,
-    },
-    [theme.breakpoints.down('sm')]: {
         width: `100%`,
+        marginTop: theme.spacing(26),
+        paddingTop: theme.spacing(0),
     },
-    [theme.breakpoints.down('550')]: {
-        marginTop: theme.spacing(4)
+    [theme.breakpoints.down('450')]: {
+        width: `100%`,
+        marginTop: theme.spacing(18),
+        paddingTop: theme.spacing(0),
     },
 }))
 
@@ -84,9 +85,9 @@ const LocationButton = styled(Button)(({theme}) => ({
     gap: `1em`,
     marginRight: theme.spacing(3),
     minWidth: theme.spacing(10),
-    border: `1.5px solid #1565C0`,
-    boxShadow: `0px 0px 15px rgba(21, 101, 192, 0.15)`,
-    color: `#1565C0`,
+    border: `1.5px solid #2196F3`,
+    boxShadow: `0px 0px 15px rgba(33, 150, 243, 0.15)`,
+    color: `#2196F3`,
     [theme.breakpoints.down('sm')]: {
         fontSize: `12px`,
 
@@ -96,7 +97,7 @@ const LocationButton = styled(Button)(({theme}) => ({
     },
     '&:hover': {
 
-        border: `1.5px solid #1565C0`,
+        border: `1.5px solid #2196F3`,
 
     }
 }))

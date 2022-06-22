@@ -177,6 +177,8 @@ const CitizenCarouselContainer = styled(Container)(({theme}) => ({
     [theme.breakpoints.down('600')]: {
         paddingTop: theme.spacing(0),
         width: `100%`,
+        paddingLeft: theme.spacing(0),
+        paddingRight: theme.spacing(0),
     },
 
 }))

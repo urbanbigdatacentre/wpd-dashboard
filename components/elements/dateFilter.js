@@ -133,6 +133,9 @@ const DateFilter = (props) => {
     }
 
     return(
+
+        // ADD FRIENDLY UI FOR MOBILE DEVICES
+
         <DateFilterButtonGroup sx={{position: positionMode}} exclusive value={props.toggleDate.startDate} onChange={handleChange}>
             <DateFilterButton id={'24-hours-button'} value={dates['24Hours']} >{"24 " + uiText.global.labels.hours[props.toggleLanguage.language]}</DateFilterButton>
             <DateFilterButton id={'2-days-button'} value={dates["2Days"]}  >{"2 " + uiText.global.labels.days[props.toggleLanguage.language]}</DateFilterButton>
@@ -195,11 +198,12 @@ const DateFilterButton = styled(ToggleButton)(({theme}) => ({
         fontSize: `10px`,
         padding: `2px 6px 2px 6px`,
     },
-    [theme.breakpoints.down('450')]: {
-
+    [theme.breakpoints.down('550')]: {
+        fontSize: `9px`,
+        padding: `2px 4px 2px 4px`,
     },
     [theme.breakpoints.down('350')]: {
-        display: `none`
+        fontSize: `8px`,
     },
 }))
 

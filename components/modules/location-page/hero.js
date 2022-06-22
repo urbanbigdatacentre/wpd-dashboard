@@ -38,8 +38,6 @@ const LocationHero = ({toggleLanguage, mapBoxToken, updatePrimaryLocation}) => {
                         {promiseInProgress ? <MySkeleton variant={'rectangular'} height={`40px`} width={`40%`}/> : <PageTitle sx={{width: `60%`}} variant={'h1'}>{updatePrimaryLocation.location['placename']}<span className={'bluePunctuation'}>.</span></PageTitle>}
                         {promiseInProgress ? <MySkeleton variant={'rectangular'} height={`10px`} width={`45%`}/> : <MyDivider sx={{width: `25%`, height: (theme) => (theme.spacing(1)), background: `linear-gradient(90deg, #2196F3 0%, #1565C0 100%)`, marginBottom: (theme) => (theme.spacing(2)), marginTop: (theme) => (theme.spacing(1))}}/>}
                         {promiseInProgress ? <MySkeleton variant={'rectangular'} height={`10px`} width={`50%`}/> : <StandardText sx={{width: `50%`}} variant={'description'}>{uiText.locationPage.hero.descriptionPartOne[toggleLanguage.language] + updatePrimaryLocation.location['placename'] + uiText.locationPage.hero.descriptionPartTwo[toggleLanguage.language]}</StandardText>}
-
-
                     </MapDescriptionTextBox>
                 </MapTextCarouselWrapper>
             </>
@@ -85,6 +83,9 @@ const MyDivider = styled(Divider)(({theme}) => ({
     },
     [theme.breakpoints.down('sm')]: {
         width: `70%`,
+    },
+    [theme.breakpoints.down('550')]: {
+        width: `85%`,
     },
 }))
 
@@ -142,6 +143,9 @@ const PageTitle = styled(Typography)(({theme}) => ({
     [theme.breakpoints.down('sm')]: {
         fontSize: `35px`,
         width: `80%`
+    },
+    [theme.breakpoints.down('550')]: {
+        width: `100%`,
     },
 }))
 

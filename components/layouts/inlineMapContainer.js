@@ -172,9 +172,14 @@ const SectionTitle = styled(Typography)(({theme}) => ({
     },
     [theme.breakpoints.down('sm')]: {
         fontSize: `30px`,
+        width: `100%`,
     },
     [theme.breakpoints.down('1000')]: {
         width: `75%`,
+    },
+    [theme.breakpoints.down('550')]: {
+        fontSize: `30px`,
+        width: `100%`,
     },
 }))
 
@@ -188,6 +193,10 @@ const TopBlue = styled(Typography)(({theme}) => ({
     },
     [theme.breakpoints.down('sm')]: {
         fontSize: `18px`,
+        width: `100%`,
+    },
+    [theme.breakpoints.down('550')]: {
+        fontSize: `16px`,
     },
 }))
 

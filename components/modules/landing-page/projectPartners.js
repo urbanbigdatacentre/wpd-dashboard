@@ -25,7 +25,7 @@ const ProjectPartners = ({ toggleLanguage }) => {
 
     return (
         <ProjectPartnersSectionContainer >
-            <Typography variant={"description"}>{uiText.landingPage.partners.title[toggleLanguage.language]}</Typography>
+            <ProjectParnersText variant={"description"}>{uiText.landingPage.partners.title[toggleLanguage.language]}</ProjectParnersText>
             <ProjectPartnersLogoBox >
                 {Object.keys(images).map(function(src, key) {
 
@@ -39,6 +39,14 @@ const ProjectPartners = ({ toggleLanguage }) => {
         </ProjectPartnersSectionContainer>
     );
 }
+
+const ProjectParnersText = styled(Typography)(({theme}) => ({
+    textAlign: `center`,
+
+    [theme.breakpoints.down('sm')]: {
+        fontSize: `14px`
+    },
+}))
 
 const ProjectPartnersSectionContainer = styled(Container)(({theme}) => ({
     marginTop: theme.spacing(15),

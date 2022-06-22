@@ -73,21 +73,22 @@ const LegendWrapperBox = styled(Box)(({theme}) => ({
     zIndex: 101,
     maxWidth: theme.spacing(35),
     height: `auto`,
-    top: theme.spacing(14),
+    top: theme.spacing(8),
     right: theme.spacing(1),
     backgroundColor: theme.palette.primary.light,
     borderRadius: theme.shape.borderRadius,
     border: `1px solid #2196F3`,
     padding: theme.spacing(3),
-    filter: `drop-shadow(0px 0px 15px rgba(33, 150, 243, 0.25))`,
+    filter: `drop-shadow(0px 0px 15px rgba(33, 150, 243, 0.15))`,
     [theme.breakpoints.down('sm')]: {
         padding: theme.spacing(2),
         maxWidth: theme.spacing(25),
-        top: theme.spacing(10),
+        top: theme.spacing(5),
         height: `auto`,
+        filter: `drop-shadow(0px 0px 15px rgba(33, 150, 243, 0.05))`,
     },
     [theme.breakpoints.down('420')]: {
-        top: theme.spacing(6),
+        top: theme.spacing(1),
     },
 }))
 

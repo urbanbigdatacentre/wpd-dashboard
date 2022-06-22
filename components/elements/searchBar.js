@@ -100,7 +100,10 @@ class SearchBar extends React.Component {
 
     }
 
+
+
     render() {
+
         return (
             <ClickAwayListener onClickAway={this._closeSearchResults}>
             <MyFormControl
@@ -114,7 +117,7 @@ class SearchBar extends React.Component {
                     }
                 })}
                 variant="standard" >
-                <MyTextField autoComplete="off" InputProps={{
+                <MyTextField autoComplete="off"  InputProps={{
 
                     endAdornment: (
                         <InputAdornment position="end">
@@ -161,12 +164,15 @@ const MyFormControl = styled(FormControl)(({theme}) => ({
     [theme.breakpoints.down('sm')]: {
         marginTop: theme.spacing(3),
     },
+    [theme.breakpoints.down('500')]: {
+        width: `90% !important`
+    },
 }))
 
 const MyTextField = styled(TextField)(({theme}) => ({
 
     color: theme.palette.primary.main,
-    fontSize: `14px`,
+    fontSize: `3px`,
 
     '& label.Mui-focused': {
         background: `linear-gradient(90deg, rgba(255, 255, 255, 0.25) 0%, #FFFFFF 10%, #FFFFFF 90%, rgba(255, 255, 255, 0.25) 100%)`,

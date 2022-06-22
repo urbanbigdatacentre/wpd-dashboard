@@ -35,10 +35,10 @@ const MyNavbar = ({ toggleLanguage }) => {
 
 const NavTextHome = styled(Typography)(({theme}) => ({
     [theme.breakpoints.down('sm')]: {
-        fontSize: `14px`
+        fontSize: `12px`
     },
-    [theme.breakpoints.down('400')]: {
-        fontSize: `13px`
+    [theme.breakpoints.down('550')]: {
+        fontSize: `11px`
     },
 }))
 

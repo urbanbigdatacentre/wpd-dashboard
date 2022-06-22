@@ -106,6 +106,9 @@ const LocationName = styled(Typography)(({theme}) => ({
     [theme.breakpoints.down('sm')]: {
         fontSize: `12px`,
     },
+    [theme.breakpoints.down('550')]: {
+        fontSize: `11px`,
+    },
 }))
 
 const mapDispatchToProps = (dispatch) => {

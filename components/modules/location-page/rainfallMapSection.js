@@ -61,6 +61,9 @@ const RainfallMapSection = ({ toggleLanguage, mapBoxToken, ctx }) => {
 }
 
 const VisSectionContainer = styled(Container)(({theme}) => ({
+    [theme.breakpoints.down('md')]: {
+        paddingTop: theme.spacing(-20),
+    },
     [theme.breakpoints.down('sm')]: {
         paddingLeft: theme.spacing(0),
         paddingRight: theme.spacing(0),
@@ -73,7 +76,8 @@ const HelpText = styled(Typography)(({theme}) => ({
     marginLeft: theme.spacing(2),
     [theme.breakpoints.down('md')]: {
         fontSize: `14px`,
-        marginLeft: theme.spacing(1)
+        marginLeft: theme.spacing(1),
+        textAlign: `left`
     },
     [theme.breakpoints.down('sm')]: {
         fontSize: `12px`,

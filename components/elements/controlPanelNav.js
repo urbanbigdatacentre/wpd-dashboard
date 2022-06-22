@@ -23,12 +23,18 @@ const ControlPanelNav = ({toggleLanguage, updateAdditionalLocation, updatePrimar
 
     useEffect(() => {
 
+        const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
+        const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
+
         const windowOverlay = document.querySelector('.window-overlay')
-        if (windowOverlay) { windowOverlay.addEventListener('click', function() {setAddingLocationStatus(false);})}
+        if (windowOverlay) { windowOverlay.addEventListener('click', function() {
+
+            setAddingLocationStatus(false);
+        })}
 
         window.onscroll = function() {
             // Check if primary location is set
-            ((window.location.href.includes('location')) && (document.querySelector('#control-panel') !== undefined)) ? setSticky(document.querySelector('#control-panel')?.getBoundingClientRect().top < 64) : null
+            ((window.location.href.includes('location')) && (document.querySelector('#control-panel') !== undefined) && (vw > 550)) ? setSticky(document.querySelector('#control-panel')?.getBoundingClientRect().top < 64) : null
         }
 
     }, [sticky])

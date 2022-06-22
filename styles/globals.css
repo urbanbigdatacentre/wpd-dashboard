@@ -95,9 +95,35 @@ a {
 }
 
 @media only screen and (max-width: 600px) {
+
+  .Home_container {
+    padding: 0 1rem;
+  }
+
   .rdrDateRangePickerWrapper {
     transform: scale(0.9);
     top: 20px;
     right: -20px;
   }
+
+  .MuiInputLabel-root {
+    font-size: 14px !important;
+  }
+  .MuiInputBase-root {
+    font-size: 14px !important;
+  }
+
+
+}
+
+@media only screen and (max-width: 400px) {
+
+  .MuiInputLabel-root {
+    font-size: 12px !important;
+  }
+  .MuiInputBase-root {
+    font-size: 12px !important;
+  }
+
+
 }

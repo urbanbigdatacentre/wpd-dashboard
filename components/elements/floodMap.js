@@ -337,6 +337,7 @@ const ReloadButton = styled(Button)(({theme}) => ({
     },
     [theme.breakpoints.down('md')]: {
         fontSize: `12px`,
+        width: `max-content`
     },
 
 }))

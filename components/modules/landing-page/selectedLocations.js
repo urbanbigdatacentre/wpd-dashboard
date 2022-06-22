@@ -67,10 +67,9 @@ const SelectedLocationsBox = styled(Box)(({theme}) => ({
     alignItems: `flex-start`,
     paddingTop: theme.spacing(6),
     [theme.breakpoints.down('md')]: {
-        width: `90%`,
-    },
-    [theme.breakpoints.down('550')]: {
-        marginTop: theme.spacing(4)
+        width: `100%`,
+        marginTop: theme.spacing(26),
+        paddingTop: theme.spacing(0),
     },
 }))
 
