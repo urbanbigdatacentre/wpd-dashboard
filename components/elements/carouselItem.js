@@ -41,7 +41,7 @@ const CarouselItem = ({ toggleLanguage, data, toggleLocationPreference, updateCi
                         </ImageWrapperBox>
                         <TypeOrganisationBox>
                             <CitizenTypeText>{uiText.locationPage.rainfallMap.citizenReport[toggleLanguage.language]}</CitizenTypeText>
-                            <CitizenInfoText >{locationPaths.hasOwnProperty(data['organisationtype']) ? locationPaths[data['organisationtype']].text : ""}</CitizenInfoText>
+                            {/*<CitizenInfoText >{locationPaths.hasOwnProperty(data['organisationtype']) ? locationPaths[data['organisationtype']].text : ""}</CitizenInfoText>*/}
                         </TypeOrganisationBox>
                     </Box>
                     <EventType>{formTypeMapping[data['submissiontype']].toUpperCase()}<span className={"bluePunctuation"}>.</span></EventType>
@@ -62,18 +62,20 @@ const CarouselBox = styled(Box)(({theme}) => ({
     width: `75%`,
     minWidth: `500px`,
     flexDirection: `column`,
-    minHeight: `200px`,
+    minHeight: `250px`,
     justifyContent: `space-between`,
     backgroundColor: theme.palette.primary.light,
     borderRadius: theme.shape.borderRadius,
     padding: theme.spacing(3),
-    boxShadow: `0px 0px 15px #E5E5E5`,
+    boxShadow: `0px 0px 10px rgba(21, 101, 192, 0.2)`,
+
     border: `1.5px solid #E5E5E5`,
     [theme.breakpoints.down('1000')]: {
         minWidth: `400px`,
     },
     [theme.breakpoints.down('800')]: {
         padding: theme.spacing(1.5),
+        minHeight: `225px`,
     },
     [theme.breakpoints.down('sm')]: {
         minHeight: `175px`,

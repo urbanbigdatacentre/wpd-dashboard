@@ -560,8 +560,12 @@ export default {
         "en": "Control Panel",
         "br": ""
       },
+      "activeReporters": {
+        "en": "Active Reporters",
+        "br": ""
+      },
       "floodReports": {
-        "en": "Flood Reports",
+        "en": "Flood Events",
         "br": ""
       },
       "avgDailyRainfall": {

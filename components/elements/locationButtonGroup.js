@@ -7,12 +7,20 @@ import MyButton from "./button";
 
 // Local Imports
 import {locationColorKeys} from "../../data/colorMapping";
-import {changeDataType, changeLocationPreference, updateFloodCoordinates} from "../../store/actions";
+import {
+    changeDataType,
+    changeLocationPreference, removeFloodZonesData,
+    updateFloodCoordinates,
+    updateFloodZonesData
+} from "../../store/actions";
 import {bindActionCreators} from "redux";
+import latLngToBounds from "../../data/getBoundingBox";
+import requestFloodZonesBBOXData from "../../api/requestFloodZonesBBOXData";
+
 
 // Location Button Group Component
 
-const LocationButtonGroup = ({toggleLanguage, updateFloodCoordinates, updatePrimaryLocation, updateAdditionalLocation, changeLocationPreference, locationPreference, positionMode}) => {
+const LocationButtonGroup = ({toggleLanguage, configureAPI, updateFloodCoordinates, updateFloodData, updateFloodDataDispatch, removeFloodDataDispatch, toggleLocationPreference, updatePrimaryLocation, updateAdditionalLocation, changeLocationPreference, locationPreference, positionMode}) => {
 
     const handleClick = (e) => {
 
@@ -23,6 +31,10 @@ const LocationButtonGroup = ({toggleLanguage, updateFloodCoordinates, updatePrim
 
         // Update Flood Coordinates
         updateFloodCoordinates({latitude: logicalLocationObject.longitude, longitude: logicalLocationObject.latitude, zoom: 8})
+
+        // // Request new floodzones data
+        // const bounds = latLngToBounds(logicalLocationObject.latitude, logicalLocationObject.longitude, 8, 1000, 600)
+        // requestFloodZonesBBOXData(bounds.join(','), configureAPI, updateFloodData, updateFloodDataDispatch, toggleLocationPreference, removeFloodDataDispatch);
     }
 
 
@@ -52,6 +64,9 @@ const mapStateToProps = (state) => {
         toggleLanguage: state.toggleLanguage,
         updateAdditionalLocation: state.updateAdditionalLocation,
         locationPreference: state.toggleLocationPreference.locationPreference,
+        configureAPI: state.configureAPI,
+        updateFloodData: state.updateFloodData,
+        toggleLocationPreference: state.toggleLocationPreference
     }
 }
 
@@ -59,6 +74,9 @@ const mapDispatchToProps = (dispatch) => {
     return {
         changeLocationPreference: bindActionCreators(changeLocationPreference, dispatch),
         updateFloodCoordinates: bindActionCreators(updateFloodCoordinates, dispatch),
+        updateFloodDataDispatch: bindActionCreators(updateFloodZonesData, dispatch),
+        removeFloodDataDispatch: bindActionCreators(removeFloodZonesData, dispatch),
+
 
     }
 }

@@ -128,7 +128,7 @@ const LegendWrapperBox = styled(Box)(({theme}) => ({
     zIndex: 600,
     maxWidth: theme.spacing(40),
 
-    height: `max-content`,
+    height: `auto`,
     top: theme.spacing(10),
     left: theme.spacing(1),
     backgroundColor: theme.palette.primary.light,

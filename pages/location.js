@@ -96,6 +96,18 @@ const Location = (props) => {
                 requestPluviometerData({"placename": router.query['name'], "placeid": router.query['id']}, props.toggleDate, props.configureAPI, props.updatePluviometerData, props.updatePluviometerDataDispatch)
             }
 
+            // Check for existing Floodzones Data
+            if (props.updateFloodData.locations.length) {
+                const resultFlood = props.updateFloodData.locations.find(item => item['id'] === router.query['id'])
+                if (!resultFlood) {
+                    // Make Request for FloodZones Data
+                    requestFloodZonesData({"placename": router.query['name'], "placeid": router.query['id']}, props.configureAPI, props.updateFloodData, props.updateFloodDataDispatch)
+                }
+            } else {
+                // Make Request for FloodZones Data
+                requestFloodZonesData({"placename": router.query['name'], "placeid": router.query['id']}, props.configureAPI, props.updateFloodData, props.updateFloodDataDispatch)
+            }
+
             // Make Request for Citizen Rainfall Events
             requestCitizenEvents(router.query['id'], 9, props.toggleDate.startDate, props.toggleDate.endDate, router.query['name'], props.configureAPI, props.updateCitizenEventsRainfallData, props.updateCitizenEventsRainfallDataDispatch)
 

@@ -5,7 +5,7 @@
 import {connect} from "react-redux";
 import {useEffect, useState} from "react";
 import styles from "../../styles/modules/location-page/ControlPanel.module.css";
-import {Box, Typography, Container, styled, Divider} from "@mui/material";
+import {Box, Typography, Container, Skeleton, styled, Divider} from "@mui/material";
 import uiText from "../../data/ui-text";
 import StatCard from "./statCard";
 import LocationBox from "./locationBox";
@@ -24,11 +24,11 @@ import * as d3 from "d3";
 
 const ControlDashboard = ({ toggleLanguage, locationData, color, weatherAPIToken, configureAPI, toggleDate }) => {
 
-    const { promiseInProgress } = usePromiseTracker({area: "place-summary", delay: 0})
-
     const [stats, setStats] = useState({});
 
+
     useEffect(() => {
+
         trackPromise(
         axios.get(`${config[configureAPI['node_env'].NODE_ENV]}/dashboard/placesummary?id=${locationData['placeid']}&startDate=${toggleDate.startDate}&endDate=${toggleDate.endDate}`)
             .then(res => {
@@ -37,7 +37,8 @@ const ControlDashboard = ({ toggleLanguage, locationData, color, weatherAPIToken
                 }
             })
         , "place-summary")
-    }, [Object.keys(stats).length, configureAPI['node_env'].NODE_ENV])
+    }, [Object.keys(stats).length, configureAPI['node_env'].NODE_ENV, toggleDate])
+
 
     return (
         <ControlDashboardOuterBox >
@@ -47,9 +48,9 @@ const ControlDashboard = ({ toggleLanguage, locationData, color, weatherAPIToken
             <DateRangeText>{new Date(d3.timeFormat("%B %d, %Y")(toggleDate.startDate)).toLocaleString().split(',')[0] + " - " + new Date(d3.timeFormat("%B %d, %Y")(toggleDate.endDate)).toLocaleString().split(',')[0]}</DateRangeText>
             <ControlDashboardInnerBox >
                 <ControlDashboardStatCardBox>
-                    <StatCard firstInSequence={true} text={uiText.locationPage.controlPanel.floodReports[toggleLanguage.language]} number={stats?.floodreports !== undefined ? stats.floodreports : "-"}/>
-                    <StatCard text={uiText.locationPage.controlPanel.avgDailyRainfall[toggleLanguage.language]} number={stats?.avgdailyrainfall !== undefined ? Math.round(stats.avgdailyrainfall) + "mm" : "-"}/>
-                    <StatCard text={uiText.locationPage.controlPanel.citizenReports[toggleLanguage.language]} number={stats?.citizenreporters !== undefined ? stats.citizenreporters : "-"}/>
+                    <StatCard firstInSequence={true} text={uiText.locationPage.controlPanel.avgDailyRainfall[toggleLanguage.language]} number={stats?.avgdailyrainfall !== null ? Math.round(stats.avgdailyrainfall) + "mm" : "-"}/>
+                    <StatCard text={uiText.locationPage.controlPanel.floodReports[toggleLanguage.language]} number={stats?.floodreports !== undefined ? stats.floodreports : "-"}/>
+                    <StatCard text={uiText.locationPage.controlPanel.activeReporters[toggleLanguage.language]} number={stats?.activereporters !== undefined ? stats.activereporters : "-"}/>
                 </ControlDashboardStatCardBox>
                 <WeatherCarousel weatherAPIToken={weatherAPIToken} locationData={locationData}/>
             </ControlDashboardInnerBox>

@@ -60,9 +60,9 @@ const FloodMap = ({ toggleLanguage, configureAPI, toggleDate, updateFloodData, u
             // Set Reload Coordinates
             updateFloodCoordinatesDispatch({latitude: updatePrimaryLocation.location.longitude, longitude: updatePrimaryLocation.location.latitude, zoom: 8})
 
-            const bounds = latLngToBounds(updatePrimaryLocation.location.latitude, updatePrimaryLocation.location.longitude, 8, 1000, 600)
+            // const bounds = latLngToBounds(updatePrimaryLocation.location.latitude, updatePrimaryLocation.location.longitude, 8, 1000, 600)
             // Request new floodzones data
-            requestFloodZonesBBOXData(bounds.join(','), configureAPI, updateFloodData, updateFloodDataDispatch, toggleLocationPreference, removeFloodDataDispatch);
+            // requestFloodZonesBBOXData(bounds.join(','), configureAPI, updateFloodData, updateFloodDataDispatch, toggleLocationPreference, removeFloodDataDispatch);
 
         }
         setMapLoaded(true);
@@ -124,7 +124,7 @@ const FloodMap = ({ toggleLanguage, configureAPI, toggleDate, updateFloodData, u
                         <Box sx={{width: `100%`, justifyContent: `space-between`, alignItems: `center`, display: `flex`}}>
                             <TypeOrganisationBox>
                                 <Typography sx={{fontWeight: `400`}} >{uiText.locationPage.rainfallMap.citizenReport[toggleLanguage.language].toUpperCase() + " "}</Typography>
-                                <Typography sx={{fontSize: `11px`, color: (theme) => (theme.palette.primary.main)}}>{object.citizenType !== undefined ? object.citizenType.text : ""}</Typography>
+                                {/*<Typography sx={{fontSize: `11px`, color: (theme) => (theme.palette.primary.main)}}>{object.citizenType !== undefined ? object.citizenType.text : ""}</Typography>*/}
                             </TypeOrganisationBox>
                             <Typography sx={{marginLeft: (theme) => (theme.spacing(4)), fontWeight: (theme) => (theme.typography.fontWeightBold)}}>{uiText.global.tooltips.floodEvent[toggleLanguage.language].toUpperCase()}<span className={"bluePunctuation"}>.</span></Typography>
                         </Box>

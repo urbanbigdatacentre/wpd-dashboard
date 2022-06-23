@@ -78,9 +78,12 @@ a {
 
 .swiper-button-next:after, .swiper-button-prev:after {
   font-size: 34px !important;
+  font-weight: bold;
   left: 0;
+  text-shadow: 0px 0px 10px rgba(21, 101, 192, 0.5);
   right: 0;
 }
+
 /*DATE RANGE PICKER*/
 
 .rdrDateRangePickerWrapper {

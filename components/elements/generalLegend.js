@@ -159,7 +159,7 @@ const LegendWrapperBox = styled(Box)(({theme}) => ({
     backgroundColor: theme.palette.primary.light,
     padding: theme.spacing(3),
     paddingRight: theme.spacing(3.5),
-    filter: `drop-shadow(-4px 0px 8px rgba(33, 150, 243, 0.1))`,
+    boxShadow: `-4px 0px 8px rgba(33, 150, 243, 0.1)`,
     [theme.breakpoints.down('sm')]: {
         display: `none`
     },

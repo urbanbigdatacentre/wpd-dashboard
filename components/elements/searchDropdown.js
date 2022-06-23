@@ -76,8 +76,8 @@ const SearchDropdown = ({ configureAPI, toggleDate, toggleLanguage, searchText, 
             // Make Request for Pluviometer Data
             requestPluviometerData(item, toggleDate, configureAPI, updatePluviometerData, updatePluviometerDataDispatch)
 
-            // // Make Request for FloodZones Data
-            // requestFloodZonesData(item, configureAPI, updateFloodData, updateFloodDataDispatch)
+            // Make Request for FloodZones Data
+            requestFloodZonesData(item, configureAPI, updateFloodData, updateFloodDataDispatch)
 
             // Make Request for Citizen Rainfall Events
             requestCitizenEvents(item['placeid'], 9, toggleDate.startDate, toggleDate.endDate, item['placename'], configureAPI, updateCitizenEventsRainfallData, updateCitizenEventsRainfallDataDispatch)

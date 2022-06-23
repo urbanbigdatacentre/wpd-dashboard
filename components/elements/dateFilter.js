@@ -132,6 +132,8 @@ const DateFilter = (props) => {
 
     }
 
+    const customValue = ((props.toggleDate.endDate === dates['24Hours'])|| (props.toggleDate.endDate === dates['2Days']) || (props.toggleDate.endDate === dates['7Days']) || (props.toggleDate.endDate === dates['30Days']) || (props.toggleDate.endDate === dates['90Days'])) ? "" : props.toggleDate.endDate;
+
     return(
 
         // ADD FRIENDLY UI FOR MOBILE DEVICES
@@ -142,10 +144,10 @@ const DateFilter = (props) => {
             <DateFilterButton id={'7-days-button'} value={dates["7Days"]}  >{"7 " + uiText.global.labels.days[props.toggleLanguage.language]}</DateFilterButton>
             <DateFilterButton id={'30-days-button'} value={dates["30Days"]}  >{"30 " + uiText.global.labels.days[props.toggleLanguage.language]}</DateFilterButton>
             <DateFilterButton id={'90-days-button'} value={dates["90Days"]}  >{"90 " + uiText.global.labels.days[props.toggleLanguage.language]}</DateFilterButton>
-            <DateFilterButton id={'custom-date-button'} value={""} onClick={handleCustomClick}>{uiText.global.labels.custom[props.toggleLanguage.language]}</DateFilterButton>
+            <DateFilterButton id={'custom-date-button'} value={customValue} onClick={handleCustomClick}>{uiText.global.labels.custom[props.toggleLanguage.language]}</DateFilterButton>
             <ClickAwayListener onClickAway={handleCustomClickAway}>
 
-                    <Box sx={{zIndex: `90000`, display: displayPicker ? `block` : `none`}}>
+                    <Box sx={{zIndex: `90000`, display: displayPicker ? `block` : `none`, position: `relative`}}>
                         <DateRangePicker
                             maxDate={new Date()}
                             minDate={new Date(2021, 1, 1)}

@@ -23,7 +23,7 @@ class MyDocument extends Document {
                     <meta property="og:title" content="Waterproofing Data"/>
                     <meta property="og:image" content="https://i.ibb.co/QksfXST/OGIMAGE.png"/>
                     <meta name="description"
-                          content="Connecting Brazilian Flood Data From Communities & Official Sources"/>
+                          content="Connecting Brazilian Flood Data From Communities, Citizen Reports & Official Sources. Waterproofing Data aims to reconsider how flood-related data is produced, how it flows and how it can help build sustainable, flood resilient communities. The project improves the visible existing flows of flood-related data, generates new types of local flood data through engaging citizen reporters and integrates citizen-generated data with official flood data."/>
                     <meta property="og:type" content="dashboard flooding brazil data"/>
                     <meta name="twitter:card" content="summary_large_image"/>
                     {/* Inject MUI styles first to match with the prepend: true configuration. */}
