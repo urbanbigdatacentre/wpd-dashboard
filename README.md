@@ -1,34 +1,96 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## About this repo
 
-## Getting Started
+This is a repository storing a next.js / react frontend application to present data from the Waterproofing Data project in an interactive dashboard.
+Visit [the app yourself here](https://waterproofing-data.ubdc.ac.uk/)
 
-First, run the development server:
+### Repository workflow good practices ###
 
-```bash
-npm run dev
-# or
-yarn dev
+The repository workflow for the project have two main branches:
+
+* main (where the stable/production versions are stored)
+* development (where the working versions are stored)
+
+## Getting the project
+
+Clone the repository locally:
+
+```sh
+git clone -b development https://github.com/urbanbigdatacentre/wpd-dashboard.git
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Development setup
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+To run the development server:
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+```bash
+next
+# or
+npm run dev
+```
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+To stop the development server:
 
-## Learn More
+```bash
+CTRL + C
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Production setup
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### New Deployment
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+- Login
+  `ssh <azure_user> -i <key_file.cer>`
 
-## Deploy on Vercel
+- Navigate to wpd-dashboard root folder
+```
+cd  wpd-dashboard
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Redeploy the app
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+```
+git pull
+npm install
+npm run build
+pm2 restart wpd-dashboard
+```
+
+### Starting the server as a service
+
+Using [pm2 for running next.js app](https://dev.to/reactstockholm/setup-a-next-js-project-with-pm2-nginx-and-yarn-on-ubuntu-18-04-22c9) So that app server restarts when shutdown unexpectedly
+
+**Required only first time**:
+
+```
+cd  wpd-dashboard
+pm2 start npm --name "wpd-dashboard" -- start
+pm2 save
+```
+
+Use this command to know the status, pid, etc
+
+```
+pm2 status
+```
+
+To stop app in pm2
+
+```
+pm2 stop <name>
+```
+
+To see logs
+
+```
+pm2 log
+```
+
+To see monitoring tool with other server details
+
+```
+pm2 monit
+```
+
+
+## Further help
+For any bugs, queries or feature improvements contact <andrew.c.clarke@gla.ac.uk>.
