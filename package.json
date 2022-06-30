@@ -1,6 +1,8 @@
 {
   "name": "wpd-dashboard",
   "version": "0.1.0",
+  "description": "Web application visualising data from the waterproofing data project.",
+  "author": "Andy Clarke<andrew.c.clarke@glasgow.ac.uk>",
   "private": true,
   "scripts": {
     "dev": "next",
