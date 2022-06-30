@@ -41,7 +41,7 @@ CTRL + C
 - Login
   `ssh <azure_user> -i <key_file.cer>`
 
-- Create back of running server and client
+- Navigate to wpd-dashboard root folder
 ```
 cd  wpd-dashboard
 ```
