@@ -50,6 +50,18 @@
     shape-rendering: crispEdges;
 }
 
+.chart-tooltip {
+    position: absolute;
+    text-align: center;
+    width: 60px;
+    height: 28px;
+    padding: 2px;
+    font: 12px sans-serif;
+    border: 0px;
+    border-radius: 8px;
+    pointer-events: none;
+}
+
 
 
 @media only screen and (max-width: 1100px) {

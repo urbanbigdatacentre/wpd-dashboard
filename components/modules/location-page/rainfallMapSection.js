@@ -46,7 +46,7 @@ const RainfallMapSection = ({ toggleLanguage, mapBoxToken, ctx }) => {
                         <MyTooltip title={uiText.locationPage.rainfallMap.legendCitizen[toggleLanguage.language]} text={uiText.locationPage.rainfallMap.citizenPluviometerTooltip[toggleLanguage.language]}/>
                     </Box>
                     <Box className={styles.legendInlineBox}>
-                        <Image src={'/images/icons/citizen-submitted-rainfall-event.png'} width={30} height={50} alt={"rainfall map - citizen submitted rainfall event icon"} />
+                        <Image src={'/images/icons/Rain-Event-Icon.png'} width={35} height={42} alt={"rainfall map - citizen submitted rainfall event icon"} />
                         <HelpText sx={{textAlign: `right`,marginLeft: (theme) => (theme.spacing(2)), marginRight: (theme) => (theme.spacing(1)), fontWeight: (theme) => (theme.typography.fontWeightBold)}} variant={"description"}>{uiText.locationPage.rainfallMap.citizenSubmittedRainEvent[toggleLanguage.language]}</HelpText>
                         <MyTooltip title={uiText.locationPage.rainfallMap.citizenSubmittedRainEvent[toggleLanguage.language]} text={uiText.locationPage.rainfallMap.citizenRainfallEventTooltip[toggleLanguage.language]}/>
                     </Box>

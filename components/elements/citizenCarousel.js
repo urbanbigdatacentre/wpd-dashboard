@@ -18,7 +18,7 @@ import 'swiper/css/virtual';
 import dummyData from '../../data/dummyCitizenData';
 import CarouselItem from "./carouselItem";
 import {bindActionCreators} from "redux";
-import {updateCarouselCoordinates} from "../../store/actions";
+import {updateCarouselCoordinates, updateAllCitizenEvents} from "../../store/actions";
 import {useEffect, useState} from "react";
 import locationPaths from "../../data/locationPaths";
 import {usePromiseTracker} from "react-promise-tracker";
@@ -29,7 +29,7 @@ import LocationBox from "./locationBox";
 import {locationColorKeys} from "../../data/colorMapping";
 
 // Citizen Carousel Component
-const CitizenCarousel = ({toggleLanguage, toggleLocationPreference, updateCarouselCoordinates, updateCitizenEventsRainfallData, toggleDate, updateCitizenEventsFloodZonesData, updateCitizenEventsRiverFloodData, useAPIData}) => {
+const CitizenCarousel = ({toggleLanguage, toggleLocationPreference, updateCarouselCoordinates, updateCitizenEventsRainfallData, toggleDate, updateCitizenEventsFloodZonesData, updateCitizenEventsRiverFloodData, useAPIData, updateAllCitizenEvents, updateAllCitizenEventsDispatch}) => {
 
     const { RAIN_FORM_promiseInProgress} = usePromiseTracker({area: "RAIN_FORM", delay: 0})
     const { FLOODZONES_FORM_promiseInProgress} = usePromiseTracker({area: "FLOODZONES_FORM", delay: 0})
@@ -56,22 +56,18 @@ const CitizenCarousel = ({toggleLanguage, toggleLocationPreference, updateCarous
         setCitizenEvents(formattedDataArray)
 
         if ((useAPIData !== undefined) && (formattedDataArray.length)) {
-            updateCarouselCoordinates({latitude: formattedDataArray[0].latitude, longitude: formattedDataArray[0].longitude})
+            updateCarouselCoordinates({latitude: formattedDataArray[0].latitude, longitude: formattedDataArray[0].longitude, submissionType: formattedDataArray[0]['submissiontype']})
         }
     }, [toggleLocationPreference, updateCitizenEventsFloodZonesData.locations.length, updateCitizenEventsRiverFloodData.locations.length, updateCitizenEventsRainfallData.locations.length, toggleDate])
-
-    const colorIndex = updateCitizenEventsRainfallData.locations.findIndex(function(el){return el.id === toggleLocationPreference.locationID})
-
-    const colorCode = colorIndex <= 0 ? '#2196F3' : locationColorKeys[colorIndex - 1].color
 
     const setDataArray = useAPIData !== undefined ? citizenEventsDataArray : dummyData;
 
     // Handle Toggle Change
     const handleChange = (swiper) => {
         if ((citizenEventsDataArray[swiper.activeIndex] !== undefined) && (useAPIData !== undefined)) {
-            updateCarouselCoordinates({latitude: citizenEventsDataArray[swiper.activeIndex].latitude, longitude: citizenEventsDataArray[swiper.activeIndex].longitude})
+            updateCarouselCoordinates({latitude: citizenEventsDataArray[swiper.activeIndex].latitude, longitude: citizenEventsDataArray[swiper.activeIndex].longitude, submissionType: citizenEventsDataArray[swiper.activeIndex]['submissiontype']})
         } else if (useAPIData === undefined) {
-            updateCarouselCoordinates({latitude: dummyData[swiper.activeIndex].latitude, longitude: dummyData[swiper.activeIndex].longitude})
+            updateCarouselCoordinates({latitude: dummyData[swiper.activeIndex].latitude, longitude: dummyData[swiper.activeIndex].longitude, submissionType: dummyData[swiper.activeIndex]['submissiontype']})
 
         } else {
             console.log("No Carousel Data")
@@ -120,9 +116,7 @@ const CitizenCarousel = ({toggleLanguage, toggleLocationPreference, updateCarous
                             </Box>
                         </CarouselFlex>
                         <MainContentText sx={{fontSize: `20px`, textAlign: `left`, marginTop: (theme) => (theme.spacing(2)), marginBottom: (theme) => (theme.spacing(2))}} >{uiText.locationPage.noData.description[toggleLanguage.language]}</MainContentText>
-                        <CarouselFlex sx={{justifyContent: 'flex-end'}}>
-                            <LocationBox locationName={toggleLocationPreference.locationPreference} color={colorCode}/>
-                        </CarouselFlex>
+
                     </CarouselBox>
                 </SwiperSlide>}
             </CitizenCarouselContainer>
@@ -135,22 +129,6 @@ const CitizenCarousel = ({toggleLanguage, toggleLocationPreference, updateCarous
         )
     }
 }
-
-const NoDataBox = styled(Box)(({theme}) => ({
-    display: `flex`,
-    width: `75%`,
-    flexDirection: `column`,
-    minHeight: `200px`,
-    justifyContent: `space-between`,
-    backgroundColor: theme.palette.primary.light,
-    borderRadius: theme.shape.borderRadius,
-    padding: theme.spacing(3),
-    boxShadow: `0px 0px 15px #E5E5E5`,
-    border: `1.5px solid #E5E5E5`,
-    [theme.breakpoints.down('800')]: {
-        padding: theme.spacing(1.5),
-    },
-}))
 
 const CarouselSkeleton = styled(Skeleton)(({theme}) => ({
     width: `75%`,
@@ -265,6 +243,7 @@ const MainContentText = styled(Typography)(({theme}) => ({
 const mapDispatchToProps = (dispatch) => {
     return {
         updateCarouselCoordinates: bindActionCreators(updateCarouselCoordinates, dispatch),
+        updateAllCitizenEventsDispatch: bindActionCreators(updateAllCitizenEvents, dispatch)
     }
 }
 

@@ -16,7 +16,7 @@ import {MapboxLayer} from "@deck.gl/mapbox";
 import {bindActionCreators} from "redux";
 import {removeFloodZonesData, updateFloodCoordinates, updateFloodZonesData} from "../../store/actions";
 import formatCitizenEventsData from "../../api/formatCitizenEventsData";
-import avatarIcons from "../../public/images/icons/location-icon-atlas.png";
+import avatarIcons from "../../public/images/icons/flood-location-icon-atlas.png";
 import IconClusterLayer from "./iconClusterLayer";
 import {locationColorKeys} from "../../data/colorMapping";
 import uiText from "../../data/ui-text";
@@ -24,7 +24,6 @@ import LocationBox from "./locationBox";
 import {filterCitizenEventDataByDate} from "../../api/dataFilteringFunctions";
 import requestFloodZonesBBOXData from "../../api/requestFloodZonesBBOXData";
 import FloodMapLegend from "./floodMapLegend";
-import latLngToBounds from "../../data/getBoundingBox";
 import {usePromiseTracker} from "react-promise-tracker";
 import CircularProgress from "@mui/material/CircularProgress";
 
@@ -132,7 +131,7 @@ const FloodMap = ({ toggleLanguage, configureAPI, toggleDate, updateFloodData, u
                     <Typography sx={{fontSize: `20px`, fontWeight: (theme) => (theme.typography.fontWeightLight), marginTop: (theme) => (theme.spacing(2))}}>{object.submissionText !== undefined ? "'" + object.submissionText + "'" : uiText.global.tooltips.noComment[toggleLanguage.language]}</Typography>
                     <TooltipFlex sx={{marginTop: (theme) => (theme.spacing(2))}}>
                         <Typography sx={{ color: `#888888`, fontSize: `14px`, fontWeight: (theme) => (theme.typography.fontWeightLight)}} >{object?.timestamp ? new Date(object.timestamp).toLocaleString().split(',')[0] : null}</Typography>
-                        <LocationBox locationName={toggleLocationPreference.locationPreference} color={colorCode}/>
+                        <Typography sx={{ color: `#888888`, fontSize: `14px`, fontWeight: (theme) => (theme.typography.fontWeightLight)}} >{object?.timestamp ? new Date(object.timestamp).toLocaleString().split(',')[1].slice(0,6) : null}</Typography>
                     </TooltipFlex>
                 </MyTooltipBox>
             ) : null;
@@ -262,7 +261,7 @@ const FloodMap = ({ toggleLanguage, configureAPI, toggleDate, updateFloodData, u
 
     const controllerTrue = mapStylePlain ? Boolean(0) : Boolean(1)
 
-    const [mapStyle, setMapStyle ] = useState(mapStyleSatellite);
+    const [mapStyle, setMapStyle ] = useState(mapStyleMono);
 
     const handleMapStyleChange = (e) => {
         setMapStyle(e.target.value)

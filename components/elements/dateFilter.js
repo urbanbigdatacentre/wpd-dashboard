@@ -32,7 +32,7 @@ import {
 // Style Imports
 import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css';
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import requestPluviometerData from "../../api/requestPluviometerData";
 import requestFloodZonesData from "../../api/requestFloodZonesData";
 import requestCitizenEvents from "../../api/requestCitizenEvents"; // theme css file
@@ -41,12 +41,29 @@ import requestCitizenEvents from "../../api/requestCitizenEvents"; // theme css 
 
 const DateFilter = (props) => {
 
+    useEffect(() => {
+        // Fix to ensure mui selected patterns are correct on load - should be a better method available
+        // Infrequent behaviour
+        if (props.toggleDate.endDate.slice(0,5) !== dates.now.slice(0,5)) {
+            document.querySelector('#custom-date-button').classList += ' Mui-selected'
+        }
+
+    })
+
     const [displayPicker, setDisplayPicker] = useState(false);
 
     const handleCustomSelect = (e) => {
         // Change Start Date in Redux store
         handleRequests({"startDate": new Date(e['selection'].startDate).getTime().toString(), "endDate": new Date(e['selection'].endDate).getTime().toString()})
         props.changeDate({"startDate": new Date(e['selection'].startDate).getTime().toString(), "endDate": new Date(e['selection'].endDate).getTime().toString()})
+
+        // Remove All Selected Classes
+        const idArray = ['24-hours-button', '2-days-button', '7-days-button', '30-days-button', '90-days-button'];
+        idArray.forEach(function(item){
+            document.getElementById(item).classList.remove('Mui-selected')
+        })
+        document.querySelector('#custom-date-button').classList += ' Mui-selected'
+
     }
 
     // DISPLAY AND HIDE DATE RANGE PICKER
@@ -56,6 +73,9 @@ const DateFilter = (props) => {
     }
 
     const handleCustomClickAway = (e) => {
+        if (e.target.classList.toString().includes('rdrDay')) {
+            document.querySelector('#custom-date-button').classList += ' Mui-selected'
+        }
         if (e.target.id !== 'custom-date-button') {
             setDisplayPicker(false)
             document.querySelector('.rdrDateRangePickerWrapper').display = 'none';
@@ -65,17 +85,17 @@ const DateFilter = (props) => {
     // Handle Date Change
     const handleChange = (e, dateSelection) => {
 
+        if (JSON.parse(e.target.value).startDate !== null) {
 
-        if (e.target.value !== null) {
             // Remove All Selected Classes
             ['24-hours-button', '2-days-button', '7-days-button', '30-days-button', '90-days-button', 'custom-date-button'].forEach(function(item){
                 document.getElementById(item).classList.remove('Mui-selected')
             })
-            if ((e.target.value !== null) && (e.target.id !== 'custom-date-button')) {
+            if ((JSON.parse(e.target.value).startDate !== null) && (e.target.id !== 'custom-date-button')) {
                 // Change Redux Date Range State
                 document.getElementById(`${e.target.id}`).classList += ' Mui-selected'
-                handleRequests({"startDate": e.target.value, "endDate": new Date().getTime().toString()})
-                props.changeDate({"startDate": e.target.value, "endDate": new Date().getTime().toString()});
+                handleRequests({"startDate": JSON.parse(e.target.value).startDate, "endDate": JSON.stringify(new Date(new Date().getTime()).setHours(0, 0, 0, 0))}, props.toggleDate.startDate)
+                props.changeDate({"startDate": JSON.parse(e.target.value).startDate, "endDate": JSON.stringify(new Date(new Date().getTime()).setHours(0, 0, 0, 0))});
             } else {
                 document.querySelector('#custom-date-button').classList += ' Mui-selected'
             }
@@ -94,14 +114,16 @@ const DateFilter = (props) => {
     // CHECK IF REQUEST IS REQUIRED OR NOT
     // ========
 
-    const handleRequests = (dateSelection) => {
+    const handleRequests = (dateSelection, currentStartDate) => {
 
-        // Check if date range exceeds current data capacity and therefore new request is needed
+        // Check if date range exceeds greatest ever cached date range and therefore new request is needed
         const startDateGreater = new Date(d3.timeFormat("%B %d, %Y")(dateSelection.startDate)) < new Date(d3.timeFormat("%B %d, %Y")(props.toggleGreatestDateRange.startDate))
+
+        console.log(startDateGreater)
 
         if (startDateGreater) {
             // Update Greatest Date Range
-            props.toggleGreatestDateRangeDispatch({"startDate": new Date(d3.timeFormat("%B %d, %Y")(dateSelection.startDate)).getTime().toString(), "endDate": props.toggleDate.endDate})
+            props.toggleGreatestDateRangeDispatch({"startDate": new Date(d3.timeFormat("%B %d, %Y")(dateSelection.startDate)).getTime().toString(), "endDate": props.toggleGreatestDateRange.endDate})
 
             // Remove Existing Data for all locations
             props.updatePluviometerData.locations.forEach(function(location) {
@@ -138,12 +160,12 @@ const DateFilter = (props) => {
 
         // ADD FRIENDLY UI FOR MOBILE DEVICES
 
-        <DateFilterButtonGroup sx={{position: positionMode}} exclusive value={props.toggleDate.startDate} onChange={handleChange}>
-            <DateFilterButton id={'24-hours-button'} value={dates['24Hours']} >{"24 " + uiText.global.labels.hours[props.toggleLanguage.language]}</DateFilterButton>
-            <DateFilterButton id={'2-days-button'} value={dates["2Days"]}  >{"2 " + uiText.global.labels.days[props.toggleLanguage.language]}</DateFilterButton>
-            <DateFilterButton id={'7-days-button'} value={dates["7Days"]}  >{"7 " + uiText.global.labels.days[props.toggleLanguage.language]}</DateFilterButton>
-            <DateFilterButton id={'30-days-button'} value={dates["30Days"]}  >{"30 " + uiText.global.labels.days[props.toggleLanguage.language]}</DateFilterButton>
-            <DateFilterButton id={'90-days-button'} value={dates["90Days"]}  >{"90 " + uiText.global.labels.days[props.toggleLanguage.language]}</DateFilterButton>
+        <DateFilterButtonGroup sx={{position: positionMode}} exclusive value={`{"startDate": ${props.toggleDate.startDate}, "endDate": ${props.toggleDate.endDate}}`} onChange={handleChange}>
+            <DateFilterButton id={'24-hours-button'} value={`{"startDate": ${dates['24Hours']}, "endDate": ${dates.now}}`} >{"24 " + uiText.global.labels.hours[props.toggleLanguage.language]}</DateFilterButton>
+            <DateFilterButton id={'2-days-button'} value={`{"startDate": ${dates['2Days']}, "endDate": ${dates.now}}`}  >{"2 " + uiText.global.labels.days[props.toggleLanguage.language]}</DateFilterButton>
+            <DateFilterButton id={'7-days-button'} value={`{"startDate": ${dates['7Days']}, "endDate": ${dates.now}}`}  >{"7 " + uiText.global.labels.days[props.toggleLanguage.language]}</DateFilterButton>
+            <DateFilterButton id={'30-days-button'} value={`{"startDate": ${dates['30Days']}, "endDate": ${dates.now}}`}  >{"30 " + uiText.global.labels.days[props.toggleLanguage.language]}</DateFilterButton>
+            <DateFilterButton id={'90-days-button'} value={`{"startDate": ${dates['90Days']}, "endDate": ${dates.now}}`}  >{"90 " + uiText.global.labels.days[props.toggleLanguage.language]}</DateFilterButton>
             <DateFilterButton id={'custom-date-button'} value={customValue} onClick={handleCustomClick}>{uiText.global.labels.custom[props.toggleLanguage.language]}</DateFilterButton>
             <ClickAwayListener onClickAway={handleCustomClickAway}>
 

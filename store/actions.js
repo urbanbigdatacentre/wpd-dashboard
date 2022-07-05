@@ -61,6 +61,16 @@ export const updateCarouselCoordinates = (newCoordinates) => (dispatch) => {
         type: types.SETCAROUSELCOORDINATES,
         latitude: parseFloat(newCoordinates.latitude),
         longitude: parseFloat(newCoordinates.longitude),
+        submissionType: newCoordinates.submissionType,
+    })
+}
+
+// SET ALL CITIZEN EVENTS
+export const updateAllCitizenEvents = (newCitizenEventsArray) => (dispatch) => {
+
+    return dispatch({
+        type: types.SETALLCITIZENEVENTS,
+        citizenEvents: newCitizenEventsArray,
     })
 }
 

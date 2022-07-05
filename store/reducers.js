@@ -112,6 +112,7 @@ export const changeRadiusWithSlider = (state= hexRadiusInitialState, action) => 
 const carouselCoordinatesInitialState = {
     latitude: -23.6821604,
     longitude: -46.8754915,
+    submissionType: "RAIN_FORM",
 }
 
 export const updateCarouselCoordinates = (state= carouselCoordinatesInitialState, action) => {
@@ -120,6 +121,22 @@ export const updateCarouselCoordinates = (state= carouselCoordinatesInitialState
             return Object.assign({}, state, {
                 latitude: action.latitude,
                 longitude: action.longitude,
+                submissionType: action.submissionType,
+            })
+        default:
+            return state
+    }
+}
+
+const allCitizenEventsInitialState = {
+    citizenEvents: [],
+}
+
+export const updateAllCitizenEvents = (state= allCitizenEventsInitialState, action) => {
+    switch (action.type) {
+        case actionTypes.SETALLCITIZENEVENTS:
+            return Object.assign({}, state, {
+                citizenEvents: action.citizenEvents,
             })
         default:
             return state

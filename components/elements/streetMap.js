@@ -4,12 +4,13 @@
 import {connect} from "react-redux";
 import StaticMap, {NavigationControl} from "react-map-gl";
 import DeckGL from "@deck.gl/react";
-import React, {useCallback, useRef, useState} from "react";
+import React, {useCallback, useEffect, useRef, useState} from "react";
 import {IconLayer} from '@deck.gl/layers';
 import CITIZEN_EVENTS_ICON_MAPPING from "../../data/citizenRainfallEventsIconMapping";
 
 // Local Imports
-import mapIcons from '../../public/images/icons/location-icon-atlas.png';
+import mixedMapIcons from '../../public/images/icons/mixed-location-icon-atlas.png';
+
 import {MapboxLayer} from "@deck.gl/mapbox";
 
 // Map Configuration
@@ -30,7 +31,6 @@ const StreetMap = ({ toggleLocationPreference, mapBoxToken, updateCarouselCoordi
     let vh = 0;
     if (typeof window === `object`) {
         vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
-        vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
     }
 
     const onMapLoad = useCallback(() => {
@@ -61,18 +61,24 @@ const StreetMap = ({ toggleLocationPreference, mapBoxToken, updateCarouselCoordi
 
     }, [deckRef, mapRef, mapLoaded]);
 
+    const ICON_MAPPING = {
+        RIVERFLOOD_FORM: { x: 384, y: 512, width: 128, height: 128, mask: false, anchorY: 128 },
+        RAIN_FORM: { x: 256, y: 512, width: 128, height: 128, mask: false, anchorY: 128 },
+        FLOODZONES_FORM: { x: 384, y: 512, width: 128, height: 128, mask: false, anchorY: 128 },
+    };
 
     const citizenCarouselIconLayer = new IconLayer({
         id: "carousel-citizen-report-layer",
         data: [
             {
+                submissionType: updateCarouselCoordinates.submissionType,
                 coordinates: [updateCarouselCoordinates.longitude, updateCarouselCoordinates.latitude]
             }
         ],
         pickable: true,
-        iconAtlas: mapIcons.src,
-        getIcon: (d) => 'marker',
-        iconMapping: CITIZEN_EVENTS_ICON_MAPPING,
+        iconAtlas: mixedMapIcons.src,
+        getIcon: (d) => updateCarouselCoordinates.submissionType,
+        iconMapping: ICON_MAPPING,
         sizeScale: 10,
         getPosition: (d) => d.coordinates,
         getSize: (d) => 12,

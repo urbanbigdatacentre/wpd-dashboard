@@ -276,6 +276,10 @@ export default {
         "en": "Avg. Daily Rainfall",
         "br": ""
       },
+      "maxDailyRainfall": {
+        "en": "Max. Daily Rainfall",
+        "br": ""
+      },
       "cluster": {
         "en": "Cluster",
         "br": ""
@@ -301,11 +305,11 @@ export default {
         "br": ""
       },
       "browseRiskZones": {
-        "en": "Browse Risk Zones",
+        "en": "Browse Hazard Zones",
         "br": ""
       },
       "risk": {
-        "en": "Risk",
+        "en": "Hazard",
         "br": ""
       },
       "zone": {
@@ -475,6 +479,7 @@ export default {
           "en": "Data represents avg value of measurements taken at official and citizen registered pluviometer (rainfall) gauges across aggregated geographic regions (Hexagons).",
           "br": ""
         },
+
       }
     },
     "about": {
@@ -572,6 +577,10 @@ export default {
         "en": "Avg Daily Rainfall",
         "br": ""
       },
+      "maxDailyRainfall": {
+        "en": "Max Daily Rainfall",
+        "br": ""
+      },
       "citizenReports": {
         "en": "Citizen Reports",
         "br": ""
@@ -579,7 +588,7 @@ export default {
     },
     "rainfallChart": {
       "title": {
-        "en": "Rainfall (mm)",
+        "en": "Avg. Rainfall (mm)",
         "br": ""
       },
       "descriptionParOne": {
@@ -588,6 +597,14 @@ export default {
       },
       "descriptionParTwo": {
         "en": "To improve coverage of rainfall data across Brazil, Waterproofing Data combines official weather stations records with citizen reported measurements.",
+        "br": ""
+      },
+      "value": {
+        "en": "Avg. Value",
+        "br": ""
+      },
+      "date": {
+        "en": "Date",
         "br": ""
       }
     },
@@ -647,11 +664,11 @@ export default {
     },
     "floodMap": {
       "title": {
-        "en": "Flood Events & Risk Zones",
+        "en": "Flood Events & Hazard Zones",
         "br": ""
       },
       "descriptionParOne": {
-        "en": "Specific geographic areas - often close to bodies of water - are often subject to greater risk of flooding.",
+        "en": "Specific geographic areas - often close to bodies of water - are often subject to a greater flood hazard.",
         "br": ""
       },
       "descriptionParTwo": {
@@ -667,11 +684,11 @@ export default {
         "br": ""
       },
       "officialTitle": {
-        "en": "Official Flood Risk Area",
+        "en": "Official Flood Hazard Area",
         "br": ""
       },
       "riskAreas": {
-        "en": "Nearby Risk Areas",
+        "en": "Nearby Hazard Areas",
         "br": ""
       },
       "officialDescription": {
@@ -687,15 +704,15 @@ export default {
         "br": ""
       },
       "floodMapInfo": {
-        "en": "Risks zones are loaded dynamically. Move the map and refresh to view nearby zones.",
+        "en": "Hazard zones are loaded dynamically. Move the map and refresh to view nearby zones.",
         "br": ""
       },
       "floodMapAlertTitle": {
-        "en": "Hidden Risk Zones",
+        "en": "Hidden Hazard Zones",
         "br": ""
       },
       "floodMapAlert": {
-        "en": "We can only show a max of 500 risk zones. Zoom in and refresh to find more zones.",
+        "en": "We can only show a max of 500 hazard zones. Zoom in and refresh to find more zones.",
         "br": ""
       },
       "satellite": {

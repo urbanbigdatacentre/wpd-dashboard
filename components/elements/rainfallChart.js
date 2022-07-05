@@ -2,7 +2,7 @@
 
 // Package Imports
 import {connect} from "react-redux";
-import {Box, styled} from "@mui/material";
+import {Box, styled, Typography} from "@mui/material";
 import * as d3 from 'd3';
 import {usePromiseTracker} from "react-promise-tracker";
 
@@ -15,11 +15,13 @@ import styles from '../../styles/modules/location-page/Chart.module.css'
 import LoadingSkeleton from "./loadingSkeleton";
 import GeneralLegend from "./generalLegend";
 import uiText from "../../data/ui-text";
+import LocationBox from "./locationBox";
 
 // Rainfall Chart Component
 const RainfallChart = ({toggleLanguage, toggleDate, updatePrimaryLocation, updateAdditionalLocation, updatePluviometerData}) => {
 
     const [legendDataArray, setLegendDataArray] = useState([]);
+    const [tooltipData, setTooltipData] = useState({timestamp: "", value: 0, color: '', locationName: ''});
 
     // Get viewport dimensions
     const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
@@ -120,7 +122,7 @@ const RainfallChart = ({toggleLanguage, toggleDate, updatePrimaryLocation, updat
                     formattedDataArray.push(singleDataRecord)
                 });
 
-                completeDataset.push({locationID: location.id, data: formattedDataArray.sort(function (a, b) {return a.timestamp - b.timestamp})})
+                completeDataset.push({locationID: location.id, locationName: location.locationName, data: formattedDataArray.sort(function (a, b) {return a.timestamp - b.timestamp})})
 
             }
         })
@@ -132,10 +134,14 @@ const RainfallChart = ({toggleLanguage, toggleDate, updatePrimaryLocation, updat
         // AXIS AND GRIDLINES
         // ========
 
+        const startDate = new Date(d3.timeFormat("%B %d, %Y")(toggleDate.startDate))
+        const endDate = new Date(d3.timeFormat("%B %d, %Y")(toggleDate.endDate))
+
         // Draw X Axis
         const xScale = d3.scaleTime()
-            .domain([toggleDate.startDate, toggleDate.endDate])
+            .domain([startDate.setDate(startDate.getDate() - 0.5), endDate.setDate(endDate.getDate() + 1)])
             .range([chartMargin.left, width])
+
 
         svg.append("g")
             .attr("transform", "translate(0," + height + ")")
@@ -179,7 +185,6 @@ const RainfallChart = ({toggleLanguage, toggleDate, updatePrimaryLocation, updat
 
         // Render Line - Area - Circles for each location
         completeDataset.forEach(function(singleLocation, index) {
-
             // Configure Color Keys
             let colorCode;
             let additionalLocationIndex = updateAdditionalLocation.locations.findIndex(function(item) {return item['placeid'] === singleLocation.locationID});
@@ -190,75 +195,174 @@ const RainfallChart = ({toggleLanguage, toggleDate, updatePrimaryLocation, updat
                 colorCode = locationColorKeys[additionalLocationIndex].color;
             }
 
-            // Add the area
-            svg.append("path")
-                .datum(singleLocation.data)
-                .attr("fill", colorCode)
-                .attr("class", "area-path")
-                .attr("fill-opacity", .3)
-                .attr("stroke", "none")
-                .attr("d", d3.area()
-                    .x(function(d) {return xScale(new Date(d.timestamp).setHours(0, 0, 0, 0))})
-                    .y0(height)
-                    .y1(function(d) {return height})
-                )
+            // Get number of days in the chart
+            const numberOfDays = Math.ceil((xScale.domain()[1] - xScale.domain()[0]) / (1000 * 3600 * 24));
+            const barWidth = (xScale.range()[1] - xScale.range()[0]) / (numberOfDays)
 
-            // Add the line
-            svg.append("path")
-                .datum(singleLocation.data)
-                .attr("fill", "none")
-                .attr("class", "line-path")
-                .attr("stroke", colorCode)
-                .attr("stroke-width", vw > 900 ? `2` : vw > 600 ? `1.5` : `1`)
-                .attr("d", d3.line()
-                    .x(function(d) { return xScale(new Date(d.timestamp).setHours(0, 0, 0, 0))})
-                    .y(function(d) { return height })
-                )
+            const x1 = d3.scaleBand()
+                .domain([2,1,0])
+                .rangeRound([0, barWidth])
 
-            // Add the dots
-            svg.selectAll("points")
+
+            // Render Bars
+            svg.selectAll('chart-bars')
                 .data(singleLocation.data)
                 .enter()
-                .append("circle")
-                .attr("class", "chart-points")
+                .append('rect')
+                .style("cursor", "pointer")
                 .attr("fill", colorCode)
-                .attr("stroke", "none")
-                .attr("cx", function(d) { return xScale(new Date(d.timestamp).setHours(0, 0, 0, 0))})
-                .attr("cy", function(d) { return height})
-                .attr("r", vw > 900 ? `5` : vw > 600 ? `4` : `2`)
+                .attr("x", function(d) {
 
-            // Animate on Scroll
+                    return (xScale(new Date(d.timestamp).setHours(0, 0, 0, 0))) - x1(index) + (barWidth / completeDataset.length) - (completeDataset.length > 1 ? barWidth / 6 : 0)
 
-            d3.selectAll(".chart-points")
+                })
+                .attr("y", function(d) {
+                    if (d.value === 0) {
+                        return yScale(0)
+                    } else {
+                        return yScale(0)
+                    }
+                })
+                .attr("width", (barWidth / 3))
+                .attr("height", function(d) {
+                    if (d.value === 0) {
+                        return height - yScale(0)
+                    } else {
+                        return height - yScale(0)
+                    }
+                })
+                .attr("class", "chart-bars")
+                .attr("fill-opacity", function (d) {
+                    return d.value === 0 ? 0.3 : 1
+                })
+                .attr("stroke-opacity", function (d) {
+                    return d.value === 0 ? 0.3 : 0.5
+                })
+                .attr("stroke", colorCode)
+                .attr("stroke-width", vw > 900 ? `.25` : vw > 600 ? `.75` : `.5`)
+                .on("mouseover", function(e, d) {
+
+                    const tooltip = d3.selectAll('#rainfall-chart-box')
+                    const mouseLocation = d3.pointer(e)
+
+                    setTooltipData({
+                        timestamp: d.timestamp,
+                        value: d.value,
+                        color: colorCode,
+                        locationName: singleLocation.locationName
+                    });
+
+                    tooltip
+                        .style("display", "block")
+                        .style("left", `${mouseLocation[0] + 10}px`)
+                        .style("top", `${mouseLocation[1] + 10}px`)
+                })
+                .on("mouseout", function(d) {
+                    const tooltip = d3.selectAll('#rainfall-chart-box')
+
+                    tooltip.transition()
+                        .style("display", "none");
+                });
+
+            // // Add the area
+            // svg.append("path")
+            //     .datum(singleLocation.data)
+            //     .attr("fill", colorCode)
+            //     .attr("class", "area-path")
+            //     .attr("fill-opacity", .3)
+            //     .attr("stroke", "none")
+            //     .attr("d", d3.area()
+            //         .x(function(d) {return xScale(new Date(d.timestamp).setHours(0, 0, 0, 0))})
+            //         .y0(height)
+            //         .y1(function(d) {return height})
+            //     )
+            //
+            // // Add the line
+            // svg.append("path")
+            //     .datum(singleLocation.data)
+            //     .attr("fill", "none")
+            //     .attr("class", "line-path")
+            //     .attr("stroke", colorCode)
+            //     .attr("stroke-width", vw > 900 ? `2` : vw > 600 ? `1.5` : `1`)
+            //     .attr("d", d3.line()
+            //         .x(function(d) { return xScale(new Date(d.timestamp).setHours(0, 0, 0, 0))})
+            //         .y(function(d) { return height })
+            //     )
+            //
+            // // Add the dots
+            // svg.selectAll("points")
+            //     .data(singleLocation.data)
+            //     .enter()
+            //     .append("circle")
+            //     .attr("class", "chart-points")
+            //     .attr("fill", colorCode)
+            //     .attr("stroke", "none")
+            //     .attr("cx", function(d) { return xScale(new Date(d.timestamp).setHours(0, 0, 0, 0))})
+            //     .attr("cy", function(d) { return height})
+            //     .attr("r", vw > 900 ? `5` : vw > 600 ? `4` : `2`)
+
+            // Animate on Load
+
+            d3.selectAll(".chart-bars")
                 .transition()
                 .duration(1000)
-                .attr("cx", function(d) { return xScale(new Date(d.timestamp).setHours(0, 0, 0, 0))})
-                .attr("cy", function(d) { return yScale(d.value)})
+                .attr("height", function(d) {
+                    if (d.value === 0) {
+                        return height - yScale(0.5)
+                    } else {
+                        return height - yScale(d.value)
+                    }
+                })
+                .attr("y", function(d) {
+                    if (d.value === 0) {
+                        return yScale(0.5)
+                    } else {
+                        return yScale(d.value)
+                    }
+                })
+                .delay((d,i) => {return i*10})
 
-            d3.selectAll(".line-path")
-                .transition()
-                .duration(1000)
-                .attr("d", d3.line()
-                    .x(function(d) { return xScale(new Date(d.timestamp).setHours(0, 0, 0, 0))})
-                    .y(function(d) { return yScale(d.value) })
-                )
-
-            d3.selectAll(".area-path")
-                .transition()
-                .duration(1000)
-                .attr("d", d3.area()
-                    .x(function(d) {return xScale(new Date(d.timestamp).setHours(0, 0, 0, 0))})
-                    .y0(height)
-                    .y1(function(d) {return yScale(d.value)})
-                )
+            // d3.selectAll(".chart-points")
+            //     .transition()
+            //     .duration(1000)
+            //     .attr("cx", function(d) { return xScale(new Date(d.timestamp).setHours(0, 0, 0, 0))})
+            //     .attr("cy", function(d) { return yScale(d.value)})
+            //
+            // d3.selectAll(".line-path")
+            //     .transition()
+            //     .duration(1000)
+            //     .attr("d", d3.line()
+            //         .x(function(d) { return xScale(new Date(d.timestamp).setHours(0, 0, 0, 0))})
+            //         .y(function(d) { return yScale(d.value) })
+            //     )
+            //
+            // d3.selectAll(".area-path")
+            //     .transition()
+            //     .duration(1000)
+            //     .attr("d", d3.area()
+            //         .x(function(d) {return xScale(new Date(d.timestamp).setHours(0, 0, 0, 0))})
+            //         .y0(height)
+            //         .y1(function(d) {return yScale(d.value)})
+            //     )
         })
 
         }
 
 
     return (
-      <ChartBox >
+      <ChartBox>
           {/*ADD KEY IN ABSOLUTE POSITION TO INDICATE MISSING DATA*/}
+          <ChartTooltip className={'chart-tooltip'} id={"rainfall-chart-box"} sx={{position: `absolute`, zIndex: 1000000000000}}>
+              <LocationBox locationName={tooltipData.locationName} color={tooltipData.color}/>
+              <Box sx={{display: `flex`, justifyContent: `space-between`, width: `100%`, marginTop: (theme) => (theme.spacing(1))}}>
+                  <TooltipTitle>{uiText.locationPage.rainfallChart.value[toggleLanguage.language] + ":"}</TooltipTitle>
+                  <TooltipText>{parseInt(tooltipData.value) + "mm"}</TooltipText>
+              </Box>
+              <Box sx={{display: `flex`, justifyContent: `space-between`, width: `100%`}}>
+                  <TooltipTitle>{uiText.locationPage.rainfallChart.date[toggleLanguage.language] + ":"}</TooltipTitle>
+                  <TooltipText>{tooltipData.timestamp.toLocaleString().split(',')[0]}</TooltipText>
+              </Box>
+          </ChartTooltip>
           <GeneralLegend locationData={legendDataArray}/>
           <LoadingSkeleton area="pluviometer-data" text={uiText.global.labels.timeSeriesLoadingText[toggleLanguage.language]}/>
           <svg
@@ -266,6 +370,7 @@ const RainfallChart = ({toggleLanguage, toggleDate, updatePrimaryLocation, updat
               style={{
                   height: `100%`,
                   width: `100%`,
+                  position: `relative`,
               }}
           >
 
@@ -273,6 +378,41 @@ const RainfallChart = ({toggleLanguage, toggleDate, updatePrimaryLocation, updat
       </ChartBox>
     );
 }
+
+
+const TooltipText = styled(Typography)(({theme}) => ({
+    fontWeight: theme.typography.fontWeightLight,
+    fontSize: `14px`,
+    [theme.breakpoints.down('sm')]: {
+        fontSize: `12px`,
+    },
+}))
+
+const TooltipTitle = styled(Typography)(({theme}) => ({
+    fontWeight: theme.typography.fontWeightBold,
+    fontSize: `14px`,
+    [theme.breakpoints.down('sm')]: {
+        fontSize: `12px`,
+    },
+}))
+
+const ChartTooltip = styled(Box)(({theme}) => ({
+    position: `absolute`,
+    display: `none`,
+    flexDirection: `column`,
+    justifyContent: `center`,
+    backgroundColor: theme.palette.primary.light,
+    borderRadius: theme.shape.borderRadius,
+    maxWidth: `400px`,
+    minWidth: `200px`,
+    padding: theme.spacing(2),
+    boxShadow: `0px 0px 15px #E5E5E5`,
+    border: `1.5px solid #E5E5E5`,
+    zIndex: 4001,
+    [theme.breakpoints.down('md')]: {
+        maxWidth: `300px`,
+    },
+}))
 
 const ChartBox = styled(Box)(({theme}) => ({
     marginTop: theme.spacing(5),
