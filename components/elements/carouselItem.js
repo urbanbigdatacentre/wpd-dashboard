@@ -18,18 +18,23 @@ import {locationColorKeys} from "../../data/colorMapping";
 const CarouselItem = ({ toggleLanguage, data, toggleLocationPreference, updateCitizenEventsRainfallData }) => {
 
     const formTypeMapping = {
-        FLOODZONES_FORM: uiText.global.tooltips.floodEvent[toggleLanguage.language],
-        RAIN_FORM: uiText.global.tooltips.rainEvent[toggleLanguage.language],
-        RIVERFLOOD_FORM: uiText.global.tooltips.floodEvent[toggleLanguage.language],
+        FLOODZONES_FORM: {
+            text: uiText.global.tooltips.floodEvent[toggleLanguage.language],
+            image: "/images/icons/Flood-Icon-Plain.png",
+        },
+        RAIN_FORM: {
+            text: uiText.global.tooltips.rainEvent[toggleLanguage.language],
+            image: "/images/icons/Rain-Icon-Plain.png",
+        },
+        RIVERFLOOD_FORM:  {
+            text: uiText.global.tooltips.floodEvent[toggleLanguage.language],
+            image: "/images/icons/Flood-Icon-Plain.png",
+        }
     }
+
 
     // Get viewport dimensions
     const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
-    const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
-
-    const colorIndex = updateCitizenEventsRainfallData.locations.findIndex(function(el){return el.id === toggleLocationPreference.locationID})
-
-    const colorCode = colorIndex <= 0 ? '#2196F3' : locationColorKeys[colorIndex - 1].color
 
     if (data) {
         return (
@@ -37,20 +42,20 @@ const CarouselItem = ({ toggleLanguage, data, toggleLocationPreference, updateCi
                 <CarouselFlex>
                     <Box sx={{display: `flex`, justifyContent: `center`, alignItems: `center`}}>
                         <ImageWrapperBox>
-                            <Image alt={"citizen avatar"} src={"/images/icons/Citizen-Icon.svg"} width={vw > 600 ? 60 : 40} height={vw > 600 ? 60 : 40} objectFit={'contain'}/>
+                            <Image alt={"citizen avatar"} src={formTypeMapping[data['submissiontype']].image} width={vw > 600 ? 60 : 40} height={vw > 600 ? 60 : 40} objectFit={'contain'}/>
                         </ImageWrapperBox>
                         <TypeOrganisationBox>
                             <CitizenTypeText>{uiText.locationPage.rainfallMap.citizenReport[toggleLanguage.language]}</CitizenTypeText>
                             {/*<CitizenInfoText >{locationPaths.hasOwnProperty(data['organisationtype']) ? locationPaths[data['organisationtype']].text : ""}</CitizenInfoText>*/}
                         </TypeOrganisationBox>
                     </Box>
-                    <EventType>{formTypeMapping[data['submissiontype']].toUpperCase()}<span className={"bluePunctuation"}>.</span></EventType>
+                    <EventType>{formTypeMapping[data['submissiontype']].text.toUpperCase()}<span className={"bluePunctuation"}>.</span></EventType>
                 </CarouselFlex>
                 <MainContentText sx={{fontSize: `25px`, textAlign: `left`, marginTop: (theme) => (theme.spacing(2)), marginBottom: (theme) => (theme.spacing(2))}} >{'"' + data.submissiontext + '"'}</MainContentText>
 
                     <LocationBoxWrapper>
                         <DateText >{new Date(data['submissiontimestamp']).toLocaleString().split(',')[0]}</DateText>
-                        <LocationBox locationName={data['locationame']} color={colorCode}/>
+                        <DateText >{new Date(data['submissiontimestamp']).toLocaleString().split(',')[1].slice(0,6)}</DateText>
                     </LocationBoxWrapper>
             </CarouselBox>
         )

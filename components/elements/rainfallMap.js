@@ -13,7 +13,7 @@ import * as d3 from "d3";
 import {MapboxLayer} from "@deck.gl/mapbox";
 
 // Local Imports
-import avatarIcons from '../../public/images/icons/location-icon-atlas.png';
+import avatarIcons from '../../public/images/icons/rainfall-location-icon-atlas.png';
 import citizenPluviometerIcons from '../../public/images/icons/citizen-pluviometer-icon-atlas.png'
 import {styled, Box, Typography, ToggleButtonGroup, ToggleButton} from "@mui/material";
 import locationPaths from "../../data/locationPaths";
@@ -23,7 +23,6 @@ import CITIZEN_EVENTS_ICON_MAPPING from "../../data/citizenRainfallEventsIconMap
 import uiText from "../../data/ui-text";
 import LoadingSkeleton from "./loadingSkeleton";
 import TooltipChart from "./tooltipChart";
-import LocationBox from "./locationBox";
 import {locationColorKeys} from "../../data/colorMapping";
 import formatCitizenEventsData from "../../api/formatCitizenEventsData";
 import {filterCitizenEventDataByDate, filterPluviometerData} from "../../api/dataFilteringFunctions";
@@ -177,7 +176,6 @@ const RainfallMap = ({ toggleLanguage, toggleDate, toggleDataType, mapBoxToken, 
                         <Box sx={{display: `flex`, marginRight: (theme) => (theme.spacing(2))}}>
                             <TypeOrganisationBox>
                                 <Typography sx={{fontSize: `14px`, fontWeight: (theme) => (theme.typography.fontWeightBold)}} >{object.citizenType.toUpperCase() + " " + object.type.toUpperCase()}<span className={"bluePunctuation"}>.</span></Typography>
-                                <Typography sx={{fontSize: `11px`, color: (theme) => (theme.palette.primary.main)}}>{object.info}</Typography>
                             </TypeOrganisationBox>
                         </Box>
                     </TooltipFlex>
@@ -200,7 +198,7 @@ const RainfallMap = ({ toggleLanguage, toggleDate, toggleDataType, mapBoxToken, 
                 <SubmissionText sx={{fontWeight: (theme) => (theme.typography.fontWeightLight), marginTop: (theme) => (theme.spacing(2))}}>{"'" + object.submissionText + "'"}</SubmissionText>
                 <TooltipFlex sx={{marginTop: (theme) => (theme.spacing(2))}}>
                     <DateText sx={{ color: `#888888`, fontSize: `14px`, fontWeight: (theme) => (theme.typography.fontWeightLight)}} >{object?.timestamp ? new Date(object.timestamp).toLocaleString().split(',')[0] : null}</DateText>
-                    <LocationBox locationName={toggleLocationPreference.locationPreference} color={colorCode}/>
+                    <DateText sx={{ color: `#888888`, fontSize: `14px`, fontWeight: (theme) => (theme.typography.fontWeightLight)}} >{object?.timestamp ? new Date(object.timestamp).toLocaleString().split(',')[1].slice(0,6) : null}</DateText>
                 </TooltipFlex>
             </MyTooltipBox>
             );

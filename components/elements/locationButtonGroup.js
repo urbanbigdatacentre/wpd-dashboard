@@ -14,7 +14,6 @@ import {
     updateFloodZonesData
 } from "../../store/actions";
 import {bindActionCreators} from "redux";
-import latLngToBounds from "../../data/getBoundingBox";
 import requestFloodZonesBBOXData from "../../api/requestFloodZonesBBOXData";
 
 

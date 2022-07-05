@@ -36,7 +36,7 @@ import requestFloodZonesData from "../../api/requestFloodZonesData";
 
 // Search Dropdown Component
 
-const SearchDropdown = ({ configureAPI, toggleDate, toggleLanguage, searchText, results, updatePrimaryLocation, updateAdditionalLocation, updatePrimaryLocationDispatch, updateAdditionalLocationDispatch, addingLocation, clickHandler, changeLocationPreference, updatePluviometerData, updatePluviometerDataDispatch, removePluviometerDataDispatch, updateFloodData, updateFloodDataDispatch, removeFloodDataDispatch, updateCitizenEventsRainfallData, updateCitizenEventsRainfallDataDispatch, removeCitizenRainfallEventsDataDispatch, updateCitizenEventsFloodZonesData, updateCitizenFloodZonesEventsDataDispatch, removeCitizenFloodZonesEventsDataDispatch, updateCitizenEventsRiverFloodData, updateCitizenRiverFloodEventsDataDispatch, removeCitizenRiverFloodEventsDataDispatch }) => {
+const SearchDropdown = ({ configureAPI, toggleDate, toggleGreatestDateRange, toggleLanguage, searchText, results, updatePrimaryLocation, updateAdditionalLocation, updatePrimaryLocationDispatch, updateAdditionalLocationDispatch, addingLocation, clickHandler, changeLocationPreference, updatePluviometerData, updatePluviometerDataDispatch, removePluviometerDataDispatch, updateFloodData, updateFloodDataDispatch, removeFloodDataDispatch, updateCitizenEventsRainfallData, updateCitizenEventsRainfallDataDispatch, removeCitizenRainfallEventsDataDispatch, updateCitizenEventsFloodZonesData, updateCitizenFloodZonesEventsDataDispatch, removeCitizenFloodZonesEventsDataDispatch, updateCitizenEventsRiverFloodData, updateCitizenRiverFloodEventsDataDispatch, removeCitizenRiverFloodEventsDataDispatch }) => {
 
     const { promiseInProgress } = usePromiseTracker({area: "search-result", delay: 0});
 
@@ -74,19 +74,19 @@ const SearchDropdown = ({ configureAPI, toggleDate, toggleLanguage, searchText, 
             requestSimpleGeometry(item, configureAPI, addingLocation, clickHandler, changeLocationPreference, updatePrimaryLocationDispatch, updateAdditionalLocationDispatch);
 
             // Make Request for Pluviometer Data
-            requestPluviometerData(item, toggleDate, configureAPI, updatePluviometerData, updatePluviometerDataDispatch)
+            requestPluviometerData(item, toggleGreatestDateRange, configureAPI, updatePluviometerData, updatePluviometerDataDispatch)
 
             // Make Request for FloodZones Data
             requestFloodZonesData(item, configureAPI, updateFloodData, updateFloodDataDispatch)
 
             // Make Request for Citizen Rainfall Events
-            requestCitizenEvents(item['placeid'], 9, toggleDate.startDate, toggleDate.endDate, item['placename'], configureAPI, updateCitizenEventsRainfallData, updateCitizenEventsRainfallDataDispatch)
+            requestCitizenEvents(item['placeid'], 9, toggleGreatestDateRange.startDate, toggleGreatestDateRange.endDate, item['placename'], configureAPI, updateCitizenEventsRainfallData, updateCitizenEventsRainfallDataDispatch)
 
             // Make Request for Citizen FloodZones Events
-            requestCitizenEvents(item['placeid'], 10, toggleDate.startDate, toggleDate.endDate, item['placename'], configureAPI, updateCitizenEventsFloodZonesData, updateCitizenFloodZonesEventsDataDispatch)
+            requestCitizenEvents(item['placeid'], 10, toggleGreatestDateRange.startDate, toggleGreatestDateRange.endDate, item['placename'], configureAPI, updateCitizenEventsFloodZonesData, updateCitizenFloodZonesEventsDataDispatch)
 
             // Make Request for Citizen RiverFlood Events
-            requestCitizenEvents(item['placeid'], 11, toggleDate.startDate, toggleDate.endDate, item['placename'], configureAPI, updateCitizenEventsRiverFloodData, updateCitizenRiverFloodEventsDataDispatch)
+            requestCitizenEvents(item['placeid'], 11, toggleGreatestDateRange.startDate, toggleGreatestDateRange.endDate, item['placename'], configureAPI, updateCitizenEventsRiverFloodData, updateCitizenRiverFloodEventsDataDispatch)
         }
     }
 

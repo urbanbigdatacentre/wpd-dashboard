@@ -33,12 +33,11 @@ const FloodMapSection = ({ toggleLanguage, mapBoxToken }) => {
                 </Box>
                 <LegendWrapperBox  className={styles.legendWrapper}>
                     <Box className={styles.legendInlineBox}>
-                        <span style={{backgroundColor: `#DA4167`}} className={styles.colorScaleCircle}/>
                         <HelpText sx={{marginLeft: (theme) => (theme.spacing(2)), marginRight: (theme) => (theme.spacing(1)), fontWeight: (theme) => (theme.typography.fontWeightBold)}} variant={"description"}>{uiText.locationPage.floodMap.officialTitle[toggleLanguage.language]}</HelpText>
                         <MyTooltip title={uiText.locationPage.floodMap.officialTitle[toggleLanguage.language]} text={uiText.locationPage.floodMap.officialDescription[toggleLanguage.language]}/>
                     </Box>
                     <Box className={styles.legendInlineBox}>
-                        <Image src={'/images/icons/citizen-submitted-rainfall-event.png'} width={30} height={50} alt={"rainfall map - citizen submitted rainfall event icon"} />
+                        <Image src={'/images/icons/Flood-Event-Icon.png'} width={35} height={42} alt={"flood map - citizen submitted flood event icon"} />
                         <HelpText sx={{marginLeft: (theme) => (theme.spacing(2)), marginRight: (theme) => (theme.spacing(1)), fontWeight: (theme) => (theme.typography.fontWeightBold)}} variant={"description"}>{uiText.locationPage.floodMap.floodEventTitle[toggleLanguage.language]}</HelpText>
                         <MyTooltip title={uiText.locationPage.floodMap.floodEventTitle[toggleLanguage.language]} text={uiText.locationPage.floodMap.floodEventDescription[toggleLanguage.language]}/>
                     </Box>
