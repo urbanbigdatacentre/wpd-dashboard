@@ -262,11 +262,11 @@ export default {
       },
       "lower": {
         "en": "Lower",
-        "br": "Diminuir"
+        "br": "Mais baixa"
       },
       "higher": {
         "en": "Higher",
-        "br": "Aumentar"
+        "br": "Mais alta"
       },
       "hexagonRadius": {
         "en": "Hexagon Radius",
@@ -454,7 +454,7 @@ export default {
       },
       "title": {
         "en": "Reported Flood-Related Activity",
-        "br": "Relatos relacionados a chuvas e inundações"
+        "br": "Relatos de chuvas e inundações"
       },
       "description": {
         "en": "Toggle between map views",
@@ -489,19 +489,19 @@ export default {
       },
       "title": {
         "en": "Expanding Flood Data",
-        "br": "Expandindo Dados relacionados a Inundações"
+        "br": "Expandindo dados sobre inundações"
       },
       "descriptionParOne": {
         "en": "Typically, flood-related data flows up from local levels to scientific \"centres of expertise\". Then, flood-related alerts and interventions flow back down into communities through local governments.",
-        "br": "Tipicamente, os dados relacionados a chuvas e inundações fluem de níveis locais para centros científicos especializados. Então, alertas e intervenções relacionadas a inundações fluem de volta para as comunidades através dos governos locais."
+        "br": "Tipicamente, os dados sobre chuvas e inundações fluem de níveis locais para centros científicos especializados. Então, alertas e intervenções fluem de volta para as comunidades através dos governos locais."
       },
       "descriptionParTwo": {
         "en": "Waterproofing Data aims to reconsider how flood-related data is produced, how it flows and how it can help build sustainable, flood resilient communities.",
-        "br": "O projeto Dados à Prova D'água tem como objetivo reconsiderar como os dados relacionados a inundações são produzidos, como eles fluem e como podem ajudar a construir comunidades sustentáveis e resilientes a inundações."
+        "br": "O projeto Dados à Prova D'água tem como objetivo reconsiderar como os dados sobre inundações são produzidos, como eles fluem e como podem ser usados para ajudar a construir comunidades sustentáveis e resilientes a inundações."
       },
       "descriptionParThree": {
         "en": "The project improves the visible existing flows of flood-related data, generates new types of local flood data through engaging citizen reporters and integrates citizen-generated data with official flood data.",
-        "br": "O projeto melhora a visbilidade de fluxos existentes de dados relacionados a inundações, apoia a geração de novos tipos de dados locais sobre enchentes engajando cidadãos e comunidades, e fornece formas inovadoras de integrar dados gerados pelos cidadãos com dados oficiais."
+        "br": "O projeto melhora a visbilidade de fluxos de dados existentes acerca de inundações, apoia a geração de novos tipos de dados locais engajando cidadãos e comunidades, e fornece formas inovadoras de integrar dados gerados pelos cidadãos com dados oficiais."
       }
     },
     "partners": {
@@ -529,7 +529,7 @@ export default {
     "hero": {
       "descriptionPartOne": {
         "en": "Explore flood data related to ",
-        "br": "Explore dados de inundações relacionados a"
+        "br": "Explore dados de inundações relacionados a "
       },
       "descriptionPartTwo": {
         "en": " and compare it with other locations.",
@@ -571,7 +571,7 @@ export default {
       },
       "floodReports": {
         "en": "Flood Events",
-        "br": "Áreas de alagamento"
+        "br": "Áreas de Alagamento"
       },
       "avgDailyRainfall": {
         "en": "Avg Daily Rainfall",
@@ -643,11 +643,11 @@ export default {
       },
       "higherScale": {
         "en": "Higher",
-        "br": "Aumentar"
+        "br": "Mais alta"
       },
       "lowerScale": {
         "en": "Lower",
-        "br": "Diminuir"
+        "br": "Mais baixa"
       },
       "officialPluviometerTooltip": {
         "en": "Official pluviometers represent rainfall gauges established by governmental agencies (e.g., the National Centre for Disaster Monitoring and Early-Warning/CEMADEN) to measure rainfall at specific geographic points.",
@@ -665,11 +665,11 @@ export default {
     "floodMap": {
       "title": {
         "en": "Flood Events & Hazard Zones",
-        "br": "Eventos de Inundação e Zonas Sucetíveis"
+        "br": "Eventos de Inundação e Áreas de Risco"
       },
       "descriptionParOne": {
         "en": "Our flood map represents officially recognised areas of flood susceptibility (hazard areas) alongside citizen-generated data about flood memories and extreme events, as well as flood risk perception areas.",
-        "br": "O nosso mapa de inundação representa áreas geográficas mapeadas por órgãos oficiais como sucetíveis a inundação em conjunto com dados gerados por cidadãos sobre eventos extremos e memórias de alagamento/inundação, além de áreas de risco percebido por cidadãos."
+        "br": "O nosso mapa de inundação representa áreas geográficas mapeadas por órgãos oficiais como sucetíveis a inundação em conjunto com dados gerados por cidadãos sobre eventos extremos e memórias de alagamento ou inundação, além de áreas de risco percebido por cidadãos."
       },
       "descriptionParTwo": {
         "en": "Geographic areas mapped as suceptible to floods are frequently located close to rivers and water streams. They are usually considered as areas of higher flood risk.",
@@ -697,7 +697,7 @@ export default {
       },
       "floodEventTitle": {
         "en": "Citizen-reported Flood Events",
-        "br": "Áreas de alagamento reportados por cidadãos"
+        "br": "Áreas de alagamento reportadas por cidadãos"
       },
       "floodEventDescription": {
         "en": "Flood events and memories submitted by members of the Waterproofing Data Community.",
@@ -705,7 +705,7 @@ export default {
       },
       "floodMapInfo": {
         "en": "Hazard zones are loaded dynamically. Move the map and refresh to view nearby zones.",
-        "br": "Áreas sucetíveis são carregadas dinamicamente. Mova o mapa e clique em atualiar para ver áreas próximas."
+        "br": "Áreas sucetíveis são carregadas dinamicamente. Mova o mapa e clique em \'Atualizar áreas de risco\' para ver áreas próximas."
       },
       "floodMapAlertTitle": {
         "en": "Hidden Hazard Zones",
@@ -713,7 +713,7 @@ export default {
       },
       "floodMapAlert": {
         "en": "We can only show a max of 500 hazard zones. Zoom in and refresh to find more zones.",
-        "br": "Só é possível exibir um máximo de 500 áreas sucetíveis. Aproxime o zoom e clique em atualizar para ver áreas adicionais."
+        "br": "Só é possível exibir um máximo de 500 áreas sucetíveis. Aproxime o zoom e clique em \'Atualizar áreas de risco\' para ver áreas adicionais."
       },
       "satellite": {
         "en": "Satellite",
@@ -722,6 +722,10 @@ export default {
       "monochrome": {
         "en": "monochrome",
         "br": "monocromático"
+      },
+      "refreshRiskZones": {
+        "en": "Refresh Risk Zones",
+        "br": "Atualizar Áreas De Risco"
       },
       "mapStyle": {
         "en": "Map Style",

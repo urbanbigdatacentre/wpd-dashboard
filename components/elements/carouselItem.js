@@ -32,10 +32,6 @@ const CarouselItem = ({ toggleLanguage, data, toggleLocationPreference, updateCi
         }
     }
 
-    useEffect(() => {
-        console.log(new Date(data['submissiontimestamp']).toLocaleString().split(',')[1] === undefined)
-    })
-
     // Get viewport dimensions
     const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
 
