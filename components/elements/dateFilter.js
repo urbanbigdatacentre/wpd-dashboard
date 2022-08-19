@@ -45,8 +45,11 @@ const DateFilter = (props) => {
     useEffect(() => {
         // Fix to ensure mui selected patterns are correct on load - should be a better method available
         // Infrequent behaviour
-        if (props.toggleDate.endDate.slice(0,5) !== dates.now.slice(0,5)) {
-            document.querySelector('#custom-date-button').classList += ' Mui-selected'
+
+        if ((props.toggleDate.endDate !== undefined) && (dates.now !== undefined)) {
+            if (props.toggleDate.endDate.slice(0,5) !== dates.now?.slice(0,5)) {
+                document.querySelector('#custom-date-button').classList += ' Mui-selected'
+            }
         }
 
     })

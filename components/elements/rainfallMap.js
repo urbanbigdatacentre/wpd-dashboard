@@ -195,8 +195,8 @@ const RainfallMap = ({ toggleLanguage, toggleDate, toggleDataType, mapBoxToken, 
                 </TooltipFlex>
                 <SubmissionText sx={{fontWeight: (theme) => (theme.typography.fontWeightLight), marginTop: (theme) => (theme.spacing(2))}}>{"'" + object.submissionText + "'"}</SubmissionText>
                 <TooltipFlex sx={{marginTop: (theme) => (theme.spacing(2))}}>
-                    <DateText sx={{ color: `#888888`, fontSize: `14px`, fontWeight: (theme) => (theme.typography.fontWeightLight)}} >{object?.timestamp ? new Date(object.timestamp).toLocaleString().split(',')[0] : null}</DateText>
-                    <DateText sx={{ color: `#888888`, fontSize: `14px`, fontWeight: (theme) => (theme.typography.fontWeightLight)}} >{object?.timestamp ? new Date(object.timestamp).toLocaleString().split(',')[1].slice(0,6) : null}</DateText>
+                    <DateText sx={{ color: `#888888`, fontSize: `14px`, fontWeight: (theme) => (theme.typography.fontWeightLight)}} >{object?.timestamp ? new Date(object.timestamp).toLocaleString().split(',')[0] : '-'}</DateText>
+                    <DateText sx={{ color: `#888888`, fontSize: `14px`, fontWeight: (theme) => (theme.typography.fontWeightLight)}} >{object?.timestamp ? new Date(object.timestamp).toLocaleString().split(',')[1] !== undefined ? new Date(object.timestamp).toLocaleString().split(',')[1].slice(0,6) : '-' : '-'}</DateText>
                 </TooltipFlex>
             </MyTooltipBox>
             );

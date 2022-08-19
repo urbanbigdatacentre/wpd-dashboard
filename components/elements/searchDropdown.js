@@ -26,6 +26,7 @@ import {
     removeCitizenRiverFloodEventsData
 } from "../../store/actions";
 import locationPaths from "../../data/locationPaths";
+import locationPathsBR from "../../data/locationPathsBR";
 import config from "../../api/config";
 import uiText from "../../data/ui-text";
 import requestCitizenEvents from "../../api/requestCitizenEvents";
@@ -112,7 +113,7 @@ const SearchDropdown = ({ configureAPI, toggleDate, toggleGreatestDateRange, tog
                                         <LocationName>{searchResult['placename']}</LocationName>
                                         <DetailsBox>
                                             <HasCitizenDataText>{searchResult['hascitizendata'] ? "": uiText.global.labels.hasNoCitizenData[toggleLanguage.language]}</HasCitizenDataText>
-                                            <LocationBox locationName={locationPaths[searchResult['placetype']].text}/>
+                                            <LocationBox locationName={toggleLanguage.language === 'en' ? locationPaths[searchResult['placetype']].text : locationPathsBR[searchResult['placetype']].text}/>
                                         </DetailsBox>
                                     </MyListItem>
                                 </ListItemButton>
