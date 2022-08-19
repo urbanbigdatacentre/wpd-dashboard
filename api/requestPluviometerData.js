@@ -9,6 +9,7 @@ const requestPluviometerData = (item, toggleDate, configureAPI, updatePluviomete
     const API_URL = `${config[configureAPI['node_env'].NODE_ENV]}/dashboard/pluviometers?id=${item['placeid']}&startDate=${toggleDate.startDate}&endDate=${toggleDate.endDate}`
 
     console.log("Requesting /pluviometers")
+    console.log(API_URL)
 
     // Check if Pluviometer Data already exists for this location and if existing timestamp is sufficient
     const filteredPluviometerData = updatePluviometerData.locations.length ? updatePluviometerData.locations.filter(function (location) {

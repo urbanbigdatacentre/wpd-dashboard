@@ -15,7 +15,7 @@ export default function StatCard(props) {
     const marginMode = props.firstInSequence ? `0rem 1rem 0rem 0rem` : `0rem 1rem`;
 
     return (
-      <MyStatCard sx={{margin: marginMode}}>
+      <MyStatCard sx={{margin: marginMode, maxWidth: props.dashboardRender ? (theme) => (theme.spacing(20)) : 'max-content'}}>
           {((!promiseInProgress) && (!promiseInProgressTwo.promiseInProgress)) ? <StatCardNumber>{props.number}</StatCardNumber> : <MyNumberSkeleton/>}
           <StatCardText>{props.text}</StatCardText>
       </MyStatCard>

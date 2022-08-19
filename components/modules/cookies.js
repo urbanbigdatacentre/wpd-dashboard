@@ -16,27 +16,37 @@ const CookiesBanner = ({}) => {
 
     useEffect(() => {
 
-        const documentCookiesConsent = getCookieValue('CookieConsent') ? true : Boolean(0)
+        const documentCookiesConsent = getCookieValue('CookieConsent') === "true"
 
         setCookieConsent(documentCookiesConsent)
 
     }, [cookieConsent])
 
 
-    const handleClick = () => {
+    const handleClick = (e) => {
         let expires = "expires=" + new Date(new Date().setDate(new Date().getDate() + 365)).toUTCString();
-        document.cookie = `CookieConsent=true;${expires}`
-        setCookieConsent(true)
+        // Logic
+        if (e.target.id === "reject-button") {
+            document.cookie = `CookieConsent=false;${expires}`
+            setCookieConsent(false)
+            document.querySelector('#cookies-container').style.display = 'none';
+        } else if (e.target.id === "accept-button") {
+            document.cookie = `CookieConsent=true;${expires}`
+            setCookieConsent(true)
+        }
     }
 
     return (
         !cookieConsent && (
-            <CookiesContainer>
+            <CookiesContainer id={"cookies-container"}>
                 <CookiesTextBox>
                     <CookiesText>This site uses cookies.</CookiesText>
-                    <CookiesText>By continuing to browse you are agreeing to the use of cookies detailed in our <span><a href={"https://ubdc.ac.uk/privacy-and-cookies/"} rel="noreferrer" target={"_blank"}>privacy policy</a>.</span></CookiesText>
+                    <CookiesText>By continuing to browse you are agreeing to the use of cookies detailed in our <span style={{textDecoration: 'underline'}}><a href={"https://ubdc.ac.uk/privacy-and-cookies/"} rel="noreferrer" target={"_blank"}>privacy policy</a>.</span></CookiesText>
                 </CookiesTextBox>
-                <CustomButton onClick={handleClick} variant={'contained'}>Accept & Continue</CustomButton>
+                <CookiesButtonFlex>
+                    <CustomButton id={"reject-button"} onClick={handleClick} variant={'outlined'}>No Thanks</CustomButton>
+                    <CustomButton id={"accept-button"} onClick={handleClick} variant={'contained'}>{"That's OK"}</CustomButton>
+                </CookiesButtonFlex>
             </CookiesContainer>
 
         )
@@ -60,6 +70,15 @@ const CookiesContainer = styled(Container)(({theme}) => ({
     marginLeft: `auto`,
     marginRight: `auto`,
     zIndex: `10000000`
+}))
+
+const CookiesButtonFlex = styled(Box)(({theme}) => ({
+    display: `flex`,
+    [theme.breakpoints.down('sm')] : {
+        flexDirection: `column-reverse`,
+        flexWrap: `wrap`,
+        gap: `.5em`
+    }
 }))
 
 const CookiesTextBox = styled(Box)(({theme}) => ({

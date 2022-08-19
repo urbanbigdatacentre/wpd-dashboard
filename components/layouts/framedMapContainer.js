@@ -27,7 +27,7 @@ const FramedMapContainer = ({ mapBoxToken, mapType, ctx, updatePluviometerData, 
     const maps = {
         NationalOverview: <NationalOverviewMap mapBoxToken={mapBoxToken}/>,
         RainfallMap: (<Box id={"rainfall-map-wrapper"} sx={{height: `600px`}}><RainfallMap ctx={ctx} mapBoxToken={mapBoxToken}/></Box>),
-        FloodMap: <FloodMap ctx={ctx} mapBoxToken={mapBoxToken}/>
+        FloodMap: (<Box id={"flood-map-wrapper"}><FloodMap ctx={ctx} mapBoxToken={mapBoxToken}/></Box>)
     }
 
     return (

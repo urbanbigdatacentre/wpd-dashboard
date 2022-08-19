@@ -17,7 +17,7 @@ import {toggleLocationPreference} from "../../store/reducers";
 import {filterCitizenEventDataByDate, filterPluviometerData} from "../../api/dataFilteringFunctions";
 
 // General Legend Component
-const GeneralLegend = ({locationData, toggleLanguage, toggleDate, updatePrimaryLocation, floodMap, updateCitizenEventsRainfallData, toggleLocationPreference, updateCitizenEventsFloodZonesData, updateCitizenEventsRiverFloodData}) => {
+const GeneralLegend = ({locationData, toggleLanguage, toggleDate, updatePrimaryLocation, updatePluviometerData, floodMap, updateCitizenEventsRainfallData, toggleLocationPreference, updateCitizenEventsFloodZonesData, updateCitizenEventsRiverFloodData}) => {
 
 
     const [menuOpen, setMenuOpenStatus] = useState(false);
@@ -74,8 +74,16 @@ const GeneralLegend = ({locationData, toggleLanguage, toggleDate, updatePrimaryL
                 </>
             )
         } else {
+
+
             // Find number of citizen submitted rainfall for each item
             const citizenRainEventLocationMatch = updateCitizenEventsRainfallData.locations.filter(function(el){return el.id === item['id']})
+
+            // const pluviometerData = filterPluviometerData(item['pluviometerData'], toggleDate)
+            // console.log(pluviometerData)
+
+            const pluviometerData = updatePluviometerData.locations.filter(function(el){return el.id === item.id})
+            const filteredPluviometers = filterPluviometerData(pluviometerData, toggleDate)
 
             const lengthOfArray = citizenRainEventLocationMatch.length ? filterCitizenEventDataByDate(citizenRainEventLocationMatch, 'citizenRainfallEvents', toggleDate)['citizenRainfallEvents'].length : 0;
 
@@ -83,7 +91,7 @@ const GeneralLegend = ({locationData, toggleLanguage, toggleDate, updatePrimaryL
                 <>
                     <LegendLocationName sx={{color: colorCode}}>{item['locationName'].toUpperCase()}</LegendLocationName>
                     <Divider sx={{width: `100%`, margin: `4px 0 2px 0`}}/>
-                    <LegendDataText sx={{fontWeight: (theme) => (theme.typography.fontWeightLight),}}>{item['pluviometerData'].length + " " + uiText.global.tooltips.pluviometers[toggleLanguage.language].toUpperCase()}</LegendDataText>
+                    <LegendDataText sx={{fontWeight: (theme) => (theme.typography.fontWeightLight),}}>{filteredPluviometers['pluviometerData'].length + " " + uiText.global.tooltips.pluviometers[toggleLanguage.language].toUpperCase()}</LegendDataText>
                     <LegendDataText sx={{fontWeight: (theme) => (theme.typography.fontWeightLight),}}>{calculateMeasurements(item) + " " + uiText.global.tooltips.meausurements[toggleLanguage.language].toUpperCase()}</LegendDataText>
                     <LegendDataText sx={{fontWeight: (theme) => (theme.typography.fontWeightLight),}}>{lengthOfArray + " " + uiText.locationPage.rainfallMap.citizenSubmittedRainEvent[toggleLanguage.language].toUpperCase()}</LegendDataText>
                 </>

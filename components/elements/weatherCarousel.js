@@ -82,11 +82,11 @@ const WeatherCarouselContainer = styled(Container)(({theme}) => ({
     margin: `0`,
     width: `55%`,
     [theme.breakpoints.down('1250')]: {
-        width: `75%`,
+        width: `65%`,
         marginTop: theme.spacing(4),
         justifyContent: `space-between`,
     },
-    [theme.breakpoints.down('900')]: {
+    [theme.breakpoints.down('920')]: {
         width: `100%`,
     },
     [theme.breakpoints.down('700')]: {

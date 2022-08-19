@@ -67,6 +67,7 @@ const reducer = (state, action) => {
             ...state,
             ...action.payload,
         }
+
         // Return the new payload
         // ** NB ** Possibility of Preserving State Values on Client Side here
         if (state.updateCitizenEventsRiverFloodData) nextState.updateCitizenEventsRiverFloodData = state.updateCitizenEventsRiverFloodData;
@@ -87,7 +88,7 @@ const reducer = (state, action) => {
         if (state.toggleGreatestDateRange) nextState.toggleGreatestDateRange = state.toggleGreatestDateRange;
         if (state.toggleDate) nextState.toggleDate = state.toggleDate;
         if (state.setSearchTerm) nextState.setSearchTerm = state.setSearchTerm;
-        if (state.toggleLanguage.language) nextState.toggleLanguage.language = state.toggleLanguage.language;
+        if (state.toggleLanguage) nextState.toggleLanguage = state.toggleLanguage;
         if (state.configureAPI.node_env) nextState.configureAPI.node_env = state.configureAPI.node_env;
         return nextState;
     } else {

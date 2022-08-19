@@ -37,10 +37,7 @@ const FloodMapLegend = ({toggleLanguage, updateFloodData, toggleLocationPreferen
     return (
         (
             <LegendWrapperBox>
-                <LegendTitle sx={{fontWeight: (theme) => (theme.typography.fontWeightBold), marginBottom: (theme) => (theme.spacing(1))}}>{uiText.global.tooltips.browseRiskZones[toggleLanguage.language].toUpperCase()}<span className={'bluePunctuation'}>.</span> </LegendTitle>
-                <FloodMapInfo sx={{marginBottom: (theme) => (theme.spacing(1))}}>{uiText.locationPage.floodMap.floodMapInfo[toggleLanguage.language]}</FloodMapInfo>
 
-                {/*<LocationBox locationName={toggleLocationPreference.locationPreference} color={colorCode}/>*/}
                 <NoFloodZonesText sx={{marginBottom: floodDataArray.length ? (theme) => (theme.spacing(2)): 0}}><span style={{fontWeight: `800`}}>{floodDataArray.length !== 500 ? floodDataArray.length + " " : floodDataArray.length + "+ "}</span>{uiText.locationPage.floodMap.riskAreas[toggleLanguage.language].toUpperCase()}<span className={'bluePunctuation'}>.</span></NoFloodZonesText>
                 {floodDataArray.length === 500 ? <MyAlert sx={{border: `1px solid #2196F3`, fontSize: `13px`}} severity={"info"}>
                     <AlertTitle>{uiText.locationPage.floodMap.floodMapAlertTitle[toggleLanguage.language]}</AlertTitle>
@@ -50,6 +47,7 @@ const FloodMapLegend = ({toggleLanguage, updateFloodData, toggleLocationPreferen
 
 
                 {floodDataArray.length ? <Box sx={{display: `flex`, flexDirection: `column`, width: `100%`}}>
+                    <Typography  sx={{marginTop: (theme) => (theme.spacing(2)), fontWeight: (theme) => (theme.typography.fontWeightBold), fontSize: `12px`}}>{uiText.global.tooltips.risk[toggleLanguage.language].toUpperCase()}</Typography>
                     <Box sx={{
                         display: `flex`,
                         width: `100%`,
@@ -63,11 +61,11 @@ const FloodMapLegend = ({toggleLanguage, updateFloodData, toggleLocationPreferen
                     </Box>
                     <Box sx={{display: `flex`, width: `100%`, justifyContent: `space-between`}}>
                         <LegendText
-                            sx={{fontSize: `12px`}}>{uiText.global.tooltips.lower[toggleLanguage.language] + " " + uiText.global.tooltips.risk[toggleLanguage.language]}</LegendText>
+                            sx={{fontSize: `12px`}}>{uiText.global.tooltips.lower[toggleLanguage.language]}</LegendText>
                         <LegendText sx={{
                             fontSize: `12px`,
                             textAlign: `right`
-                        }}>{uiText.global.tooltips.higher[toggleLanguage.language] + " " + uiText.global.tooltips.risk[toggleLanguage.language]}</LegendText>
+                        }}>{uiText.global.tooltips.higher[toggleLanguage.language]}</LegendText>
                     </Box>
 
                 </Box>: null}
@@ -126,10 +124,10 @@ const LegendWrapperBox = styled(Box)(({theme}) => ({
     justifyContent: `space-between`,
     alignItems: `flex-start`,
     zIndex: 600,
-    maxWidth: theme.spacing(40),
+    maxWidth: theme.spacing(45),
 
     height: `auto`,
-    top: theme.spacing(10),
+    top: theme.spacing(8),
     left: theme.spacing(1),
     backgroundColor: theme.palette.primary.light,
     borderRadius: theme.shape.borderRadius,

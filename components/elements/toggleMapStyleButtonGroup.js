@@ -23,6 +23,7 @@ const ToggleMapStyleBox = styled(Box)(({theme}) => ({
     display: `flex`,
     justifyContent: `space-between`,
     alignItems: `center`,
+    marginRight: theme.spacing(1),
     width: `100%`,
     [theme.breakpoints.down('md')]: {
         display: `none`
