@@ -275,7 +275,7 @@ const FloodMap = ({ toggleLanguage, configureAPI, toggleDate, updateFloodData, u
                 <MapStyleButton value={mapStyleMono}>{uiText.locationPage.floodMap.monochrome[toggleLanguage.language]}</MapStyleButton>
                 <MapStyleButton value={mapStyleSatellite}>{uiText.locationPage.floodMap.satellite[toggleLanguage.language]}</MapStyleButton>
             </MapStyleButtonGroup>
-        } refreshButtonComponent={<ReloadButton variant={'outlined'} onClick={handleRefresh} endIcon={promiseInProgress ? <CircularProgress size={20} color={'primary'}/> : <RefreshIcon />}>Refresh Risk Zones</ReloadButton>}/>
+        } refreshButtonComponent={<ReloadButton variant={'outlined'} onClick={handleRefresh} endIcon={promiseInProgress ? <CircularProgress size={20} color={'primary'}/> : <RefreshIcon />}>{uiText.locationPage.floodMap.refreshRiskZones[toggleLanguage.language].toUpperCase()}</ReloadButton>}/>
         <DeckGL
             ref={deckRef}
             onWebGLInitialized={setGLContext}
