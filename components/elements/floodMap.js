@@ -131,8 +131,8 @@ const FloodMap = ({ toggleLanguage, configureAPI, toggleDate, updateFloodData, u
                     </TooltipFlex>
                     <Typography sx={{fontSize: `20px`, fontWeight: (theme) => (theme.typography.fontWeightLight), marginTop: (theme) => (theme.spacing(2))}}>{object.submissionText !== undefined ? "'" + object.submissionText + "'" : uiText.global.tooltips.noComment[toggleLanguage.language]}</Typography>
                     <TooltipFlex sx={{marginTop: (theme) => (theme.spacing(2))}}>
-                        <Typography sx={{ color: `#888888`, fontSize: `14px`, fontWeight: (theme) => (theme.typography.fontWeightLight)}} >{object?.timestamp ? new Date(object.timestamp).toLocaleString().split(',')[0] : null}</Typography>
-                        <Typography sx={{ color: `#888888`, fontSize: `14px`, fontWeight: (theme) => (theme.typography.fontWeightLight)}} >{object?.timestamp ? new Date(object.timestamp).toLocaleString().split(',')[1].slice(0,6) : null}</Typography>
+                        <Typography sx={{ color: `#888888`, fontSize: `14px`, fontWeight: (theme) => (theme.typography.fontWeightLight)}} >{object?.timestamp ? new Date(object.timestamp).toLocaleString().split(',')[0] : '-'}</Typography>
+                        <Typography sx={{ color: `#888888`, fontSize: `14px`, fontWeight: (theme) => (theme.typography.fontWeightLight)}} >{object?.timestamp ? new Date(object.timestamp).toLocaleString().split(',')[1] !== undefined ? new Date(object.timestamp).toLocaleString().split(',')[1].slice(0,6) : '-' : '-'}</Typography>
                     </TooltipFlex>
                 </MyTooltipBox>
             ) : null;

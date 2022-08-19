@@ -32,6 +32,9 @@ const CarouselItem = ({ toggleLanguage, data, toggleLocationPreference, updateCi
         }
     }
 
+    useEffect(() => {
+        console.log(new Date(data['submissiontimestamp']).toLocaleString().split(',')[1] === undefined)
+    })
 
     // Get viewport dimensions
     const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
@@ -55,7 +58,7 @@ const CarouselItem = ({ toggleLanguage, data, toggleLocationPreference, updateCi
 
                     <LocationBoxWrapper>
                         <DateText >{new Date(data['submissiontimestamp']).toLocaleString().split(',')[0]}</DateText>
-                        <DateText >{new Date(data['submissiontimestamp']).toLocaleString().split(',')[1].slice(0,6)}</DateText>
+                        <DateText >{new Date(data['submissiontimestamp']).toLocaleString().split(',')[1] !== undefined ? new Date(data['submissiontimestamp']).toLocaleString().split(',')[1].slice(0,6) : "-"}</DateText>
                     </LocationBoxWrapper>
             </CarouselBox>
         )

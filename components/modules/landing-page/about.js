@@ -28,7 +28,7 @@ const About = ({ toggleLanguage }) => {
           <AboutVideoBox >
               <ReactPlayerWrapper >
                   <ReactPlayerInnerWrapper>
-                      <ReactPlayer className={styles.reactPlayer} url='https://www.youtube.com/embed/lQUulgzMA18?showinfo=0&enablejsapi=1&origin=http://localhost:3000'/>
+                      <ReactPlayer className={styles.reactPlayer} url={toggleLanguage.language === 'en' ? 'https://www.youtube.com/embed/lQUulgzMA18?showinfo=0&enablejsapi=1&origin=http://localhost:3000' : 'https://www.youtube.com/embed/U92B4gBIgik?showinfo=0&enablejsapi=1&origin=http://localhost:3000'}/>
                       <div className={styles.reactPlayerBackground}></div>
                   </ReactPlayerInnerWrapper>
               </ReactPlayerWrapper>
