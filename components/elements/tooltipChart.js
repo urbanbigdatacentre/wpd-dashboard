@@ -6,13 +6,13 @@ import {useEffect} from "react";
 import * as d3 from "d3";
 import {Box, styled} from "@mui/material";
 import styles from "../../styles/modules/location-page/TooltipChart.module.css";
-import {locationColorKeys} from "../../data/colorMapping";
+import {multiFormat} from "../../data/languageFormatting";
 
 // Local Imports
 
 // Tooltip Chart Component
 
-const TooltipChart = ({ data, toggleDate }) => {
+const TooltipChart = ({ data, toggleDate, toggleLanguage }) => {
 
     useEffect(() => {
         // Select and Clear the Chart
@@ -65,12 +65,25 @@ const TooltipChart = ({ data, toggleDate }) => {
         // ========
         // FILTER OUT DATA RECORDS NOT INSIDE DATE RANGE
         // ========
-        const dataRecords = [];
+        const dataRecords = {};
 
         data.records.forEach(function(item) {
             if ((new Date(d3.timeFormat("%B %d, %Y")(toggleDate.startDate)) < new Date(item.timestamp)) && (new Date(d3.timeFormat("%B %d, %Y")(toggleDate.endDate)) >= new Date(item.timestamp).setHours(0, 0, 0, 0))) {
-                dataRecords.push(item)
+                if (dataRecords.hasOwnProperty(new Date(item.timestamp).setHours(0, 0, 0, 0))) {
+                    dataRecords[new Date(item.timestamp).setHours(0, 0, 0, 0)].push(item.value)
+
+                } else {
+                    dataRecords[new Date(item.timestamp).setHours(0, 0, 0, 0)] = []
+                    dataRecords[new Date(item.timestamp).setHours(0, 0, 0, 0)].push(item.value)
+
+                }
             }
+        })
+
+        const formattedDataArray = [];
+
+        Object.keys(dataRecords).forEach(function(key) {
+            formattedDataArray.push({timestamp: new Date(d3.timeFormat("%B %d, %Y")(key)), value: dataRecords[key].reduce((a, b) => parseInt(a) + parseInt(b), 0)})
         })
 
         // ========
@@ -84,12 +97,13 @@ const TooltipChart = ({ data, toggleDate }) => {
         const xScale = d3.scaleTime()
             .domain([startDate.setDate(startDate.getDate() - 0.5), endDate.setDate(endDate.getDate() + 1)])
             .range([chartMargin.left, width])
+            .nice()
 
 
         svg.append("g")
             .attr("transform", "translate(0," + height + ")")
             .attr("class", styles.chartAxis)
-            .call(d3.axisBottom(xScale).ticks(3).tickPadding(5));
+            .call(d3.axisBottom(xScale).ticks(3).tickPadding(5).tickFormat((date) => multiFormat(date, toggleLanguage.language)));
 
         // Draw Y Axis
         const yScale = d3.scaleLinear()
@@ -134,7 +148,7 @@ const TooltipChart = ({ data, toggleDate }) => {
 
         // Render Bars
         svg.selectAll('tooltip-chart-bars')
-            .data(dataRecords)
+            .data(formattedDataArray)
             .enter()
             .append('rect')
             .attr("fill", colorCode)

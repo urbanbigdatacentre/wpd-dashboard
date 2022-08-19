@@ -3,6 +3,7 @@
 // Package Imports
 import DeckGL from '@deck.gl/react';
 import StaticMap from 'react-map-gl';
+import MapScaleControl from "./scaleControl";
 import {connect} from "react-redux";
 import React, {useRef, useEffect, useState, useCallback} from "react";
 
@@ -154,7 +155,10 @@ const NationalOverviewMap = ({ configureAPI, mapBoxToken, changeRadiusWithSlider
                     mapStyle={mapStyleBrazilOnly}
                     mapboxAccessToken={mapBoxToken}
                     onLoad={onMapLoad}
-                />
+                >
+                    <MapScaleControl/>
+                </StaticMap>
+
             )}
 
             </DeckGL>

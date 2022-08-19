@@ -7,6 +7,7 @@ import {ToggleButton, ToggleButtonGroup, styled, ClickAwayListener, Box} from "@
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import { DateRangePicker } from 'react-date-range';
+import {ptBR, enGB} from "react-date-range/dist/locale";
 import * as d3 from 'd3';
 
 // Local Imports
@@ -119,8 +120,6 @@ const DateFilter = (props) => {
         // Check if date range exceeds greatest ever cached date range and therefore new request is needed
         const startDateGreater = new Date(d3.timeFormat("%B %d, %Y")(dateSelection.startDate)) < new Date(d3.timeFormat("%B %d, %Y")(props.toggleGreatestDateRange.startDate))
 
-        console.log(startDateGreater)
-
         if (startDateGreater) {
             // Update Greatest Date Range
             props.toggleGreatestDateRangeDispatch({"startDate": new Date(d3.timeFormat("%B %d, %Y")(dateSelection.startDate)).getTime().toString(), "endDate": props.toggleGreatestDateRange.endDate})
@@ -171,6 +170,7 @@ const DateFilter = (props) => {
 
                     <Box sx={{zIndex: `90000`, display: displayPicker ? `block` : `none`, position: `relative`}}>
                         <DateRangePicker
+                            locale={props.toggleLanguage.language === 'en' ? enGB : ptBR}
                             maxDate={new Date()}
                             minDate={new Date(2021, 1, 1)}
                             fixedHeight={true}

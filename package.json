@@ -24,6 +24,7 @@
     "@emotion/styled": "^11.8.1",
     "@mui/icons-material": "^5.6.2",
     "@mui/material": "^5.5.3",
+    "@urbanbigdatacentre/data-blocks": "^0.0.5",
     "axios": "^0.27.2",
     "d3": "^7.4.4",
     "next": "12.1.4",

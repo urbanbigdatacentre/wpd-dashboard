@@ -9,6 +9,7 @@ import {usePromiseTracker} from "react-promise-tracker";
 // Local Imports
 import {useEffect, useState} from "react";
 import {locationColorKeys} from "../../data/colorMapping";
+import {multiFormat} from "../../data/languageFormatting";
 
 // Style Imports
 import styles from '../../styles/modules/location-page/Chart.module.css'
@@ -36,7 +37,7 @@ const RainfallChart = ({toggleLanguage, toggleDate, updatePrimaryLocation, updat
         // Draw the chart again
         drawChart();
 
-    }, [updatePluviometerData.locations.length, toggleDate.startDate, toggleDate.endDate])
+    }, [updatePluviometerData.locations.length, toggleDate.startDate, toggleDate.endDate, toggleLanguage.language])
 
     // DRAW CHART FUNCTION
     const drawChart = () => {
@@ -97,25 +98,41 @@ const RainfallChart = ({toggleLanguage, toggleDate, updatePrimaryLocation, updat
                 let dataRecords = {}
                 // Desired Data Format = {timestamp: x, avgValue: x}
                 // Loop through pluviometers
-                location.pluviometerData.forEach(function(singlePluviometer) {
+                location.pluviometerData.forEach(function(singlePluviometer, index) {
                     // Loop through individual records
+                    const singlePluviometerRecords = {}
+
                     singlePluviometer.records.forEach(function(record){
+
                         // Check if {timestamp: x, valueArray: []} exists
-                        if (dataRecords.hasOwnProperty(new Date(record.timestamp).setHours(0, 0, 0, 0))) {
+                        if (singlePluviometerRecords.hasOwnProperty(new Date(record.timestamp).setHours(0, 0, 0, 0))) {
                             // Filter Out Records not between date ranges
                             if (new Date(d3.timeFormat("%B %d, %Y")(toggleDate.startDate)) < new Date(record.timestamp)) {
-                                dataRecords[new Date(record.timestamp).setHours(0, 0, 0, 0)].push(record.value)
+
+                                singlePluviometerRecords[new Date(record.timestamp).setHours(0, 0, 0, 0)].push(record.value)
                             }
                         } else {
                             if ((new Date(d3.timeFormat("%B %d, %Y")(toggleDate.startDate)) < new Date(record.timestamp)) && (new Date(d3.timeFormat("%B %d, %Y")(toggleDate.endDate)) >= new Date(record.timestamp).setHours(0, 0, 0, 0))) {
-                                dataRecords[new Date(record.timestamp).setHours(0, 0, 0, 0)] = []
-                                dataRecords[new Date(record.timestamp).setHours(0, 0, 0, 0)].push(record.value)
+
+                                singlePluviometerRecords[new Date(record.timestamp).setHours(0, 0, 0, 0)] = []
+                                singlePluviometerRecords[new Date(record.timestamp).setHours(0, 0, 0, 0)].push(record.value)
                             }
                         }
                     })
+                    // Create Daily Totals to Add Single Pluviometer Records Together
+                    Object.keys(singlePluviometerRecords).forEach(function(key) {
+                        const dailyTotal = singlePluviometerRecords[key].reduce((a, b) => parseInt(a) + parseInt(b), 0)
+                        if (dataRecords.hasOwnProperty(key)) {
+                            dataRecords[key].push(dailyTotal)
+                        } else {
+                            dataRecords[key] = []
+                            dataRecords[key].push(dailyTotal)
+                        }
+                    })
                 })
-                let formattedDataArray = [];
-                // DETERMINE AVG VALUE FOR EACH TIME
+                let formattedDataArray = []
+
+                // DETERMINE AVG VALUE FOR EACH DAY
                 Object.keys(dataRecords).forEach(function(key) {
                     const singleDataRecord = {timestamp: new Date(d3.timeFormat("%B %d, %Y")(key)), value: dataRecords[key].reduce((acc,v,i,a)=>(acc+v/a.length),0)}
                     singleDataRecord.value > maxValue ? maxValue = singleDataRecord.value : null;
@@ -141,17 +158,19 @@ const RainfallChart = ({toggleLanguage, toggleDate, updatePrimaryLocation, updat
         const xScale = d3.scaleTime()
             .domain([startDate.setDate(startDate.getDate() - 0.5), endDate.setDate(endDate.getDate() + 1)])
             .range([chartMargin.left, width])
+            .nice()
 
 
         svg.append("g")
             .attr("transform", "translate(0," + height + ")")
             .attr("class", styles.chartAxis)
-            .call(d3.axisBottom(xScale).ticks(vw > 900 ? 8 : 4).tickPadding(vw > 600 ? 15 : 8));
+            .call(d3.axisBottom(xScale).ticks(vw > 900 ? 8 : 4).tickPadding(vw > 600 ? 15 : 8).tickFormat((date) => multiFormat(date, toggleLanguage.language)));
 
         // Draw Y Axis
         const yScale = d3.scaleLinear()
             .domain([0, Math.ceil(maxValue / 10) * 10])
             .range([height, chartMargin.bottom])
+            .nice()
 
         svg.append("g")
             .attr("class", styles.chartAxis)

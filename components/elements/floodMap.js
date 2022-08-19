@@ -11,6 +11,7 @@ import RefreshIcon from '@mui/icons-material/Refresh';
 
 // Local Imports
 import {styled, Box, Typography, Button, ToggleButtonGroup, ToggleButton} from "@mui/material";
+import MapScaleControl from "./scaleControl";
 import CITIZEN_EVENTS_ICON_MAPPING from "../../data/citizenRainfallEventsIconMapping";
 import {MapboxLayer} from "@deck.gl/mapbox";
 import {bindActionCreators} from "redux";
@@ -125,7 +126,7 @@ const FloodMap = ({ toggleLanguage, configureAPI, toggleDate, updateFloodData, u
                                 <Typography sx={{fontWeight: `400`}} >{uiText.locationPage.rainfallMap.citizenReport[toggleLanguage.language].toUpperCase() + " "}</Typography>
                                 {/*<Typography sx={{fontSize: `11px`, color: (theme) => (theme.palette.primary.main)}}>{object.citizenType !== undefined ? object.citizenType.text : ""}</Typography>*/}
                             </TypeOrganisationBox>
-                            <Typography sx={{marginLeft: (theme) => (theme.spacing(4)), fontWeight: (theme) => (theme.typography.fontWeightBold)}}>{uiText.global.tooltips.floodEvent[toggleLanguage.language].toUpperCase()}<span className={"bluePunctuation"}>.</span></Typography>
+                            <Typography sx={{textAlign: `right`, marginLeft: (theme) => (theme.spacing(4)), fontWeight: (theme) => (theme.typography.fontWeightBold)}}>{uiText.global.tooltips.floodEvent[toggleLanguage.language].toUpperCase()}<span className={"bluePunctuation"}>.</span></Typography>
                         </Box>
                     </TooltipFlex>
                     <Typography sx={{fontSize: `20px`, fontWeight: (theme) => (theme.typography.fontWeightLight), marginTop: (theme) => (theme.spacing(2))}}>{object.submissionText !== undefined ? "'" + object.submissionText + "'" : uiText.global.tooltips.noComment[toggleLanguage.language]}</Typography>
@@ -300,7 +301,10 @@ const FloodMap = ({ toggleLanguage, configureAPI, toggleDate, updateFloodData, u
                     mapStyle={mapStyle}
                     mapboxAccessToken={mapBoxToken}
                     onLoad={onMapLoad}
-                />
+                >
+                    <MapScaleControl position={'bottom-right'}/>
+
+                </StaticMap>
             )}
 
             {renderTooltip(hoverInfo)}

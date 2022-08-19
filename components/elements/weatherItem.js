@@ -57,6 +57,7 @@ const WeatherCard = styled(Card)(({theme}) => ({
     boxShadow: `none`,
     textAlign: `center`,
     width: `max-content`,
+    maxWidth: theme.spacing(30),
     [theme.breakpoints.down('1250')]: {
         padding: `0rem .25rem`,
     },
@@ -83,13 +84,13 @@ const Temperature = styled(Typography)(({theme}) => ({
 const Weekday = styled(Typography)(({theme}) => ({
     color: theme.palette.primary.light,
     fontWeight: `800`,
-    fontSize: `1rem`,
+    fontSize: `.80rem`,
 }))
 
 const DateText = styled(Typography)(({theme}) => ({
     color: theme.palette.primary.light,
     fontWeight: `300`,
-    fontSize: `.75rem`,
+    fontSize: `.70rem`,
 }))
 
 

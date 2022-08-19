@@ -14,6 +14,7 @@ import {MapboxLayer} from "@deck.gl/mapbox";
 
 // Local Imports
 import avatarIcons from '../../public/images/icons/rainfall-location-icon-atlas.png';
+import MapScaleControl from "./scaleControl";
 import citizenPluviometerIcons from '../../public/images/icons/citizen-pluviometer-icon-atlas.png'
 import {styled, Box, Typography, ToggleButtonGroup, ToggleButton} from "@mui/material";
 import locationPaths from "../../data/locationPaths";
@@ -57,9 +58,6 @@ const RainfallMap = ({ toggleLanguage, toggleDate, toggleDataType, mapBoxToken, 
 
             const map = mapRef.current.getMap();
             const deck = deckRef.current.deck;
-
-
-            // console.log(map.getStyle().layers)
 
             map.addLayer(new MapboxLayer({ id: "dummy-layer", deck }));
             map.addLayer(new MapboxLayer({ id: "citizen-rainfall-events-layer", deck }, "country-label"));
@@ -255,6 +253,7 @@ const RainfallMap = ({ toggleLanguage, toggleDate, toggleDataType, mapBoxToken, 
 
     const layerProps = {
         data: citizenPluviometerMapConfig.data,
+        sizeUnits: `meters`,
         pickable: true,
         visible: (toggleDataType.dataType === "Combined") || (toggleDataType.dataType === "Citizen"),
         getPosition: (d) => d.coordinates,
@@ -264,15 +263,27 @@ const RainfallMap = ({ toggleLanguage, toggleDate, toggleDataType, mapBoxToken, 
     };
 
     const citizenPluviometerLayer = citizenPluviometerMapConfig.showCluster ?
-        new IconClusterLayer({...layerProps, id: 'pluviometer-icon-cluster', sizeScale: 45}) :
+        new IconClusterLayer({...layerProps, id: 'pluviometer-icon-cluster', sizeScale: 100}) :
         new IconLayer({
         ...layerProps,
         id: "citizen-pluviometer-layer",
         getIcon: d => 'marker',
-        sizeScale: 30,
+        sizeScale: 1,
         getColor: d => d.color,
-        getSize: (d) => 1,
+        // Make sure does not exceed 600m
+        getSize: (d) => 600,
+        sizeMinPixels: 50,
     });
+
+    // const citizenPluviometerLayer =
+    //     new IconLayer({
+    //         ...layerProps,
+    //         id: "citizen-pluviometer-layer",
+    //         getIcon: d => 'marker',
+    //         sizeScale: 1,
+    //         getColor: d => d.color,
+    //         getSize: (d) => 300,
+    //     });
 
     // CITIZEN RAINFALL EVENTS LAYER
 
@@ -302,7 +313,8 @@ const RainfallMap = ({ toggleLanguage, toggleDate, toggleDataType, mapBoxToken, 
         longitude: locationSettings.initialLongitude,
         latitude: locationSettings.initialLatitude,
         zoom: locationSettings.zoom,
-        minZoom: 1,
+        minZoom: 3,
+        // maxZoom: 16,
         maxZoom: 50,
         pitch: 0,
         bearing: 0
@@ -313,8 +325,6 @@ const RainfallMap = ({ toggleLanguage, toggleDate, toggleDataType, mapBoxToken, 
 
     const handleMapStyleChange = (e) => {
         const map = mapRef.current.getMap();
-
-        console.log(map.getStyle().layers)
 
         setMapStyle(e.target.value)
     }
@@ -355,7 +365,9 @@ const RainfallMap = ({ toggleLanguage, toggleDate, toggleDataType, mapBoxToken, 
                     mapStyle={mapStyle}
                     mapboxAccessToken={mapBoxToken}
                     onLoad={onMapLoad}
-                />
+                >
+                    <MapScaleControl/>
+                </StaticMap>
             )}
 
 

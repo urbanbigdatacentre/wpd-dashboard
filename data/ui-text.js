@@ -9,20 +9,20 @@ export default {
         "br": "Junte-se ao Projeto"
       },
       "footerLinkBottom": {
-        "en": "National Overview",
-        "br": "Visão geral nacional"
+        "en": "Overview",
+        "br": "Visão geral"
       },
       "privacyAndCookies": {
         "en": "Privacy and Cookies",
-        "br": ""
+        "br": "Privacidade e Cookies"
       },
       "contactUs": {
         "en": "Contact Us",
-        "br": ""
+        "br": "Entre em contato"
       },
       "accessibility": {
         "en": "Accessibility",
-        "br": ""
+        "br": "Acessibilidade"
       },
       "navButton": {
         "en": "Join the project",
@@ -33,451 +33,451 @@ export default {
         "br": "Língua"
       },
       "navRightLink": {
-        "en": "National Overview",
-        "br": "Visão geral nacional"
+        "en": "Overview",
+        "br": "Visão geral"
       },
       "projectTitle": {
         "en": "Waterproofing Data",
-        "br": "Dados de impermeabilização"
+        "br": "Dados à Prova D'Água"
       },
       "searchPlaceholder": {
         "en": "Search for a location ...",
-        "br": ""
+        "br": "Busca por localidade"
       },
       "howToRead": {
         "en": "How To Read?",
-        "br": ""
+        "br": "Como interpretar?"
       },
       "days": {
         "en": "Days",
-        "br": ""
+        "br": "Dias"
       },
       "months": {
         "en": "Months",
-        "br": ""
+        "br": "Meses"
       },
       "hours": {
         "en": "Hours",
-        "br": ""
+        "br": "Horas"
       },
       "custom": {
         "en": "Custom",
-        "br": ""
+        "br": "Customizar"
       },
       "dateRange": {
         "en": "Select a date range",
-        "br": ""
+        "br": "Selecionar uma faixa de datas"
       },
       "state": {
         "en": "State",
-        "br": ""
+        "br": "Estado"
       },
       "city": {
         "en": "Hours",
-        "br": ""
+        "br": "Horas"
       },
       "municipality": {
         "en": "Hours",
-        "br": ""
+        "br": "Horas"
       },
       "mobileAppButton": {
         "en": "Download the app",
-        "br": ""
+        "br": "Baixar o aplicativo"
       },
       "hasCitizenData": {
         "en": "Data Coverage",
-        "br": ""
+        "br": "Cobertura de dados"
       },
       "hasNoCitizenData": {
         "en": "Limited Data Coverage",
-        "br": ""
+        "br": "Cobertura de dados limitada"
       },
       "combined": {
         "en": "Combined",
-        "br": ""
+        "br": "Combinado"
       },
       "officialData": {
         "en": "Official data",
-        "br": ""
+        "br": "Dados oficiais"
       },
       "citizenReports": {
         "en": "Citizen Reports",
-        "br": ""
+        "br": "Registros de cidadãos"
       },
       "addLocation": {
         "en": "Add Location",
-        "br": ""
+        "br": "Adicionar localidade"
       },
       "noDataFound": {
         "en": "No matching locations found",
-        "br": ""
+        "br": "Não foram encontradas localidades correspondentes"
       },
       "loadingResults": {
         "en": "Loading Search Results",
-        "br": ""
+        "br": "Carregando resultados da busca"
       },
       "backToSearch": {
         "en": "Back to Search",
-        "br": ""
+        "br": "Voltar à busca"
       },
       "enterALocation": {
         "en": "Start typing to search for a location ...",
-        "br": ""
+        "br": "Comece a digitar para buscar por uma localidade"
       },
       "searchResults": {
         "en": "Search Results",
-        "br": ""
+        "br": "Resultados da busca"
       },
       "hM": {
         "en": "Hmmmm ",
-        "br": ""
+        "br": "Hmmmm"
       },
       "noResultsFound": {
         "en": "Sorry! We couldn't find any locations matching ",
-        "br": ""
+        "br": "Desculpe! Não pudemos encontrar nenhuma localidade correspondente"
       },
       "checkYourSearch": {
         "en": "Check your search for typos or try another query!",
-        "br": ""
+        "br": "Verifique seus termos de busca ou tente outra alternativa"
       },
       "loadingData": {
         "en": "Loading Data",
-        "br": ""
+        "br": "Carregando dados"
       },
       "timeSeriesLoadingText": {
         "en": "Loading Data",
-        "br": ""
+        "br": "Carregando dados"
       },
       "rainfallMapLoadingText": {
         "en": "Building Maps",
-        "br": ""
+        "br": "Construindo mapas"
       },
       "overiewMapLoadingText": {
         "en": "Fetching Data",
-        "br": ""
+        "br": "Recuperando dados"
       },
       "holdOn": {
         "en": "Hold On",
-        "br": ""
+        "br": "Espere"
       },
       "tweets": {
         "en": "Tweets",
-        "br": ""
+        "br": "Tweets"
       },
       "addNewLocation": {
         "en": "Add a New Location",
-        "br": ""
+        "br": "Adicionar nova localidade"
       },
       "selectedLocations": {
         "en": "Selected Locations",
-        "br": ""
+        "br": "Localidades selecionadas"
       },
       "popularLocation": {
         "en": "Popular Location Dashboards",
-        "br": ""
+        "br": "Dashboards de localidades populares"
       },
       "selectedALocation": {
         "en": "Select a Location",
-        "br": ""
+        "br": "Selecione uma localidade"
       },
       "changeLocation": {
         "en": "Change Location",
-        "br": ""
+        "br": "Mudar localidade"
       },
       "tooManyLocationsTitle": {
         "en": "Too Many Selected Locations",
-        "br": ""
+        "br": "Demasiadas localidades foram selectionadas"
       },
       "tooManyLocationsDescription": {
         "en": "Delete a location from the list below to add another",
-        "br": ""
+        "br": "Remova uma localidade da lista abaixo para adicionar outra"
       },
       "dataSources": {
         "en": "Data Sources",
-        "br": ""
+        "br": "Fontes de dados"
       },
       "submissionTypes": {
         "C": {
           "en": "Citizen Pluviometer",
-          "br": ""
+          "br": "Pluviômetro cidadão"
         },
         "O": {
           "en": "Official Record",
-          "br": ""
+          "br": "Registro oficial"
         },
       }
     },
     "tooltips": {
       "rainEvent": {
         "en": "Rain Event",
-        "br": ""
+        "br": "Evento de chuva"
       },
       "noComment": {
         "en": "No Comment",
-        "br": ""
+        "br": "Sem comentários"
       },
       "switchLocationView": {
         "en": "Switch Location View",
-        "br": ""
+        "br": "Mudar visão da localidade"
       },
       "officialPluviometer": {
         "en": "Official Pluviometer",
-        "br": ""
+        "br": "Pluviômetro oficial"
       },
       "officialPluviometers": {
         "en": "Official Pluviometers",
-        "br": ""
+        "br": "Pluviômetros oficiais"
       },
       "pluviometers": {
         "en": "Active Pluviometers",
-        "br": ""
+        "br": "Pluviômetros ativos"
       },
       "dataOverview": {
         "en": "Data Overview",
-        "br": ""
+        "br": "Visão geral dos dados"
       },
       "meausurements": {
         "en": "Measurements",
-        "br": ""
+        "br": "Medições"
       },
       "multiple": {
         "en": "Multiple",
-        "br": ""
+        "br": "Múltiplos"
       },
       "nearby": {
         "en": "Nearby",
-        "br": ""
+        "br": "Vizinhança"
       },
       "measurement": {
         "en": "Measurement (mm)",
-        "br": ""
+        "br": "Medição (mm)"
       },
       "citizenPluviometer": {
         "en": "Citizen Pluviometer",
-        "br": ""
+        "br": "Pluviômetro cidadão"
       },
       "citizenPluviometers": {
         "en": "Citizen Pluviometers",
-        "br": ""
+        "br": "Pluviômetro cidadão"
       },
       "lower": {
         "en": "Lower",
-        "br": ""
+        "br": "Diminuir"
       },
       "higher": {
         "en": "Higher",
-        "br": ""
+        "br": "Aumentar"
       },
       "hexagonRadius": {
         "en": "Hexagon Radius",
-        "br": ""
+        "br": "Raio do hexágono"
       },
       "avgDailyRainfall": {
         "en": "Avg. Daily Rainfall",
-        "br": ""
+        "br": "Média diária da quantidade de chuva"
       },
       "maxDailyRainfall": {
         "en": "Max. Daily Rainfall",
-        "br": ""
+        "br": "Quantidade de chuva máxima no dia"
       },
       "cluster": {
         "en": "Cluster",
-        "br": ""
+        "br": "Agrupar"
       },
       "latestMeasurement": {
         "en": "Latest Measurement",
-        "br": ""
+        "br": "Medição mais recente"
       },
       "latestMeasurementValue": {
         "en": "Latest Measurement Value",
-        "br": ""
+        "br": "Valor medido mais recente"
       },
       "floodMemory": {
         "en": "Flood Memory",
-        "br": ""
+        "br": "Memória de inundação"
       },
       "floodEvent": {
         "en": "Flood Event",
-        "br": ""
+        "br": "Evento de alagamento"
       },
       "floodEvents": {
         "en": "Flood Events",
-        "br": ""
+        "br": "Eventos de alagamento"
       },
       "browseRiskZones": {
         "en": "Browse Hazard Zones",
-        "br": ""
+        "br": "Procurar áreas sucetíveis"
       },
       "risk": {
-        "en": "Hazard",
-        "br": ""
+        "en": "Flood Hazard",
+        "br": "Suceptibilidade a inundações"
       },
       "zone": {
         "en": "Zone",
-        "br": ""
+        "br": "Área"
       },
       "rainfallLegendDescription": {
-        "en": "Data represents rainfall measurements (mm) taken at citizen or official pluviometer gauges.",
-        "br": ""
+        "en": "Data represents rainfall measurements (mm) recorded by citizens or official pluviometer gauges.",
+        "br": "Os dados representam medições da quantidade de chuva precipitada (mm) registrada por cidadãos ou por pluviômetros oficiais."
       }
     },
     "months": {
       "january": {
         "en": "January",
-        "br": ""
+        "br": "Janeiro"
       },
       "february": {
         "en": "February",
-        "br": ""
+        "br": "Fevereiro"
       },
       "march": {
         "en": "March",
-        "br": ""
+        "br": "Março"
       },
       "april": {
         "en": "April",
-        "br": ""
+        "br": "Abril"
       },
       "may": {
         "en": "May",
-        "br": ""
+        "br": "Maio"
       },
       "june": {
         "en": "June",
-        "br": ""
+        "br": "Junho"
       },
       "july": {
         "en": "July",
-        "br": ""
+        "br": "Julho"
       },
       "august": {
         "en": "August",
-        "br": ""
+        "br": "Agosto"
       },
       "september": {
         "en": "September",
-        "br": ""
+        "br": "Setembro"
       },
       "october": {
         "en": "October",
-        "br": ""
+        "br": "Outubro"
       },
       "november": {
         "en": "November",
-        "br": ""
+        "br": "Novembro"
       },
       "december": {
         "en": "December",
-        "br": ""
+        "br": "Dezembro"
       }
     },
     "days": {
       "monday": {
         "en": "Monday",
-        "br": ""
+        "br": "Segunda-feira"
       },
       "tuesday": {
         "en": "Tuesday",
-        "br": ""
+        "br": "Terça-feira"
       },
       "wednesday": {
         "en": "Wednesday",
-        "br": ""
+        "br": "Quarta-feira"
       },
       "thursday": {
         "en": "Thursday",
-        "br": ""
+        "br": "Quinta-feira"
       },
       "friday": {
         "en": "Friday",
-        "br": ""
+        "br": "Sexta-feira"
       },
       "saturday": {
         "en": "Saturday",
-        "br": ""
+        "br": "Sábado"
       },
       "sunday": {
         "en": "Sunday",
-        "br": ""
+        "br": "Domingo"
       }
     }
   },
   "landingPage": {
     "hero": {
       "subtitle": {
-        "en": "Connecting Brazilian Flood Data From Citizen Reports, Communities & Official Sources",
-        "br": "Conectando dados brasileiros de enchentes de comunidades e fontes oficiais"
+        "en": "Connecting Flood Data From Citizen Scientists, Communities & Official Sources",
+        "br": "Conectando Dados de Inundações de Cientistas Cidadãos, Comunidades e Fontes Oficiais"
       },
       "topBlue": {
-        "en": "Explore Flood Data in Brazil",
-        "br": "Conectando dados brasileiros de enchentes de comunidades e fontes oficiais"
+        "en": "Explore Flood Data",
+        "br": "Explore Dados de Inundações"
       },
       "backToDashboard": {
         "en": "Back to Dashboard",
-        "br": ""
+        "br": "Voltar ao Dashboard"
       },
       "backToHome": {
         "en": "Back to Search",
-        "br": ""
+        "br": "Voltar à busca"
       }
     },
     "statisticsBar": {
       "pluviometers": {
         "en": "Registered Pluviometers",
-        "br": ""
+        "br": "Pluviômetros registrados"
       },
       "rowsOfData": {
         "en": "Rows of Citizen Generated Data",
-        "br": ""
+        "br": "Registros de dados gerados por cidadãos"
       },
       "citizenReporters": {
         "en": "Citizen Reporters",
-        "br": ""
+        "br": "Cientistas Cidadãos"
       },
       "partnerSchools": {
         "en": "Partner Schools",
-        "br": ""
+        "br": "Escolas Participantes"
       },
       "protectionAgencies": {
         "en": "Civil Protection Agencies",
-        "br": ""
+        "br": "Agências de Defesa Civil"
       },
       "cityCoverage": {
         "en": "Cities Covered",
-        "br": ""
+        "br": "Cidades Participantes"
       }
     },
     "nationalActivityMap": {
       "topBlue": {
         "en": "What's Happening?",
-        "br": ""
+        "br": "O que está acontecendo?"
       },
       "title": {
-        "en": "National Flood Activity",
-        "br": ""
+        "en": "Reported Flood-Related Activity",
+        "br": "Relatos relacionados a chuvas e inundações"
       },
       "description": {
         "en": "Toggle between map views",
-        "br": ""
+        "br": "Alternar entre visões do mapa"
       },
       "Citizen Reports": {
         "title": {
           "en": "No. Citizen Reports",
-          "br": ""
+          "br": "Relatos de Cidadãos"
         },
         "description": {
-          "en": "Data represents the number of citizen reports submitted to Waterproofing Data across aggregated geographic regions (Hexagons).",
-          "br": ""
+          "en": "Data represents the number of citizen reports submitted to Waterproofing Data within the depicted geographic regions (hexagons).",
+          "br": "Os dados representam o número de relatos enviados por cidadãos para o Dados à Prova D'Água dentro das áreas geográficas representadas (hexágonos)."
         },
       },
       "Avg Daily Rainfall": {
         "title": {
           "en": "Avg Daily Rainfall",
-          "br": ""
+          "br": "Média Diária de Chuva"
         },
         "description": {
-          "en": "Data represents avg value of measurements taken at official and citizen registered pluviometer (rainfall) gauges across aggregated geographic regions (Hexagons).",
-          "br": ""
+          "en": "Data represents the average value of measurements taken at official and citizen registered pluviometer (rainfall) gauges within depicted geographic regions (hexagons).",
+          "br": "Os dados representam a média entre os valores registrados por pluviômetros oficiais e as medições enviadas por cidadãos para o Dados à Prova D'Água dentro das áreas geográficas representadas (hexágonos)."
         },
 
       }
@@ -485,39 +485,39 @@ export default {
     "about": {
       "topBlue": {
         "en": "About the Project",
-        "br": ""
+        "br": "Sobre o projeto"
       },
       "title": {
-        "en": "Unifying Flood Data in Brazil",
-        "br": ""
+        "en": "Expanding Flood Data",
+        "br": "Expandindo Dados relacionados a Inundações"
       },
       "descriptionParOne": {
         "en": "Typically, flood-related data flows up from local levels to scientific \"centres of expertise\". Then, flood-related alerts and interventions flow back down into communities through local governments.",
-        "br": ""
+        "br": "Tipicamente, os dados relacionados a chuvas e inundações fluem de níveis locais para centros científicos especializados. Então, alertas e intervenções relacionadas a inundações fluem de volta para as comunidades através dos governos locais."
       },
       "descriptionParTwo": {
         "en": "Waterproofing Data aims to reconsider how flood-related data is produced, how it flows and how it can help build sustainable, flood resilient communities.",
-        "br": ""
+        "br": "O projeto Dados à Prova D'água tem como objetivo reconsiderar como os dados relacionados a inundações são produzidos, como eles fluem e como podem ajudar a construir comunidades sustentáveis e resilientes a inundações."
       },
       "descriptionParThree": {
         "en": "The project improves the visible existing flows of flood-related data, generates new types of local flood data through engaging citizen reporters and integrates citizen-generated data with official flood data.",
-        "br": ""
+        "br": "O projeto melhora a visbilidade de fluxos existentes de dados relacionados a inundações, apoia a geração de novos tipos de dados locais sobre enchentes engajando cidadãos e comunidades, e fornece formas inovadoras de integrar dados gerados pelos cidadãos com dados oficiais."
       }
     },
     "partners": {
       "title": {
         "en": "Project Partners & Funding Agencies",
-        "br": ""
+        "br": "Organizações Participantes e Agências de Fomento"
       }
     },
     "carouselMap": {
       "topBlue": {
         "en": "Measurements - Events - Memories",
-        "br": ""
+        "br": "Medições - Eventos - Memórias"
       },
       "title": {
         "en": "Citizen Generated Data",
-        "br": ""
+        "br": "Dados gerados por cidadãos"
       },
       "description": {
         "en": "Citizen reporters are helping to improve flood data coverage across Brazil. Explore flood memories, rainfall measurements, reported events and flood perception areas reported by our community.",
@@ -529,207 +529,207 @@ export default {
     "hero": {
       "descriptionPartOne": {
         "en": "Explore flood data related to ",
-        "br": ""
+        "br": "Explore dados de inundações relacionados a"
       },
       "descriptionPartTwo": {
         "en": " and compare it with other locations.",
-        "br": ""
+        "br": " e compare-os com outras localidades"
       }
     },
     "noData": {
       "topBlue": {
         "en": "No Data Found",
-        "br": ""
+        "br": "Dados não foram encontrados"
       },
       "description": {
         "en": "We couldn't find any citizen submissions matching this location. Try expanding your date range to reflect a longer time period.",
-        "br": ""
+        "br": "Nenhum relato de cidadãos foi encontrado correspondente a essa localidade. Tente expandir sua faixa de datas para abranger um período mais longo."
       },
     },
     "noLocation": {
       "topBlue": {
         "en": "No Location Selected",
-        "br": ""
+        "br": "Nenhuma localidade selecionada"
       },
       "title": {
         "en": "Set a Location",
-        "br": ""
+        "br": "Defina uma localidade"
       },
       "description": {
-        "en": "Waterproofing Data collects flood data from Brazilian communities and connects it with official flood data. Search for a location to start exploring.",
-        "br": ""
+        "en": "Waterproofing Data collects flood data from citizens and communities, and connects them with official flood data. Search for a location to start exploring.",
+        "br": "O Dados à Prova D'água disponibiliza dados relativos a chuva e inundações coletados por cidadãos e comunidades, associando-os a dados oficiais. Busque por uma localidade para começar a explorar."
       }
     },
     "controlPanel": {
       "controlPanel": {
         "en": "Control Panel",
-        "br": ""
+        "br": "Painel de Controle"
       },
       "activeReporters": {
         "en": "Active Reporters",
-        "br": ""
+        "br": "Repórteres Ativos"
       },
       "floodReports": {
         "en": "Flood Events",
-        "br": ""
+        "br": "Áreas de alagamento"
       },
       "avgDailyRainfall": {
         "en": "Avg Daily Rainfall",
-        "br": ""
+        "br": "Média Diária de Chuva"
       },
       "maxDailyRainfall": {
         "en": "Max Daily Rainfall",
-        "br": ""
+        "br": "Quantidade de Chuva Máxima"
       },
       "citizenReports": {
         "en": "Citizen Reports",
-        "br": ""
+        "br": "Relatos de Cidadãos"
       },
     },
     "rainfallChart": {
       "title": {
         "en": "Avg. Rainfall (mm)",
-        "br": ""
+        "br": "Média de chuva (mm)"
       },
       "descriptionParOne": {
         "en": "Rainfall measurements are a good indicator of unusual weather patterns that could lead to flooding.",
-        "br": ""
+        "br": "Medições de chuva são um bom indicador de padrões de tempo que podem levar a inundações."
       },
       "descriptionParTwo": {
-        "en": "To improve coverage of rainfall data across Brazil, Waterproofing Data combines official weather stations records with citizen reported measurements.",
-        "br": ""
+        "en": "To improve coverage of flood-related data, Waterproofing Data combines data coming from official sensors (rainfall gauges) with citizen reported measurements.",
+        "br": "Para melhorar a cobertura de dados relativos a inundações, o Dados à Prova D'água combina dados de sensores oficiais (pluviômetros) com medições relatadas por cidadãos."
       },
       "value": {
         "en": "Avg. Value",
-        "br": ""
+        "br": "Valor médio"
       },
       "date": {
         "en": "Date",
-        "br": ""
+        "br": "Data"
       }
     },
     "rainfallMap": {
       "title": {
         "en": "Rainfall Map",
-        "br": ""
+        "br": "Mapa de Chuva"
       },
       "citizenReport": {
         "en": "Citizen Report",
-        "br": ""
+        "br": "Relatório de Cidadão"
       },
       "descriptionParOne": {
-        "en": "Pluviometers are used to record rainfall measurements.",
-        "br": ""
+        "en": "Pluviometers are used to record rainfall measurements (precipitation).",
+        "br": "Pluviômetros são usados para registrar medidas de quantidade de chuva (precipitação)."
       },
       "descriptionParTwo": {
-        "en": "Waterproofing Data uses data from official weather stations alongside citizen generated rainfall events and measurements to offer a more complete picture of rainfall across Brazil.",
-        "br": ""
+        "en": "Waterproofing Data uses data from official sensors alongside citizen-generated data on rainfall and floods to offer a more complete picture of rainfall across Brazil.",
+        "br": "O Dados à Prova D'água usa dados de sensores oficiais em conjunto com dados gerados por cidadãos sobre chuvas e inundações para oferecer uma perspective mais completa das chuvas ao redor do Brasil."
       },
       "scaleTitle": {
         "en": "Scale of Avg Rainfall (mm)",
-        "br": ""
+        "br": "Escala da Média de Chuva (mm)"
       },
       "legendOfficial": {
         "en": "Official Pluviometer",
-        "br": ""
+        "br": "Pluviômetro oficial"
       },
       "legendCitizen": {
         "en": "Citizen Pluviometer",
-        "br": ""
+        "br": "Pluviômetro Cidadão"
       },
       "citizenSubmittedRainEvent": {
-        "en": "Citizen Submitted Rain Events",
-        "br": ""
+        "en": "Citizen-reported Rain Events",
+        "br": "Eventos de chuva relatados por cidadãos"
       },
       "higherScale": {
         "en": "Higher",
-        "br": ""
+        "br": "Aumentar"
       },
       "lowerScale": {
         "en": "Lower",
-        "br": ""
+        "br": "Diminuir"
       },
       "officialPluviometerTooltip": {
-        "en": "Official pluviometers represent rainfall gauges established by weather stations to measure rainfall at specific geographic points.",
-        "br": ""
+        "en": "Official pluviometers represent rainfall gauges established by governmental agencies (e.g., the National Centre for Disaster Monitoring and Early-Warning/CEMADEN) to measure rainfall at specific geographic points.",
+        "br": "Pluviômetros oficiais representam dados oriundos de sensores estabelecidos por órgãos governamentais (por exemplo, o Centro Nacional de Monitoramento e Alerta de Desastres Naturais/Cemaden) para medir chuva em pontos geográficos específicos."
       },
       "citizenPluviometerTooltip": {
-        "en": "Citizen pluviometers represent rainfall gauges created by members of the Waterproofing Data community to measure rainfall at specific geographic points.",
-        "br": ""
+        "en": "Citizen pluviometers represent rainfall gauges created by members of the Waterproofing Data community (e.g., schools and civil protection agencies) to measure rainfall at specific geographic points.",
+        "br": "Pluviômetros cidadãos representam dados advindos de sensores criados por cidadãos e comunidades participantes do Dados à Prova D'Água (por exemplo, os pluviômetros artesanais ou \"pluvipets\". em escolas e defesas civis) para medir a quantidade de chuva em pontos geográfico específicos."
       },
       "citizenRainfallEventTooltip": {
-        "en": "Citizen Submitted Rainfall Events are submitted by members of the Waterproofing Data community to record rainfall activity in local areas.",
-        "br": ""
+        "en": "Citizen-reported Rainfall Events are submitted by members of the Waterproofing Data community to record rainfall episodes in local areas.",
+        "br": "Eventos de chuva relatados por cidadãos são submetidos por membros do Projeto Dados à Prova D'Água para reigstrar espisódios de chuva em áreas locais."
       }
     },
     "floodMap": {
       "title": {
         "en": "Flood Events & Hazard Zones",
-        "br": ""
+        "br": "Eventos de Inundação e Zonas Sucetíveis"
       },
       "descriptionParOne": {
-        "en": "Specific geographic areas - often close to bodies of water - are often subject to a greater flood hazard.",
-        "br": ""
+        "en": "Our flood map represents officially recognised areas of flood susceptibility (hazard areas) alongside citizen-generated data about flood memories and extreme events, as well as flood risk perception areas.",
+        "br": "O nosso mapa de inundação representa áreas geográficas mapeadas por órgãos oficiais como sucetíveis a inundação em conjunto com dados gerados por cidadãos sobre eventos extremos e memórias de alagamento/inundação, além de áreas de risco percebido por cidadãos."
       },
       "descriptionParTwo": {
-        "en": "Our flood map represents officially recognised areas of flood susceptibility alongside citizen generated data in the form of flood events, memories and perception areas.",
-        "br": ""
+        "en": "Geographic areas mapped as suceptible to floods are frequently located close to rivers and water streams. They are usually considered as areas of higher flood risk.",
+        "br": "Essas áreas frequentemente estão localizadas perto de rios e cursos d'água. Elas são usualmente consideradas de maior risco de inundação."
       },
       "citizenPerceptionTitle": {
-        "en": "Citizen Perception Area",
-        "br": ""
+        "en": "Citizen Risk Perception Area",
+        "br": "Área de Risco Percebido por Cidadãos"
       },
       "citizenPerceptionDescription": {
         "en": "Local residents’ perception of an area subject to flooding. Data obtained by survey.",
-        "br": ""
+        "br": "Percepção de residentes locais sobre uma área sujeita a inundações. Dados otidos por meio de questionários."
       },
       "officialTitle": {
         "en": "Official Flood Hazard Area",
-        "br": ""
+        "br": "Área sucetível a inundação segundo dados oficiais "
       },
       "riskAreas": {
         "en": "Nearby Hazard Areas",
-        "br": ""
+        "br": "Áreas vizinhas sucetíveis a inundação"
       },
       "officialDescription": {
         "en": "Data taken from a study highlighting areas more subject to flooding and landslides.",
-        "br": ""
+        "br": "Dados obtidos de um estudo que investigou áreas mais sujeitas a inundações e deslizamentos."
       },
       "floodEventTitle": {
-        "en": "Citizen Submitted Flood Events",
-        "br": ""
+        "en": "Citizen-reported Flood Events",
+        "br": "Áreas de alagamento reportados por cidadãos"
       },
       "floodEventDescription": {
         "en": "Flood events and memories submitted by members of the Waterproofing Data Community.",
-        "br": ""
+        "br": "Eventos de inundação e memórias submetidas por membros da comunidade Dados à Prova D'água."
       },
       "floodMapInfo": {
         "en": "Hazard zones are loaded dynamically. Move the map and refresh to view nearby zones.",
-        "br": ""
+        "br": "Áreas sucetíveis são carregadas dinamicamente. Mova o mapa e clique em atualiar para ver áreas próximas."
       },
       "floodMapAlertTitle": {
         "en": "Hidden Hazard Zones",
-        "br": ""
+        "br": "Dados Omitidos"
       },
       "floodMapAlert": {
         "en": "We can only show a max of 500 hazard zones. Zoom in and refresh to find more zones.",
-        "br": ""
+        "br": "Só é possível exibir um máximo de 500 áreas sucetíveis. Aproxime o zoom e clique em atualizar para ver áreas adicionais."
       },
       "satellite": {
         "en": "Satellite",
-        "br": ""
+        "br": "Satélite"
       },
       "monochrome": {
         "en": "monochrome",
-        "br": ""
+        "br": "monocromático"
       },
       "mapStyle": {
         "en": "Map Style",
-        "br": ""
+        "br": "Estilo de mapa"
       },
       "loadingFloodZones": {
-        "en": "Loading Flood Zones",
-        "br": ""
+        "en": "Loading Flood Hazard Areas",
+        "br": "Carregando áreas sucetíveis a inundação"
       }
     }
   }

@@ -7,12 +7,13 @@ import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { CacheProvider } from '@emotion/react';
 import Script from "next/script";
+import {CookiesBanner} from "@urbanbigdatacentre/data-blocks";
 
 // Local Imports
 import theme from '../src/theme';
 import createEmotionCache from '../src/createEmotionCache';
 import { wrapper } from "../store/store";
-import CookiesBanner from "../components/modules/cookies";
+
 
 // CSS Imports
 import 'mapbox-gl/dist/mapbox-gl.css';
@@ -70,7 +71,7 @@ function MyApp(props) {
 
                 <CssBaseline />
                 <Component {...pageProps} />
-                <CookiesBanner/>
+                <CookiesBanner color={'#2196F3'}/>
             </ThemeProvider>
         </CacheProvider>
     );

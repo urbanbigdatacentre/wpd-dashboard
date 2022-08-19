@@ -48,9 +48,9 @@ const ControlDashboard = ({ toggleLanguage, locationData, color, weatherAPIToken
             <DateRangeText>{new Date(d3.timeFormat("%B %d, %Y")(toggleDate.startDate)).toLocaleString().split(',')[0] + " - " + new Date(d3.timeFormat("%B %d, %Y")(toggleDate.endDate)).toLocaleString().split(',')[0]}</DateRangeText>
             <ControlDashboardInnerBox >
                 <ControlDashboardStatCardBox>
-                    <StatCard firstInSequence={true} text={uiText.locationPage.controlPanel.maxDailyRainfall[toggleLanguage.language]} number={stats?.maxdailyrainfall !== null ? Math.round(stats.maxdailyrainfall) + "mm" : "-"}/>
-                    <StatCard text={uiText.locationPage.controlPanel.floodReports[toggleLanguage.language]} number={stats?.floodreports !== undefined ? stats.floodreports : "-"}/>
-                    <StatCard text={uiText.locationPage.controlPanel.activeReporters[toggleLanguage.language]} number={stats?.activereporters !== undefined ? stats.activereporters : "-"}/>
+                    <StatCard dashboardRender firstInSequence={true} text={uiText.locationPage.controlPanel.maxDailyRainfall[toggleLanguage.language]} number={stats?.maxdailyrainfall !== null ? Math.round(stats.maxdailyrainfall) + "mm" : "-"}/>
+                    <StatCard dashboardRender text={uiText.locationPage.controlPanel.floodReports[toggleLanguage.language]} number={stats?.floodreports !== undefined ? stats.floodreports : "-"}/>
+                    <StatCard dashboardRender text={uiText.locationPage.controlPanel.activeReporters[toggleLanguage.language]} number={stats?.activereporters !== undefined ? stats.activereporters : "-"}/>
                 </ControlDashboardStatCardBox>
                 <WeatherCarousel weatherAPIToken={weatherAPIToken} locationData={locationData}/>
             </ControlDashboardInnerBox>
