@@ -23,6 +23,7 @@ const requestPluviometerData = (item, toggleDate, configureAPI, updatePluviomete
         trackPromise(
             axios.get(API_URL)
                 .then(res => {
+                    // console.log(res)
                     updatePluviometerDataDispatch(typeof (res.data['responseData']['array_to_json']) === 'undefined' ? [] : res.data['responseData']['array_to_json'], item['placeid'], toggleDate.startDate.toString(), toggleDate.endDate.toString(), item['placename'], item['placetype'])
                 })
             , "pluviometer-data") : null

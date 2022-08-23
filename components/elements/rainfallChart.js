@@ -90,7 +90,6 @@ const RainfallChart = ({toggleLanguage, toggleDate, updatePrimaryLocation, updat
         // Use the largest possible date range for each location object - and remo
         const filteredDataTwo = validateLocation([... new Set(dataArray)])
 
-
         // Draw area - line - circles for every location
         filteredDataTwo.forEach(function(location) {
             // Check for pluviometerData
@@ -118,7 +117,9 @@ const RainfallChart = ({toggleLanguage, toggleDate, updatePrimaryLocation, updat
                                 singlePluviometerRecords[new Date(record.timestamp).setHours(0, 0, 0, 0)].push(record.value)
                             }
                         }
+
                     })
+
                     // Create Daily Totals to Add Single Pluviometer Records Together
                     Object.keys(singlePluviometerRecords).forEach(function(key) {
                         const dailyTotal = singlePluviometerRecords[key].reduce((a, b) => parseInt(a) + parseInt(b), 0)
@@ -129,6 +130,7 @@ const RainfallChart = ({toggleLanguage, toggleDate, updatePrimaryLocation, updat
                             dataRecords[key].push(dailyTotal)
                         }
                     })
+
                 })
                 let formattedDataArray = []
 

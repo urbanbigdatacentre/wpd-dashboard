@@ -252,6 +252,10 @@ export default {
         "en": "Measurement (mm)",
         "br": "Medição (mm)"
       },
+      "gridCells": {
+        "en": "Pluviometer Grid Cells",
+        "br": "Células da grid dos pluviômetros"
+      },
       "citizenPluviometer": {
         "en": "Citizen Pluviometer",
         "br": "Pluviômetro cidadão"
@@ -268,6 +272,10 @@ export default {
         "en": "Higher",
         "br": "Mais alta"
       },
+      "localMeasurements": {
+        "en": "Local Measurements",
+        "br": "Medições locais"
+      },
       "hexagonRadius": {
         "en": "Hexagon Radius",
         "br": "Raio do hexágono"
@@ -278,7 +286,7 @@ export default {
       },
       "maxDailyRainfall": {
         "en": "Max. Daily Rainfall",
-        "br": "Quantidade de chuva máxima no dia"
+        "br": "Quantidade de Chuva Máxima"
       },
       "cluster": {
         "en": "Cluster",
@@ -319,6 +327,10 @@ export default {
       "rainfallLegendDescription": {
         "en": "Data represents rainfall measurements (mm) recorded by citizens or official pluviometer gauges.",
         "br": "Os dados representam medições da quantidade de chuva precipitada (mm) registrada por cidadãos ou por pluviômetros oficiais."
+      },
+      "rainfallLegendDescriptionTwo": {
+        "en": "Citizen pluviometers are aggregated inside 300m hexagonal grid cells to protect people's privacy.",
+        "br": "Os dados de pluviômetros de cidadãos são agregados em uma grid hexagonal de 300m metros para proteger a privacidade da comunidade."
       }
     },
     "months": {
@@ -578,8 +590,8 @@ export default {
         "br": "Média Diária de Chuva"
       },
       "maxDailyRainfall": {
-        "en": "Max Daily Rainfall",
-        "br": "Quantidade de Chuva Máxima"
+        "en": "Max Daily Measurement",
+        "br": "Medição diária máxima"
       },
       "citizenReports": {
         "en": "Citizen Reports",
