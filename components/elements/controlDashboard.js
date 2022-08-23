@@ -10,6 +10,7 @@ import uiText from "../../data/ui-text";
 import StatCard from "./statCard";
 import LocationBox from "./locationBox";
 import locationPaths from "../../data/locationPaths";
+import locationPathsBR from "../../data/locationPathsBR";
 import WeatherCarousel from "./weatherCarousel";
 import {trackPromise, usePromiseTracker} from "react-promise-tracker";
 import axios from "axios";
@@ -42,7 +43,7 @@ const ControlDashboard = ({ toggleLanguage, locationData, color, weatherAPIToken
 
     return (
         <ControlDashboardOuterBox >
-            <LocationBox locationName={locationPaths[locationData['placetype']].text} color={color}/>
+            <LocationBox locationName={toggleLanguage.language === 'en' ? locationPaths[locationData['placetype']].text : locationPathsBR[locationData['placetype']].text} color={color}/>
             <LocationName sx={{paddingTop: `10px`, fontWeight: (theme) => (theme.typography.fontWeightBold), color: color}}>{locationData['placename'].toUpperCase()}<span className={'bluePunctuation'}>.</span></LocationName>
             <Divider sx={{width: `100%`}}/>
             <DateRangeText>{new Date(d3.timeFormat("%B %d, %Y")(toggleDate.startDate)).toLocaleString().split(',')[0] + " - " + new Date(d3.timeFormat("%B %d, %Y")(toggleDate.endDate)).toLocaleString().split(',')[0]}</DateRangeText>

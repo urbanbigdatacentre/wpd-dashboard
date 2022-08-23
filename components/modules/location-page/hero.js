@@ -11,6 +11,7 @@ import uiText from "../../../data/ui-text";
 import SearchIcon from "@mui/icons-material/Search";
 import LocationBox from "../../elements/locationBox";
 import locationPaths from "../../../data/locationPaths";
+import locationPathsBR from "../../../data/locationPathsBR";
 import StreetMap from "../../elements/streetMap";
 import {usePromiseTracker} from "react-promise-tracker";
 import {useRouter} from "next/router";
@@ -34,7 +35,7 @@ const LocationHero = ({toggleLanguage, mapBoxToken, updatePrimaryLocation}) => {
             <>
                 <MapTextCarouselWrapper>
                     <MapDescriptionTextBox>
-                        {promiseInProgress ? <MySkeleton variant={'rectangular'} height={`20px`} width={`10%`}/> : <LocationBox locationName={locationPaths[updatePrimaryLocation.location['placetype']].text}/>}
+                        {promiseInProgress ? <MySkeleton variant={'rectangular'} height={`20px`} width={`10%`}/> : <LocationBox locationName={toggleLanguage.language === 'en' ? locationPaths[updatePrimaryLocation.location['placetype']].text : locationPathsBR[updatePrimaryLocation.location['placetype']].text}/>}
                         {promiseInProgress ? <MySkeleton variant={'rectangular'} height={`40px`} width={`40%`}/> : <PageTitle sx={{width: `60%`}} variant={'h1'}>{updatePrimaryLocation.location['placename']}<span className={'bluePunctuation'}>.</span></PageTitle>}
                         {promiseInProgress ? <MySkeleton variant={'rectangular'} height={`10px`} width={`45%`}/> : <MyDivider sx={{width: `25%`, height: (theme) => (theme.spacing(1)), background: `linear-gradient(90deg, #2196F3 0%, #1565C0 100%)`, marginBottom: (theme) => (theme.spacing(2)), marginTop: (theme) => (theme.spacing(1))}}/>}
                         {promiseInProgress ? <MySkeleton variant={'rectangular'} height={`10px`} width={`50%`}/> : <StandardText sx={{width: `50%`}} variant={'description'}>{uiText.locationPage.hero.descriptionPartOne[toggleLanguage.language] + updatePrimaryLocation.location['placename'] + uiText.locationPage.hero.descriptionPartTwo[toggleLanguage.language]}</StandardText>}

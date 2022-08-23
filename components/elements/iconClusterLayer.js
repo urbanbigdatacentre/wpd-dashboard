@@ -70,8 +70,7 @@ export default class IconClusterLayer extends CompositeLayer {
         const {data} = this.state;
         const {iconAtlas, iconMapping, sizeScale} = this.props;
 
-
-        return this.getSubLayerProps().id === "pluviometer-icon-cluster-sublayer" ? new IconLayer(
+        return JSON.stringify(this.getSubLayerProps().id).includes("pluviometer")? new IconLayer(
             this.getSubLayerProps({
                 id: 'icon',
                 data,
@@ -81,7 +80,7 @@ export default class IconClusterLayer extends CompositeLayer {
                 getColor: (d) => d.properties.hasOwnProperty('color') ? d.properties.color : '#888888',
                 getPosition: d => d.geometry.coordinates,
                 getIcon: d => getIconName(d.properties.cluster ? d.properties.point_count : 1),
-                getSize: d => getIconSize(d.properties.cluster ? 150 : 150),
+                getSize: 3.5,
                 sizeMinPixels: 50,
                 sizeUnits: `meters`,
             })
